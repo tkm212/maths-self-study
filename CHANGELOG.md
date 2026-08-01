@@ -8,6 +8,10 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+### Changed
+
+- Renamed project from `financial-machine-learning` to `maths-self-study`; Python package is now `maths_self_study`.
+
 ## [0.0.1] - 2025-01-01
 
 ### Added

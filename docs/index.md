@@ -1,34 +1,36 @@
-# Financial Machine Learning
+# Maths Self Study
 
-[![Release](https://img.shields.io/github/v/release/tkm212bc/financial-machine-learning)](https://github.com/tkm212bc/financial-machine-learning/releases)
-[![Build status](https://img.shields.io/github/actions/workflow/status/tkm212bc/financial-machine-learning/main.yml?branch=main)](https://github.com/tkm212bc/financial-machine-learning/actions/workflows/main.yml?query=branch%3Amain)
-[![Commit activity](https://img.shields.io/github/commit-activity/m/tkm212bc/financial-machine-learning)](https://github.com/tkm212bc/financial-machine-learning/commits/main)
-[![License](https://img.shields.io/github/license/tkm212bc/financial-machine-learning)](https://github.com/tkm212bc/financial-machine-learning/blob/main/LICENSE)
+[![Release](https://img.shields.io/github/v/release/tkm212/maths-self-study)](https://github.com/tkm212/maths-self-study/releases)
+[![Build status](https://img.shields.io/github/actions/workflow/status/tkm212/maths-self-study/main.yml?branch=main)](https://github.com/tkm212/maths-self-study/actions/workflows/main.yml?query=branch%3Amain)
+[![Commit activity](https://img.shields.io/github/commit-activity/m/tkm212/maths-self-study)](https://github.com/tkm212/maths-self-study/commits/main)
+[![License](https://img.shields.io/github/license/tkm212/maths-self-study)](https://github.com/tkm212/maths-self-study/blob/main/LICENSE)
 
-Notebooks and a reusable Python library covering two bodies of work:
+Self-directed study in **mathematics, statistics, and machine learning** — chapter-by-chapter from classic textbooks, with Marimo notebooks and a reusable Python library.
 
-- **Advances in Financial Machine Learning** — López de Prado (2018): alternative data structures, event filtering, triple-barrier labeling, and sample weighting for financial time series.
-- **Elements of Statistical Learning** — Hastie, Tibshirani & Friedman: supervised learning, linear methods, basis expansions, kernel smoothing, model assessment, additive models, and boosting.
+Current textbooks:
+
+- **Advances in Financial Machine Learning** — López de Prado (2018): alternative data structures, event filtering, triple-barrier labeling, and sample weighting.
+- **Elements of Statistical Learning** — Hastie, Tibshirani & Friedman: supervised learning, linear methods, basis expansions, kernel smoothing, model assessment, ensemble methods, and high-dimensional statistics.
 
 ---
 
 ## Installation
 
 ```bash
-uv add financial-machine-learning
+uv add maths-self-study
 ```
 
 Or with pip:
 
 ```bash
-pip install financial-machine-learning
+pip install maths-self-study
 ```
 
 To work from source with all development dependencies:
 
 ```bash
-git clone https://github.com/tkm212bc/financial-machine-learning.git
-cd financial-machine-learning
+git clone https://github.com/tkm212/maths-self-study.git
+cd maths-self-study
 make install
 ```
 
@@ -36,7 +38,7 @@ make install
 
 ## Library overview
 
-The `financial_machine_learning` package contains four modules:
+The `maths_self_study` package contains shared code used across notebooks:
 
 | Module | Description |
 |--------|-------------|
@@ -52,9 +54,9 @@ A fifth module, `esl_loaders`, provides dataset loaders used by the ESL notebook
 ## Quick example
 
 ```python
-from financial_machine_learning.bars import dollar_bars
-from financial_machine_learning.filters import cusum_filter
-from financial_machine_learning.labeling import triple_barrier_labels
+from maths_self_study.bars import dollar_bars
+from maths_self_study.filters import cusum_filter
+from maths_self_study.labeling import triple_barrier_labels
 
 # Build dollar bars from raw tick data
 bars = dollar_bars(ticks_df, threshold=1_000_000)
@@ -70,7 +72,7 @@ labels = triple_barrier_labels(bars, events, pt=0.02, sl=0.02, num_bars=20)
 
 ## Links
 
-- [GitHub repository](https://github.com/tkm212bc/financial-machine-learning)
-- [PyPI package](https://pypi.org/project/financial-machine-learning)
+- [GitHub repository](https://github.com/tkm212/maths-self-study)
+- [PyPI package](https://pypi.org/project/maths-self-study)
 - [API reference](modules.md)
 - [Notebooks overview](notebooks.md)

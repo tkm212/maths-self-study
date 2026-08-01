@@ -1,16 +1,19 @@
-"""Financial machine learning utilities.
+"""Maths self-study utilities.
+
+Shared code for textbook-driven notebooks in statistics, machine learning, and
+quantitative finance.
 
 Public API: bars, filters, labeling, and sample weights from López de Prado (2018).
 
 ``esl_loaders`` is intentionally not re-exported here — it requires external
 datasets (downloaded via Kaggle) and is only used by the ESL notebooks.
-Import it directly: ``from financial_machine_learning.esl_loaders import ...``
+Import it directly: ``from maths_self_study.esl_loaders import ...``
 """
 
-from financial_machine_learning.bars import dollar_bars, tick_bars, time_bars, volume_bars
-from financial_machine_learning.filters import cusum_filter
-from financial_machine_learning.labeling import triple_barrier_labels
-from financial_machine_learning.weights import (
+from maths_self_study.bars import dollar_bars, tick_bars, time_bars, volume_bars
+from maths_self_study.filters import cusum_filter
+from maths_self_study.labeling import triple_barrier_labels
+from maths_self_study.weights import (
     average_uniqueness,
     concurrent_labels_per_bar,
     time_decay_weights,

@@ -37,7 +37,7 @@ def init_paths() -> tuple[Path, Path, Path]:
 
 
 def load_tmdb_classification_xy(inputs_dir: Path) -> tuple[pd.DataFrame, pd.Series, str]:
-    from financial_machine_learning.esl_loaders import load_tmdb_revenue_classification
+    from maths_self_study.esl_loaders import load_tmdb_revenue_classification
 
     return load_tmdb_revenue_classification(inputs_dir)
 

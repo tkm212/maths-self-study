@@ -83,7 +83,7 @@ def _(INPUTS, pd):
 @app.cell
 def _(df):
     # Generate bars using López de Prado formulations
-    from financial_machine_learning.bars import dollar_bars, tick_bars, time_bars, volume_bars
+    from maths_self_study.bars import dollar_bars, tick_bars, time_bars, volume_bars
 
     # Time bars (1-second)
     time_bars_df = time_bars(df)

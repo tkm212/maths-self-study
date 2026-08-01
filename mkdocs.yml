@@ -1,11 +1,11 @@
-site_name: Financial Machine Learning
-repo_url: https://github.com/tkm212bc/financial-machine-learning
-site_url: https://tkm212bc.github.io/financial-machine-learning
-site_description: Notebooks for Advances in Financial Machine Learning and Elements of Statistical Learning
+site_name: Maths Self Study
+repo_url: https://github.com/tkm212/maths-self-study
+site_url: https://tkm212.github.io/maths-self-study
+site_description: Marimo notebooks and Python code for self-directed study in maths, statistics, and machine learning — chapter-by-chapter from classic textbooks
 site_author: tkm
 edit_uri: edit/main/docs/
-repo_name: tkm212bc/financial-machine-learning
-copyright: Maintained by <a href="https://tkm212bc.com">tkm212bc</a>.
+repo_name: tkm212/maths-self-study
+copyright: Maintained by <a href="https://github.com/tkm212">tkm212</a>.
 
 nav:
   - Home: index.md
@@ -46,9 +46,9 @@ theme:
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/tkm212bc/financial-machine-learning
+      link: https://github.com/tkm212/maths-self-study
     - icon: fontawesome/brands/python
-      link: https://pypi.org/project/financial-machine-learning
+      link: https://pypi.org/project/maths-self-study
 
 markdown_extensions:
   - toc:

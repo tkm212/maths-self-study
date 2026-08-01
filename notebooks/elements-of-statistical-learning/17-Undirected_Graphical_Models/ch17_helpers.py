@@ -44,7 +44,7 @@ def load_tmdb_numeric_features(
 
     Real movie features are not exactly multivariate normal; the plot is illustrative.
     """
-    from financial_machine_learning.esl_loaders import load_tmdb_revenue_regression
+    from maths_self_study.esl_loaders import load_tmdb_revenue_regression
 
     x_df, _y, _ = load_tmdb_revenue_regression(inputs_dir)
     feats = ["budget", "popularity", "runtime", "vote_average", "vote_count"]

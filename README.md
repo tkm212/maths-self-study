@@ -1,35 +1,37 @@
-# financial-machine-learning
+# maths-self-study
 
-[![Release](https://img.shields.io/github/v/release/tkm212bc/financial-machine-learning)](https://github.com/tkm212bc/financial-machine-learning/releases)
-[![Build status](https://img.shields.io/github/actions/workflow/status/tkm212bc/financial-machine-learning/main.yml?branch=main)](https://github.com/tkm212bc/financial-machine-learning/actions/workflows/main.yml?query=branch%3Amain)
-[![codecov](https://codecov.io/gh/tkm212bc/financial-machine-learning/branch/main/graph/badge.svg)](https://codecov.io/gh/tkm212bc/financial-machine-learning)
-[![Commit activity](https://img.shields.io/github/commit-activity/m/tkm212bc/financial-machine-learning)](https://github.com/tkm212bc/financial-machine-learning/commits/main)
-[![License](https://img.shields.io/github/license/tkm212bc/financial-machine-learning)](https://github.com/tkm212bc/financial-machine-learning/blob/main/LICENSE)
+[![Release](https://img.shields.io/github/v/release/tkm212/maths-self-study)](https://github.com/tkm212/maths-self-study/releases)
+[![Build status](https://img.shields.io/github/actions/workflow/status/tkm212/maths-self-study/main.yml?branch=main)](https://github.com/tkm212/maths-self-study/actions/workflows/main.yml?query=branch%3Amain)
+[![codecov](https://codecov.io/gh/tkm212/maths-self-study/branch/main/graph/badge.svg)](https://codecov.io/gh/tkm212/maths-self-study)
+[![Commit activity](https://img.shields.io/github/commit-activity/m/tkm212/maths-self-study)](https://github.com/tkm212/maths-self-study/commits/main)
+[![License](https://img.shields.io/github/license/tkm212/maths-self-study)](https://github.com/tkm212/maths-self-study/blob/main/LICENSE)
 
-Python library and [Marimo](https://marimo.io) notebooks covering two bodies of work:
+Self-directed study in **mathematics, statistics, and machine learning** — chapter-by-chapter implementations from classic textbooks, with interactive [Marimo](https://marimo.io) notebooks and a reusable Python library. Built from first principles; quant finance is one track among many.
 
-- **[Advances in Financial Machine Learning](https://www.wiley.com/en-us/Advances+in+Financial+Machine+Learning-p-9781119482086)** — López de Prado (2018): alternative bar types, CUSUM filtering, triple-barrier labeling, and sample weighting for financial time series.
-- **[Elements of Statistical Learning](https://hastie.su.domains/ElemStatLearn/)** — Hastie, Tibshirani & Friedman (2nd ed.): supervised learning through random forests, implemented across Chapters 2–15.
+Current tracks:
 
-**[Documentation](https://tkm212bc.github.io/financial-machine-learning/) · [API Reference](https://tkm212bc.github.io/financial-machine-learning/modules/) · [Notebooks](https://tkm212bc.github.io/financial-machine-learning/notebooks/)**
+- **[Advances in Financial Machine Learning](https://www.wiley.com/en-us/Advances+in+Financial+Machine+Learning-p-9781119482086)** — López de Prado (2018): alternative bar types, CUSUM filtering, triple-barrier labeling, and sample weighting.
+- **[Elements of Statistical Learning](https://hastie.su.domains/ElemStatLearn/)** — Hastie, Tibshirani & Friedman (2nd ed.): supervised learning through high-dimensional methods (Chapters 2–18).
+
+**[Documentation](https://tkm212.github.io/maths-self-study/) · [API Reference](https://tkm212.github.io/maths-self-study/modules/) · [Notebooks](https://tkm212.github.io/maths-self-study/notebooks/)**
 
 ---
 
 ## Installation
 
 ```bash
-uv add financial-machine-learning
+uv add maths-self-study
 ```
 
 ```bash
-pip install financial-machine-learning
+pip install maths-self-study
 ```
 
 ---
 
 ## Library
 
-The `financial_machine_learning` package implements the core pipeline from AFML:
+The `maths_self_study` package holds shared code used across notebooks. The AFML modules implement the core financial-ML pipeline:
 
 | Module | What it does |
 |--------|-------------|
@@ -39,9 +41,9 @@ The `financial_machine_learning` package implements the core pipeline from AFML:
 | `weights` | Concurrent label counts, average uniqueness, and time-decay sample weights |
 
 ```python
-from financial_machine_learning.bars import dollar_bars
-from financial_machine_learning.filters import cusum_filter
-from financial_machine_learning.labeling import triple_barrier_labels
+from maths_self_study.bars import dollar_bars
+from maths_self_study.filters import cusum_filter
+from maths_self_study.labeling import triple_barrier_labels
 
 bars   = dollar_bars(ticks_df, threshold=1_000_000)
 events = cusum_filter(bars["close"], threshold=0.02)
@@ -52,7 +54,7 @@ labels = triple_barrier_labels(bars, events, pt=0.02, sl=0.02, num_bars=20)
 
 ## Notebooks
 
-Interactive [Marimo](https://marimo.io) notebooks, runnable locally with `uv`:
+Interactive Marimo notebooks, runnable locally with `uv`:
 
 ```bash
 uv run marimo run notebooks/financial-machine-learning/2-Financial_Data_Structures/information_bars.py
@@ -76,17 +78,18 @@ uv run marimo run notebooks/financial-machine-learning/2-Financial_Data_Structur
 | 7–8 | Model assessment, bootstrap, bagging |
 | 9–10 | Additive models, decision trees, boosting |
 | 11–12 | Neural networks, SVMs, flexible discriminants |
-| 13 | Prototype methods (K-means, LVQ) and K-nearest-neighbors |
+| 13 | Prototype methods and K-nearest-neighbors |
 | 14 | Unsupervised learning — clustering, PCA, NMF |
-| 15 | Random forests — OOB error, variable importance, tuning |
+| 15 | Random forests |
+| 16–18 | Ensemble learning, graphical models, high-dimensional problems |
 
 ---
 
 ## Development
 
 ```bash
-git clone https://github.com/tkm212bc/financial-machine-learning.git
-cd financial-machine-learning
+git clone https://github.com/tkm212/maths-self-study.git
+cd maths-self-study
 make install          # create venv + install pre-commit hooks
 make check            # lint, type check, dependency audit
 make test             # pytest with coverage (requires ≥ 80%)

@@ -1,21 +1,28 @@
 [project]
-name = "financial-machine-learning"
+name = "maths-self-study"
 version = "0.0.1"
-description = "Python library and notebooks for Advances in Financial Machine Learning (López de Prado) and Elements of Statistical Learning"
+description = "Marimo notebooks and Python code for self-directed study in maths, statistics, and machine learning — chapter-by-chapter from classic textbooks"
 authors = [{ name = "tkm" }]
 readme = "README.md"
-keywords = ["finance", "machine learning", "quantitative finance", "time series", "financial data"]
+keywords = [
+    "mathematics",
+    "statistics",
+    "machine learning",
+    "self-study",
+    "textbooks",
+    "notebooks",
+]
 requires-python = ">=3.11"
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
-    "Intended Audience :: Financial and Insurance Industry",
     "Intended Audience :: Science/Research",
+    "Intended Audience :: Education",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.14",
-    "Topic :: Office/Business :: Financial",
     "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Mathematics",
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
 dependencies = [
@@ -29,9 +36,9 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://tkm212bc.github.io/financial-machine-learning/"
-Repository = "https://github.com/tkm212bc/financial-machine-learning"
-Documentation = "https://tkm212bc.github.io/financial-machine-learning/"
+Homepage = "https://tkm212.github.io/maths-self-study/"
+Repository = "https://github.com/tkm212/maths-self-study"
+Documentation = "https://tkm212.github.io/maths-self-study/"
 
 [dependency-groups]
 dev = [
@@ -52,7 +59,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/financial_machine_learning"]
+packages = ["src/maths_self_study"]
 
 [tool.ty.environment]
 python = "./.venv"
@@ -82,7 +89,7 @@ testpaths = ["tests"]
 addopts = ["--cov", "--cov-report=term-missing", "--cov-report=xml"]
 
 [tool.coverage.run]
-source = ["financial_machine_learning"]
+source = ["maths_self_study"]
 branch = true
 omit = ["*/esl_loaders.py"]
 
@@ -147,7 +154,7 @@ ignore = [
 preview = true
 
 [tool.deptry]
-known_first_party = ["financial_machine_learning", "helpers", "ch3_helpers", "ch4_helpers", "ch5_helpers", "ch6_helpers", "ch7_helpers", "ch8_helpers", "ch9_helpers", "ch10_helpers", "ch11_helpers", "ch12_helpers", "ch13_helpers", "ch14_helpers", "ch15_helpers", "ch16_helpers", "ch17_helpers", "ch18_helpers"]
+known_first_party = ["maths_self_study", "helpers", "ch3_helpers", "ch4_helpers", "ch5_helpers", "ch6_helpers", "ch7_helpers", "ch8_helpers", "ch9_helpers", "ch10_helpers", "ch11_helpers", "ch12_helpers", "ch13_helpers", "ch14_helpers", "ch15_helpers", "ch16_helpers", "ch17_helpers", "ch18_helpers"]
 extend_exclude = ["docs"]
 github_output = true
 [tool.deptry.package_module_name_map]
