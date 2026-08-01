@@ -20,7 +20,7 @@
       show_root_heading: true
       members_order: source
 
-::: maths_self_study.esl_loaders
+::: maths_self_study.loaders
     options:
       show_root_heading: true
       members_order: source

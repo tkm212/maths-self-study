@@ -13,7 +13,9 @@ Current tracks:
 - **[Advances in Financial Machine Learning](https://www.wiley.com/en-us/Advances+in+Financial+Machine+Learning-p-9781119482086)** — López de Prado (2018): alternative bar types, CUSUM filtering, triple-barrier labeling, and sample weighting.
 - **[Elements of Statistical Learning](https://hastie.su.domains/ElemStatLearn/)** — Hastie, Tibshirani & Friedman (2nd ed.): supervised learning through high-dimensional methods (Chapters 2–18).
 
-**[Documentation](https://tkm212.github.io/maths-self-study/) · [API Reference](https://tkm212.github.io/maths-self-study/modules/) · [Notebooks](https://tkm212.github.io/maths-self-study/notebooks/)**
+**[Documentation](https://tkm212.github.io/maths-self-study/) · [Curriculum](docs/curriculum.md) · [API Reference](https://tkm212.github.io/maths-self-study/modules/) · [Notebooks](https://tkm212.github.io/maths-self-study/notebooks/)**
+
+See [MIGRATION.md](MIGRATION.md) if upgrading from `financial-machine-learning`.
 
 ---
 
@@ -31,7 +33,22 @@ pip install maths-self-study
 
 ## Library
 
-The `maths_self_study` package holds shared code used across notebooks. The AFML modules implement the core financial-ML pipeline:
+The `maths_self_study` package holds shared code used across notebooks.
+
+### Shared utilities
+
+| Module | What it does |
+|--------|-------------|
+| `loaders` | Textbook dataset loaders (ATP/WTA tennis, TMDB movies) — requires data under `inputs/` |
+
+```python
+from pathlib import Path
+from maths_self_study.loaders import load_tmdb_revenue_regression
+
+X, y, target = load_tmdb_revenue_regression(Path("inputs"))
+```
+
+### AFML modules (López de Prado)
 
 | Module | What it does |
 |--------|-------------|
@@ -54,10 +71,16 @@ labels = triple_barrier_labels(bars, events, pt=0.02, sl=0.02, num_bars=20)
 
 ## Notebooks
 
-Interactive Marimo notebooks, runnable locally with `uv`:
+Interactive Marimo notebooks, runnable locally with `uv`. See [notebooks/README.md](notebooks/README.md) and [docs/curriculum.md](docs/curriculum.md) for the full map.
 
 ```bash
 uv run marimo run notebooks/financial-machine-learning/2-Financial_Data_Structures/information_bars.py
+```
+
+To edit a notebook interactively:
+
+```bash
+uv run marimo edit notebooks/elements-of-statistical-learning/10-Boosting/boosting.py
 ```
 
 **Advances in Financial Machine Learning**

@@ -5,9 +5,9 @@ quantitative finance.
 
 Public API: bars, filters, labeling, and sample weights from López de Prado (2018).
 
-``esl_loaders`` is intentionally not re-exported here — it requires external
-datasets (downloaded via Kaggle) and is only used by the ESL notebooks.
-Import it directly: ``from maths_self_study.esl_loaders import ...``
+``loaders`` is intentionally not re-exported here — it requires external
+datasets (downloaded via Kaggle) and is only used by textbook notebooks.
+Import it directly: ``from maths_self_study.loaders import ...``
 """
 
 from maths_self_study.bars import dollar_bars, tick_bars, time_bars, volume_bars

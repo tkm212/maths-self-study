@@ -9,6 +9,7 @@ copyright: Maintained by <a href="https://github.com/tkm212">tkm212</a>.
 
 nav:
   - Home: index.md
+  - Curriculum: curriculum.md
   - Notebooks: notebooks.md
   - API Reference: modules.md
 

@@ -1,6 +1,6 @@
 [project]
 name = "maths-self-study"
-version = "0.0.1"
+version = "0.1.0"
 description = "Marimo notebooks and Python code for self-directed study in maths, statistics, and machine learning — chapter-by-chapter from classic textbooks"
 authors = [{ name = "tkm" }]
 readme = "README.md"
@@ -91,7 +91,7 @@ addopts = ["--cov", "--cov-report=term-missing", "--cov-report=xml"]
 [tool.coverage.run]
 source = ["maths_self_study"]
 branch = true
-omit = ["*/esl_loaders.py"]
+omit = ["*/loaders.py"]
 
 [tool.coverage.report]
 fail_under = 80

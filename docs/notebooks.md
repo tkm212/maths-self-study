@@ -77,10 +77,16 @@ loading and plotting utilities shared across that chapter's notebooks.
 
 ### Running a notebook
 
-All notebooks use `uv` for dependency management. From the repo root:
+All notebooks use Marimo and `uv` for dependency management. From the repo root:
 
 ```bash
-uv run python notebooks/elements-of-statistical-learning/10-Boosting/boosting.py
+uv run marimo run notebooks/elements-of-statistical-learning/10-Boosting/boosting.py
+```
+
+To edit interactively:
+
+```bash
+uv run marimo edit notebooks/elements-of-statistical-learning/10-Boosting/boosting.py
 ```
 
 External datasets (ATP/WTA tennis, TMDB movies) must be downloaded first:

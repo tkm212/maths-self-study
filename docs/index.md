@@ -12,6 +12,8 @@ Current textbooks:
 - **Advances in Financial Machine Learning** — López de Prado (2018): alternative data structures, event filtering, triple-barrier labeling, and sample weighting.
 - **Elements of Statistical Learning** — Hastie, Tibshirani & Friedman: supervised learning, linear methods, basis expansions, kernel smoothing, model assessment, ensemble methods, and high-dimensional statistics.
 
+See the [curriculum overview](curriculum.md) for chapter coverage and planned tracks.
+
 ---
 
 ## Installation
@@ -34,11 +36,21 @@ cd maths-self-study
 make install
 ```
 
+Upgrading from `financial-machine-learning`? See [MIGRATION.md](https://github.com/tkm212/maths-self-study/blob/main/MIGRATION.md).
+
 ---
 
 ## Library overview
 
-The `maths_self_study` package contains shared code used across notebooks:
+The `maths_self_study` package contains shared code used across notebooks.
+
+### Shared utilities
+
+| Module | Description |
+|--------|-------------|
+| `loaders` | Dataset loaders for textbook notebooks (ATP/WTA tennis, TMDB movies) |
+
+### AFML modules (López de Prado)
 
 | Module | Description |
 |--------|-------------|
@@ -46,8 +58,6 @@ The `maths_self_study` package contains shared code used across notebooks:
 | `filters` | CUSUM filter for sampling event-driven time series |
 | `labeling` | Triple-barrier method for labeling financial observations |
 | `weights` | Concurrency, average uniqueness, and time-decay sample weights |
-
-A fifth module, `esl_loaders`, provides dataset loaders used by the ESL notebooks (ATP/WTA tennis and TMDB movie data).
 
 ---
 
@@ -74,5 +84,6 @@ labels = triple_barrier_labels(bars, events, pt=0.02, sl=0.02, num_bars=20)
 
 - [GitHub repository](https://github.com/tkm212/maths-self-study)
 - [PyPI package](https://pypi.org/project/maths-self-study)
+- [Curriculum](curriculum.md)
 - [API reference](modules.md)
 - [Notebooks overview](notebooks.md)
