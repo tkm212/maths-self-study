@@ -393,7 +393,9 @@ def tmdb_correlation_and_partial_panels_figure(
         col=2,
     )
     fig.update_layout(
-        title_text=(f"TMDB: correlation vs partial correlation (n={n}, p={p}, alpha_hat = {float(gl.alpha_):.4f}) — §17.3"),
+        title_text=(
+            f"TMDB: correlation vs partial correlation (n={n}, p={p}, alpha_hat = {float(gl.alpha_):.4f}) — §17.3"
+        ),
         template="plotly_white",
         height=450,
     )

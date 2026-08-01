@@ -164,9 +164,7 @@ def _(mo):
 
 @app.cell
 def _(helpers):
-    fig_mag, mag = helpers.ridge_vs_lasso_coefficient_magnitude_figure(
-        n=50, p=100, n_nonzero=8, random_state=1
-    )
+    fig_mag, mag = helpers.ridge_vs_lasso_coefficient_magnitude_figure(n=50, p=100, n_nonzero=8, random_state=1)
     fig_mag.show()
     print(f"Lasso estimated nonzeros: {mag['n_nonzero_lasso']}")
     return
