@@ -1,106 +1,75 @@
-# Contributing to `financial-machine-learning`
+# Contributing to `maths-self-study`
 
-Contributions are welcome, and they are greatly appreciated!
-Every little bit helps, and credit will always be given.
+Contributions are welcome — bug reports, notebook fixes, new textbook chapters, and documentation improvements.
 
-You can contribute in many ways:
+## Where to start
 
-# Types of Contributions
+- Browse [open issues](https://github.com/tkm212/maths-self-study/issues)
+- Read the [notebooks overview](docs/notebooks.md) to see how chapters are organised
+- Each ESL chapter folder has a `ch{N}_helpers.py` module; AFML notebooks import from `maths_self_study`
 
-## Report Bugs
+## Bug reports
 
-Report bugs at https://github.com/tkm212bc/financial-machine-learning/issues
+Report bugs at https://github.com/tkm212/maths-self-study/issues
 
-If you are reporting a bug, please include:
+Include:
 
-- Your operating system name and version.
-- Any details about your local setup that might be helpful in troubleshooting.
-- Detailed steps to reproduce the bug.
+- Python version (`uv run python --version`)
+- Steps to reproduce
+- Expected vs actual behaviour
 
-## Fix Bugs
+## Documentation
 
-Look through the GitHub issues for bugs.
-Anything tagged with "bug" and "help wanted" is open to whoever wants to implement a fix for it.
+`maths-self-study` could always use more documentation, whether as part of the official docs, in docstrings, or even on the web in blog posts, articles, and such.
 
-## Implement Features
+## Feedback
 
-Look through the GitHub issues for features.
-Anything tagged with "enhancement" and "help wanted" is open to whoever wants to implement it.
+The best way to send feedback is to file an issue at https://github.com/tkm212/maths-self-study/issues.
 
-## Write Documentation
+## Development setup
 
-financial-machine-learning could always use more documentation, whether as part of the official docs, in docstrings, or even on the web in blog posts, articles, and such.
+Ready to contribute? Here's how to set up `maths-self-study` for local development.
 
-## Submit Feedback
-
-The best way to send feedback is to file an issue at https://github.com/tkm212bc/financial-machine-learning/issues.
-
-If you are proposing a new feature:
-
-- Explain in detail how it would work.
-- Keep the scope as narrow as possible, to make it easier to implement.
-- Remember that this is a volunteer-driven project, and that contributions
-  are welcome :)
-
-# Get Started!
-
-Ready to contribute? Here's how to set up `financial-machine-learning` for local development.
-Please note this documentation assumes you already have `uv` and `Git` installed and ready to go.
-
-1. Fork the `financial-machine-learning` repo on GitHub.
-
+1. Fork the `maths-self-study` repo on GitHub.
 2. Clone your fork locally:
 
 ```bash
-cd <directory_in_which_repo_should_be_created>
-git clone git@github.com:YOUR_NAME/financial-machine-learning.git
+git clone git@github.com:YOUR_NAME/maths-self-study.git
 ```
 
-3. Install the environment and pre-commit hooks:
+3. Install dependencies and pre-commit hooks:
 
 ```bash
-cd financial-machine-learning
+cd maths-self-study
 make install
 ```
 
-4. Create a branch for local development:
+4. Create a branch for your changes:
 
 ```bash
-git checkout -b name-of-your-bugfix-or-feature
+git checkout -b my-feature
 ```
 
-Now you can make your changes locally.
-
-5. Add test cases for any new functionality in the `tests` directory.
-
-6. When you're done making changes, run the quality checks:
+5. Run checks before committing:
 
 ```bash
 make check
 make test
 ```
 
-7. Optionally run tox to reproduce the full CI sequence locally (lint + tests + type check):
+6. Push to your fork and open a pull request.
 
-```bash
-tox
-```
+## Notebook conventions
 
-8. Commit your changes and push your branch to GitHub:
+- ESL notebooks live under `notebooks/elements-of-statistical-learning/`
+- AFML notebooks live under `notebooks/financial-machine-learning/`
+- Use Marimo (`.py` files), not `.ipynb`
+- Run with `uv run marimo run path/to/notebook.py`; edit with `uv run marimo edit ...`
+- Shared plotting and data loading goes in `ch{N}_helpers.py` for that chapter
 
-```bash
-git add .
-git commit -m "Your detailed description of your changes."
-git push origin name-of-your-bugfix-or-feature
-```
+## Pull request checklist
 
-9. Submit a pull request through the GitHub website.
-
-# Pull Request Guidelines
-
-Before you submit a pull request, check that it meets these guidelines:
-
-1. The pull request should include tests.
-
-2. If the pull request adds functionality, the docs should be updated.
-   Put your new functionality into a function with a docstring, and add the feature to the list in `README.md`.
+- [ ] `make check` passes
+- [ ] `make test` passes (≥ 80% coverage on `maths_self_study`)
+- [ ] New notebooks follow existing Marimo + helper patterns
+- [ ] Docs updated if you add public API or new notebook sections

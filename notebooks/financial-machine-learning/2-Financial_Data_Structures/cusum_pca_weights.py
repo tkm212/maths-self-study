@@ -96,7 +96,7 @@ def _(mo):
 
 @app.cell
 def _(close):
-    from financial_machine_learning.filters import cusum_filter
+    from maths_self_study.filters import cusum_filter
 
     threshold = 0.0002  # 2% cumulative log-return divergence
     events = cusum_filter(close, threshold=threshold)

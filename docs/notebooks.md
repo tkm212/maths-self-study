@@ -1,6 +1,6 @@
 # Notebooks
 
-All notebooks live under the `notebooks/` directory and are organised into two tracks.
+All notebooks live under the `notebooks/` directory and are organised by textbook — part of a broader **maths self-study** curriculum in statistics, machine learning, and quantitative methods.
 
 ---
 
@@ -63,6 +63,8 @@ Source path: `notebooks/elements-of-statistical-learning/`
 | 8 | Model Inference | `em_algorithm.py`, `bagging.py` |
 | 9 | Additive Models & Trees | `additive_models.py`, `decision_trees.py` |
 | 10 | Boosting | `boosting.py`, `gradient_boosting.py` |
+| 11 | Neural Networks | `neural_networks.py`, `projection_pursuit.py` |
+| 12 | SVM & Flexible Discriminants | `svm.py`, `flexible_discriminants.py` |
 | 13 | Prototype Methods | `nearest_neighbors.py`, `prototype_methods.py` |
 | 14 | Unsupervised Learning | `principal_components.py`, `clustering.py` |
 | 15 | Random Forests | `random_forests.py` |
@@ -75,10 +77,16 @@ loading and plotting utilities shared across that chapter's notebooks.
 
 ### Running a notebook
 
-All notebooks use `uv` for dependency management. From the repo root:
+All notebooks use Marimo and `uv` for dependency management. From the repo root:
 
 ```bash
-uv run python notebooks/elements-of-statistical-learning/10-Boosting/boosting.py
+uv run marimo run notebooks/elements-of-statistical-learning/10-Boosting/boosting.py
+```
+
+To edit interactively:
+
+```bash
+uv run marimo edit notebooks/elements-of-statistical-learning/10-Boosting/boosting.py
 ```
 
 External datasets (ATP/WTA tennis, TMDB movies) must be downloaded first:

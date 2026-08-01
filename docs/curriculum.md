@@ -1,0 +1,39 @@
+# Curriculum
+
+Textbook-driven self-study tracks. Each row links a book to its notebook folder and current coverage.
+
+| Textbook | Authors | Status | Notebook path |
+|----------|---------|--------|---------------|
+| [Advances in Financial Machine Learning](https://www.wiley.com/en-us/Advances+in+Financial+Machine+Learning-p-9781119482086) | López de Prado (2018) | Ch. 2–4 | [`notebooks/financial-machine-learning/`](../notebooks/financial-machine-learning/) |
+| [The Elements of Statistical Learning](https://hastie.su.domains/ElemStatLearn/) | Hastie, Tibshirani & Friedman (2nd ed.) | Ch. 2–18 | [`notebooks/elements-of-statistical-learning/`](../notebooks/elements-of-statistical-learning/) |
+
+## Advances in Financial Machine Learning
+
+Quantitative finance track: alternative bar types, event-driven sampling, triple-barrier labeling, and sample weighting for overlapping labels.
+
+| Chapter | Topic |
+|---------|-------|
+| 2 | Financial data structures — bars, CUSUM filter, PCA weights |
+| 3 | Labeling — triple-barrier method |
+| 4 | Sample weights — concurrency, uniqueness, time decay |
+
+## Elements of Statistical Learning
+
+Core statistics and machine learning from linear models through high-dimensional methods.
+
+| Chapters | Topics |
+|----------|--------|
+| 2–3 | Supervised learning, linear methods |
+| 4 | Linear classification (LDA, logistic regression, SVMs) |
+| 5–6 | Basis expansions, kernel smoothing |
+| 7–8 | Model assessment, bootstrap, bagging |
+| 9–10 | Additive models, trees, boosting |
+| 11–12 | Neural networks, SVMs, flexible discriminants |
+| 13 | Prototype methods, KNN |
+| 14 | Unsupervised learning — clustering, PCA, NMF |
+| 15 | Random forests |
+| 16–18 | Ensemble learning, graphical models, high-dimensional problems |
+
+## Planned tracks
+
+Future textbooks may include pure maths (e.g. real analysis, linear algebra) and additional applied stats/ML books. New tracks will get a folder under `notebooks/` named after the book or a short slug, plus shared utilities in `maths_self_study` where they apply across books.

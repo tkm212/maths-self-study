@@ -1,9 +1,9 @@
-"""Unit tests for financial_machine_learning.labeling."""
+"""Unit tests for maths_self_study.labeling."""
 
 import pandas as pd
 import pytest
 
-from financial_machine_learning.labeling import triple_barrier_labels
+from maths_self_study.labeling import triple_barrier_labels
 
 
 @pytest.fixture

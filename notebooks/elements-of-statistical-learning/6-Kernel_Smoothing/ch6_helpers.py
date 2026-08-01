@@ -33,14 +33,14 @@ def init_paths() -> tuple[Path, Path, Path]:
 
 
 def load_tmdb_xy(inputs_dir: Path) -> tuple[pd.DataFrame, pd.Series, str]:
-    from financial_machine_learning.esl_loaders import load_tmdb_revenue_regression
+    from maths_self_study.loaders import load_tmdb_revenue_regression
 
     return load_tmdb_revenue_regression(inputs_dir)
 
 
 def load_tmdb_cls(inputs_dir: Path) -> tuple[pd.DataFrame, pd.Series, str]:
     """Binary classification: high_revenue = 1 if revenue >= median (else 0)."""
-    from financial_machine_learning.esl_loaders import load_tmdb_revenue_classification
+    from maths_self_study.loaders import load_tmdb_revenue_classification
 
     return load_tmdb_revenue_classification(inputs_dir)
 

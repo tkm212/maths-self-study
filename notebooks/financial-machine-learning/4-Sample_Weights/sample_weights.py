@@ -107,9 +107,9 @@ def _(OUTPUTS, pd):
 
 @app.cell
 def _(bars):
-    from financial_machine_learning.filters import cusum_filter
-    from financial_machine_learning.labeling import triple_barrier_labels
-    from financial_machine_learning.weights import (
+    from maths_self_study.filters import cusum_filter
+    from maths_self_study.labeling import triple_barrier_labels
+    from maths_self_study.weights import (
         average_uniqueness,
         concurrent_labels_per_bar,
         time_decay_weights,

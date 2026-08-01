@@ -134,8 +134,8 @@ def _(mo):
 
 @app.cell
 def _(bars):
-    from financial_machine_learning.filters import cusum_filter
-    from financial_machine_learning.labeling import triple_barrier_labels
+    from maths_self_study.filters import cusum_filter
+    from maths_self_study.labeling import triple_barrier_labels
 
     close = bars.set_index("datetime")["close"].dropna()
     events = cusum_filter(close, threshold=0.0002)
