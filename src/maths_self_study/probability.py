@@ -88,7 +88,7 @@ def kl_divergence(
     base: float = np.e,
 ) -> float:
     """
-    Kullback–Leibler divergence D_KL(P || Q) (eq. 3.50).
+    Kullback-Leibler divergence D_KL(P || Q) (eq. 3.50).
 
     Non-negative; zero iff P and Q are identical on the support of P.
     """

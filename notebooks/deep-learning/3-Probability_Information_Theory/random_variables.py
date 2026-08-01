@@ -14,7 +14,7 @@ def _():
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    # Random Variables and Probability — Deep Learning Ch. 3 §3.2–3.8
+    # Random Variables and Probability — Deep Learning Ch. 3 §3.2-3.8
 
     *Goodfellow, Bengio & Courville (2016). [Deep Learning](https://www.deeplearningbook.org/).*
 
@@ -66,14 +66,12 @@ def _(ch3_helpers):
     p_b = marginalize(joint, axis=0)
     p_a_given_b1 = joint[:, 1] / p_b[1]
 
-    ch3_helpers.plot_discrete_distribution(
-        np.array([0, 1]), p_a, title="Marginal P(A)"
-    ).show()
+    ch3_helpers.plot_discrete_distribution(np.array([0, 1]), p_a, title="Marginal P(A)").show()
 
     print("P(A):", p_a)
     print("P(B):", p_b)
     print("P(A | B=1):", p_a_given_b1)
-    return joint, marginalize, np, p_a, p_a_given_b, p_b
+    return joint, marginalize, np, p_a, p_a_given_b1, p_b
 
 
 @app.cell(hide_code=True)

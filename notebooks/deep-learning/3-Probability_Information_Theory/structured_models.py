@@ -68,9 +68,7 @@ def _(ch3_helpers):
     for x1 in (0, 1):
         for x2 in (0, 1):
             for x3 in (0, 1):
-                joint[x1, x2, x3] = (
-                    p_x1[x1] * p_x2_given_x1[x1, x2] * p_x3_given_x2[x2, x3]
-                )
+                joint[x1, x2, x3] = p_x1[x1] * p_x2_given_x1[x1, x2] * p_x3_given_x2[x2, x3]
 
     print("Joint table shape:", joint.shape)
     print("Sum of probabilities:", joint.sum())

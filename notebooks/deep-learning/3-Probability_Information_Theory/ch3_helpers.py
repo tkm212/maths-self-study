@@ -99,8 +99,12 @@ def plot_kl_asymmetric(
     fig = make_subplots(rows=1, cols=2, subplot_titles=("D_KL(P || Q)", "D_KL(Q || P)"))
     fig.add_trace(go.Scatter(x=xs, y=p, mode="lines", name="P", line={"color": "royalblue"}), row=1, col=1)
     fig.add_trace(go.Scatter(x=xs, y=q, mode="lines", name="Q", line={"color": "firebrick"}), row=1, col=1)
-    fig.add_trace(go.Scatter(x=xs, y=p, mode="lines", name="P", line={"color": "royalblue"}, showlegend=False), row=1, col=2)
-    fig.add_trace(go.Scatter(x=xs, y=q, mode="lines", name="Q", line={"color": "firebrick"}, showlegend=False), row=1, col=2)
+    fig.add_trace(
+        go.Scatter(x=xs, y=p, mode="lines", name="P", line={"color": "royalblue"}, showlegend=False), row=1, col=2
+    )
+    fig.add_trace(
+        go.Scatter(x=xs, y=q, mode="lines", name="Q", line={"color": "firebrick"}, showlegend=False), row=1, col=2
+    )
     fig.update_layout(height=420, title_text="KL divergence is asymmetric (Deep Learning, fig. 3.6)")
     return fig
 
