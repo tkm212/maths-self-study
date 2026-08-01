@@ -8,6 +8,13 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+### Added
+
+- Deep Learning track (Goodfellow et al.): Chapter 2 — Linear Algebra notebooks under `notebooks/deep-learning/2-Linear_Algebra/`.
+- `maths_self_study.linalg` module: Lp norms, symmetric eigendecomposition, PCA, Moore–Penrose pseudoinverse.
+- Deep Learning track (Goodfellow et al.): Chapter 3 — Probability and Information Theory notebooks under `notebooks/deep-learning/3-Probability_Information_Theory/`.
+- `maths_self_study.probability` module: Bayes' rule, Shannon entropy, cross-entropy, KL divergence, Monty Hall posterior.
+
 ## [0.1.0] - 2026-08-01
 
 ### Changed
