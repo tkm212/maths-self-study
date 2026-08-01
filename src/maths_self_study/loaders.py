@@ -1,4 +1,4 @@
-"""Load local datasets for Elements of Statistical Learning-style notebooks."""
+"""Load local datasets for textbook notebooks (ATP/WTA tennis, TMDB movies, etc.)."""
 
 from __future__ import annotations
 

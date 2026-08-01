@@ -1,4 +1,4 @@
-"""Pytest fixtures for financial_machine_learning tests."""
+"""Pytest fixtures for maths_self_study tests."""
 
 import pandas as pd
 import pytest

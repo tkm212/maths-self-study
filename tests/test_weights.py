@@ -1,9 +1,9 @@
-"""Unit tests for financial_machine_learning.weights."""
+"""Unit tests for maths_self_study.weights."""
 
 import pandas as pd
 import pytest
 
-from financial_machine_learning.weights import (
+from maths_self_study.weights import (
     average_uniqueness,
     concurrent_labels_per_bar,
     time_decay_weights,

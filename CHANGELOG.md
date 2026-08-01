@@ -8,6 +8,20 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-08-01
+
+### Changed
+
+- Renamed project from `financial-machine-learning` to `maths-self-study`; Python package is now `maths_self_study`.
+- Renamed `esl_loaders` module to `loaders` (shared textbook dataset utilities).
+- Standardised notebook run instructions on `uv run marimo run` across README and docs.
+
+### Added
+
+- [MIGRATION.md](MIGRATION.md) for upgrading from the old package and repository name.
+- [notebooks/README.md](notebooks/README.md) describing notebook layout and conventions.
+- [docs/curriculum.md](docs/curriculum.md) listing current and planned textbook tracks.
+
 ## [0.0.1] - 2025-01-01
 
 ### Added
@@ -17,6 +31,6 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - `labeling` module: triple-barrier labeling with configurable profit-take, stop-loss, and vertical barriers (López de Prado, Ch. 3)
 - `weights` module: concurrent label counting, average uniqueness, and exponential time-decay sample weights (López de Prado, Ch. 4)
 - `esl_loaders` module: ATP/WTA tennis and TMDB movie dataset loaders for ESL notebooks
-- Marimo notebooks for AFML Chapters 2–4 and ESL Chapters 2–12
+- Marimo notebooks for AFML Chapters 2–4 and ESL Chapters 2–18
 - MkDocs Material documentation site with API reference
 - GitHub Actions CI: lint, type check, tests with coverage, docs build
