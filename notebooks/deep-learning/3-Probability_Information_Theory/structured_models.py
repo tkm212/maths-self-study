@@ -18,11 +18,9 @@ def _(mo):
 
     *Goodfellow, Bengio & Courville (2016). [Deep Learning](https://www.deeplearningbook.org/contents/prob.html).*
 
-    Full joint distributions over many variables are expensive to store. **Structured models** factor the joint into local terms — for example a **chain**:
+    **Structured models** factor the joint into local terms — for example a **chain**:
 
     $$P(x^{(1)}, \ldots, x^{(n)}) = P(x^{(1)}) \prod_{i=2}^{n} P(x^{(i)} \mid x^{(i-1)}).$$
-
-    Graphical models (Bayes nets, Markov random fields) generalise this idea and appear throughout deep generative modelling.
     """)
     return
 
@@ -34,24 +32,11 @@ def _():
 
     sys.path.insert(0, str(Path(__file__).parent))
 
-    import ch3_helpers
-
-    ch3_helpers.init_paths()
-    return (ch3_helpers,)
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""
-    ## Three-variable Markov chain
-
-    Let $X_1 \to X_2 \to X_3$ with binary nodes. We specify $P(X_1)$ and conditional tables $P(X_2 \mid X_1)$, $P(X_3 \mid X_2)$, then multiply factors to obtain the joint.
-    """)
     return
 
 
 @app.cell
-def _(ch3_helpers):
+def _():
     import numpy as np
 
     p_x1 = np.array([0.6, 0.4])

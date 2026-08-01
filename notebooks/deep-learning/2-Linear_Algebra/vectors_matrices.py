@@ -23,6 +23,8 @@ def _(mo):
     $$y = Ax, \qquad y_i = \sum_j A_{ij} x_j.$$
 
     Matrix multiplication is associative and distributes over addition, but is **not** commutative in general.
+
+    Run with `uv run marimo run notebooks/deep-learning/2-Linear_Algebra/vectors_matrices.py` — `maths_self_study` is imported from the installed package; only the local `ch2_helpers` module needs a path tweak below.
     """)
     return
 
@@ -33,11 +35,9 @@ def _():
     from pathlib import Path
 
     sys.path.insert(0, str(Path(__file__).parent))
+    import ch2_helpers as helpers
 
-    import ch2_helpers
-
-    ch2_helpers.init_paths()
-    return (ch2_helpers,)
+    return (helpers,)
 
 
 @app.cell(hide_code=True)
@@ -51,7 +51,7 @@ def _(mo):
 
 
 @app.cell
-def _(ch2_helpers):
+def _(helpers, mo):
     import numpy as np
 
     a = np.array([[0.8, -0.6], [0.6, 0.8]])
@@ -60,13 +60,14 @@ def _(ch2_helpers):
     y1 = a @ e1
     y2 = a @ e2
 
-    ch2_helpers.plot_vectors_2d(
+    fig = helpers.plot_vectors_2d(
         np.zeros(2),
         [e1, e2, y1, y2],
-        labels=["e1", "e2", "A e1", "A e2"],
+        labels=["e₁", "e₂", "A e₁", "A e₂"],
         title="Matrix action on basis vectors",
-    ).show()
-    return a, e1, e2, np, y1, y2
+    )
+    helpers.display(fig, mo)
+    return a, e1, e2, fig, np, y1, y2
 
 
 @app.cell(hide_code=True)

@@ -2,39 +2,26 @@
 
 from __future__ import annotations
 
-import sys
-from pathlib import Path
+from typing import Any
 
 import numpy as np
 import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 
 
-def find_project_root(max_up: int = 12) -> Path:
-    p = Path.cwd().resolve()
-    for _ in range(max_up):
-        if (p / "pyproject.toml").exists():
-            return p
-        if p.parent == p:
-            break
-        p = p.parent
-    msg = "Could not find project root (pyproject.toml)."
-    raise RuntimeError(msg)
+def display(fig: go.Figure, mo: Any) -> Any:
+    """Render a Plotly figure in Marimo. Do not use ``fig.show()`` — it won't appear inline."""
+    return mo.ui.plotly(fig)
 
 
-def ensure_package_on_path(root: Path) -> None:
-    src = root / "src"
-    for candidate in (str(src), str(root)):
-        if candidate not in sys.path:
-            sys.path.insert(0, candidate)
-
-
-def init_paths() -> tuple[Path, Path]:
-    """Return ``(project_root, outputs_dir)`` and put the package on ``sys.path``."""
-    root = find_project_root()
-    ensure_package_on_path(root)
-    outputs = root / "outputs"
-    outputs.mkdir(exist_ok=True)
-    return root, outputs
+def _base_layout(**overrides: Any) -> dict[str, Any]:
+    layout = {
+        "template": "plotly_white",
+        "margin": {"l": 60, "r": 30, "t": 60, "b": 50},
+        "hovermode": "closest",
+    }
+    layout.update(overrides)
+    return layout
 
 
 def plot_vectors_2d(
@@ -46,7 +33,7 @@ def plot_vectors_2d(
 ) -> go.Figure:
     fig = go.Figure()
     o = np.asarray(origin, dtype=float).ravel()[:2]
-    colors = ["royalblue", "firebrick", "seagreen", "darkorange"]
+    colors = ["#2563eb", "#dc2626", "#059669", "#ea580c"]
     for vec, label, color in zip(vectors, labels, colors, strict=False):
         v = np.asarray(vec, dtype=float).ravel()[:2]
         end = o + v
@@ -57,54 +44,81 @@ def plot_vectors_2d(
                 mode="lines+markers",
                 name=label,
                 line={"color": color, "width": 3},
+                marker={"size": 8},
+                hovertemplate=f"{label}<br>x=%{{x:.2f}}, y=%{{y:.2f}}<extra></extra>",
             )
         )
     fig.update_layout(
-        title=title,
-        xaxis_title="x1",
-        yaxis_title="x2",
-        height=420,
-        yaxis={"scaleanchor": "x", "scaleratio": 1},
+        **_base_layout(
+            title=title,
+            xaxis_title="x₁",
+            yaxis_title="x₂",
+            height=440,
+            yaxis={"scaleanchor": "x", "scaleratio": 1},
+        )
     )
     return fig
 
 
-def plot_pca_2d(
-    data: np.ndarray,
-    codes: np.ndarray,
-    *,
-    title: str,
-) -> go.Figure:
-    fig = go.Figure()
-    fig.add_trace(
+def plot_pca_scatter(data: np.ndarray, *, title: str) -> go.Figure:
+    """Original data in feature space (2D)."""
+    fig = go.Figure(
         go.Scatter(
             x=data[:, 0],
             y=data[:, 1],
             mode="markers",
-            name="original",
-            marker={"color": "lightgray"},
+            name="samples",
+            marker={"color": "#64748b", "size": 5, "opacity": 0.65},
+            hovertemplate="x₁=%{x:.2f}<br>x₂=%{y:.2f}<extra></extra>",
         )
     )
-    fig.add_trace(
+    fig.update_layout(**_base_layout(title=title, xaxis_title="feature 1", yaxis_title="feature 2", height=400))
+    return fig
+
+
+def plot_pca_codes(codes: np.ndarray, *, title: str) -> go.Figure:
+    """Projected data in PCA code space (2D)."""
+    fig = go.Figure(
         go.Scatter(
             x=codes[:, 0],
             y=codes[:, 1],
             mode="markers",
             name="PCA codes",
-            marker={"color": "royalblue"},
+            marker={"color": "#2563eb", "size": 5, "opacity": 0.65},
+            hovertemplate="c₁=%{x:.2f}<br>c₂=%{y:.2f}<extra></extra>",
         )
     )
-    fig.update_layout(title=title, height=420)
+    fig.update_layout(**_base_layout(title=title, xaxis_title="PC 1", yaxis_title="PC 2", height=400))
     return fig
 
 
 def plot_explained_variance(variances: np.ndarray) -> go.Figure:
     idx = np.arange(1, len(variances) + 1)
-    fig = go.Figure(go.Bar(x=idx, y=variances))
-    fig.update_layout(
-        title="PCA explained variance",
-        xaxis_title="Component",
-        yaxis_title="Variance",
-        height=380,
+    total = float(np.sum(variances))
+    cumulative = np.cumsum(variances) / total if total > 0 else variances
+
+    fig = make_subplots(specs=[[{"secondary_y": True}]])
+    fig.add_trace(
+        go.Bar(x=idx, y=variances, name="variance", marker={"color": "#93c5fd"}),
+        secondary_y=False,
     )
+    fig.add_trace(
+        go.Scatter(
+            x=idx,
+            y=cumulative,
+            mode="lines+markers",
+            name="cumulative",
+            line={"color": "#1d4ed8", "width": 2},
+        ),
+        secondary_y=True,
+    )
+    fig.update_layout(
+        **_base_layout(
+            title="PCA explained variance",
+            xaxis_title="Component",
+            height=420,
+        )
+    )
+    fig.update_yaxes(title_text="Variance", secondary_y=False)
+    fig.update_yaxes(title_text="Cumulative share", secondary_y=True, range=[0, 1.05])
     return fig

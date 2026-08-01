@@ -22,11 +22,7 @@ def _(mo):
 
     $$H(P) = \mathbb{E}_{x \sim P}[-\log P(x)]$$
 
-    measures average uncertainty. **Cross-entropy** $H(P, Q) = -\mathbb{E}_{x \sim P}[\log Q(x)]$ and **KL divergence**
-
-    $$D_{\mathrm{KL}}(P \parallel Q) = \mathbb{E}_{x \sim P}\left[\log \frac{P(x)}{Q(x)}\right] = H(P, Q) - H(P)$$
-
-    underpin classification losses and variational inference throughout deep learning.
+    measures average uncertainty. **Cross-entropy** and **KL divergence** underpin classification losses and variational inference.
     """)
     return
 
@@ -37,26 +33,22 @@ def _():
     from pathlib import Path
 
     sys.path.insert(0, str(Path(__file__).parent))
+    import ch3_helpers as helpers
 
-    import ch3_helpers
-
-    ch3_helpers.init_paths()
-    return (ch3_helpers,)
+    return (helpers,)
 
 
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
     ## Binary entropy (figure 3.5)
-
-    Near-deterministic distributions have low entropy; the uniform Bernoulli($0.5$) maximises entropy at $\log 2$ nats.
     """)
     return
 
 
 @app.cell
-def _(ch3_helpers):
-    ch3_helpers.plot_binary_entropy_curve().show()
+def _(helpers, mo):
+    helpers.display(helpers.plot_binary_entropy_curve(), mo)
     return
 
 
@@ -71,18 +63,19 @@ def _(mo):
 
 
 @app.cell
-def _(ch3_helpers):
+def _(helpers, mo):
     import numpy as np
 
     p = np.array([0.40, 0.30, 0.20, 0.10])
     q = np.array([0.25, 0.25, 0.25, 0.25])
-    measures = ch3_helpers.summarize_information_measures(p, q)
+    measures = helpers.summarize_information_measures(p, q)
     for name, value in measures.items():
         print(f"{name:16s} = {value:.4f} nats")
 
     xs = np.arange(len(p))
-    ch3_helpers.plot_kl_asymmetric(xs, p, q).show()
-    return measures, np, p, q, xs
+    fig = helpers.plot_kl_asymmetric(xs, p, q)
+    helpers.display(fig, mo)
+    return fig, measures, np, p, q, xs
 
 
 if __name__ == "__main__":

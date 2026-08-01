@@ -18,11 +18,7 @@ def _(mo):
 
     *Goodfellow, Bengio & Courville (2016). [Deep Learning](https://www.deeplearningbook.org/contents/prob.html).*
 
-    When we know the likelihood $P(y \mid x)$ and prior $P(x)$, Bayes' rule inverts conditioning:
-
     $$P(x \mid y) = \frac{P(x)\,P(y \mid x)}{P(y)}, \qquad P(y) = \sum_x P(y \mid x)P(x).$$
-
-    §3.1 motivates probability with **incomplete observability** — the Monty Hall problem is the classic example.
     """)
     return
 
@@ -34,31 +30,26 @@ def _():
 
     sys.path.insert(0, str(Path(__file__).parent))
 
-    import ch3_helpers
-
-    ch3_helpers.init_paths()
-    return (ch3_helpers,)
+    return
 
 
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
     ## Medical testing (rare disease)
-
-    A disease affects 1% of patients. A test is 95% sensitive and 95% specific. A positive test does **not** imply a 95% chance of disease — the prior matters.
     """)
     return
 
 
 @app.cell
-def _(ch3_helpers):
+def _():
     import numpy as np
 
     from maths_self_study.probability import bayes_posterior
 
     states = np.array(["disease", "healthy"])
     prior = np.array([0.01, 0.99])
-    likelihood = np.array([0.95, 0.05])  # P(positive | state)
+    likelihood = np.array([0.95, 0.05])
     posterior = bayes_posterior(prior, likelihood)
 
     for state, prob in zip(states, posterior, strict=True):
@@ -71,9 +62,7 @@ def _(mo):
     mo.md(r"""
     ## Monty Hall problem
 
-    Three doors: one hides a car, two hide goats. You pick a door; the host opens a goat door. Should you switch?
-
-    Using `monty_hall_posterior`, the unopened non-chosen door has probability $2/3$ of hiding the car.
+    You pick a door; the host opens a goat door. Should you switch? The unopened non-chosen door has probability $2/3$ of hiding the car.
     """)
     return
 

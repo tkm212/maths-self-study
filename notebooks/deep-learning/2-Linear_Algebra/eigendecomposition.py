@@ -33,15 +33,13 @@ def _():
     from pathlib import Path
 
     sys.path.insert(0, str(Path(__file__).parent))
+    import ch2_helpers as helpers
 
-    import ch2_helpers
-
-    ch2_helpers.init_paths()
-    return (ch2_helpers,)
+    return (helpers,)
 
 
 @app.cell
-def _(ch2_helpers):
+def _(helpers, mo):
     import numpy as np
 
     from maths_self_study.linalg import symmetric_eigendecomposition
@@ -52,13 +50,14 @@ def _(ch2_helpers):
     print("Eigenvalues:", values)
     print("Eigenvectors (columns):\n", vectors)
 
-    ch2_helpers.plot_vectors_2d(
+    fig = helpers.plot_vectors_2d(
         np.zeros(2),
         [vectors[:, 0], vectors[:, 1]],
-        labels=["v1", "v2"],
+        labels=["v₁", "v₂"],
         title="Eigenvectors of a 2x2 covariance matrix",
-    ).show()
-    return cov, np, symmetric_eigendecomposition, values, vectors
+    )
+    helpers.display(fig, mo)
+    return cov, fig, np, symmetric_eigendecomposition, values, vectors
 
 
 if __name__ == "__main__":

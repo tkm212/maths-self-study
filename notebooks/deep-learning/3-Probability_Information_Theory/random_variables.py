@@ -35,11 +35,9 @@ def _():
     from pathlib import Path
 
     sys.path.insert(0, str(Path(__file__).parent))
+    import ch3_helpers as helpers
 
-    import ch3_helpers
-
-    ch3_helpers.init_paths()
-    return (ch3_helpers,)
+    return (helpers,)
 
 
 @app.cell(hide_code=True)
@@ -53,25 +51,26 @@ def _(mo):
 
 
 @app.cell
-def _(ch3_helpers):
+def _(helpers, mo):
     import numpy as np
 
     from maths_self_study.probability import marginalize
 
     joint = np.array([
-        [0.10, 0.15],  # A=0
-        [0.25, 0.50],  # A=1
+        [0.10, 0.15],
+        [0.25, 0.50],
     ])
     p_a = marginalize(joint, axis=1)
     p_b = marginalize(joint, axis=0)
     p_a_given_b1 = joint[:, 1] / p_b[1]
 
-    ch3_helpers.plot_discrete_distribution(np.array([0, 1]), p_a, title="Marginal P(A)").show()
+    fig = helpers.plot_discrete_distribution(np.array([0, 1]), p_a, title="Marginal P(A)")
+    helpers.display(fig, mo)
 
     print("P(A):", p_a)
     print("P(B):", p_b)
     print("P(A | B=1):", p_a_given_b1)
-    return joint, marginalize, np, p_a, p_a_given_b1, p_b
+    return fig, joint, marginalize, np, p_a, p_a_given_b1, p_b
 
 
 @app.cell(hide_code=True)

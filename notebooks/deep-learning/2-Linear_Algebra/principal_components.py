@@ -31,15 +31,13 @@ def _():
     from pathlib import Path
 
     sys.path.insert(0, str(Path(__file__).parent))
+    import ch2_helpers as helpers
 
-    import ch2_helpers
-
-    ch2_helpers.init_paths()
-    return (ch2_helpers,)
+    return (helpers,)
 
 
 @app.cell
-def _(ch2_helpers):
+def _(helpers, mo):
     import numpy as np
 
     from maths_self_study.linalg import pca_fit, pca_inverse_transform, pca_transform
@@ -56,12 +54,21 @@ def _(ch2_helpers):
     print("Explained variance:", model.explained_variance)
     print("Reconstruction error (Frobenius):", float(np.linalg.norm(reconstructed - data)))
 
-    ch2_helpers.plot_pca_2d(data, codes, title="Original data vs PCA codes").show()
-    ch2_helpers.plot_explained_variance(model.explained_variance).show()
+    fig_data = helpers.plot_pca_scatter(data, title="Original feature space")
+    fig_codes = helpers.plot_pca_codes(codes, title="PCA code space")
+    fig_var = helpers.plot_explained_variance(model.explained_variance)
+
+    mo.vstack([
+        helpers.display(fig_data, mo),
+        helpers.display(fig_codes, mo),
+        helpers.display(fig_var, mo),
+    ])
     return (
-        ch2_helpers,
         codes,
         data,
+        fig_codes,
+        fig_data,
+        fig_var,
         model,
         np,
         pca_fit,

@@ -30,10 +30,7 @@ def _():
 
     sys.path.insert(0, str(Path(__file__).parent))
 
-    import ch2_helpers
-
-    ch2_helpers.init_paths()
-    return (ch2_helpers,)
+    return
 
 
 @app.cell
