@@ -12,6 +12,7 @@ Current tracks:
 
 - **[Advances in Financial Machine Learning](https://www.wiley.com/en-us/Advances+in+Financial+Machine+Learning-p-9781119482086)** — López de Prado (2018): alternative bar types, CUSUM filtering, triple-barrier labeling, and sample weighting.
 - **[Elements of Statistical Learning](https://hastie.su.domains/ElemStatLearn/)** — Hastie, Tibshirani & Friedman (2nd ed.): supervised learning through high-dimensional methods (Chapters 2–18).
+- **[Deep Learning](https://www.deeplearningbook.org/)** — Goodfellow, Bengio & Courville (2016): linear algebra and probability/information theory (Chapters 2–3); more Part I chapters planned.
 
 **[Documentation](https://tkm212.github.io/maths-self-study/) · [Curriculum](docs/curriculum.md) · [API Reference](https://tkm212.github.io/maths-self-study/modules/) · [Notebooks](https://tkm212.github.io/maths-self-study/notebooks/)**
 
@@ -40,6 +41,8 @@ The `maths_self_study` package holds shared code used across notebooks.
 | Module | What it does |
 |--------|-------------|
 | `loaders` | Textbook dataset loaders (ATP/WTA tennis, TMDB movies) — requires data under `inputs/` |
+| `probability` | Discrete probability and information theory (entropy, cross-entropy, KL divergence, Bayes' rule) |
+| `linalg` | Linear algebra for deep learning — norms, eigendecomposition, PCA, pseudoinverse |
 
 ```python
 from pathlib import Path

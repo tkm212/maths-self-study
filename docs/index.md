@@ -11,6 +11,7 @@ Current textbooks:
 
 - **Advances in Financial Machine Learning** — López de Prado (2018): alternative data structures, event filtering, triple-barrier labeling, and sample weighting.
 - **Elements of Statistical Learning** — Hastie, Tibshirani & Friedman: supervised learning, linear methods, basis expansions, kernel smoothing, model assessment, ensemble methods, and high-dimensional statistics.
+- **Deep Learning** — Goodfellow, Bengio & Courville: linear algebra, probability, information theory, and (planned) numerical computation through deep learning basics.
 
 See the [curriculum overview](curriculum.md) for chapter coverage and planned tracks.
 
@@ -49,6 +50,8 @@ The `maths_self_study` package contains shared code used across notebooks.
 | Module | Description |
 |--------|-------------|
 | `loaders` | Dataset loaders for textbook notebooks (ATP/WTA tennis, TMDB movies) |
+| `probability` | Discrete probability and information theory — entropy, cross-entropy, KL divergence, Bayes' rule |
+| `linalg` | Linear algebra — norms, eigendecomposition, PCA, Moore–Penrose pseudoinverse |
 
 ### AFML modules (López de Prado)
 

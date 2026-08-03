@@ -72,6 +72,31 @@ Source path: `notebooks/elements-of-statistical-learning/`
 | 17 | Undirected Graphical Models | `graphical_models.py` |
 | 18 | High-Dimensional Problems | `high_dimensional.py` |
 
+---
+
+## Deep Learning
+
+Implementations based on **Goodfellow, I., Bengio, Y., & Courville, A. (2016). [Deep Learning](https://www.deeplearningbook.org/). MIT Press.**
+
+Source path: `notebooks/deep-learning/`
+
+| Chapter | Topic | Files |
+|---------|-------|-------|
+| 2 | Linear Algebra | `vectors_matrices.py`, `norms.py`, `eigendecomposition.py`, `svd.py`, `principal_components.py` |
+| 3 | Probability and Information Theory | `random_variables.py`, `common_distributions.py`, `bayes_rule.py`, `information_theory.py`, `structured_models.py` |
+
+### Chapter 2 — Linear Algebra
+
+Walkthrough of [Chapter 2](https://www.deeplearningbook.org/contents/linear_algebra.html): matrix–vector products, norms, symmetric eigendecomposition, SVD, Moore–Penrose pseudoinverse, and PCA (§2.12).
+
+Shared code lives in `maths_self_study.linalg` (`lp_norm`, `symmetric_eigendecomposition`, `pca_fit`, `moore_penrose_pseudoinverse`, …).
+
+### Chapter 3 — Probability and Information Theory
+
+Interactive walkthrough of [Chapter 3](https://www.deeplearningbook.org/contents/prob.html): discrete random variables, common distributions, Bayes' rule (including Monty Hall), Shannon entropy, cross-entropy, KL divergence, and chain-structured graphical models.
+
+Shared code lives in `maths_self_study.probability` (`bayes_posterior`, `shannon_entropy`, `kl_divergence`, `monty_hall_posterior`, …).
+
 Each chapter folder also contains a `ch{N}_helpers.py` module with dataset
 loading and plotting utilities shared across that chapter's notebooks.
 

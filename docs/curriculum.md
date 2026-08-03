@@ -6,6 +6,7 @@ Textbook-driven self-study tracks. Each row links a book to its notebook folder 
 |----------|---------|--------|---------------|
 | [Advances in Financial Machine Learning](https://www.wiley.com/en-us/Advances+in+Financial+Machine+Learning-p-9781119482086) | López de Prado (2018) | Ch. 2–4 | [`notebooks/financial-machine-learning/`](../notebooks/financial-machine-learning/) |
 | [The Elements of Statistical Learning](https://hastie.su.domains/ElemStatLearn/) | Hastie, Tibshirani & Friedman (2nd ed.) | Ch. 2–18 | [`notebooks/elements-of-statistical-learning/`](../notebooks/elements-of-statistical-learning/) |
+| [Deep Learning](https://www.deeplearningbook.org/) | Goodfellow, Bengio & Courville (2016) | Ch. 2–3 | [`notebooks/deep-learning/`](../notebooks/deep-learning/) |
 
 ## Advances in Financial Machine Learning
 
@@ -34,6 +35,15 @@ Core statistics and machine learning from linear models through high-dimensional
 | 15 | Random forests |
 | 16–18 | Ensemble learning, graphical models, high-dimensional problems |
 
+## Deep Learning
+
+Foundations for the deep learning track: linear algebra, probability, information theory, and structured models (Goodfellow et al., Part I).
+
+| Chapter | Topic |
+|---------|-------|
+| 2 | Linear algebra — vectors, norms, eigendecomposition, SVD, PCA |
+| 3 | Probability and information theory — random variables, Bayes' rule, entropy, KL divergence, graphical models |
+
 ## Planned tracks
 
-Future textbooks may include pure maths (e.g. real analysis, linear algebra) and additional applied stats/ML books. New tracks will get a folder under `notebooks/` named after the book or a short slug, plus shared utilities in `maths_self_study` where they apply across books.
+Future chapters from *Deep Learning* (linear algebra, numerical computation, machine learning basics) and other textbooks — pure maths (real analysis, linear algebra), additional applied stats/ML books. New tracks get a folder under `notebooks/` named after the book or a short slug, plus shared utilities in `maths_self_study` where they apply across books.
