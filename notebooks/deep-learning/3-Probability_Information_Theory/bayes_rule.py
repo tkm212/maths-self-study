@@ -27,7 +27,7 @@ def _(mo):
 
     $$P(x \mid y) = \frac{P(x)\,P(y \mid x)}{P(y)}$$
 
-    Prior × likelihood → posterior.
+    Prior x likelihood → posterior.
     """)
     return
 

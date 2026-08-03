@@ -93,7 +93,7 @@ def plot_transformed_grid(
     grid_range: float = 1.5,
     n_lines: int = 9,
 ) -> go.Figure:
-    """Show how a 2×2 matrix acts on a coordinate grid — the geometric view of Ax."""
+    """Show how a 2x2 matrix acts on a coordinate grid — the geometric view of Ax."""
     m = np.asarray(matrix, dtype=float).reshape(2, 2)
     t = np.linspace(-grid_range, grid_range, n_lines)
     fig = go.Figure()
@@ -216,7 +216,7 @@ def plot_svd_geometry(
 ) -> go.Figure:
     """Unit circle under A; singular values are axis lengths."""
     a = np.asarray(matrix, dtype=float)
-    u, s, vt = np.linalg.svd(a, full_matrices=False)
+    _, s, vt = np.linalg.svd(a, full_matrices=False)
     theta = np.linspace(0, 2 * np.pi, 200)
     circle = np.column_stack([np.cos(theta), np.sin(theta)])
     ellipse = circle @ a.T
@@ -251,7 +251,7 @@ def plot_svd_geometry(
                 x=[0, vec[0]],
                 y=[0, vec[1]],
                 mode="lines+markers",
-                name=f"σ{i + 1} = {sig:.2f}",
+                name=f"s{i + 1} = {sig:.2f}",
                 line={"width": 2},
             )
         )
@@ -452,11 +452,7 @@ def least_squares_summary(
     x = moore_penrose_pseudoinverse(a) @ b
     residual = float(np.linalg.norm(a @ x - b))
     sigmas = np.round(np.linalg.svd(a, compute_uv=False), 4)
-    return (
-        f"Least-squares x: {np.round(x, 4)}\n"
-        f"Residual ‖Ax − b‖₂: {residual}\n"
-        f"Singular values: {sigmas}"
-    )
+    return f"Least-squares x: {np.round(x, 4)}\nResidual ‖Ax - b‖₂: {residual}\nSingular values: {sigmas}"
 
 
 @dataclass(frozen=True)

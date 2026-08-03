@@ -21,7 +21,7 @@ def _():
 @app.cell
 def _(mo):
     mo.md(r"""
-    # SVD — every matrix has a geometry — Deep Learning Ch. 2 §2.8–2.9
+    # SVD — every matrix has a geometry — Deep Learning Ch. 2 §2.8-2.9
 
     *Goodfellow, Bengio & Courville (2016). [Deep Learning](https://www.deeplearningbook.org/contents/linear_algebra.html).*
 
@@ -34,7 +34,7 @@ def _(mo):
 
 @app.cell
 def _(helpers, mo):
-    _fig = helpers.plot_svd_geometry(helpers.SVD_MAP, title="Unit circle → ellipse; σᵢ = axis lengths")
+    _fig = helpers.plot_svd_geometry(helpers.SVD_MAP, title="Unit circle → ellipse; sᵢ = axis lengths")
     svd = helpers.display(_fig, mo)
     return (svd,)
 

@@ -21,7 +21,7 @@ def _():
 @app.cell
 def _(mo):
     mo.md(r"""
-    # Probability as bookkeeping — Deep Learning Ch. 3 §3.2–3.8
+    # Probability as bookkeeping — Deep Learning Ch. 3 §3.2-3.8
 
     *Goodfellow, Bengio & Courville (2016). [Deep Learning](https://www.deeplearningbook.org/contents/prob.html).*
 

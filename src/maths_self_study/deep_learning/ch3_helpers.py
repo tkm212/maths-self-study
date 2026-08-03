@@ -110,7 +110,7 @@ def plot_joint_with_marginals(
     col_labels: tuple[str, str] = ("B=0", "B=1"),
     title: str = "Joint, marginals, and conditionals",
 ) -> go.Figure:
-    """2×2 joint heatmap with marginal bars — factorisation made visible."""
+    """2x2 joint heatmap with marginal bars — factorisation made visible."""
     joint = np.asarray(joint, dtype=float)
     p_a = joint.sum(axis=1)
     p_b = joint.sum(axis=0)
@@ -218,7 +218,7 @@ def plot_gaussian_2d_contour(
                 x=[mu[0], mu[0] + direction[0]],
                 y=[mu[1], mu[1] + direction[1]],
                 mode="lines+markers",
-                name=f"σ direction {i + 1}",
+                name=f"s direction {i + 1}",
                 line={"width": 3},
                 marker={"size": [0, 8]},
             )
@@ -234,12 +234,16 @@ def plot_bayes_update(
     likelihood: np.ndarray,
     posterior: np.ndarray,
     *,
-    title: str = "Bayes: prior × likelihood ∝ posterior",
+    title: str = "Bayes: prior x likelihood ∝ posterior",
 ) -> go.Figure:
     x = np.arange(len(states))
     fig = go.Figure()
     fig.add_trace(go.Bar(x=x - 0.25, y=prior, width=0.22, name="prior P(x)", marker={"color": "#94a3b8"}))
-    fig.add_trace(go.Bar(x=x, y=likelihood / likelihood.max(), width=0.22, name="likelihood (scaled)", marker={"color": "#fbbf24"}))
+    fig.add_trace(
+        go.Bar(
+            x=x, y=likelihood / likelihood.max(), width=0.22, name="likelihood (scaled)", marker={"color": "#fbbf24"}
+        )
+    )
     fig.add_trace(go.Bar(x=x + 0.25, y=posterior, width=0.22, name="posterior P(x|y)", marker={"color": "#2563eb"}))
     fig.update_layout(
         **_base_layout(
@@ -314,7 +318,7 @@ def plot_kl_asymmetric(
 
 
 def plot_self_information(probs: np.ndarray, *, labels: np.ndarray | None = None) -> go.Figure:
-    """I(x) = −log P(x): rare events carry more information."""
+    """I(x) = -log P(x): rare events carry more information."""
     p = np.asarray(probs, dtype=float)
     info = -np.log(np.clip(p, 1e-12, None))
     xs = labels if labels is not None else np.arange(len(p))
@@ -330,7 +334,7 @@ def plot_self_information(probs: np.ndarray, *, labels: np.ndarray | None = None
         **_base_layout(
             title="Self-information — surprise grows as probability shrinks",
             xaxis_title="outcome",
-            yaxis_title="I(x) = −log P(x)",
+            yaxis_title="I(x) = -log P(x)",
             height=400,
         )
     )
@@ -366,8 +370,8 @@ def plot_markov_chain(
 
     if transition.shape == (2, 2):
         edges = [
-            (0, 1, f"P(X₂|X₁): {transition[0,0]:.2f}/{transition[0,1]:.2f}"),
-            (1, 2, f"P(X₃|X₂): see table"),
+            (0, 1, f"P(X₂|X₁): {transition[0, 0]:.2f}/{transition[0, 1]:.2f}"),
+            (1, 2, "P(X₃|X₂): see table"),
         ]
         for x0, x1, label in edges:
             fig.add_annotation(
@@ -536,7 +540,14 @@ def render_kl_comparison(mo: Any) -> Any:
 
 def render_discrete_moments(mo: Any) -> Any:
     _, _, chart_title = discrete_moments()
-    return show(mo, plot_discrete_distribution([0, 1, 2, 3], [0.1, 0.2, 0.3, 0.4], title=chart_title))
+    return show(
+        mo,
+        plot_discrete_distribution(
+            np.asarray([0, 1, 2, 3]),
+            np.asarray([0.1, 0.2, 0.3, 0.4]),
+            title=chart_title,
+        ),
+    )
 
 
 def render_markov_chain(mo: Any) -> Any:

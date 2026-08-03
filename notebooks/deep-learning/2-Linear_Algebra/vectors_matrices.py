@@ -21,7 +21,7 @@ def _():
 @app.cell
 def _(mo):
     mo.md(r"""
-    # Linear maps as geometry — Deep Learning Ch. 2 §2.1–2.2
+    # Linear maps as geometry — Deep Learning Ch. 2 §2.1-2.2
 
     *Goodfellow, Bengio & Courville (2016). [Deep Learning](https://www.deeplearningbook.org/contents/linear_algebra.html).*
 

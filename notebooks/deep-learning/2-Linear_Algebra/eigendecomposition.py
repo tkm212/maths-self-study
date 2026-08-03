@@ -50,7 +50,7 @@ def _(mo):
 @app.cell
 def _(helpers):
     err = helpers.spectral_reconstruction_error(helpers.COV_2X2)
-    print(f"Reconstruction error ‖A − QΛQᵀ‖: {err}")
+    print(f"Reconstruction error ‖A - QΛQᵀ‖: {err}")
     return
 
 
