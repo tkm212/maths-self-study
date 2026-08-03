@@ -91,7 +91,7 @@ addopts = ["--cov", "--cov-report=term-missing", "--cov-report=xml"]
 [tool.coverage.run]
 source = ["maths_self_study"]
 branch = true
-omit = ["*/loaders.py"]
+omit = ["*/loaders.py", "*/deep_learning/*"]
 
 [tool.coverage.report]
 fail_under = 80

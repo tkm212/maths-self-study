@@ -35,6 +35,8 @@ uv run python scripts/download_tmdb_movie_metadata.py
 - Notebooks are `.py` Marimo files, not `.ipynb`.
 - ESL chapter folders include `ch{N}_helpers.py` for shared plotting and data loading.
 - AFML notebooks import from `maths_self_study` (`bars`, `filters`, `labeling`, `weights`).
-- Deep Learning chapter folders include `ch{N}_helpers.py`; notebooks use `maths_self_study.linalg` and `maths_self_study.probability`.
+- Deep Learning chapter folders include `ch{N}_helpers.py` re-exports; notebooks import **`from maths_self_study.deep_learning import ch3_helpers as helpers`** (same two-cell bootstrap as ESL — no `sys.path` hacks).
+- Deep Learning setup: cell 1 `return (mo,)`, cell 2 `return (helpers,)`. Chart cells **`return helpers.show(mo, ...)`**. Do not save if marimo blanks cells — reload from git.
+- Validate: `uv run python scripts/check_deep_learning_notebooks.py`
 
 See [docs/notebooks.md](../docs/notebooks.md) for chapter-by-chapter details and [docs/curriculum.md](../docs/curriculum.md) for the full study plan.

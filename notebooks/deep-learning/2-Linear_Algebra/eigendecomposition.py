@@ -11,53 +11,47 @@ def _():
     return (mo,)
 
 
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""
-    # Eigendecomposition — Deep Learning Ch. 2 §2.7
+@app.cell
+def _():
+    from maths_self_study.deep_learning import ch2_helpers as helpers
 
-    *Goodfellow, Bengio & Courville (2016). [Deep Learning](https://www.deeplearningbook.org/contents/linear_algebra.html).*
-
-    For a square matrix $A$, an **eigenvector** $v \neq 0$ and **eigenvalue** $\lambda$ satisfy
-
-    $$Av = \lambda v.$$
-
-    If $A$ is symmetric, eigenvectors form an orthonormal basis and $A = Q \Lambda Q^\top$.
-    """)
-    return
+    return (helpers,)
 
 
 @app.cell
-def _():
-    import sys
-    from pathlib import Path
+def _(mo):
+    mo.md(r"""
+    # Eigendecomposition — invariant directions — Deep Learning Ch. 2 §2.7
 
-    sys.path.insert(0, str(Path(__file__).parent))
-    import ch2_helpers as helpers
+    *Goodfellow, Bengio & Courville (2016). [Deep Learning](https://www.deeplearningbook.org/contents/linear_algebra.html).*
 
-    return (helpers,)
+    $Av = \lambda v$ — $A$ only scales $v$, never rotates it off its line.
+    Symmetric $A$: $A = Q\Lambda Q^\top$ with orthogonal eigenvectors.
+    """)
+    return
 
 
 @app.cell
 def _(helpers, mo):
     import numpy as np
 
-    from maths_self_study.linalg import symmetric_eigendecomposition
+    values, _, _fig = helpers.eigendecomposition_demo()
+    eigen = helpers.display(_fig, mo)
+    print("Eigenvalues:", np.round(values, 3))
+    return (eigen,)
 
-    cov = np.array([[2.0, 0.8], [0.8, 1.0]])
-    values, vectors = symmetric_eigendecomposition(cov)
 
-    print("Eigenvalues:", values)
-    print("Eigenvectors (columns):\n", vectors)
+@app.cell
+def _(mo):
+    mo.md(r"""## Spectral theorem — reconstruct $A = Q\Lambda Q^\top$""")
+    return
 
-    fig = helpers.plot_vectors_2d(
-        np.zeros(2),
-        [vectors[:, 0], vectors[:, 1]],
-        labels=["v₁", "v₂"],
-        title="Eigenvectors of a 2x2 covariance matrix",
-    )
-    helpers.display(fig, mo)
-    return cov, fig, np, symmetric_eigendecomposition, values, vectors
+
+@app.cell
+def _(helpers):
+    err = helpers.spectral_reconstruction_error(helpers.COV_2X2)
+    print(f"Reconstruction error ‖A − QΛQᵀ‖: {err}")
+    return
 
 
 if __name__ == "__main__":

@@ -11,87 +11,65 @@ def _():
     return (mo,)
 
 
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""
-    # Common Probability Distributions — Deep Learning Ch. 3 §3.9
-
-    *Goodfellow, Bengio & Courville (2016). [Deep Learning](https://www.deeplearningbook.org/contents/prob.html).*
-
-    Deep learning reuses a small set of distributions repeatedly:
-
-    - **Bernoulli** — single binary outcome
-    - **Categorical / Multinoulli** — one of $k$ classes
-    - **Gaussian (normal)** — continuous modelling workhorse
-    """)
-    return
-
-
 @app.cell
 def _():
-    import sys
-    from pathlib import Path
-
-    sys.path.insert(0, str(Path(__file__).parent))
-    import ch3_helpers as helpers
+    from maths_self_study.deep_learning import ch3_helpers as helpers
 
     return (helpers,)
 
 
-@app.cell(hide_code=True)
+@app.cell
 def _(mo):
     mo.md(r"""
-    ## Bernoulli and binary entropy
+    # The distributions deep learning lives on — Deep Learning Ch. 3 §3.9
 
-    If $X \sim \mathrm{Bernoulli}(p)$ then $P(X=1)=p$. Figure 3.5 plots $H(X) = -(1-p)\log(1-p) - p\log p$.
+    *Goodfellow, Bengio & Courville (2016). [Deep Learning](https://www.deeplearningbook.org/contents/prob.html).*
+
+    **Bernoulli** — one bit. **Categorical** — one of $k$ classes. **Gaussian** — continuous workhorse.
     """)
     return
 
 
 @app.cell
-def _(helpers, mo):
-    helpers.display(helpers.plot_binary_entropy_curve(), mo)
-    return
-
-
-@app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""
-    ## Gaussian (normal) density
-
-    $$p(x) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)$$
-    """)
+    mo.md(r"""## Bernoulli — maximal uncertainty at $p = \tfrac{1}{2}$""")
     return
 
 
 @app.cell
 def _(helpers, mo):
-    mo.vstack([
-        helpers.display(helpers.plot_gaussian_pdf(0.0, 1.0, title="Standard normal N(0, 1)"), mo),
-        helpers.display(helpers.plot_gaussian_pdf(2.0, 0.5, title="N(2, 0.25)"), mo),
-    ])
-    return
+    _fig = helpers.plot_binary_entropy_curve()
+    bernoulli = helpers.display(_fig, mo)
+    return (bernoulli,)
 
 
-@app.cell(hide_code=True)
+@app.cell
 def _(mo):
-    mo.md(r"""
-    ## Categorical distribution
-
-    A **multinoulli** assigns probabilities $p_i$ to $k$ outcomes with $\sum_i p_i = 1$.
-    """)
+    mo.md(r"""## Gaussian — elliptical level sets from the covariance""")
     return
 
 
 @app.cell
 def _(helpers, mo):
-    import numpy as np
+    gaussian = helpers.show_all(mo, *helpers.gaussian_demo_figures())
+    return (gaussian,)
 
-    labels = np.array(["A", "B", "C", "D"])
-    probs = np.array([0.05, 0.15, 0.30, 0.50])
-    fig = helpers.plot_discrete_distribution(labels, probs, title="Categorical example")
-    helpers.display(fig, mo)
-    return fig, labels, np, probs
+
+@app.cell
+def _(mo):
+    mo.md(r"""## Categorical — finite support""")
+    return
+
+
+@app.cell
+def _(helpers, mo):
+    _fig = helpers.plot_discrete_distribution(
+        helpers.CATEGORICAL_LABELS,
+        helpers.CATEGORICAL_PROBS,
+        title="Softmax target distribution",
+    )
+    categorical = helpers.display(_fig, mo)
+    return (categorical,)
 
 
 if __name__ == "__main__":

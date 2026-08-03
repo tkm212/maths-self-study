@@ -11,46 +11,44 @@ def _():
     return (mo,)
 
 
-@app.cell(hide_code=True)
+@app.cell
+def _():
+    from maths_self_study.deep_learning import ch2_helpers as helpers
+
+    return (helpers,)
+
+
+@app.cell
 def _(mo):
     mo.md(r"""
-    # SVD and the Moore-Penrose Pseudoinverse — Deep Learning Ch. 2 §2.8-2.9
+    # SVD — every matrix has a geometry — Deep Learning Ch. 2 §2.8–2.9
 
     *Goodfellow, Bengio & Courville (2016). [Deep Learning](https://www.deeplearningbook.org/contents/linear_algebra.html).*
 
-    Every matrix has a **singular value decomposition** $A = U \Sigma V^\top$. The **Moore-Penrose pseudoinverse** $A^+$ generalises matrix inversion to non-square or rank-deficient matrices and gives the minimum-norm least-squares solution to $Ax = b$.
+    $A = U\Sigma V^\top$: rotate, scale, rotate.
+    Singular values $\sigma_i$ are axis lengths of the unit ball's image.
+    The pseudoinverse $A^+$ gives minimum-norm least squares for $Ax \approx b$.
     """)
     return
 
 
 @app.cell
-def _():
-    import sys
-    from pathlib import Path
+def _(helpers, mo):
+    _fig = helpers.plot_svd_geometry(helpers.SVD_MAP, title="Unit circle → ellipse; σᵢ = axis lengths")
+    svd = helpers.display(_fig, mo)
+    return (svd,)
 
-    sys.path.insert(0, str(Path(__file__).parent))
 
+@app.cell
+def _(mo):
+    mo.md(r"""## Least squares via $A^+$""")
     return
 
 
 @app.cell
-def _():
-    import numpy as np
-
-    from maths_self_study.linalg import moore_penrose_pseudoinverse
-
-    a = np.array([[1.0, 2.0], [3.0, 4.0], [5.0, 6.0]])
-    b = np.array([1.0, 2.0, 3.0])
-    pinv = moore_penrose_pseudoinverse(a)
-    x = pinv @ b
-    residual = a @ x - b
-
-    print("Least-squares solution x:", x)
-    print("||Ax - b||_2 =", float(np.linalg.norm(residual)))
-
-    u, s, vt = np.linalg.svd(a, full_matrices=False)
-    print("Singular values:", s)
-    return a, b, moore_penrose_pseudoinverse, np, pinv, residual, s, u, vt, x
+def _(helpers):
+    print(helpers.least_squares_summary())
+    return
 
 
 if __name__ == "__main__":
