@@ -80,29 +80,32 @@ Implementations based on **Goodfellow, I., Bengio, Y., & Courville, A. (2016). [
 
 Source path: `notebooks/deep-learning/`
 
-| Chapter | Topic | Files |
-|---------|-------|-------|
-| 2 | Linear Algebra | `vectors_matrices.py`, `norms.py`, `eigendecomposition.py`, `svd.py`, `principal_components.py` |
-| 3 | Probability and Information Theory | `random_variables.py`, `common_distributions.py`, `bayes_rule.py`, `information_theory.py`, `structured_models.py` |
+Chapters 2–3 ship as multi-page **Dash** dashboards (filters for chapter constants on each page). Shared plotting/math lives in `maths_self_study.deep_learning.ch{N}_helpers` plus `maths_self_study.linalg` / `maths_self_study.probability`.
+
+| Chapter | Topic | App |
+|---------|-------|-----|
+| 2 | Linear Algebra | [`2-Linear_Algebra/dashboard.py`](../notebooks/deep-learning/2-Linear_Algebra/dashboard.py) |
+| 3 | Probability and Information Theory | [`3-Probability_Information_Theory/dashboard.py`](../notebooks/deep-learning/3-Probability_Information_Theory/dashboard.py) |
 
 ### Chapter 2 — Linear Algebra
 
 Walkthrough of [Chapter 2](https://www.deeplearningbook.org/contents/linear_algebra.html): matrix–vector products, norms, symmetric eigendecomposition, SVD, Moore–Penrose pseudoinverse, and PCA (§2.12).
 
-Shared code lives in `maths_self_study.linalg` (`lp_norm`, `symmetric_eigendecomposition`, `pca_fit`, `moore_penrose_pseudoinverse`, …).
+```bash
+uv run python notebooks/deep-learning/2-Linear_Algebra/dashboard.py
+```
 
 ### Chapter 3 — Probability and Information Theory
 
 Interactive walkthrough of [Chapter 3](https://www.deeplearningbook.org/contents/prob.html): discrete random variables, common distributions, Bayes' rule (including Monty Hall), Shannon entropy, cross-entropy, KL divergence, and chain-structured graphical models.
 
-Shared code lives in `maths_self_study.probability` (`bayes_posterior`, `shannon_entropy`, `kl_divergence`, `monty_hall_posterior`, …).
+```bash
+uv run python notebooks/deep-learning/3-Probability_Information_Theory/dashboard.py
+```
 
-Each chapter folder also contains a `ch{N}_helpers.py` module with dataset
-loading and plotting utilities shared across that chapter's notebooks.
+### Running a Marimo notebook
 
-### Running a notebook
-
-All notebooks use Marimo and `uv` for dependency management. From the repo root:
+Other tracks use Marimo and `uv` for dependency management. From the repo root:
 
 ```bash
 uv run marimo run notebooks/elements-of-statistical-learning/10-Boosting/boosting.py

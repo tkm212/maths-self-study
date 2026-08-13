@@ -33,6 +33,7 @@ dependencies = [
     "scipy>=1.13.0",
     "plotly>=5.24.0",
     "kagglehub>=0.3.0",
+    "dash>=3.0.0",
 ]
 
 [project.urls]
@@ -160,7 +161,7 @@ github_output = true
 
 [tool.deptry.per_rule_ignores]
 # Used by Marimo notebooks (excluded from deptry scan); kept as runtime deps for `uv run marimo`.
-DEP002 = ["marimo", "plotly", "scikit-learn", "scipy"]
+DEP002 = ["marimo", "plotly", "dash", "scikit-learn", "scipy"]
 
 [tool.deptry.package_module_name_map]
 scikit-learn = "sklearn"
