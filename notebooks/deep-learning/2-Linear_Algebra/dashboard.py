@@ -78,14 +78,12 @@ def _matrix_inputs(prefix: str, defaults: np.ndarray, title: str) -> html.Div:
 
 
 def _page_shell(title: str, caption: str, filters: html.Div, body_id: str) -> html.Div:
-    return html.Div(
-        [
-            html.H2(title, style={"marginBottom": "4px"}),
-            html.P(caption, style={"color": "#64748b", "marginTop": 0}),
-            filters,
-            html.Div(id=body_id),
-        ]
-    )
+    return html.Div([
+        html.H2(title, style={"marginBottom": "4px"}),
+        html.P(caption, style={"color": "#64748b", "marginTop": 0}),
+        filters,
+        html.Div(id=body_id),
+    ])
 
 
 app = Dash(__name__, title="Deep Learning Ch. 2 — Linear Algebra", suppress_callback_exceptions=True)
@@ -122,7 +120,7 @@ def render_page(page: str):
     if page == "vectors":
         return _page_shell(
             "Linear maps as geometry",
-            "§2.1–2.2 — A matrix A is a linear map x ↦ Ax. Columns of A are where the basis goes.",
+            "§2.1-2.2 — A matrix A is a linear map x ↦ Ax. Columns of A are where the basis goes.",
             _filter_bar(
                 _matrix_inputs("grid", helpers.GRID_MAP, "Grid map A"),
                 _slider("vm-rot", "Rotation (°)", -180, 180, 30, 1),
@@ -162,7 +160,7 @@ def render_page(page: str):
     if page == "svd":
         return _page_shell(
             "SVD — every matrix has a geometry",
-            "§2.8–2.9 — A = UΣVᵀ. Singular values are axis lengths of the unit ball's image.",
+            "§2.8-2.9 — A = UΣVᵀ. Singular values are axis lengths of the unit ball's image.",
             _filter_bar(
                 _matrix_inputs("svd", helpers.SVD_MAP, "Map A"),
                 html.Div("Least-squares b", style={"fontWeight": 600, "width": "100%"}),
@@ -202,25 +200,25 @@ def _as_matrix(a11, a12, a21, a22) -> np.ndarray:
 def update_vectors(a11, a12, a21, a22, rot, shear, grid_range):
     grid_map = _as_matrix(a11, a12, a21, a22)
     composed = helpers.rotation_2d(rot) @ helpers.shear_2d(shear)
-    fig_a = helpers.plot_transformed_grid(grid_map, title="A deforms the plane, but keeps it flat", grid_range=grid_range)
+    fig_a = helpers.plot_transformed_grid(
+        grid_map, title="A deforms the plane, but keeps it flat", grid_range=grid_range
+    )
     fig_b = helpers.plot_transformed_grid(
         composed,
         title=f"R({rot}°) ∘ S(k={shear:.1f})",
         grid_range=min(grid_range, 1.5),
     )
-    return html.Div(
-        [
-            html.Div(
-                [
-                    dcc.Graph(figure=fig_a, style={"flex": "1"}),
-                    dcc.Graph(figure=fig_b, style={"flex": "1"}),
-                ],
-                style={"display": "flex", "flexWrap": "wrap", "gap": "8px"},
-            ),
-            html.P("Inner product — xᵀy = ‖x‖₂ ‖y‖₂ cos θ"),
-            html.Pre(helpers.inner_product_45deg(), style={"background": "#f1f5f9", "padding": "12px"}),
-        ]
-    )
+    return html.Div([
+        html.Div(
+            [
+                dcc.Graph(figure=fig_a, style={"flex": "1"}),
+                dcc.Graph(figure=fig_b, style={"flex": "1"}),
+            ],
+            style={"display": "flex", "flexWrap": "wrap", "gap": "8px"},
+        ),
+        html.P("Inner product — xᵀy = ‖x‖₂ ‖y‖₂ cos θ"),
+        html.Pre(helpers.inner_product_45deg(), style={"background": "#f1f5f9", "padding": "12px"}),
+    ])
 
 
 @app.callback(
@@ -239,12 +237,10 @@ def update_norms(x1, x2, inf_opts):
         f"‖x‖₁ = {lp_norm(x, 1):.4f}   ‖x‖₂ = {lp_norm(x, 2):.4f}   ‖x‖∞ = {lp_norm(x, np.inf):.4f}\n"
         f"cos(e₁, (1,1)) = {cosine_similarity(a, b):.4f}  →  45°"
     )
-    return html.Div(
-        [
-            dcc.Graph(figure=fig),
-            html.Pre(summary, style={"background": "#f1f5f9", "padding": "12px"}),
-        ]
-    )
+    return html.Div([
+        dcc.Graph(figure=fig),
+        html.Pre(summary, style={"background": "#f1f5f9", "padding": "12px"}),
+    ])
 
 
 @app.callback(
@@ -262,25 +258,23 @@ def update_eigen(a11, a12, a21, a22):
         note = html.P("Using the symmetric part (A + Aᵀ)/2 for eigendecomposition.", style={"color": "#0369a1"})
     values, _, fig = helpers.eigendecomposition_demo(cov_sym)
     err = helpers.spectral_reconstruction_error(cov_sym)
-    return html.Div(
-        [
-            note,
-            dcc.Graph(figure=fig),
-            html.Div(
-                [
-                    html.Div(
-                        [html.Strong("Eigenvalues"), html.Div(str(np.round(values, 3)))],
-                        style={"flex": "1", "padding": "12px", "background": "#f8fafc", "borderRadius": "8px"},
-                    ),
-                    html.Div(
-                        [html.Strong("‖A − QΛQᵀ‖"), html.Div(f"{err:.2e}")],
-                        style={"flex": "1", "padding": "12px", "background": "#f8fafc", "borderRadius": "8px"},
-                    ),
-                ],
-                style={"display": "flex", "gap": "12px"},
-            ),
-        ]
-    )
+    return html.Div([
+        note,
+        dcc.Graph(figure=fig),
+        html.Div(
+            [
+                html.Div(
+                    [html.Strong("Eigenvalues"), html.Div(str(np.round(values, 3)))],
+                    style={"flex": "1", "padding": "12px", "background": "#f8fafc", "borderRadius": "8px"},
+                ),
+                html.Div(
+                    [html.Strong("‖A - QΛQᵀ‖"), html.Div(f"{err:.2e}")],
+                    style={"flex": "1", "padding": "12px", "background": "#f8fafc", "borderRadius": "8px"},
+                ),
+            ],
+            style={"display": "flex", "gap": "12px"},
+        ),
+    ])
 
 
 @app.callback(
@@ -297,15 +291,13 @@ def update_svd(a11, a12, a21, a22, b0, b1, b2):
     svd_map = _as_matrix(a11, a12, a21, a22)
     fig = helpers.plot_svd_geometry(svd_map, title="Unit circle → ellipse; sᵢ = axis lengths")
     b = np.array([float(b0), float(b1), float(b2)])
-    return html.Div(
-        [
-            dcc.Graph(figure=fig),
-            html.Pre(
-                helpers.least_squares_summary(helpers.OVERDETERMINED_A, b),
-                style={"background": "#f1f5f9", "padding": "12px"},
-            ),
-        ]
-    )
+    return html.Div([
+        dcc.Graph(figure=fig),
+        html.Pre(
+            helpers.least_squares_summary(helpers.OVERDETERMINED_A, b),
+            style={"background": "#f1f5f9", "padding": "12px"},
+        ),
+    ])
 
 
 @app.callback(
@@ -327,22 +319,20 @@ def update_pca(seed, n_samples, sx, sy):
     error = float(np.linalg.norm(reconstructed - data))
     demo = helpers.PCADemo(data=data, model=model, codes=codes, reconstruction_error=error)
     figs = helpers.pca_figures(demo)
-    return html.Div(
-        [
-            html.Div(
-                [
-                    dcc.Graph(figure=figs[0], style={"flex": "1"}),
-                    dcc.Graph(figure=figs[1], style={"flex": "1"}),
-                ],
-                style={"display": "flex", "flexWrap": "wrap", "gap": "8px"},
-            ),
-            dcc.Graph(figure=figs[2]),
-            html.Div(
-                [html.Strong("Reconstruction error ‖X̂ − X‖"), html.Div(f"{error:.4f}")],
-                style={"padding": "12px", "background": "#f8fafc", "borderRadius": "8px"},
-            ),
-        ]
-    )
+    return html.Div([
+        html.Div(
+            [
+                dcc.Graph(figure=figs[0], style={"flex": "1"}),
+                dcc.Graph(figure=figs[1], style={"flex": "1"}),
+            ],
+            style={"display": "flex", "flexWrap": "wrap", "gap": "8px"},
+        ),
+        dcc.Graph(figure=figs[2]),
+        html.Div(
+            [html.Strong("Reconstruction error ‖X̂ - X‖"), html.Div(f"{error:.4f}")],
+            style={"padding": "12px", "background": "#f8fafc", "borderRadius": "8px"},
+        ),
+    ])
 
 
 if __name__ == "__main__":

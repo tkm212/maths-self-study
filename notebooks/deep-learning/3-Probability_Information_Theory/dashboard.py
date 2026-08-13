@@ -21,7 +21,9 @@ PAGES = [
 ]
 
 
-def _num(id_: str, label: str, value: float, *, step: float = 0.01, min_: float | None = None, max_: float | None = None) -> html.Div:
+def _num(
+    id_: str, label: str, value: float, *, step: float = 0.01, min_: float | None = None, max_: float | None = None
+) -> html.Div:
     kwargs: dict = {
         "id": id_,
         "type": "number",
@@ -69,7 +71,7 @@ def _filter_bar(*children: html.Div) -> html.Div:
     )
 
 
-def _section(title: str, *children: object) -> html.Div:
+def _section(title: str, *children: html.Div) -> html.Div:
     return html.Div(
         [html.Div(title, style={"fontWeight": 600, "width": "100%", "marginBottom": "4px"}), *children],
         style={"display": "flex", "flexWrap": "wrap", "gap": "12px", "width": "100%"},
@@ -77,14 +79,12 @@ def _section(title: str, *children: object) -> html.Div:
 
 
 def _page_shell(title: str, caption: str, filters: html.Div, body_id: str) -> html.Div:
-    return html.Div(
-        [
-            html.H2(title, style={"marginBottom": "4px"}),
-            html.P(caption, style={"color": "#64748b", "marginTop": 0}),
-            filters,
-            html.Div(id=body_id),
-        ]
-    )
+    return html.Div([
+        html.H2(title, style={"marginBottom": "4px"}),
+        html.P(caption, style={"color": "#64748b", "marginTop": 0}),
+        filters,
+        html.Div(id=body_id),
+    ])
 
 
 def _pre(text: str) -> html.Pre:
@@ -142,7 +142,7 @@ def render_page(page: str):
     if page == "rv":
         return _page_shell(
             "Probability as bookkeeping",
-            "§3.2–3.8 — Joint → marginals (sum out) → conditionals (slice and renormalise).",
+            "§3.2-3.8 — Joint → marginals (sum out) → conditionals (slice and renormalise).",
             _filter_bar(
                 _section(
                     "P(weather, traffic) joint",
@@ -187,7 +187,7 @@ def render_page(page: str):
     if page == "bayes":
         return _page_shell(
             "Bayes' rule — invert conditioning",
-            "§3.11 — Prior × likelihood → posterior. Base rates dominate rare-disease tests.",
+            "§3.11 — Prior x likelihood → posterior. Base rates dominate rare-disease tests.",
             _filter_bar(
                 _section(
                     "Medical test",
@@ -229,7 +229,7 @@ def render_page(page: str):
         p, q = helpers.INFO_P, helpers.INFO_Q
         return _page_shell(
             "Information and surprise",
-            "§3.13 — I(x) = −log P(x). H(P) averages surprise; H(P,Q) is classification loss; KL is asymmetric.",
+            "§3.13 — I(x) = -log P(x). H(P) averages surprise; H(P,Q) is classification loss; KL is asymmetric.",
             _filter_bar(
                 _section(
                     "P (true)",
@@ -298,15 +298,13 @@ def update_rv(j00, j01, j10, j11, p0, p1, p2, p3):
     _, _, title = helpers.discrete_moments(support, probs)
     fig_moments = helpers.plot_discrete_distribution(support, probs, title=title)
 
-    return html.Div(
-        [
-            dcc.Graph(figure=fig_joint),
-            _pre(f"P(rain | heavy traffic) = {cond:.4f}"),
-            html.H3("Expectation and variance"),
-            html.P("E[X] = centre of mass; Var(X) = spread about the mean.", style={"color": "#64748b"}),
-            dcc.Graph(figure=fig_moments),
-        ]
-    )
+    return html.Div([
+        dcc.Graph(figure=fig_joint),
+        _pre(f"P(rain | heavy traffic) = {cond:.4f}"),
+        html.H3("Expectation and variance"),
+        html.P("E[X] = centre of mass; Var(X) = spread about the mean.", style={"color": "#64748b"}),
+        dcc.Graph(figure=fig_moments),
+    ])
 
 
 @app.callback(
@@ -342,23 +340,21 @@ def update_dist(c0, c1, c2, c3, s11, s12, s22):
         cat,
         title="Softmax target distribution",
     )
-    return html.Div(
-        [
-            html.H3("Bernoulli — maximal uncertainty at p = ½"),
-            dcc.Graph(figure=fig_entropy),
-            html.H3("Gaussian — elliptical level sets from the covariance"),
-            note,
-            html.Div(
-                [
-                    dcc.Graph(figure=fig_1d, style={"flex": "1"}),
-                    dcc.Graph(figure=fig_2d, style={"flex": "1"}),
-                ],
-                style={"display": "flex", "flexWrap": "wrap", "gap": "8px"},
-            ),
-            html.H3("Categorical — finite support"),
-            dcc.Graph(figure=fig_cat),
-        ]
-    )
+    return html.Div([
+        html.H3("Bernoulli — maximal uncertainty at p = ½"),
+        dcc.Graph(figure=fig_entropy),
+        html.H3("Gaussian — elliptical level sets from the covariance"),
+        note,
+        html.Div(
+            [
+                dcc.Graph(figure=fig_1d, style={"flex": "1"}),
+                dcc.Graph(figure=fig_2d, style={"flex": "1"}),
+            ],
+            style={"display": "flex", "flexWrap": "wrap", "gap": "8px"},
+        ),
+        html.H3("Categorical — finite support"),
+        dcc.Graph(figure=fig_cat),
+    ])
 
 
 @app.callback(
@@ -381,28 +377,24 @@ def update_bayes(prior_d, sens, fpr, chosen, opened):
     chosen_i = int(chosen)
     opened_i = int(opened)
     if chosen_i == opened_i:
-        return html.Div(
-            [
-                html.H3("Rare disease, positive test"),
-                dcc.Graph(figure=fig_med),
-                _pre(summary),
-                html.H3("Monty Hall"),
-                html.P("Chosen and opened doors must differ.", style={"color": "#b91c1c"}),
-            ]
-        )
+        return html.Div([
+            html.H3("Rare disease, positive test"),
+            dcc.Graph(figure=fig_med),
+            _pre(summary),
+            html.H3("Monty Hall"),
+            html.P("Chosen and opened doors must differ.", style={"color": "#b91c1c"}),
+        ])
 
     post = monty_hall_posterior(chosen_door=chosen_i, opened_door=opened_i)
     fig_monty = helpers.plot_monty_hall(post, chosen=chosen_i, opened=opened_i)
-    return html.Div(
-        [
-            html.H3("Rare disease, positive test — base rate dominates"),
-            dcc.Graph(figure=fig_med),
-            _pre(summary),
-            html.H3("Monty Hall — switching wins with probability ⅔"),
-            dcc.Graph(figure=fig_monty),
-            _pre(f"Posterior over doors: {np.round(post, 3)}"),
-        ]
-    )
+    return html.Div([
+        html.H3("Rare disease, positive test — base rate dominates"),
+        dcc.Graph(figure=fig_med),
+        _pre(summary),
+        html.H3("Monty Hall — switching wins with probability ⅔"),
+        dcc.Graph(figure=fig_monty),
+        _pre(f"Posterior over doors: {np.round(post, 3)}"),
+    ])
 
 
 @app.callback(
@@ -422,15 +414,13 @@ def update_info(p0, p1, p2, p3, q0, q1, q2, q3):
     fig_self = helpers.plot_self_information(p, labels=helpers.INFO_LABELS)
     measures = helpers.summarize_information_measures(p, q)
     fig_kl = helpers.plot_kl_asymmetric(np.arange(len(p)), p, q)
-    return html.Div(
-        [
-            html.H3("Self-information: −log P(x)"),
-            dcc.Graph(figure=fig_self),
-            html.H3("Cross-entropy and KL — direction matters"),
-            _pre(helpers.format_measures(measures)),
-            dcc.Graph(figure=fig_kl),
-        ]
-    )
+    return html.Div([
+        html.H3("Self-information: -log P(x)"),
+        dcc.Graph(figure=fig_self),
+        html.H3("Cross-entropy and KL — direction matters"),
+        _pre(helpers.format_measures(measures)),
+        dcc.Graph(figure=fig_kl),
+    ])
 
 
 @app.callback(
@@ -443,18 +433,14 @@ def update_info(p0, p1, p2, p3, q0, q1, q2, q3):
 )
 def update_markov(px1_0, t00, t10, u00, u10):
     p_x1 = np.array([float(px1_0), 1.0 - float(px1_0)])
-    p_x2_given_x1 = np.array(
-        [
-            [float(t00), 1.0 - float(t00)],
-            [float(t10), 1.0 - float(t10)],
-        ]
-    )
-    p_x3_given_x2 = np.array(
-        [
-            [float(u00), 1.0 - float(u00)],
-            [float(u10), 1.0 - float(u10)],
-        ]
-    )
+    p_x2_given_x1 = np.array([
+        [float(t00), 1.0 - float(t00)],
+        [float(t10), 1.0 - float(t10)],
+    ])
+    p_x3_given_x2 = np.array([
+        [float(u00), 1.0 - float(u00)],
+        [float(u10), 1.0 - float(u10)],
+    ])
     joint = np.zeros((2, 2, 2))
     for x1 in (0, 1):
         for x2 in (0, 1):
@@ -462,19 +448,17 @@ def update_markov(px1_0, t00, t10, u00, u10):
                 joint[x1, x2, x3] = p_x1[x1] * p_x2_given_x1[x1, x2] * p_x3_given_x2[x2, x3]
 
     fig = helpers.plot_markov_chain(p_x2_given_x1, labels=("X₁", "X₂"))
-    return html.Div(
-        [
-            dcc.Graph(figure=fig),
-            html.Div(
-                [
-                    _metric("Joint shape", str(joint.shape)),
-                    _metric("Joint sum", f"{joint.sum():.4f}"),
-                    _metric("P(X₃=1)", f"{float(joint[:, :, 1].sum()):.4f}"),
-                ],
-                style={"display": "flex", "gap": "12px", "flexWrap": "wrap"},
-            ),
-        ]
-    )
+    return html.Div([
+        dcc.Graph(figure=fig),
+        html.Div(
+            [
+                _metric("Joint shape", str(joint.shape)),
+                _metric("Joint sum", f"{joint.sum():.4f}"),
+                _metric("P(X₃=1)", f"{float(joint[:, :, 1].sum()):.4f}"),
+            ],
+            style={"display": "flex", "gap": "12px", "flexWrap": "wrap"},
+        ),
+    ])
 
 
 if __name__ == "__main__":
