@@ -84,8 +84,8 @@ Chapters 2–3 ship as multi-page **Dash** dashboards (filters for chapter const
 
 | Chapter | Topic | App |
 |---------|-------|-----|
-| 2 | Linear Algebra | [`2-Linear_Algebra/dashboard.py`](../notebooks/deep-learning/2-Linear_Algebra/dashboard.py) |
-| 3 | Probability and Information Theory | [`3-Probability_Information_Theory/dashboard.py`](../notebooks/deep-learning/3-Probability_Information_Theory/dashboard.py) |
+| 2 | Linear Algebra | `2-Linear_Algebra/dashboard.py` |
+| 3 | Probability and Information Theory | `3-Probability_Information_Theory/dashboard.py` |
 
 ### Chapter 2 — Linear Algebra
 
