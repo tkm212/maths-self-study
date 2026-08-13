@@ -1,0 +1,66 @@
+"""Factory for multi-page textbook chapter Dash apps."""
+
+from __future__ import annotations
+
+from abc import ABC, abstractmethod
+
+from dash import Dash, Input, Output, html
+
+from maths_self_study.dashboards.layout import chapter_layout, page_shell
+
+
+class DashboardPage(ABC):
+    """One tabbed page: filter controls plus a callback-driven body."""
+
+    label: str
+    value: str
+    title: str
+    caption: str
+
+    @property
+    def body_id(self) -> str:
+        return f"{self.value}-body"
+
+    @abstractmethod
+    def build_filters(self) -> html.Div: ...
+
+    @abstractmethod
+    def register_callbacks(self, app: Dash) -> None: ...
+
+    def build_shell(self) -> html.Div:
+        return page_shell(self.title, self.caption, self.build_filters(), self.body_id)
+
+
+def create_chapter_dashboard(
+    *,
+    module_name: str,
+    dash_title: str,
+    heading: str,
+    tagline: str,
+    book_href: str,
+    book_link_text: str,
+    pages: list[DashboardPage],
+    default_page: str | None = None,
+) -> Dash:
+    """Build a tabbed chapter dashboard and register page callbacks."""
+    app = Dash(module_name, title=dash_title, suppress_callback_exceptions=True)
+    page_by_value = {page.value: page for page in pages}
+    default = default_page or pages[0].value
+
+    app.layout = chapter_layout(
+        title=heading,
+        subtitle=tagline,
+        tabs=[{"label": page.label, "value": page.value} for page in pages],
+        default_tab=default,
+        book_href=book_href,
+        book_link_text=book_link_text,
+    )
+
+    @app.callback(Output("page-content", "children"), Input("page-tabs", "value"))
+    def render_page(page: str) -> html.Div:
+        return page_by_value[page].build_shell()
+
+    for page in pages:
+        page.register_callbacks(app)
+
+    return app

@@ -61,8 +61,8 @@ make test
 
 ## Notebook conventions
 
-- ESL notebooks live under `notebooks/elements-of-statistical-learning/`
-- AFML notebooks live under `notebooks/financial-machine-learning/`
+- ESL notebooks live under `textbooks/elements-of-statistical-learning/`
+- AFML notebooks live under `textbooks/financial-machine-learning/`
 - Use Marimo (`.py` files), not `.ipynb`
 - Run with `uv run marimo run path/to/notebook.py`; edit with `uv run marimo edit ...`
 - Shared plotting and data loading goes in `ch{N}_helpers.py` for that chapter

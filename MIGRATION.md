@@ -50,7 +50,7 @@ git remote set-url origin git@github.com:tkm212/maths-self-study.git
 
 ### What did not change
 
-- Notebook paths under `notebooks/financial-machine-learning/` still refer to the AFML textbook folder name.
+- Notebook paths under `textbooks/financial-machine-learning/` still refer to the AFML textbook folder name.
 - AFML module names (`bars`, `filters`, `labeling`, `weights`) and their APIs are unchanged.
 - Marimo notebook filenames and chapter layout are unchanged.
 
