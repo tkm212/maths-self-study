@@ -50,7 +50,6 @@ def test_vectors_page_builds_filters():
 
 
 def test_ch2_vectors_filters_via_dashboard():
-    ch2 = _load_dashboard_module(_CH2_DASHBOARD)
     ch2_dir = _CH2_DASHBOARD.parent
     spec = importlib.util.spec_from_file_location(
         "ch2_vectors_filters",
