@@ -33,6 +33,7 @@ dependencies = [
     "scipy>=1.13.0",
     "plotly>=5.24.0",
     "kagglehub>=0.3.0",
+    "dash>=3.0.0",
 ]
 
 [project.urls]
@@ -91,7 +92,7 @@ addopts = ["--cov", "--cov-report=term-missing", "--cov-report=xml"]
 [tool.coverage.run]
 source = ["maths_self_study"]
 branch = true
-omit = ["*/loaders.py"]
+omit = ["*/loaders.py", "*/deep_learning/*"]
 
 [tool.coverage.report]
 fail_under = 80
@@ -154,8 +155,13 @@ ignore = [
 preview = true
 
 [tool.deptry]
-known_first_party = ["maths_self_study", "helpers", "ch3_helpers", "ch4_helpers", "ch5_helpers", "ch6_helpers", "ch7_helpers", "ch8_helpers", "ch9_helpers", "ch10_helpers", "ch11_helpers", "ch12_helpers", "ch13_helpers", "ch14_helpers", "ch15_helpers", "ch16_helpers", "ch17_helpers", "ch18_helpers"]
-extend_exclude = ["docs"]
+extend_exclude = ["notebooks", "docs"]
+known_first_party = ["maths_self_study", "scripts"]
 github_output = true
+
+[tool.deptry.per_rule_ignores]
+# Used by Marimo notebooks (excluded from deptry scan); kept as runtime deps for `uv run marimo`.
+DEP002 = ["marimo", "plotly", "dash", "scikit-learn", "scipy"]
+
 [tool.deptry.package_module_name_map]
 scikit-learn = "sklearn"

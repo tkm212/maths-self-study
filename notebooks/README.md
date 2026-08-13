@@ -5,7 +5,8 @@ Interactive [Marimo](https://marimo.io) notebooks organised by textbook. Each fo
 ```
 notebooks/
 ├── financial-machine-learning/          # López de Prado — Advances in Financial ML
-└── elements-of-statistical-learning/  # Hastie, Tibshirani & Friedman — ESL (2nd ed.)
+├── elements-of-statistical-learning/  # Hastie, Tibshirani & Friedman — ESL (2nd ed.)
+└── deep-learning/                       # Goodfellow, Bengio & Courville — Deep Learning
 ```
 
 ## Running a notebook
@@ -34,5 +35,6 @@ uv run python scripts/download_tmdb_movie_metadata.py
 - Notebooks are `.py` Marimo files, not `.ipynb`.
 - ESL chapter folders include `ch{N}_helpers.py` for shared plotting and data loading.
 - AFML notebooks import from `maths_self_study` (`bars`, `filters`, `labeling`, `weights`).
+- Deep Learning notebooks import helpers from `maths_self_study.deep_learning` (`ch2_helpers` / `ch3_helpers`); local `ch{N}_helpers.py` files are thin re-exports.
 
 See [docs/notebooks.md](../docs/notebooks.md) for chapter-by-chapter details and [docs/curriculum.md](../docs/curriculum.md) for the full study plan.

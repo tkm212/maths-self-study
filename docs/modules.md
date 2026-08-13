@@ -20,6 +20,16 @@
       show_root_heading: true
       members_order: source
 
+::: maths_self_study.linalg
+    options:
+      show_root_heading: true
+      members_order: source
+
+::: maths_self_study.probability
+    options:
+      show_root_heading: true
+      members_order: source
+
 ::: maths_self_study.loaders
     options:
       show_root_heading: true
