@@ -8,8 +8,8 @@ from pathlib import Path
 import numpy as np
 
 from maths_self_study.dashboards.chapter_app import create_chapter_dashboard
-from maths_self_study.dashboards.components import filter_bar, matrix_inputs, num_input
-from maths_self_study.dashboards.utils import as_matrix, renorm
+from maths_self_study.dashboards.components import filter_bar, matrix_input, num_input
+from maths_self_study.dashboards.utils import as_matrix, format_matrix_2x2, parse_matrix_2x2, renorm
 
 _REPO_ROOT = Path(__file__).resolve().parents[1]
 _CH2_DASHBOARD = _REPO_ROOT / "textbooks/deep-learning/2-Linear_Algebra/dashboard.py"
@@ -91,9 +91,27 @@ def test_create_chapter_dashboard_minimal():
     assert app.layout is not None
 
 
-def test_matrix_inputs_component():
+def test_format_parse_matrix_2x2_roundtrip():
+    m = np.array([[1.0, 2.5], [3.0, 4.0]])
+    text = format_matrix_2x2(m)
+    parsed = parse_matrix_2x2(text, fallback=np.zeros((2, 2)))
+    np.testing.assert_allclose(parsed, m)
+
+
+def test_parse_matrix_2x2_invalid_falls_back():
+    fallback = np.eye(2)
+    parsed = parse_matrix_2x2("not a matrix", fallback=fallback)
+    np.testing.assert_allclose(parsed, fallback)
+
+
+def test_parse_matrix_2x2_accepts_commas_and_spaces():
+    parsed = parse_matrix_2x2("1, 2\n3, 4", fallback=np.zeros((2, 2)))
+    np.testing.assert_allclose(parsed, np.array([[1.0, 2.0], [3.0, 4.0]]))
+
+
+def test_matrix_input_component():
     defaults = np.eye(2)
-    block = matrix_inputs("test", defaults, "Matrix")
+    block = matrix_input("test", "Matrix", defaults)
     assert block is not None
 
 

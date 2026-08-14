@@ -7,6 +7,8 @@ from typing import Any
 import numpy as np
 from dash import dcc, html
 
+from maths_self_study.dashboards.utils import format_matrix_2x2
+
 _LABEL_STYLE = {"fontSize": "0.85rem", "color": "#475569"}
 _CONTROL_STYLE = {"flex": "1", "minWidth": "110px"}
 _SLIDER_STYLE = {"flex": "1", "minWidth": "180px", "padding": "0 8px"}
@@ -102,16 +104,30 @@ def section(title: str, *children: html.Div) -> html.Div:
     )
 
 
-def matrix_inputs(prefix: str, defaults: np.ndarray, title: str) -> html.Div:
+def matrix_input(id_: str, label: str, defaults: np.ndarray, *, hint: str | None = None) -> html.Div:
+    caption = hint or "Edit rows directly — plots update as you type."
     return html.Div(
         [
-            html.Div(title, style={"fontWeight": 600, "width": "100%", "marginBottom": "4px"}),
-            num_input(f"{prefix}-a11", "a₁₁", float(defaults[0, 0])),
-            num_input(f"{prefix}-a12", "a₁₂", float(defaults[0, 1])),
-            num_input(f"{prefix}-a21", "a₂₁", float(defaults[1, 0])),
-            num_input(f"{prefix}-a22", "a₂₂", float(defaults[1, 1])),
+            html.Label(label, style=_LABEL_STYLE),
+            dcc.Textarea(
+                id=id_,
+                value=format_matrix_2x2(defaults),
+                style={
+                    "fontFamily": "ui-monospace, SFMono-Regular, Menlo, monospace",
+                    "fontSize": "0.95rem",
+                    "lineHeight": "1.5",
+                    "width": "100%",
+                    "minWidth": "140px",
+                    "minHeight": "4.5rem",
+                    "padding": "8px 10px",
+                    "border": "1px solid #cbd5e1",
+                    "borderRadius": "6px",
+                    "resize": "vertical",
+                },
+            ),
+            html.Div(caption, style={"fontSize": "0.75rem", "color": "#64748b", "marginTop": "4px"}),
         ],
-        style={"display": "flex", "flexWrap": "wrap", "gap": "12px", "width": "100%"},
+        style={"flex": "1", "minWidth": "160px", "maxWidth": "220px"},
     )
 
 

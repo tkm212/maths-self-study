@@ -5,12 +5,12 @@ from __future__ import annotations
 from dash import html
 
 from maths_self_study.dashboards.components import graph, graph_row, preformatted
-from maths_self_study.dashboards.utils import as_matrix
+from maths_self_study.dashboards.utils import parse_matrix_2x2
 from maths_self_study.deep_learning import ch2_helpers as helpers
 
 
-def render_body(a11, a12, a21, a22, rot, shear, grid_range) -> html.Div:
-    grid_map = as_matrix(a11, a12, a21, a22)
+def render_body(matrix_text, rot, shear, grid_range) -> html.Div:
+    grid_map = parse_matrix_2x2(matrix_text, fallback=helpers.GRID_MAP)
     composed = helpers.rotation_2d(rot) @ helpers.shear_2d(shear)
     fig_a = helpers.plot_transformed_grid(
         grid_map, title="A deforms the plane, but keeps it flat", grid_range=grid_range

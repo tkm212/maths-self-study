@@ -12,9 +12,7 @@ INPUTS = [
     Input("dist-c1", "value"),
     Input("dist-c2", "value"),
     Input("dist-c3", "value"),
-    Input("dist-cov11", "value"),
-    Input("dist-cov12", "value"),
-    Input("dist-cov22", "value"),
+    Input("dist-cov-matrix", "value"),
 ]
 
 
