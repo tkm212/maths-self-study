@@ -2,12 +2,13 @@
 
 from __future__ import annotations
 
-from dash import Dash, Input
+from dash import Dash
 
 from ch2_pages.eigendecomposition.content import render_body
 from maths_self_study.dashboards.callbacks import register_body_callback
+from maths_self_study.dashboards.components import matrix_callback_inputs
 
-INPUTS = [Input("cov-matrix", "value")]
+INPUTS = matrix_callback_inputs("cov-matrix")
 
 
 def register_callbacks(app: Dash, body_id: str) -> None:

@@ -5,14 +5,25 @@ from __future__ import annotations
 from typing import Any
 
 import numpy as np
-from dash import dcc, html
-
-from maths_self_study.dashboards.utils import format_matrix_2x2
+from dash import Input, dcc, html
 
 _LABEL_STYLE = {"fontSize": "0.85rem", "color": "#475569"}
 _CONTROL_STYLE = {"flex": "1", "minWidth": "110px"}
 _SLIDER_STYLE = {"flex": "1", "minWidth": "180px", "padding": "0 8px"}
 _DROPDOWN_STYLE = {"flex": "1", "minWidth": "140px"}
+_MATH_FONT = '"Latin Modern Math", "STIX Two Math", "Cambria Math", "Times New Roman", serif'
+_MATRIX_CELL_STYLE = {
+    "width": "3.25rem",
+    "padding": "4px 2px",
+    "border": "none",
+    "borderBottom": "1px solid transparent",
+    "background": "transparent",
+    "textAlign": "center",
+    "fontFamily": _MATH_FONT,
+    "fontSize": "1.2rem",
+    "color": "#111827",
+    "outline": "none",
+}
 
 
 def num_input(
@@ -104,30 +115,82 @@ def section(title: str, *children: html.Div) -> html.Div:
     )
 
 
+def matrix_cell_id(prefix: str, row: int, col: int) -> str:
+    return f"{prefix}-{row}{col}"
+
+
+def matrix_callback_inputs(prefix: str) -> list[Input]:
+    return [Input(matrix_cell_id(prefix, row, col), "value") for row in (1, 2) for col in (1, 2)]
+
+
+def _matrix_paren(side: str) -> html.Span:
+    return html.Span(
+        "(" if side == "left" else ")",
+        style={
+            "fontFamily": _MATH_FONT,
+            "fontSize": "3.4rem",
+            "fontWeight": 200,
+            "lineHeight": 0.88,
+            "color": "#111827",
+            "userSelect": "none",
+            "display": "flex",
+            "alignItems": "center",
+            "padding": "0 2px",
+        },
+    )
+
+
+def _matrix_cell(prefix: str, row: int, col: int, value: float) -> dcc.Input:
+    return dcc.Input(
+        id=matrix_cell_id(prefix, row, col),
+        type="number",
+        value=float(value),
+        debounce=True,
+        style=_MATRIX_CELL_STYLE,
+    )
+
+
 def matrix_input(id_: str, label: str, defaults: np.ndarray, *, hint: str | None = None) -> html.Div:
-    caption = hint or "Edit rows directly — plots update as you type."
+    caption = hint or "Type in any cell — plots update automatically."
+    matrix = np.asarray(defaults, dtype=float).reshape(2, 2)
     return html.Div(
         [
             html.Label(label, style=_LABEL_STYLE),
-            dcc.Textarea(
-                id=id_,
-                value=format_matrix_2x2(defaults),
+            html.Div(
+                [
+                    _matrix_paren("left"),
+                    html.Div(
+                        [
+                            _matrix_cell(id_, 1, 1, matrix[0, 0]),
+                            _matrix_cell(id_, 1, 2, matrix[0, 1]),
+                            _matrix_cell(id_, 2, 1, matrix[1, 0]),
+                            _matrix_cell(id_, 2, 2, matrix[1, 1]),
+                        ],
+                        style={
+                            "display": "grid",
+                            "gridTemplateColumns": "repeat(2, auto)",
+                            "columnGap": "14px",
+                            "rowGap": "10px",
+                            "alignItems": "center",
+                            "justifyItems": "center",
+                            "padding": "2px 6px",
+                        },
+                    ),
+                    _matrix_paren("right"),
+                ],
                 style={
-                    "fontFamily": "ui-monospace, SFMono-Regular, Menlo, monospace",
-                    "fontSize": "0.95rem",
-                    "lineHeight": "1.5",
-                    "width": "100%",
-                    "minWidth": "140px",
-                    "minHeight": "4.5rem",
-                    "padding": "8px 10px",
-                    "border": "1px solid #cbd5e1",
-                    "borderRadius": "6px",
-                    "resize": "vertical",
+                    "display": "flex",
+                    "alignItems": "center",
+                    "gap": "4px",
+                    "padding": "6px 8px",
+                    "background": "#fff",
+                    "border": "1px solid #e2e8f0",
+                    "borderRadius": "8px",
                 },
             ),
             html.Div(caption, style={"fontSize": "0.75rem", "color": "#64748b", "marginTop": "4px"}),
         ],
-        style={"flex": "1", "minWidth": "160px", "maxWidth": "220px"},
+        style={"flex": "0 0 auto"},
     )
 
 

@@ -6,9 +6,10 @@ from dash import Dash, Input
 
 from ch2_pages.vectors.content import render_body
 from maths_self_study.dashboards.callbacks import register_body_callback
+from maths_self_study.dashboards.components import matrix_callback_inputs
 
 INPUTS = [
-    Input("grid-matrix", "value"),
+    *matrix_callback_inputs("grid-matrix"),
     Input("vm-rot", "value"),
     Input("vm-shear", "value"),
     Input("vm-range", "value"),

@@ -8,15 +8,16 @@ import numpy as np
 from dash import html
 
 from maths_self_study.dashboards.components import graph, graph_row
-from maths_self_study.dashboards.utils import parse_matrix_2x2, renorm
+from maths_self_study.dashboards.utils import coerce_matrix_2x2, renorm
 from maths_self_study.deep_learning import ch3_helpers as helpers
 
 log = logging.getLogger(__name__)
 
 
-def render_body(c0, c1, c2, c3, cov_text) -> html.Div:
+def render_body(c0, c1, c2, c3, s11, s12, s21, s22) -> html.Div:
     cat = renorm(np.array([c0, c1, c2, c3], dtype=float))
-    cov = parse_matrix_2x2(cov_text, fallback=helpers.GAUSSIAN_2D_COV)
+    cov = coerce_matrix_2x2(s11, s12, s21, s22, fallback=helpers.GAUSSIAN_2D_COV)
+    cov = 0.5 * (cov + cov.T)
     eigvals = np.linalg.eigvalsh(cov)
     note = None
     if np.any(eigvals <= 1e-8):

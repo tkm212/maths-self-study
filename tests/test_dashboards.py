@@ -8,8 +8,14 @@ from pathlib import Path
 import numpy as np
 
 from maths_self_study.dashboards.chapter_app import create_chapter_dashboard
-from maths_self_study.dashboards.components import filter_bar, matrix_input, num_input
-from maths_self_study.dashboards.utils import as_matrix, format_matrix_2x2, parse_matrix_2x2, renorm
+from maths_self_study.dashboards.components import (
+    filter_bar,
+    matrix_callback_inputs,
+    matrix_cell_id,
+    matrix_input,
+    num_input,
+)
+from maths_self_study.dashboards.utils import as_matrix, coerce_matrix_2x2, format_matrix_2x2, parse_matrix_2x2, renorm
 
 _REPO_ROOT = Path(__file__).resolve().parents[1]
 _CH2_DASHBOARD = _REPO_ROOT / "textbooks/deep-learning/2-Linear_Algebra/dashboard.py"
@@ -107,6 +113,25 @@ def test_parse_matrix_2x2_invalid_falls_back():
 def test_parse_matrix_2x2_accepts_commas_and_spaces():
     parsed = parse_matrix_2x2("1, 2\n3, 4", fallback=np.zeros((2, 2)))
     np.testing.assert_allclose(parsed, np.array([[1.0, 2.0], [3.0, 4.0]]))
+
+
+def test_parse_matrix_2x2_accepts_parentheses():
+    text = format_matrix_2x2(np.array([[1.0, -2.0], [3.5, 4.0]]))
+    parsed = parse_matrix_2x2(text, fallback=np.zeros((2, 2)))
+    np.testing.assert_allclose(parsed, np.array([[1.0, -2.0], [3.5, 4.0]]))
+    assert "(" in text and ")" in text
+
+
+def test_coerce_matrix_2x2_uses_fallback_for_none():
+    fallback = np.array([[1.0, 2.0], [3.0, 4.0]])
+    m = coerce_matrix_2x2(None, 5.0, None, 6.0, fallback=fallback)
+    np.testing.assert_allclose(m, np.array([[1.0, 5.0], [3.0, 6.0]]))
+
+
+def test_matrix_callback_inputs():
+    inputs = matrix_callback_inputs("grid-matrix")
+    assert len(inputs) == 4
+    assert matrix_cell_id("grid-matrix", 1, 2) == "grid-matrix-12"
 
 
 def test_matrix_input_component():
