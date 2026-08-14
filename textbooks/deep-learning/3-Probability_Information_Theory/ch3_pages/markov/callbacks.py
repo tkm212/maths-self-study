@@ -2,9 +2,10 @@
 
 from __future__ import annotations
 
-from dash import Dash, Input, Output
+from dash import Dash, Input
 
 from ch3_pages.markov.content import render_body
+from maths_self_study.dashboards.callbacks import register_body_callback
 
 INPUTS = [
     Input("mk-px1", "value"),
@@ -16,6 +17,4 @@ INPUTS = [
 
 
 def register_callbacks(app: Dash, body_id: str) -> None:
-    @app.callback(Output(body_id, "children"), *INPUTS)
-    def update(px1_0, t00, t10, u00, u10):
-        return render_body(px1_0, t00, t10, u00, u10)
+    register_body_callback(app, body_id, INPUTS, render_body, page="markov")

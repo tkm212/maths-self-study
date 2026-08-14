@@ -6,10 +6,15 @@ Run from repo root:
 
 from __future__ import annotations
 
+import logging
 import sys
 from pathlib import Path
 
 from maths_self_study.dashboards.chapter_app import create_chapter_dashboard
+from maths_self_study.dashboards.logging import configure
+
+configure()
+log = logging.getLogger(__name__)
 
 _CHAPTER_DIR = Path(__file__).resolve().parent
 if str(_CHAPTER_DIR) not in sys.path:
@@ -46,7 +51,9 @@ def create_app():
 
 
 def run(*, debug: bool = True) -> None:
-    create_app().run(debug=debug)
+    configure(level=logging.DEBUG if debug else logging.INFO, force=True)
+    log.info("Starting Deep Learning Ch. 2 dashboard (debug=%s)", debug)
+    app.run(debug=debug)
 
 
 app = create_app()

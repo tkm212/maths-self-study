@@ -2,11 +2,11 @@
 
 from __future__ import annotations
 
-from ch2_pages._page_factory import page
 from ch2_pages.eigendecomposition.callbacks import register_callbacks
 from ch2_pages.eigendecomposition.filters import build_filters
+from maths_self_study.dashboards.page_factory import define_page
 
-EigendecompositionPage = page(
+EigendecompositionPage = define_page(
     label="Eigendecomposition",
     value="eigen",
     title="Eigendecomposition — invariant directions",

@@ -2,9 +2,10 @@
 
 from __future__ import annotations
 
-from dash import Dash, Input, Output
+from dash import Dash, Input
 
 from ch3_pages.random_variables.content import render_body
+from maths_self_study.dashboards.callbacks import register_body_callback
 
 INPUTS = [
     Input("rv-j00", "value"),
@@ -19,6 +20,4 @@ INPUTS = [
 
 
 def register_callbacks(app: Dash, body_id: str) -> None:
-    @app.callback(Output(body_id, "children"), *INPUTS)
-    def update(j00, j01, j10, j11, p0, p1, p2, p3):
-        return render_body(j00, j01, j10, j11, p0, p1, p2, p3)
+    register_body_callback(app, body_id, INPUTS, render_body, page="random_variables")

@@ -1,4 +1,4 @@
-"""Factory for wiring filters and callbacks into a DashboardPage."""
+"""Build DashboardPage instances from filters and callback modules."""
 
 from __future__ import annotations
 
@@ -9,7 +9,7 @@ from dash import Dash, html
 from maths_self_study.dashboards.chapter_app import DashboardPage
 
 
-def page(
+def define_page(
     *,
     label: str,
     value: str,
@@ -18,6 +18,8 @@ def page(
     build_filters: Callable[[], html.Div],
     register_callbacks: Callable[[Dash, str], None],
 ) -> DashboardPage:
+    """Wire chapter page modules into a tabbed DashboardPage."""
+
     class _Page(DashboardPage):
         def build_filters(self) -> html.Div:
             return build_filters()

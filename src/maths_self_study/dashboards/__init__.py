@@ -15,12 +15,14 @@ from maths_self_study.dashboards.components import (
     slider,
 )
 from maths_self_study.dashboards.layout import chapter_layout, page_shell
+from maths_self_study.dashboards.page_factory import define_page
 
 __all__ = [
     "DashboardPage",
     "chapter_layout",
     "checklist",
     "create_chapter_dashboard",
+    "define_page",
     "dropdown",
     "filter_bar",
     "graph",

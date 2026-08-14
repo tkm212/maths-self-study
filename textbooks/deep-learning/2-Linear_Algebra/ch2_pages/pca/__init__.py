@@ -2,11 +2,11 @@
 
 from __future__ import annotations
 
-from ch2_pages._page_factory import page
 from ch2_pages.pca.callbacks import register_callbacks
 from ch2_pages.pca.filters import build_filters
+from maths_self_study.dashboards.page_factory import define_page
 
-PcaPage = page(
+PcaPage = define_page(
     label="PCA",
     value="pca",
     title="PCA — best low-dimensional view",

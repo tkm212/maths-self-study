@@ -2,11 +2,11 @@
 
 from __future__ import annotations
 
-from ch3_pages._page_factory import page
 from ch3_pages.markov.callbacks import register_callbacks
 from ch3_pages.markov.filters import build_filters
+from maths_self_study.dashboards.page_factory import define_page
 
-MarkovPage = page(
+MarkovPage = define_page(
     label="Structured models",
     value="markov",
     title="Structured models — factor the joint",

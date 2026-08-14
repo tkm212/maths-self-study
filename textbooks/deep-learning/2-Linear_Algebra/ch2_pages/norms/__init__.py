@@ -2,11 +2,11 @@
 
 from __future__ import annotations
 
-from ch2_pages._page_factory import page
 from ch2_pages.norms.callbacks import register_callbacks
 from ch2_pages.norms.filters import build_filters
+from maths_self_study.dashboards.page_factory import define_page
 
-NormsPage = page(
+NormsPage = define_page(
     label="Norms",
     value="norms",
     title="Norms as geometry",

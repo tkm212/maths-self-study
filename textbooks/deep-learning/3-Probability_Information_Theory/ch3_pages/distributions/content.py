@@ -2,12 +2,16 @@
 
 from __future__ import annotations
 
+import logging
+
 import numpy as np
 from dash import html
 
 from maths_self_study.dashboards.components import graph, graph_row
 from maths_self_study.dashboards.utils import renorm
 from maths_self_study.deep_learning import ch3_helpers as helpers
+
+log = logging.getLogger(__name__)
 
 
 def render_body(c0, c1, c2, c3, s11, s12, s22) -> html.Div:
@@ -16,6 +20,7 @@ def render_body(c0, c1, c2, c3, s11, s12, s22) -> html.Div:
     eigvals = np.linalg.eigvalsh(cov)
     note = None
     if np.any(eigvals <= 1e-8):
+        log.info("Nudging covariance to stay positive definite (min eigenvalue=%.2e)", float(eigvals.min()))
         cov = cov + np.eye(2) * (1e-2 - float(eigvals.min()))
         note = html.P("Covariance nudged to stay positive definite for the contour plot.", style={"color": "#0369a1"})
 

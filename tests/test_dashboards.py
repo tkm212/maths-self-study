@@ -100,3 +100,12 @@ def test_matrix_inputs_component():
 def test_filter_bar_wraps_controls():
     bar = filter_bar(num_input("x", "x", 1.0))
     assert bar is not None
+
+
+def test_configure_logging():
+    import logging
+
+    from maths_self_study.dashboards.logging import configure
+
+    configure(level=logging.WARNING, force=True)
+    assert logging.getLogger().level == logging.WARNING

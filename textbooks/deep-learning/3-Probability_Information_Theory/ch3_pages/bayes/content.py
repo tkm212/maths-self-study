@@ -2,12 +2,16 @@
 
 from __future__ import annotations
 
+import logging
+
 import numpy as np
 from dash import html
 
 from maths_self_study.dashboards.components import graph, preformatted
 from maths_self_study.deep_learning import ch3_helpers as helpers
 from maths_self_study.probability import bayes_posterior, monty_hall_posterior
+
+log = logging.getLogger(__name__)
 
 
 def render_body(prior_d, sens, fpr, chosen, opened) -> html.Div:
@@ -22,6 +26,7 @@ def render_body(prior_d, sens, fpr, chosen, opened) -> html.Div:
     chosen_i = int(chosen)
     opened_i = int(opened)
     if chosen_i == opened_i:
+        log.warning("Monty Hall: chosen door %d equals opened door %d", chosen_i, opened_i)
         return html.Div([
             html.H3("Rare disease, positive test"),
             graph(fig_med),

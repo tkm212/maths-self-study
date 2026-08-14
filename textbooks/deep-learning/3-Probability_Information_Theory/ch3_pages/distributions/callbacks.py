@@ -2,9 +2,10 @@
 
 from __future__ import annotations
 
-from dash import Dash, Input, Output
+from dash import Dash, Input
 
 from ch3_pages.distributions.content import render_body
+from maths_self_study.dashboards.callbacks import register_body_callback
 
 INPUTS = [
     Input("dist-c0", "value"),
@@ -18,6 +19,4 @@ INPUTS = [
 
 
 def register_callbacks(app: Dash, body_id: str) -> None:
-    @app.callback(Output(body_id, "children"), *INPUTS)
-    def update(c0, c1, c2, c3, s11, s12, s22):
-        return render_body(c0, c1, c2, c3, s11, s12, s22)
+    register_body_callback(app, body_id, INPUTS, render_body, page="distributions")

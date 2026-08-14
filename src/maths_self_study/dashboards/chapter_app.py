@@ -2,11 +2,14 @@
 
 from __future__ import annotations
 
+import logging
 from abc import ABC, abstractmethod
 
 from dash import Dash, Input, Output, html
 
 from maths_self_study.dashboards.layout import chapter_layout, page_shell
+
+log = logging.getLogger(__name__)
 
 
 class DashboardPage(ABC):
@@ -46,6 +49,9 @@ def create_chapter_dashboard(
     app = Dash(module_name, title=dash_title, suppress_callback_exceptions=True)
     page_by_value = {page.value: page for page in pages}
     default = default_page or pages[0].value
+    page_names = [page.value for page in pages]
+
+    log.info("Creating dashboard %r with pages: %s", dash_title, ", ".join(page_names))
 
     app.layout = chapter_layout(
         title=heading,
@@ -58,9 +64,11 @@ def create_chapter_dashboard(
 
     @app.callback(Output("page-content", "children"), Input("page-tabs", "value"))
     def render_page(page: str) -> html.Div:
+        log.info("Showing page %r", page)
         return page_by_value[page].build_shell()
 
     for page in pages:
         page.register_callbacks(app)
+        log.debug("Registered callbacks for page %r", page.value)
 
     return app
