@@ -10,9 +10,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Added
 
-- Deep Learning track (Goodfellow et al.): Chapter 2 — Linear Algebra Dash dashboard under `notebooks/deep-learning/2-Linear_Algebra/dashboard.py`.
+- Deep Learning track (Goodfellow et al.): Chapter 2 — Linear Algebra Dash dashboard under `textbooks/deep-learning/2-Linear_Algebra/dashboard.py`.
 - `maths_self_study.linalg` module: Lp norms, symmetric eigendecomposition, PCA, Moore–Penrose pseudoinverse.
-- Deep Learning track (Goodfellow et al.): Chapter 3 — Probability and Information Theory Dash dashboard under `notebooks/deep-learning/3-Probability_Information_Theory/dashboard.py`.
+- Deep Learning track (Goodfellow et al.): Chapter 3 — Probability and Information Theory Dash dashboard under `textbooks/deep-learning/3-Probability_Information_Theory/dashboard.py`.
 - `maths_self_study.probability` module: Bayes' rule, Shannon entropy, cross-entropy, KL divergence, Monty Hall posterior.
 - `dash` dependency for interactive Deep Learning chapter dashboards.
 
@@ -31,7 +31,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Added
 
 - [MIGRATION.md](MIGRATION.md) for upgrading from the old package and repository name.
-- [notebooks/README.md](notebooks/README.md) describing notebook layout and conventions.
+- [textbooks/README.md](textbooks/README.md) describing notebook layout and conventions.
 - [docs/curriculum.md](docs/curriculum.md) listing current and planned textbook tracks.
 
 ## [0.0.1] - 2025-01-01

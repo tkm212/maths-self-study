@@ -66,23 +66,23 @@ packages = ["src/maths_self_study"]
 python = "./.venv"
 python-version = "3.14"
 extra-paths = [
-    "notebooks/elements-of-statistical-learning/2-Supervised_Learning",
-    "notebooks/elements-of-statistical-learning/3-Linear_Methods",
-    "notebooks/elements-of-statistical-learning/4-Linear_Methods_Classification",
-    "notebooks/elements-of-statistical-learning/5-Basis_Expansions",
-    "notebooks/elements-of-statistical-learning/6-Kernel_Smoothing",
-    "notebooks/elements-of-statistical-learning/7-Model_Assessment",
-    "notebooks/elements-of-statistical-learning/8-Model_Inference",
-    "notebooks/elements-of-statistical-learning/9-Additive_Models_Trees",
-    "notebooks/elements-of-statistical-learning/10-Boosting",
-    "notebooks/elements-of-statistical-learning/11-Neural_Networks",
-    "notebooks/elements-of-statistical-learning/12-SVM_Flexible_Discriminants",
-    "notebooks/elements-of-statistical-learning/13-Prototype_Methods",
-    "notebooks/elements-of-statistical-learning/14-Unsupervised_Learning",
-    "notebooks/elements-of-statistical-learning/15-Random_Forests",
-    "notebooks/elements-of-statistical-learning/16-Ensemble_Learning",
-    "notebooks/elements-of-statistical-learning/17-Undirected_Graphical_Models",
-    "notebooks/elements-of-statistical-learning/18-High_Dimensional_Problems",
+    "textbooks/elements-of-statistical-learning/2-Supervised_Learning",
+    "textbooks/elements-of-statistical-learning/3-Linear_Methods",
+    "textbooks/elements-of-statistical-learning/4-Linear_Methods_Classification",
+    "textbooks/elements-of-statistical-learning/5-Basis_Expansions",
+    "textbooks/elements-of-statistical-learning/6-Kernel_Smoothing",
+    "textbooks/elements-of-statistical-learning/7-Model_Assessment",
+    "textbooks/elements-of-statistical-learning/8-Model_Inference",
+    "textbooks/elements-of-statistical-learning/9-Additive_Models_Trees",
+    "textbooks/elements-of-statistical-learning/10-Boosting",
+    "textbooks/elements-of-statistical-learning/11-Neural_Networks",
+    "textbooks/elements-of-statistical-learning/12-SVM_Flexible_Discriminants",
+    "textbooks/elements-of-statistical-learning/13-Prototype_Methods",
+    "textbooks/elements-of-statistical-learning/14-Unsupervised_Learning",
+    "textbooks/elements-of-statistical-learning/15-Random_Forests",
+    "textbooks/elements-of-statistical-learning/16-Ensemble_Learning",
+    "textbooks/elements-of-statistical-learning/17-Undirected_Graphical_Models",
+    "textbooks/elements-of-statistical-learning/18-High_Dimensional_Problems",
 ]
 
 [tool.pytest.ini_options]
@@ -155,7 +155,7 @@ ignore = [
 preview = true
 
 [tool.deptry]
-extend_exclude = ["notebooks", "docs"]
+extend_exclude = ["textbooks", "docs"]
 known_first_party = ["maths_self_study", "scripts"]
 github_output = true
 
