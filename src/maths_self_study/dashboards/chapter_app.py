@@ -7,7 +7,7 @@ from abc import ABC, abstractmethod
 
 from dash import Dash, Input, Output, html
 
-from maths_self_study.dashboards.layout import chapter_layout, page_shell
+from maths_self_study.dashboards.layout import TAB_WRAP_STYLE, chapter_layout, page_shell
 
 log = logging.getLogger(__name__)
 
@@ -54,6 +54,10 @@ def create_chapter_dashboard(
 ) -> Dash:
     """Build a tabbed chapter dashboard and register page callbacks."""
     app = Dash(module_name, title=dash_title, suppress_callback_exceptions=True)
+    app.index_string = app.index_string.replace(
+        "</head>",
+        f"<style>{TAB_WRAP_STYLE}</style></head>",
+    )
     page_by_value = {page.value: page for page in pages}
     default = default_page or pages[0].value
     page_names = [page.value for page in pages]

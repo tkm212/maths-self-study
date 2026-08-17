@@ -6,7 +6,7 @@ from typing import Any
 
 from dash import dcc, html
 
-_TAB_WRAP_STYLE = """
+TAB_WRAP_STYLE = """
 #page-tabs .tab-container {
     flex-wrap: wrap !important;
     height: auto !important;
@@ -71,7 +71,6 @@ def chapter_layout(
                 },
             ),
             html.P(subtitle, style={"color": "#64748b"}),
-            html.Style(_TAB_WRAP_STYLE),
             dcc.Tabs(
                 id="page-tabs",
                 value=default_tab,
