@@ -198,6 +198,57 @@ def preformatted(text: str) -> html.Pre:
     return html.Pre(text, style={"background": "#f1f5f9", "padding": "12px", "borderRadius": "6px"})
 
 
+def table(
+    columns: list[str],
+    rows: list[list[str | float | int]],
+    *,
+    caption: str | None = None,
+) -> html.Div:
+    """Render a styled data table from column headers and row values."""
+    header = html.Tr(
+        [html.Th(col, style=_TABLE_HEADER_STYLE) for col in columns],
+        style={"background": "#f1f5f9"},
+    )
+    body_rows = [
+        html.Tr(
+            [html.Td(str(cell), style=_TABLE_CELL_STYLE) for cell in row],
+            style={"borderBottom": "1px solid #e2e8f0"},
+        )
+        for row in rows
+    ]
+    children: list[Any] = []
+    if caption:
+        children.append(html.Div(caption, style={"fontWeight": 600, "marginBottom": "8px", "color": "#334155"}))
+    children.append(
+        html.Table(
+            [html.Thead(header), html.Tbody(body_rows)],
+            style={
+                "width": "100%",
+                "borderCollapse": "collapse",
+                "fontSize": "0.95rem",
+                "background": "#fff",
+                "border": "1px solid #e2e8f0",
+                "borderRadius": "8px",
+                "overflow": "hidden",
+            },
+        )
+    )
+    return html.Div(children, style={"marginTop": "12px", "maxWidth": "420px"})
+
+
+_TABLE_HEADER_STYLE = {
+    "textAlign": "left",
+    "padding": "10px 14px",
+    "fontWeight": 600,
+    "color": "#475569",
+    "borderBottom": "2px solid #e2e8f0",
+}
+_TABLE_CELL_STYLE = {
+    "padding": "10px 14px",
+    "color": "#0f172a",
+}
+
+
 def metric(label: str, value: str) -> html.Div:
     return html.Div(
         [html.Strong(label), html.Div(value)],

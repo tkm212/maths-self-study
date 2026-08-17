@@ -7,7 +7,7 @@ import logging
 import numpy as np
 from dash import html
 
-from maths_self_study.dashboards.components import graph, graph_row
+from maths_self_study.dashboards.components import graph, graph_row, table
 from maths_self_study.dashboards.utils import coerce_matrix_2x2, renorm
 from maths_self_study.deep_learning import ch3_helpers as helpers
 
@@ -37,12 +37,16 @@ def render_body(c0, c1, c2, c3, s11, s12, s21, s22) -> html.Div:
         cat,
         title="Softmax target distribution",
     )
+    cat_rows = [[label, f"{p:.4f}"] for label, p in zip(helpers.CATEGORICAL_LABELS, cat, strict=True)]
+    cov_rows = [[f"λ{i + 1} (covariance)", f"{val:.4f}"] for i, val in enumerate(np.linalg.eigvalsh(cov))]
     return html.Div([
         html.H3("Bernoulli — maximal uncertainty at p = ½"),
         graph(fig_entropy),
         html.H3("Gaussian — elliptical level sets from the covariance"),
         note,
         graph_row(graph(fig_1d, style={"flex": "1"}), graph(fig_2d, style={"flex": "1"})),
+        table(["Eigenvalue", "Value"], cov_rows, caption="Covariance spectrum"),
         html.H3("Categorical — finite support"),
         graph(fig_cat),
+        table(["Class", "P"], cat_rows, caption="Categorical distribution"),
     ])

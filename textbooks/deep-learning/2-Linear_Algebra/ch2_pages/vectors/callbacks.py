@@ -12,7 +12,6 @@ INPUTS = [
     *matrix_callback_inputs("grid-matrix"),
     Input("vm-rot", "value"),
     Input("vm-shear", "value"),
-    Input("vm-range", "value"),
 ]
 
 

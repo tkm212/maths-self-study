@@ -14,6 +14,7 @@ from maths_self_study.dashboards.components import (
     matrix_cell_id,
     matrix_input,
     num_input,
+    table,
 )
 from maths_self_study.dashboards.utils import as_matrix, coerce_matrix_2x2, format_matrix_2x2, parse_matrix_2x2, renorm
 
@@ -140,9 +141,22 @@ def test_matrix_input_component():
     assert block is not None
 
 
+def test_suggest_grid_range_scales_with_stretch():
+    from maths_self_study.deep_learning import ch2_helpers as helpers
+
+    small = helpers.suggest_grid_range(np.array([[0.5, 0.0], [0.0, 0.5]]))
+    large = helpers.suggest_grid_range(np.array([[3.0, 0.0], [0.0, 3.0]]))
+    assert small > large
+
+
 def test_filter_bar_wraps_controls():
     bar = filter_bar(num_input("x", "x", 1.0))
     assert bar is not None
+
+
+def test_table_component():
+    block = table(["A", "B"], [["x", "1"], ["y", "2"]], caption="Demo")
+    assert block is not None
 
 
 def test_configure_logging():

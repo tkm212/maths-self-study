@@ -86,20 +86,35 @@ def plot_vectors_2d(
     return fig
 
 
+def suggest_grid_range(
+    matrix: np.ndarray,
+    *,
+    target_extent: float = 2.4,
+    min_range: float = 0.6,
+    max_range: float = 2.8,
+) -> float:
+    """Pick an input half-width so the warped grid fills the axes comfortably."""
+    m = np.asarray(matrix, dtype=float).reshape(2, 2)
+    stretch = float(np.max(np.linalg.svd(m, compute_uv=False)))
+    stretch = max(stretch, 1e-6)
+    return float(np.clip(target_extent / stretch, min_range, max_range))
+
+
 def plot_transformed_grid(
     matrix: np.ndarray,
     *,
     title: str = "Linear map as deformed grid",
-    grid_range: float = 1.5,
+    grid_range: float | None = None,
     n_lines: int = 9,
 ) -> go.Figure:
     """Show how a 2x2 matrix acts on a coordinate grid — the geometric view of Ax."""
     m = np.asarray(matrix, dtype=float).reshape(2, 2)
-    t = np.linspace(-grid_range, grid_range, n_lines)
+    r = suggest_grid_range(m) if grid_range is None else float(grid_range)
+    t = np.linspace(-r, r, n_lines)
     fig = go.Figure()
 
     for x in t:
-        pts = np.column_stack([np.full(n_lines, x), np.linspace(-grid_range, grid_range, n_lines)])
+        pts = np.column_stack([np.full(n_lines, x), np.linspace(-r, r, n_lines)])
         warped = pts @ m.T
         fig.add_trace(
             go.Scatter(
@@ -112,7 +127,7 @@ def plot_transformed_grid(
             )
         )
     for y in t:
-        pts = np.column_stack([np.linspace(-grid_range, grid_range, n_lines), np.full(n_lines, y)])
+        pts = np.column_stack([np.linspace(-r, r, n_lines), np.full(n_lines, y)])
         warped = pts @ m.T
         fig.add_trace(
             go.Scatter(

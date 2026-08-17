@@ -13,6 +13,7 @@ from maths_self_study.dashboards.components import (
     preformatted,
     section,
     slider,
+    table,
 )
 from maths_self_study.dashboards.layout import chapter_layout, page_shell
 from maths_self_study.dashboards.page_factory import define_page
@@ -34,4 +35,5 @@ __all__ = [
     "preformatted",
     "section",
     "slider",
+    "table",
 ]

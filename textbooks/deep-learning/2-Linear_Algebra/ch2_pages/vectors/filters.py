@@ -13,5 +13,4 @@ def build_filters() -> html.Div:
         matrix_input("grid-matrix", "Grid map A", helpers.GRID_MAP),
         slider("vm-rot", "Rotation (°)", -180, 180, 30, 1),
         slider("vm-shear", "Shear k", -2.0, 2.0, 0.8, 0.1),
-        slider("vm-range", "Grid range", 0.5, 3.0, 1.5, 0.1),
     )
