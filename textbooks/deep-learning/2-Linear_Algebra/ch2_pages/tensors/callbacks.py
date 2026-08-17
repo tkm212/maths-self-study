@@ -6,16 +6,11 @@ from dash import Dash, Input
 
 from ch2_pages.tensors.content import render_body
 from maths_self_study.dashboards.callbacks import register_body_callback
+from maths_self_study.dashboards.components import tensor_callback_inputs
+from maths_self_study.deep_learning import ch2_helpers as helpers
 
 INPUTS = [
-    Input("tensor-a1", "value"),
-    Input("tensor-a2", "value"),
-    Input("tensor-b1", "value"),
-    Input("tensor-b2", "value"),
-    Input("tensor-b3", "value"),
-    Input("tensor-c1", "value"),
-    Input("tensor-c2", "value"),
-    Input("tensor-c3", "value"),
+    *tensor_callback_inputs("tensor-grid", helpers.TENSOR_SHAPE),
     Input("tensor-axis", "value"),
     Input("tensor-slice", "value"),
 ]

@@ -78,3 +78,32 @@ def renorm(values: np.ndarray) -> np.ndarray:
     if total <= 0:
         return np.full_like(xs, 1.0 / len(xs))
     return xs / total
+
+
+def coerce_tensor_3d(
+    values: list[float | None],
+    *,
+    fallback: np.ndarray,
+    shape: tuple[int, int, int] = (2, 3, 3),
+) -> np.ndarray:
+    """Build a rank-3 tensor from flat cell inputs (k, then i, then j order)."""
+    default = np.asarray(fallback, dtype=float).reshape(shape)
+    ni, nj, nk = shape
+    out = default.copy()
+    expected = ni * nj * nk
+    if len(values) != expected:
+        log.warning("Expected %d tensor cells, got %d — using fallbacks", expected, len(values))
+        return out
+    idx = 0
+    for k in range(nk):
+        for i in range(ni):
+            for j in range(nj):
+                value = values[idx]
+                idx += 1
+                if value is None:
+                    continue
+                try:
+                    out[i, j, k] = float(value)
+                except TypeError, ValueError:
+                    log.warning("Invalid tensor cell value %r — using fallback", value)
+    return out

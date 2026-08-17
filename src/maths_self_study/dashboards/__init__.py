@@ -15,6 +15,8 @@ from maths_self_study.dashboards.components import (
     slider,
     table,
     text_box,
+    tensor_callback_inputs,
+    tensor_grid_input,
 )
 from maths_self_study.dashboards.layout import chapter_layout, page_shell
 from maths_self_study.dashboards.page_factory import define_page
@@ -38,4 +40,6 @@ __all__ = [
     "slider",
     "table",
     "text_box",
+    "tensor_callback_inputs",
+    "tensor_grid_input",
 ]

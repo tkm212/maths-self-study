@@ -123,6 +123,20 @@ def matrix_callback_inputs(prefix: str) -> list[Input]:
     return [Input(matrix_cell_id(prefix, row, col), "value") for row in (1, 2) for col in (1, 2)]
 
 
+def tensor_cell_id(prefix: str, i: int, j: int, k: int) -> str:
+    return f"{prefix}-{i}{j}{k}"
+
+
+def tensor_callback_inputs(prefix: str, shape: tuple[int, int, int] = (2, 3, 3)) -> list[Input]:
+    ni, nj, nk = shape
+    return [
+        Input(tensor_cell_id(prefix, i + 1, j + 1, k + 1), "value")
+        for k in range(nk)
+        for i in range(ni)
+        for j in range(nj)
+    ]
+
+
 def _matrix_paren(side: str) -> html.Span:
     return html.Span(
         "(" if side == "left" else ")",
@@ -147,6 +161,82 @@ def _matrix_cell(prefix: str, row: int, col: int, value: float) -> dcc.Input:
         value=float(value),
         debounce=True,
         style=_MATRIX_CELL_STYLE,
+    )
+
+
+def _tensor_cell(prefix: str, i: int, j: int, k: int, value: float) -> dcc.Input:
+    return dcc.Input(
+        id=tensor_cell_id(prefix, i, j, k),
+        type="number",
+        value=float(value),
+        debounce=True,
+        style=_MATRIX_CELL_STYLE,
+    )
+
+
+def _tensor_slice_grid(prefix: str, slab: np.ndarray, *, k: int) -> html.Div:
+    ni, nj = slab.shape
+    return html.Div(
+        [
+            _tensor_cell(prefix, i + 1, j + 1, k, slab[i, j])
+            for i in range(ni)
+            for j in range(nj)
+        ],
+        style={
+            "display": "grid",
+            "gridTemplateColumns": f"repeat({nj}, auto)",
+            "columnGap": "14px",
+            "rowGap": "10px",
+            "alignItems": "center",
+            "justifyItems": "center",
+            "padding": "2px 6px",
+        },
+    )
+
+
+def tensor_grid_input(
+    id_: str,
+    label: str,
+    defaults: np.ndarray,
+    *,
+    shape: tuple[int, int, int] = (2, 3, 3),
+    hint: str | None = None,
+) -> html.Div:
+    """Editable rank-3 tensor as stacked 2D slices — same click-to-type UX as matrix_input."""
+    caption = hint or "Click any cell to edit — plots update automatically."
+    tensor = np.asarray(defaults, dtype=float).reshape(shape)
+    _, _, nk = shape
+    slices = []
+    for k in range(nk):
+        slice_label = html.Div(
+            f"k = {k}",
+            style={"fontSize": "0.8rem", "color": "#64748b", "marginBottom": "4px", "textAlign": "center"},
+        )
+        slice_grid = html.Div(
+            [
+                _matrix_paren("left"),
+                _tensor_slice_grid(id_, tensor[:, :, k], k=k + 1),
+                _matrix_paren("right"),
+            ],
+            style={
+                "display": "flex",
+                "alignItems": "center",
+                "gap": "4px",
+                "padding": "6px 8px",
+                "background": "#fff",
+                "border": "1px solid #e2e8f0",
+                "borderRadius": "8px",
+            },
+        )
+        slices.append(html.Div([slice_label, slice_grid], style={"flex": "0 0 auto"}))
+
+    return html.Div(
+        [
+            html.Label(label, style=_LABEL_STYLE),
+            html.Div(slices, style={"display": "flex", "flexWrap": "wrap", "gap": "16px"}),
+            html.Div(caption, style={"fontSize": "0.75rem", "color": "#64748b", "marginTop": "4px"}),
+        ],
+        style={"flex": "1 1 100%"},
     )
 
 

@@ -15,10 +15,13 @@ from maths_self_study.dashboards.components import (
     matrix_input,
     num_input,
     table,
+    tensor_callback_inputs,
+    tensor_cell_id,
+    tensor_grid_input,
     text_box,
 )
 from maths_self_study.dashboards.layout import page_shell
-from maths_self_study.dashboards.utils import as_matrix, coerce_matrix_2x2, format_matrix_2x2, parse_matrix_2x2, renorm
+from maths_self_study.dashboards.utils import as_matrix, coerce_matrix_2x2, coerce_tensor_3d, format_matrix_2x2, parse_matrix_2x2, renorm
 
 _REPO_ROOT = Path(__file__).resolve().parents[1]
 _CH2_DASHBOARD = _REPO_ROOT / "textbooks/deep-learning/2-Linear_Algebra/dashboard.py"
@@ -154,11 +157,37 @@ def test_suggest_grid_range_scales_with_stretch():
 def test_plot_tensor_3d_builds_figure():
     from maths_self_study.deep_learning import ch2_helpers as helpers
 
-    tensor = helpers.tensor_product(helpers.TENSOR_A, helpers.TENSOR_B, helpers.TENSOR_C)
+    tensor = helpers.TENSOR_DEFAULT
     fig = helpers.plot_tensor_3d(tensor, axis=2, index=0)
     assert fig is not None
     assert len(fig.data) == 2
     assert fig.layout.scene is not None
+
+
+def test_tensor_grid_input_component():
+    from maths_self_study.deep_learning import ch2_helpers as helpers
+
+    block = tensor_grid_input("tensor", "T", helpers.TENSOR_DEFAULT, shape=helpers.TENSOR_SHAPE)
+    assert block is not None
+
+
+def test_tensor_callback_inputs():
+    inputs = tensor_callback_inputs("tensor-grid", (2, 3, 3))
+    assert len(inputs) == 18
+    assert tensor_cell_id("tensor-grid", 1, 2, 3) == "tensor-grid-123"
+
+
+def test_coerce_tensor_3d():
+    from maths_self_study.deep_learning import ch2_helpers as helpers
+
+    ni, nj, nk = helpers.TENSOR_SHAPE
+    ordered: list[float] = []
+    for k in range(nk):
+        for i in range(ni):
+            for j in range(nj):
+                ordered.append(float(helpers.TENSOR_DEFAULT[i, j, k]))
+    tensor = coerce_tensor_3d(ordered, fallback=helpers.TENSOR_DEFAULT, shape=helpers.TENSOR_SHAPE)
+    np.testing.assert_allclose(tensor, helpers.TENSOR_DEFAULT)
 
 
 def test_filter_bar_wraps_controls():

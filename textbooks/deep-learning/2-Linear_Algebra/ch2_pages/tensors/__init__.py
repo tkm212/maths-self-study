@@ -14,8 +14,8 @@ TensorsPage = define_page(
     methodology=[
         "A tensor is an n-dimensional array: scalar (0D), vector (1D), matrix (2D), then higher orders.",
         "Indexing T[i, j, k, …] picks one element along each mode; slicing fixes indices to get a lower-rank view.",
-        "Outer product: (a ⊗ b)ᵢⱼ = aᵢ bⱼ — two vectors produce a rank-1 matrix.",
-        "Full tensor product: T[i, j, k] = a[i] b[j] c[k] builds rank 3 from three vectors; each slice is a scaled outer product.",
+        "Each entry is stored at grid position (i, j, k) — edit cells directly to set T[i, j, k].",
+        "Slicing along i, j, or k gives a matrix face; the 3D view shows all entries at once.",
     ],
     build_filters=build_filters,
     register_callbacks=register_callbacks,
