@@ -6,15 +6,14 @@ from dash import Dash, Input
 
 from ch3_pages.distributions.content import render_body
 from maths_self_study.dashboards.callbacks import register_body_callback
+from maths_self_study.dashboards.components import matrix_callback_inputs
 
 INPUTS = [
     Input("dist-c0", "value"),
     Input("dist-c1", "value"),
     Input("dist-c2", "value"),
     Input("dist-c3", "value"),
-    Input("dist-cov11", "value"),
-    Input("dist-cov12", "value"),
-    Input("dist-cov22", "value"),
+    *matrix_callback_inputs("dist-cov-matrix"),
 ]
 
 

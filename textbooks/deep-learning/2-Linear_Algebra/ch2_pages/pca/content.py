@@ -5,7 +5,7 @@ from __future__ import annotations
 import numpy as np
 from dash import html
 
-from maths_self_study.dashboards.components import graph, graph_row
+from maths_self_study.dashboards.components import graph, graph_row, table
 from maths_self_study.deep_learning import ch2_helpers as helpers
 from maths_self_study.linalg import pca_fit, pca_inverse_transform, pca_transform
 
@@ -22,11 +22,13 @@ def render_body(seed, n_samples, sx, sy) -> html.Div:
     error = float(np.linalg.norm(reconstructed - data))
     demo = helpers.PCADemo(data=data, model=model, codes=codes, reconstruction_error=error)
     figs = helpers.pca_figures(demo)
+    var_rows = [
+        [f"PC{i + 1} variance", f"{float(model.explained_variance[i]):.4f}"]
+        for i in range(len(model.explained_variance))
+    ]
+    var_rows.append(["Reconstruction error ‖X̂ - X‖", f"{error:.4f}"])
     return html.Div([
         graph_row(graph(figs[0], style={"flex": "1"}), graph(figs[1], style={"flex": "1"})),
         graph(figs[2]),
-        html.Div(
-            [html.Strong("Reconstruction error ‖X̂ - X‖"), html.Div(f"{error:.4f}")],
-            style={"padding": "12px", "background": "#f8fafc", "borderRadius": "8px"},
-        ),
+        table(["Quantity", "Value"], var_rows, caption="PCA fit"),
     ])

@@ -5,12 +5,25 @@ from __future__ import annotations
 from typing import Any
 
 import numpy as np
-from dash import dcc, html
+from dash import Input, dcc, html
 
 _LABEL_STYLE = {"fontSize": "0.85rem", "color": "#475569"}
 _CONTROL_STYLE = {"flex": "1", "minWidth": "110px"}
 _SLIDER_STYLE = {"flex": "1", "minWidth": "180px", "padding": "0 8px"}
 _DROPDOWN_STYLE = {"flex": "1", "minWidth": "140px"}
+_MATH_FONT = '"Latin Modern Math", "STIX Two Math", "Cambria Math", "Times New Roman", serif'
+_MATRIX_CELL_STYLE = {
+    "width": "3.25rem",
+    "padding": "4px 2px",
+    "border": "none",
+    "borderBottom": "1px solid transparent",
+    "background": "transparent",
+    "textAlign": "center",
+    "fontFamily": _MATH_FONT,
+    "fontSize": "1.2rem",
+    "color": "#111827",
+    "outline": "none",
+}
 
 
 def num_input(
@@ -102,21 +115,138 @@ def section(title: str, *children: html.Div) -> html.Div:
     )
 
 
-def matrix_inputs(prefix: str, defaults: np.ndarray, title: str) -> html.Div:
+def matrix_cell_id(prefix: str, row: int, col: int) -> str:
+    return f"{prefix}-{row}{col}"
+
+
+def matrix_callback_inputs(prefix: str) -> list[Input]:
+    return [Input(matrix_cell_id(prefix, row, col), "value") for row in (1, 2) for col in (1, 2)]
+
+
+def _matrix_paren(side: str) -> html.Span:
+    return html.Span(
+        "(" if side == "left" else ")",
+        style={
+            "fontFamily": _MATH_FONT,
+            "fontSize": "3.4rem",
+            "fontWeight": 200,
+            "lineHeight": 0.88,
+            "color": "#111827",
+            "userSelect": "none",
+            "display": "flex",
+            "alignItems": "center",
+            "padding": "0 2px",
+        },
+    )
+
+
+def _matrix_cell(prefix: str, row: int, col: int, value: float) -> dcc.Input:
+    return dcc.Input(
+        id=matrix_cell_id(prefix, row, col),
+        type="number",
+        value=float(value),
+        debounce=True,
+        style=_MATRIX_CELL_STYLE,
+    )
+
+
+def matrix_input(id_: str, label: str, defaults: np.ndarray, *, hint: str | None = None) -> html.Div:
+    caption = hint or "Type in any cell — plots update automatically."
+    matrix = np.asarray(defaults, dtype=float).reshape(2, 2)
     return html.Div(
         [
-            html.Div(title, style={"fontWeight": 600, "width": "100%", "marginBottom": "4px"}),
-            num_input(f"{prefix}-a11", "a₁₁", float(defaults[0, 0])),
-            num_input(f"{prefix}-a12", "a₁₂", float(defaults[0, 1])),
-            num_input(f"{prefix}-a21", "a₂₁", float(defaults[1, 0])),
-            num_input(f"{prefix}-a22", "a₂₂", float(defaults[1, 1])),
+            html.Label(label, style=_LABEL_STYLE),
+            html.Div(
+                [
+                    _matrix_paren("left"),
+                    html.Div(
+                        [
+                            _matrix_cell(id_, 1, 1, matrix[0, 0]),
+                            _matrix_cell(id_, 1, 2, matrix[0, 1]),
+                            _matrix_cell(id_, 2, 1, matrix[1, 0]),
+                            _matrix_cell(id_, 2, 2, matrix[1, 1]),
+                        ],
+                        style={
+                            "display": "grid",
+                            "gridTemplateColumns": "repeat(2, auto)",
+                            "columnGap": "14px",
+                            "rowGap": "10px",
+                            "alignItems": "center",
+                            "justifyItems": "center",
+                            "padding": "2px 6px",
+                        },
+                    ),
+                    _matrix_paren("right"),
+                ],
+                style={
+                    "display": "flex",
+                    "alignItems": "center",
+                    "gap": "4px",
+                    "padding": "6px 8px",
+                    "background": "#fff",
+                    "border": "1px solid #e2e8f0",
+                    "borderRadius": "8px",
+                },
+            ),
+            html.Div(caption, style={"fontSize": "0.75rem", "color": "#64748b", "marginTop": "4px"}),
         ],
-        style={"display": "flex", "flexWrap": "wrap", "gap": "12px", "width": "100%"},
+        style={"flex": "0 0 auto"},
     )
 
 
 def preformatted(text: str) -> html.Pre:
     return html.Pre(text, style={"background": "#f1f5f9", "padding": "12px", "borderRadius": "6px"})
+
+
+def table(
+    columns: list[str],
+    rows: list[list[str | float | int]],
+    *,
+    caption: str | None = None,
+) -> html.Div:
+    """Render a styled data table from column headers and row values."""
+    header = html.Tr(
+        [html.Th(col, style=_TABLE_HEADER_STYLE) for col in columns],
+        style={"background": "#f1f5f9"},
+    )
+    body_rows = [
+        html.Tr(
+            [html.Td(str(cell), style=_TABLE_CELL_STYLE) for cell in row],
+            style={"borderBottom": "1px solid #e2e8f0"},
+        )
+        for row in rows
+    ]
+    children: list[Any] = []
+    if caption:
+        children.append(html.Div(caption, style={"fontWeight": 600, "marginBottom": "8px", "color": "#334155"}))
+    children.append(
+        html.Table(
+            [html.Thead(header), html.Tbody(body_rows)],
+            style={
+                "width": "100%",
+                "borderCollapse": "collapse",
+                "fontSize": "0.95rem",
+                "background": "#fff",
+                "border": "1px solid #e2e8f0",
+                "borderRadius": "8px",
+                "overflow": "hidden",
+            },
+        )
+    )
+    return html.Div(children, style={"marginTop": "12px", "maxWidth": "420px"})
+
+
+_TABLE_HEADER_STYLE = {
+    "textAlign": "left",
+    "padding": "10px 14px",
+    "fontWeight": 600,
+    "color": "#475569",
+    "borderBottom": "2px solid #e2e8f0",
+}
+_TABLE_CELL_STYLE = {
+    "padding": "10px 14px",
+    "color": "#0f172a",
+}
 
 
 def metric(label: str, value: str) -> html.Div:

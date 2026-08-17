@@ -5,9 +5,17 @@ from __future__ import annotations
 import numpy as np
 from dash import html
 
-from maths_self_study.dashboards.components import graph, preformatted
+from maths_self_study.dashboards.components import graph, table
 from maths_self_study.deep_learning import ch2_helpers as helpers
 from maths_self_study.linalg import cosine_similarity, lp_norm
+
+
+def _norm_label(p: float) -> str:
+    if p == np.inf:
+        return "L∞"
+    if p == int(p):
+        return f"L{int(p)}"
+    return f"L{p:g}"
 
 
 def render_body(x1, x2, inf_opts) -> html.Div:
@@ -16,8 +24,17 @@ def render_body(x1, x2, inf_opts) -> html.Div:
     x = np.array([float(x1), float(x2)])
     a = np.array([1.0, 0.0])
     b = np.array([1.0, 1.0])
-    summary = (
-        f"‖x‖₁ = {lp_norm(x, 1):.4f}   ‖x‖₂ = {lp_norm(x, 2):.4f}   ‖x‖∞ = {lp_norm(x, np.inf):.4f}\n"
-        f"cos(e₁, (1,1)) = {cosine_similarity(a, b):.4f}  →  45°"
-    )
-    return html.Div([graph(fig), preformatted(summary)])
+    cos_ab = cosine_similarity(a, b)
+
+    norm_rows = [[_norm_label(p), f"{lp_norm(x, p):.4f}"] for p in p_values]
+    norm_rows.append(["cos(e₁, (1,1))", f"{cos_ab:.4f}"])
+
+    return html.Div([
+        graph(fig),
+        table(
+            ["Norm / metric", "Value"],
+            norm_rows,
+            caption=f"Norms of x = ({x[0]:g}, {x[1]:g})",
+        ),
+        html.P("cos(e₁, (1,1)) = 1/√2 → 45°", style={"color": "#64748b", "marginTop": "8px", "fontSize": "0.9rem"}),
+    ])
