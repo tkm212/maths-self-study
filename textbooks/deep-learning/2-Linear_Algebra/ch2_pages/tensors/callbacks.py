@@ -13,6 +13,9 @@ INPUTS = [
     Input("tensor-b1", "value"),
     Input("tensor-b2", "value"),
     Input("tensor-b3", "value"),
+    Input("tensor-c1", "value"),
+    Input("tensor-c2", "value"),
+    Input("tensor-c3", "value"),
     Input("tensor-axis", "value"),
     Input("tensor-slice", "value"),
 ]

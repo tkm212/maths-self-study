@@ -151,6 +151,16 @@ def test_suggest_grid_range_scales_with_stretch():
     assert small > large
 
 
+def test_plot_tensor_3d_builds_figure():
+    from maths_self_study.deep_learning import ch2_helpers as helpers
+
+    tensor = helpers.tensor_product(helpers.TENSOR_A, helpers.TENSOR_B, helpers.TENSOR_C)
+    fig = helpers.plot_tensor_3d(tensor, axis=2, index=0)
+    assert fig is not None
+    assert len(fig.data) == 2
+    assert fig.layout.scene is not None
+
+
 def test_filter_bar_wraps_controls():
     bar = filter_bar(num_input("x", "x", 1.0))
     assert bar is not None

@@ -17,6 +17,10 @@ def build_filters() -> html.Div:
         num_input("tensor-b1", "b₁", float(helpers.TENSOR_B[0]), step=0.5),
         num_input("tensor-b2", "b₂", float(helpers.TENSOR_B[1]), step=0.5),
         num_input("tensor-b3", "b₃", float(helpers.TENSOR_B[2]), step=0.5),
+        html.Div("Vector c", style={"fontWeight": 600, "width": "100%"}),
+        num_input("tensor-c1", "c₁", float(helpers.TENSOR_C[0]), step=0.5),
+        num_input("tensor-c2", "c₂", float(helpers.TENSOR_C[1]), step=0.5),
+        num_input("tensor-c3", "c₃", float(helpers.TENSOR_C[2]), step=0.5),
         dropdown(
             "tensor-axis",
             "Slice axis",

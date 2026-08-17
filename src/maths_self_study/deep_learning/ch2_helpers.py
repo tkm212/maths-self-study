@@ -215,6 +215,143 @@ def plot_tensor_slice(
     return fig
 
 
+def _tensor_entry_grid(tensor: np.ndarray) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    """Integer (i, j, k) coordinates and flattened values for a rank-3 tensor."""
+    t = np.asarray(tensor, dtype=float)
+    if t.ndim != 3:
+        msg = f"Expected rank-3 tensor, got shape {t.shape}"
+        raise ValueError(msg)
+    ii, jj, kk = np.indices(t.shape)
+    return ii.ravel(), jj.ravel(), kk.ravel(), t.ravel()
+
+
+def _tensor_slice_mask(
+    xs: np.ndarray,
+    ys: np.ndarray,
+    zs: np.ndarray,
+    *,
+    axis: int,
+    index: int,
+) -> np.ndarray:
+    if axis == 0:
+        return xs == index
+    if axis == 1:
+        return ys == index
+    return zs == index
+
+
+def plot_tensor_3d(
+    tensor: np.ndarray,
+    *,
+    axis: int | None = None,
+    index: int | None = None,
+    title: str = "Rank-3 tensor — entry values in 3D",
+) -> go.Figure:
+    """Interactive 3D grid: marker position is (i, j, k), size and colour encode T[i, j, k]."""
+    t = np.asarray(tensor, dtype=float)
+    xs, ys, zs, vals = _tensor_entry_grid(t)
+    abs_vals = np.abs(vals)
+    scale = float(abs_vals.max()) if abs_vals.max() > 0 else 1.0
+    sizes = 6.0 + 28.0 * (abs_vals / scale)
+    hover = [
+        f"T[{int(x)}, {int(y)}, {int(z)}] = {float(v):.3f}"
+        for x, y, z, v in zip(xs, ys, zs, vals, strict=True)
+    ]
+    marker_base: dict[str, Any] = {
+        "colorscale": "RdBu",
+        "cmid": 0.0,
+        "cmin": -scale,
+        "cmax": scale,
+        "line": {"width": 1, "color": "#334155"},
+    }
+
+    fig = go.Figure()
+    if axis is not None and index is not None:
+        axis = int(axis) % 3
+        index = int(np.clip(index, 0, t.shape[axis] - 1))
+        on_slice = _tensor_slice_mask(xs, ys, zs, axis=axis, index=index)
+        axis_names = ("i", "j", "k")
+        slice_label = f"{axis_names[axis]} = {index}"
+
+        fig.add_trace(
+            go.Scatter3d(
+                x=xs[~on_slice],
+                y=ys[~on_slice],
+                z=zs[~on_slice],
+                mode="markers",
+                name="other entries",
+                marker={
+                    **marker_base,
+                    "size": sizes[~on_slice] * 0.55,
+                    "color": vals[~on_slice],
+                    "opacity": 0.35,
+                    "showscale": False,
+                },
+                hovertext=[hover[i] for i in range(len(hover)) if not on_slice[i]],
+                hoverinfo="text",
+            )
+        )
+        fig.add_trace(
+            go.Scatter3d(
+                x=xs[on_slice],
+                y=ys[on_slice],
+                z=zs[on_slice],
+                mode="markers+text",
+                name=slice_label,
+                marker={
+                    **marker_base,
+                    "size": sizes[on_slice],
+                    "color": vals[on_slice],
+                    "opacity": 0.95,
+                    "symbol": "diamond",
+                    "showscale": True,
+                    "colorbar": {"title": "T[i,j,k]"},
+                },
+                text=[f"{float(v):.2g}" for v in vals[on_slice]],
+                textposition="top center",
+                textfont={"size": 10, "color": "#0f172a"},
+                hovertext=[hover[i] for i in range(len(hover)) if on_slice[i]],
+                hoverinfo="text",
+            )
+        )
+        title = f"{title} — highlight {slice_label}"
+    else:
+        fig.add_trace(
+            go.Scatter3d(
+                x=xs,
+                y=ys,
+                z=zs,
+                mode="markers+text",
+                marker={
+                    **marker_base,
+                    "size": sizes,
+                    "color": vals,
+                    "opacity": 0.9,
+                    "showscale": True,
+                    "colorbar": {"title": "T[i,j,k]"},
+                },
+                text=[f"{float(v):.2g}" for v in vals],
+                textposition="top center",
+                textfont={"size": 9, "color": "#0f172a"},
+                hovertext=hover,
+                hoverinfo="text",
+            )
+        )
+
+    ni, nj, nk = t.shape
+    fig.update_layout(
+        **_base_layout(title=title, height=520, showlegend=True),
+        scene={
+            "xaxis": {"title": "i", "tickmode": "linear", "dtick": 1, "range": [-0.5, ni - 0.5]},
+            "yaxis": {"title": "j", "tickmode": "linear", "dtick": 1, "range": [-0.5, nj - 0.5]},
+            "zaxis": {"title": "k", "tickmode": "linear", "dtick": 1, "range": [-0.5, nk - 0.5]},
+            "aspectmode": "cube",
+            "camera": {"eye": {"x": 1.6, "y": 1.6, "z": 1.2}},
+        },
+    )
+    return fig
+
+
 def plot_lp_unit_balls(*, p_values: tuple[float, ...] = (1.0, 2.0, np.inf)) -> go.Figure:
     """Unit balls for L¹, L², L∞ — geometry of norm choice."""
     theta = np.linspace(0, 2 * np.pi, 400)
