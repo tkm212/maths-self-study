@@ -22,7 +22,7 @@ def page_shell(
         html.P(caption, style={"color": "#64748b", "marginTop": 0}),
     ]
     if methodology:
-        children.append(text_box(steps=methodology, title="Methodology"))
+        children.append(text_box(steps=methodology, title="How it works"))
     children.extend([filters, html.Div(id=body_id)])
     return html.Div(children)
 

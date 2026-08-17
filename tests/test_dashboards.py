@@ -162,7 +162,7 @@ def test_table_component():
 
 
 def test_text_box_renders_steps():
-    block = text_box(steps=["First step", "Second step"], title="Methodology")
+    block = text_box(steps=["Definition", "Algorithm"], title="How it works")
     assert block is not None
 
 
