@@ -23,6 +23,9 @@ from maths_self_study.linalg import (
 # --- Demo fixtures (notebook cells stay declarative) ---
 
 GRID_MAP = np.array([[1.2, 0.4], [-0.3, 0.9]])
+TENSOR_A = np.array([1.0, 2.0])
+TENSOR_B = np.array([1.0, -1.0, 0.5])
+TENSOR_C = np.array([1.0, 2.0, 3.0])
 COV_2X2 = np.array([[2.0, 0.8], [0.8, 1.0]])
 SVD_MAP = np.array([[2.0, 0.5], [0.0, 1.5]])
 OVERDETERMINED_A = np.array([[1.0, 2.0], [3.0, 4.0], [5.0, 6.0]])
@@ -156,6 +159,59 @@ def plot_transformed_grid(
 
     fig.update_layout(**_base_layout(title=title, height=480))
     _equal_axes(fig)
+    return fig
+
+
+def tensor_product(a: np.ndarray, b: np.ndarray, c: np.ndarray) -> np.ndarray:
+    """Rank-3 tensor T[i, j, k] = a[i] b[j] c[k] — outer products stacked by a third axis."""
+    av = np.asarray(a, dtype=float).ravel()
+    bv = np.asarray(b, dtype=float).ravel()
+    cv = np.asarray(c, dtype=float).ravel()
+    return np.einsum("i,j,k->ijk", av, bv, cv)
+
+
+def plot_tensor_slice(
+    tensor: np.ndarray,
+    *,
+    axis: int = 2,
+    index: int = 0,
+    title: str = "2D slice of a rank-3 tensor",
+) -> go.Figure:
+    """Heatmap of one 2D face of a 3D tensor — indexing makes rank visible."""
+    t = np.asarray(tensor, dtype=float)
+    axis = int(axis) % 3
+    index = int(np.clip(index, 0, t.shape[axis] - 1))
+    if axis == 0:
+        slab = t[index, :, :]
+        y_label, x_label = "j", "k"
+        slice_desc = f"i = {index}"
+    elif axis == 1:
+        slab = t[:, index, :]
+        y_label, x_label = "i", "k"
+        slice_desc = f"j = {index}"
+    else:
+        slab = t[:, :, index]
+        y_label, x_label = "i", "j"
+        slice_desc = f"k = {index}"
+
+    fig = go.Figure(
+        go.Heatmap(
+            z=slab,
+            colorscale="Blues",
+            showscale=True,
+            text=np.round(slab, 3),
+            texttemplate="%{text}",
+            hovertemplate=f"T[{slice_desc}]<br>%{{y}} , %{{x}} = %{{z:.3f}}<extra></extra>",
+        )
+    )
+    fig.update_layout(
+        **_base_layout(
+            title=f"{title} ({slice_desc})",
+            xaxis_title=x_label,
+            yaxis_title=y_label,
+            height=420,
+        )
+    )
     return fig
 
 
