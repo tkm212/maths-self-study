@@ -198,6 +198,49 @@ def preformatted(text: str) -> html.Pre:
     return html.Pre(text, style={"background": "#f1f5f9", "padding": "12px", "borderRadius": "6px"})
 
 
+_TEXT_BOX_STYLE = {
+    "padding": "12px 14px",
+    "background": "#f8fafc",
+    "border": "1px solid #e2e8f0",
+    "borderRadius": "8px",
+    "marginBottom": "16px",
+}
+_TEXT_BOX_TITLE_STYLE = {
+    "fontWeight": 600,
+    "marginBottom": "8px",
+    "color": "#334155",
+    "fontSize": "0.9rem",
+}
+_TEXT_BOX_BODY_STYLE = {
+    "margin": 0,
+    "fontSize": "0.9rem",
+    "lineHeight": "1.55",
+    "color": "#475569",
+}
+
+
+def text_box(
+    content: str | None = None,
+    *,
+    steps: list[str] | None = None,
+    title: str | None = None,
+) -> html.Div:
+    """Read-only styled text panel — prose block or numbered methodology steps."""
+    children: list[Any] = []
+    if title:
+        children.append(html.Div(title, style=_TEXT_BOX_TITLE_STYLE))
+    if steps:
+        children.append(
+            html.Ol(
+                [html.Li(step, style={"marginBottom": "4px"}) for step in steps],
+                style={**_TEXT_BOX_BODY_STYLE, "paddingLeft": "20px"},
+            )
+        )
+    elif content is not None:
+        children.append(html.Div(content, style={**_TEXT_BOX_BODY_STYLE, "whiteSpace": "pre-wrap"}))
+    return html.Div(children, style=_TEXT_BOX_STYLE)
+
+
 def table(
     columns: list[str],
     rows: list[list[str | float | int]],

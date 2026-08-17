@@ -19,6 +19,7 @@ class DashboardPage(ABC):
     value: str
     title: str
     caption: str
+    methodology: list[str]
 
     @property
     def body_id(self) -> str:
@@ -31,7 +32,13 @@ class DashboardPage(ABC):
     def register_callbacks(self, app: Dash) -> None: ...
 
     def build_shell(self) -> html.Div:
-        return page_shell(self.title, self.caption, self.build_filters(), self.body_id)
+        return page_shell(
+            self.title,
+            self.caption,
+            self.build_filters(),
+            self.body_id,
+            methodology=self.methodology or None,
+        )
 
 
 def create_chapter_dashboard(

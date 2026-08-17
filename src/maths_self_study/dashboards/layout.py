@@ -2,16 +2,29 @@
 
 from __future__ import annotations
 
+from typing import Any
+
 from dash import dcc, html
 
 
-def page_shell(title: str, caption: str, filters: html.Div, body_id: str) -> html.Div:
-    return html.Div([
+def page_shell(
+    title: str,
+    caption: str,
+    filters: html.Div,
+    body_id: str,
+    *,
+    methodology: list[str] | None = None,
+) -> html.Div:
+    from maths_self_study.dashboards.components import text_box
+
+    children: list[Any] = [
         html.H2(title, style={"marginBottom": "4px"}),
         html.P(caption, style={"color": "#64748b", "marginTop": 0}),
-        filters,
-        html.Div(id=body_id),
-    ])
+    ]
+    if methodology:
+        children.append(text_box(steps=methodology, title="Methodology"))
+    children.extend([filters, html.Div(id=body_id)])
+    return html.Div(children)
 
 
 def chapter_layout(

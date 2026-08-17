@@ -11,6 +11,12 @@ DistributionsPage = define_page(
     value="dist",
     title="The distributions deep learning lives on",
     caption="§3.9 — Bernoulli (one bit), Categorical (k classes), Gaussian (continuous workhorse).",
+    methodology=[
+        "Inspect binary entropy H(p) — uncertainty peaks at p = ½ (Bernoulli / sigmoid outputs).",
+        "Compare 1D and 2D Gaussian PDFs; elliptical contours come from the covariance matrix.",
+        "Edit the 2×2 covariance and read its eigenvalues — axis lengths of the density ellipses.",
+        "Set categorical probabilities (softmax targets) and confirm they sum to 1 over finite support.",
+    ],
     build_filters=build_filters,
     register_callbacks=register_callbacks,
 )

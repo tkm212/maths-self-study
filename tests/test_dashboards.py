@@ -15,7 +15,9 @@ from maths_self_study.dashboards.components import (
     matrix_input,
     num_input,
     table,
+    text_box,
 )
+from maths_self_study.dashboards.layout import page_shell
 from maths_self_study.dashboards.utils import as_matrix, coerce_matrix_2x2, format_matrix_2x2, parse_matrix_2x2, renorm
 
 _REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -72,7 +74,7 @@ def test_ch2_dashboard_app_layout():
     ch2 = _load_dashboard_module(_CH2_DASHBOARD)
     app = ch2.create_app()
     assert app.layout is not None
-    assert len(ch2.PAGES) == 5
+    assert len(ch2.PAGES) == 6
 
 
 def test_ch3_dashboard_app_layout():
@@ -157,6 +159,24 @@ def test_filter_bar_wraps_controls():
 def test_table_component():
     block = table(["A", "B"], [["x", "1"], ["y", "2"]], caption="Demo")
     assert block is not None
+
+
+def test_text_box_renders_steps():
+    block = text_box(steps=["First step", "Second step"], title="Methodology")
+    assert block is not None
+
+
+def test_page_shell_includes_methodology():
+    from dash import html
+
+    shell = page_shell("Title", "Caption", html.Div("filters"), "body-id", methodology=["Step one"])
+    assert shell is not None
+
+
+def test_vectors_page_has_methodology():
+    ch2 = _load_dashboard_module(_CH2_DASHBOARD)
+    page = ch2.PAGES[0]
+    assert len(page.methodology) >= 3
 
 
 def test_configure_logging():

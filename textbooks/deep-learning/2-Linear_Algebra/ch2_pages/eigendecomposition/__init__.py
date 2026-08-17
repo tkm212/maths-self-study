@@ -11,6 +11,12 @@ EigendecompositionPage = define_page(
     value="eigen",
     title="Eigendecomposition — invariant directions",
     caption="§2.7 — Av = λv. Symmetric A: A = QΛQᵀ.",
+    methodology=[
+        "Edit matrix A; the symmetric part (A + Aᵀ)/2 is used so eigenvalues stay real.",
+        "Plot the deformed grid with eigenvector arrows — directions that only stretch, not rotate.",
+        "Eigenvalue λᵢ is the stretch factor along eigenvector vᵢ; Avᵢ = λᵢvᵢ.",
+        "Check ‖A − QΛQᵀ‖ in the table to verify the spectral reconstruction.",
+    ],
     build_filters=build_filters,
     register_callbacks=register_callbacks,
 )

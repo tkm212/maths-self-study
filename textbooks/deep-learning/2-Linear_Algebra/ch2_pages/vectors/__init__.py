@@ -11,6 +11,12 @@ VectorsPage = define_page(
     value="vectors",
     title="Linear maps as geometry",
     caption="§2.1-2.2 — A matrix A is a linear map x ↦ Ax. Columns of A are where the basis goes.",
+    methodology=[
+        "Edit the grid map A and read off where e₁ and e₂ land — those columns are Ae₁ and Ae₂.",
+        "Warp a square coordinate grid by x ↦ Ax to see area scaling, shear, and rotation as geometry.",
+        "Adjust rotation θ and shear k, then compare R(θ) ∘ S(k) with S(k) ∘ R(θ) — order matters.",
+        "Check the inner-product table: xᵀy = ‖x‖₂ ‖y‖₂ cos θ links algebra to angle.",
+    ],
     build_filters=build_filters,
     register_callbacks=register_callbacks,
 )

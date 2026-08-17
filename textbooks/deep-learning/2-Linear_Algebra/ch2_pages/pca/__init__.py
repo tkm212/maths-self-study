@@ -11,6 +11,12 @@ PcaPage = define_page(
     value="pca",
     title="PCA — best low-dimensional view",
     caption="§2.12 — Orthogonal directions of maximal variance = eigenvectors of the covariance.",
+    methodology=[
+        "Sample 2D data with adjustable stretch (sx, sy) and count; centre and compute the covariance.",
+        "Fit PCA: principal axes are eigenvectors of the covariance, ordered by eigenvalue (variance).",
+        "Compare raw data + axes, 1D projection onto PC1, and the explained-variance bar chart.",
+        "Reconstruction error ‖X̂ − X‖ quantifies information lost when keeping fewer components.",
+    ],
     build_filters=build_filters,
     register_callbacks=register_callbacks,
 )

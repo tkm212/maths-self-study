@@ -14,6 +14,7 @@ from maths_self_study.dashboards.components import (
     section,
     slider,
     table,
+    text_box,
 )
 from maths_self_study.dashboards.layout import chapter_layout, page_shell
 from maths_self_study.dashboards.page_factory import define_page
@@ -36,4 +37,5 @@ __all__ = [
     "section",
     "slider",
     "table",
+    "text_box",
 ]
