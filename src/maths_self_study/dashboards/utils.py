@@ -131,7 +131,7 @@ def coerce_probs(values: list[float | None], *, fallback: np.ndarray) -> np.ndar
 
 
 def coerce_tensor_3d(
-    values: list[float | None],
+    values: list[int | float | None],
     *,
     fallback: np.ndarray,
     shape: tuple[int, int, int] = (2, 3, 3),

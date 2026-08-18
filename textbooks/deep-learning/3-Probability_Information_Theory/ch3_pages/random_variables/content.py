@@ -5,7 +5,7 @@ from __future__ import annotations
 import numpy as np
 from dash import html
 
-from maths_self_study.dashboards.components import graph, graph_row, metric, table
+from maths_self_study.dashboards.components import graph, metric, table
 from maths_self_study.dashboards.utils import coerce_probs, renorm
 from maths_self_study.deep_learning import ch3_helpers as helpers
 
@@ -42,9 +42,12 @@ def render_body(j00, j01, j10, j11, p0, p1, p2, p3) -> html.Div:
             "Edit P(X=0)…P(X=3) above — E[X] is the centre of mass; Var(X) measures spread about the mean.",
             style={"color": "#64748b"},
         ),
-        graph_row(
-            metric("E[X]", f"{mean:.3f}"),
-            metric("Var(X)", f"{variance:.3f}"),
+        html.Div(
+            [
+                metric("E[X]", f"{mean:.3f}"),
+                metric("Var(X)", f"{variance:.3f}"),
+            ],
+            style={"display": "flex", "flexWrap": "wrap", "gap": "8px"},
         ),
         graph(fig_moments),
     ])

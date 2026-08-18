@@ -54,7 +54,10 @@ def create_chapter_dashboard(
 ) -> Dash:
     """Build a tabbed chapter dashboard and register page callbacks."""
     app = Dash(module_name, title=dash_title, suppress_callback_exceptions=True)
-    app.index_string = app.index_string.replace(
+    index = app.index_string
+    if "<html lang=" not in index:
+        index = index.replace("<html>", '<html lang="en">')
+    app.index_string = index.replace(
         "</head>",
         f"<style>{TAB_WRAP_STYLE}</style></head>",
     )

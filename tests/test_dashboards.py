@@ -22,7 +22,14 @@ from maths_self_study.dashboards.components import (
     text_box,
 )
 from maths_self_study.dashboards.layout import page_shell
-from maths_self_study.dashboards.utils import as_matrix, coerce_matrix_2x2, coerce_tensor_3d, format_matrix_2x2, parse_matrix_2x2, renorm
+from maths_self_study.dashboards.utils import (
+    as_matrix,
+    coerce_matrix_2x2,
+    coerce_tensor_3d,
+    format_matrix_2x2,
+    parse_matrix_2x2,
+    renorm,
+)
 
 _REPO_ROOT = Path(__file__).resolve().parents[1]
 _CH2_DASHBOARD = _REPO_ROOT / "textbooks/deep-learning/2-Linear_Algebra/dashboard.py"
@@ -90,15 +97,13 @@ def test_ch3_dashboard_app_layout():
 
 def test_random_variables_moments_update():
     import sys
-    from pathlib import Path
 
     ch3_dir = _CH3_DASHBOARD.parent
     sys.path.insert(0, str(ch3_dir))
     from ch3_pages.random_variables.content import render_body
 
-    j = [0.1, 0.15, 0.25, 0.5]
-    low = render_body(*j, 0.1, 0.2, 0.3, 0.4)
-    high = render_body(*j, 0.4, 0.3, 0.2, 0.1)
+    low = render_body(0.1, 0.15, 0.25, 0.5, 0.1, 0.2, 0.3, 0.4)
+    high = render_body(0.1, 0.15, 0.25, 0.5, 0.4, 0.3, 0.2, 0.1)
     assert low is not None and high is not None
     low_text = str(low.to_plotly_json())
     high_text = str(high.to_plotly_json())
@@ -199,7 +204,7 @@ def test_coerce_tensor_3d():
     from maths_self_study.deep_learning import ch2_helpers as helpers
 
     ni, nj, nk = helpers.TENSOR_SHAPE
-    ordered: list[float] = []
+    ordered: list[int | float | None] = []
     for k in range(nk):
         for i in range(ni):
             for j in range(nj):

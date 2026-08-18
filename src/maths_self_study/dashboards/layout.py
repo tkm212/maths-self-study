@@ -19,6 +19,13 @@ TAB_WRAP_STYLE = """
     line-height: 1.25;
     padding-top: 8px;
     padding-bottom: 8px;
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    max-width: 100%;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+    text-align: center;
 }
 """
 
@@ -87,6 +94,7 @@ def chapter_layout(
                 style={"marginTop": "28px", "fontSize": "0.9rem"},
             ),
         ],
+        lang="en",
         style={
             "maxWidth": "1200px",
             "margin": "0 auto",

@@ -255,10 +255,7 @@ def plot_tensor_3d(
     abs_vals = np.abs(vals)
     scale = float(abs_vals.max()) if abs_vals.max() > 0 else 1.0
     sizes = 6.0 + 28.0 * (abs_vals / scale)
-    hover = [
-        f"T[{int(x)}, {int(y)}, {int(z)}] = {float(v):.3f}"
-        for x, y, z, v in zip(xs, ys, zs, vals, strict=True)
-    ]
+    hover = [f"T[{int(x)}, {int(y)}, {int(z)}] = {float(v):.3f}" for x, y, z, v in zip(xs, ys, zs, vals, strict=True)]
     marker_base: dict[str, Any] = {
         "colorscale": "RdBu",
         "cmid": 0.0,

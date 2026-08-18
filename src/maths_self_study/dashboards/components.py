@@ -196,11 +196,7 @@ def _tensor_cell(prefix: str, i: int, j: int, k: int, value: float) -> dcc.Input
 def _tensor_slice_grid(prefix: str, slab: np.ndarray, *, k: int) -> html.Div:
     ni, nj = slab.shape
     return html.Div(
-        [
-            _tensor_cell(prefix, i + 1, j + 1, k, slab[i, j])
-            for i in range(ni)
-            for j in range(nj)
-        ],
+        [_tensor_cell(prefix, i + 1, j + 1, k, slab[i, j]) for i in range(ni) for j in range(nj)],
         style={
             "display": "grid",
             "gridTemplateColumns": f"repeat({nj}, auto)",

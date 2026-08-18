@@ -23,14 +23,11 @@ def render_body(seed, n_samples, sx, sy) -> html.Div:
 
     centered = data - model.mean
     cov = (centered.T @ centered) / (n - 1)
-    eigvals, eigvecs = symmetric_eigendecomposition(cov)
+    eigvals, _ = symmetric_eigendecomposition(cov)
 
     demo = helpers.PCADemo(data=data, model=model, codes=codes, reconstruction_error=error)
     figs = helpers.pca_figures(demo)
-    var_rows = [
-        [f"λ{i + 1} (covariance)", f"{float(eigvals[i]):.4f}"]
-        for i in range(len(eigvals))
-    ]
+    var_rows = [[f"λ{i + 1} (covariance)", f"{float(eigvals[i]):.4f}"] for i in range(len(eigvals))]
     for i, comp in enumerate(model.components):
         var_rows.append([f"PC{i + 1} direction", f"[{comp[0]:.4f}, {comp[1]:.4f}]"])
     var_rows.append(["Reconstruction error ‖X̂ − X‖", f"{error:.4f}"])
