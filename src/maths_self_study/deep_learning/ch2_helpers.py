@@ -354,13 +354,23 @@ def plot_tensor_3d(
     return fig
 
 
+def _lp_unit_ball_subtitle(p: float) -> str:
+    if p == np.inf:
+        return "L∞ unit ball: max(|x₁|, |x₂|) = 1"
+    if p == 1:
+        return "L¹ unit ball: |x₁| + |x₂| = 1"
+    if p == 2:
+        return "L² unit ball: x₁² + x₂² = 1"
+    return f"L{p:g} unit ball: ‖x‖_{p:g} = 1"
+
+
 def plot_lp_unit_balls(*, p_values: tuple[float, ...] = (1.0, 2.0, np.inf)) -> go.Figure:
     """Unit balls for L¹, L², L∞ — geometry of norm choice."""
     theta = np.linspace(0, 2 * np.pi, 400)
     fig = make_subplots(
         rows=1,
         cols=len(p_values),
-        subplot_titles=[f"L{'' if p == np.inf else int(p) if p == p // 1 else p} unit ball" for p in p_values],
+        subplot_titles=[_lp_unit_ball_subtitle(p) for p in p_values],
     )
 
     for col, p in enumerate(p_values, start=1):
@@ -385,7 +395,13 @@ def plot_lp_unit_balls(*, p_values: tuple[float, ...] = (1.0, 2.0, np.inf)) -> g
         )
         fig.update_xaxes(scaleanchor=f"y{col if col > 1 else ''}", scaleratio=1, row=1, col=col)
 
-    fig.update_layout(**_base_layout(title="Different norms, different geometries", height=380, showlegend=False))
+    fig.update_layout(
+        **_base_layout(
+            title="Unit balls: {x : ‖x‖ₚ = 1} — boundary of points one unit from the origin",
+            height=400,
+            showlegend=False,
+        )
+    )
     return fig
 
 
