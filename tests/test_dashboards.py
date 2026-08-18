@@ -88,6 +88,23 @@ def test_ch3_dashboard_app_layout():
     assert len(ch3.PAGES) == 5
 
 
+def test_random_variables_moments_update():
+    import sys
+    from pathlib import Path
+
+    ch3_dir = _CH3_DASHBOARD.parent
+    sys.path.insert(0, str(ch3_dir))
+    from ch3_pages.random_variables.content import render_body
+
+    j = [0.1, 0.15, 0.25, 0.5]
+    low = render_body(*j, 0.1, 0.2, 0.3, 0.4)
+    high = render_body(*j, 0.4, 0.3, 0.2, 0.1)
+    assert low is not None and high is not None
+    low_text = str(low.to_plotly_json())
+    high_text = str(high.to_plotly_json())
+    assert low_text != high_text
+
+
 def test_create_chapter_dashboard_minimal():
     ch2 = _load_dashboard_module(_CH2_DASHBOARD)
     page = ch2.PAGES[0]

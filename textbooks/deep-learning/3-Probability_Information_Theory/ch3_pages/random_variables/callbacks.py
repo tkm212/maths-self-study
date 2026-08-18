@@ -5,19 +5,18 @@ from __future__ import annotations
 from dash import Dash, Input
 
 from ch3_pages.random_variables.content import render_body
-from maths_self_study.dashboards.callbacks import register_body_callback
+from maths_self_study.dashboards.callbacks import (
+    register_body_callback,
+    register_simplex_sync,
+)
 
-INPUTS = [
-    Input("rv-j00", "value"),
-    Input("rv-j01", "value"),
-    Input("rv-j10", "value"),
-    Input("rv-j11", "value"),
-    Input("rv-p0", "value"),
-    Input("rv-p1", "value"),
-    Input("rv-p2", "value"),
-    Input("rv-p3", "value"),
-]
+_JOINT_IDS = ["rv-j00", "rv-j01", "rv-j10", "rv-j11"]
+_PMF_IDS = ["rv-p0", "rv-p1", "rv-p2", "rv-p3"]
+
+INPUTS = [Input(id_, "value") for id_ in _JOINT_IDS + _PMF_IDS]
 
 
 def register_callbacks(app: Dash, body_id: str) -> None:
+    register_simplex_sync(app, _JOINT_IDS)
+    register_simplex_sync(app, _PMF_IDS)
     register_body_callback(app, body_id, INPUTS, render_body, page="random_variables")
