@@ -377,8 +377,6 @@ def plot_lp_unit_balls(*, p_values: tuple[float, ...] = (1.0, 2.0, np.inf)) -> g
                 x=xs,
                 y=ys,
                 mode="lines",
-                fill="toself",
-                fillcolor="rgba(37, 99, 235, 0.15)",
                 line={"color": "#2563eb", "width": 2},
                 showlegend=False,
             ),
