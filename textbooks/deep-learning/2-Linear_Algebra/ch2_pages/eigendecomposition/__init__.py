@@ -15,7 +15,7 @@ EigendecompositionPage = define_page(
         "An eigenpair (λ, v) satisfies Av = λv with v ≠ 0. v is an invariant direction; λ is the stretch factor along it.",
         "For symmetric A, all eigenvalues are real and eigenvectors are orthogonal (spectral theorem).",
         "Spectral decomposition: A = QΛQᵀ — Q's columns are orthonormal eigenvectors, Λ is diagonal of eigenvalues.",
-        "Computed via symmetric eigendecomposition (e.g. numpy.linalg.eigh): QΛQᵀ reconstructs A exactly.",
+        "This page symmetrises A, then calls np.linalg.eigh(A): LAPACK reduces A to tridiagonal form (Householder), solves for λ and Q, and verifies A ≈ QΛQᵀ.",
     ],
     build_filters=build_filters,
     register_callbacks=register_callbacks,
