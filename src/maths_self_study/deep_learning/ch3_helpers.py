@@ -11,6 +11,7 @@ from plotly.subplots import make_subplots
 from scipy import stats
 
 from maths_self_study.probability import (
+    align_model_to_support,
     bayes_posterior,
     cross_entropy,
     kl_divergence,
@@ -292,8 +293,10 @@ def plot_kl_asymmetric(
     q: np.ndarray,
 ) -> go.Figure:
     """Two distributions with KL(P‖Q) ≠ KL(Q‖P) — direction matters."""
-    d_pq = kl_divergence(p, q)
-    d_qp = kl_divergence(q, p)
+    q_for_p = align_model_to_support(p, q)
+    p_for_q = align_model_to_support(q, p)
+    d_pq = kl_divergence(p, q_for_p)
+    d_qp = kl_divergence(q, p_for_q)
     fig = make_subplots(
         rows=1,
         cols=2,
@@ -341,67 +344,126 @@ def plot_self_information(probs: np.ndarray, *, labels: np.ndarray | None = None
     return fig
 
 
+def _markov_edge_label(name: str, parent: str, child: str, transition: np.ndarray) -> str:
+    """Compact HTML label for a binary conditional factor P(child | parent)."""
+    t = np.asarray(transition, dtype=float).reshape(2, 2)
+    return (
+        f"<b>{name}</b><br>"
+        f"{parent}=0: P({child}=0)={t[0, 0]:.2f}, P({child}=1)={t[0, 1]:.2f}<br>"
+        f"{parent}=1: P({child}=0)={t[1, 0]:.2f}, P({child}=1)={t[1, 1]:.2f}"
+    )
+
+
 def plot_markov_chain(
-    transition: np.ndarray,
+    p_x1: np.ndarray,
+    p_x2_given_x1: np.ndarray,
+    p_x3_given_x2: np.ndarray,
     *,
-    labels: tuple[str, ...] = ("0", "1"),
     title: str = "Markov chain factorisation",
 ) -> go.Figure:
-    """Three-node chain with edge probabilities — structured model as a graph."""
-    if transition.shape[0] == 2:
-        node_x = [0, 1, 2]
-        node_y = [0.5, 0.5, 0.5]
-        node_text = [labels[0], labels[1], "X₃"]
-    else:
-        node_x, node_y, node_text = [0], [0.5], [labels[0]]
+    """Three-node directed chain with local conditional factors annotated on each edge."""
+    p_x1 = np.asarray(p_x1, dtype=float).ravel()[:2]
+    t = np.asarray(p_x2_given_x1, dtype=float).reshape(2, 2)
+    u = np.asarray(p_x3_given_x2, dtype=float).reshape(2, 2)
+
+    node_x = [0.0, 1.0, 2.0]
+    node_y = [0.5, 0.5, 0.5]
+    node_labels = ["X₁", "X₂", "X₃"]
+    node_radius = 0.09
 
     fig = go.Figure()
+    for start, end in ((0, 1), (1, 2)):
+        fig.add_annotation(
+            x=node_x[end] - node_radius,
+            y=node_y[end],
+            ax=node_x[start] + node_radius,
+            ay=node_y[start],
+            xref="x",
+            yref="y",
+            axref="x",
+            ayref="y",
+            showarrow=True,
+            arrowhead=3,
+            arrowsize=1.2,
+            arrowwidth=2.5,
+            arrowcolor="#2563eb",
+            text="",
+        )
+
     fig.add_trace(
         go.Scatter(
             x=node_x,
             y=node_y,
             mode="markers+text",
-            text=node_text,
+            text=node_labels,
             textposition="top center",
-            marker={"size": 36, "color": "#dbeafe", "line": {"width": 2, "color": "#2563eb"}},
+            textfont={"size": 15, "color": "#1e3a8a"},
+            marker={"size": 54, "color": "#dbeafe", "line": {"width": 2.5, "color": "#2563eb"}},
+            hoverinfo="skip",
             showlegend=False,
         )
     )
 
-    if transition.shape == (2, 2):
-        edges = [
-            (0, 1, f"P(X₂|X₁): {transition[0, 0]:.2f}/{transition[0, 1]:.2f}"),
-            (1, 2, "P(X₃|X₂): see table"),
-        ]
-        for x0, x1, label in edges:
-            fig.add_annotation(
-                x=(x0 + x1) / 2,
-                y=0.35,
-                text=label,
-                showarrow=True,
-                arrowhead=2,
-                ax=0,
-                ay=-30,
-                font={"size": 11},
-            )
+    fig.add_annotation(
+        x=0.0,
+        y=0.28,
+        text=f"<b>P(X₁)</b><br>P(X₁=0)={p_x1[0]:.2f}<br>P(X₁=1)={p_x1[1]:.2f}",
+        showarrow=False,
+        font={"size": 11, "color": "#334155"},
+        bgcolor="rgba(255,255,255,0.95)",
+        bordercolor="#cbd5e1",
+        borderwidth=1,
+        borderpad=6,
+        align="center",
+    )
+    for x_mid, label in (
+        (0.5, _markov_edge_label("P(X₂|X₁)", "X₁", "X₂", t)),
+        (1.5, _markov_edge_label("P(X₃|X₂)", "X₂", "X₃", u)),
+    ):
+        fig.add_annotation(
+            x=x_mid,
+            y=0.72,
+            text=label,
+            showarrow=False,
+            font={"size": 10, "color": "#334155"},
+            bgcolor="#f8fafc",
+            bordercolor="#cbd5e1",
+            borderwidth=1,
+            borderpad=8,
+            align="left",
+        )
+
+    fig.add_annotation(
+        x=1.0,
+        y=0.06,
+        text="P(x₁, x₂, x₃) = P(x₁) · P(x₂|x₁) · P(x₃|x₂)",
+        showarrow=False,
+        font={"size": 12, "color": "#64748b"},
+    )
 
     fig.update_layout(
         **_base_layout(
             title=title,
-            xaxis={"visible": False, "range": [-0.3, 2.3]},
-            yaxis={"visible": False, "range": [0, 1]},
-            height=320,
-        )
+            height=400,
+            margin={"l": 30, "r": 30, "t": 60, "b": 40},
+        ),
+        xaxis={"visible": False, "range": [-0.4, 2.4], "fixedrange": True},
+        yaxis={"visible": False, "range": [0, 1], "fixedrange": True},
+        plot_bgcolor="#ffffff",
     )
     return fig
 
 
 def summarize_information_measures(p: np.ndarray, q: np.ndarray) -> dict[str, float]:
+    p_arr = np.asarray(p, dtype=float)
+    q_arr = np.asarray(q, dtype=float)
+    q_for_p = align_model_to_support(p_arr, q_arr)
+    p_for_q = align_model_to_support(q_arr, p_arr)
     return {
-        "H(P)": shannon_entropy(p),
-        "H(P, Q)": cross_entropy(p, q),
-        "D_KL(P || Q)": kl_divergence(p, q),
-        "D_KL(Q || P)": kl_divergence(q, p),
+        "H(P)": shannon_entropy(p_arr),
+        "H(P, Q)": cross_entropy(p_arr, q_for_p),
+        "D_KL(P || Q)": kl_divergence(p_arr, q_for_p),
+        "D_KL(Q || P)": kl_divergence(q_arr, p_for_q),
     }
 
 
@@ -493,7 +555,9 @@ def monty_hall_scenario(*, chosen: int = 0, opened: int = 1) -> MontyHallScenari
 class MarkovChainDemo:
     joint: np.ndarray
     marginal_x3: float
+    p_x1: np.ndarray
     p_x2_given_x1: np.ndarray
+    p_x3_given_x2: np.ndarray
 
 
 def markov_chain_demo() -> MarkovChainDemo:
@@ -510,7 +574,9 @@ def markov_chain_demo() -> MarkovChainDemo:
     return MarkovChainDemo(
         joint=joint,
         marginal_x3=float(joint[:, :, 1].sum()),
+        p_x1=p_x1,
         p_x2_given_x1=p_x2_given_x1,
+        p_x3_given_x2=p_x3_given_x2,
     )
 
 
@@ -553,7 +619,7 @@ def render_discrete_moments(mo: Any) -> Any:
 def render_markov_chain(mo: Any) -> Any:
     demo = markov_chain_demo()
     return mo.vstack([
-        show(mo, plot_markov_chain(demo.p_x2_given_x1, labels=("X₁", "X₂"))),
+        show(mo, plot_markov_chain(demo.p_x1, demo.p_x2_given_x1, demo.p_x3_given_x2)),
         mo.md(
             f"8-cell joint from 3 local tables — `{demo.joint.shape}` tensor, sum = `{demo.joint.sum()}`  \n"
             f"Marginal P(X₃=1) = `{demo.marginal_x3}`"

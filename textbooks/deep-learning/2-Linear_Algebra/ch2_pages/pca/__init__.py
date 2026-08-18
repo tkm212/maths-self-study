@@ -11,6 +11,12 @@ PcaPage = define_page(
     value="pca",
     title="PCA — best low-dimensional view",
     caption="§2.12 — Orthogonal directions of maximal variance = eigenvectors of the covariance.",
+    methodology=[
+        "Centre X to X_c = X − μ. Sample covariance Σ = X_cᵀX_c / (n − 1) is symmetric and captures spread.",
+        "PCA directions are eigenvectors of Σ: λ, Q = np.linalg.eigh(Σ), sorted so λ₁ ≥ λ₂ ≥ …",
+        "Project with Z = X_c @ Wᵀ (W = top k eigenvectors as rows); reconstruct with X̂ = Z @ W + μ.",
+        "Same result from SVD: np.linalg.svd(X_c) gives PCs in Vh; truncating k components minimises reconstruction error.",
+    ],
     build_filters=build_filters,
     register_callbacks=register_callbacks,
 )

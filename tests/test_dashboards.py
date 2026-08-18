@@ -6,6 +6,7 @@ import importlib.util
 from pathlib import Path
 
 import numpy as np
+import pytest
 
 from maths_self_study.dashboards.chapter_app import create_chapter_dashboard
 from maths_self_study.dashboards.components import (
@@ -15,8 +16,20 @@ from maths_self_study.dashboards.components import (
     matrix_input,
     num_input,
     table,
+    tensor_callback_inputs,
+    tensor_cell_id,
+    tensor_grid_input,
+    text_box,
 )
-from maths_self_study.dashboards.utils import as_matrix, coerce_matrix_2x2, format_matrix_2x2, parse_matrix_2x2, renorm
+from maths_self_study.dashboards.layout import page_shell
+from maths_self_study.dashboards.utils import (
+    as_matrix,
+    coerce_matrix_2x2,
+    coerce_tensor_3d,
+    format_matrix_2x2,
+    parse_matrix_2x2,
+    renorm,
+)
 
 _REPO_ROOT = Path(__file__).resolve().parents[1]
 _CH2_DASHBOARD = _REPO_ROOT / "textbooks/deep-learning/2-Linear_Algebra/dashboard.py"
@@ -72,7 +85,7 @@ def test_ch2_dashboard_app_layout():
     ch2 = _load_dashboard_module(_CH2_DASHBOARD)
     app = ch2.create_app()
     assert app.layout is not None
-    assert len(ch2.PAGES) == 5
+    assert len(ch2.PAGES) == 6
 
 
 def test_ch3_dashboard_app_layout():
@@ -80,6 +93,21 @@ def test_ch3_dashboard_app_layout():
     app = ch3.create_app()
     assert app.layout is not None
     assert len(ch3.PAGES) == 5
+
+
+def test_random_variables_moments_update():
+    import sys
+
+    ch3_dir = _CH3_DASHBOARD.parent
+    sys.path.insert(0, str(ch3_dir))
+    from ch3_pages.random_variables.content import render_body
+
+    low = render_body(0.1, 0.15, 0.25, 0.5, 0.1, 0.2, 0.3, 0.4)
+    high = render_body(0.1, 0.15, 0.25, 0.5, 0.4, 0.3, 0.2, 0.1)
+    assert low is not None and high is not None
+    low_text = str(low.to_plotly_json())
+    high_text = str(high.to_plotly_json())
+    assert low_text != high_text
 
 
 def test_create_chapter_dashboard_minimal():
@@ -149,6 +177,52 @@ def test_suggest_grid_range_scales_with_stretch():
     assert small > large
 
 
+def test_plot_tensor_3d_builds_figure():
+    from maths_self_study.deep_learning import ch2_helpers as helpers
+
+    tensor = helpers.TENSOR_DEFAULT
+    fig = helpers.plot_tensor_3d(tensor, axis=2, index=0)
+    assert fig is not None
+    assert len(fig.data) == 2
+    assert fig.layout.scene is not None
+
+
+def test_tensor_grid_input_component():
+    from maths_self_study.deep_learning import ch2_helpers as helpers
+
+    block = tensor_grid_input("tensor", "T", helpers.TENSOR_DEFAULT, shape=helpers.TENSOR_SHAPE)
+    assert block is not None
+
+
+def test_tensor_callback_inputs():
+    inputs = tensor_callback_inputs("tensor-grid", (2, 3, 3))
+    assert len(inputs) == 18
+    assert tensor_cell_id("tensor-grid", 1, 2, 3) == "tensor-grid-123"
+
+
+def test_coerce_tensor_3d():
+    from maths_self_study.deep_learning import ch2_helpers as helpers
+
+    ni, nj, nk = helpers.TENSOR_SHAPE
+    ordered: list[int | float | None] = []
+    for k in range(nk):
+        for i in range(ni):
+            for j in range(nj):
+                ordered.append(float(helpers.TENSOR_DEFAULT[i, j, k]))
+    tensor = coerce_tensor_3d(ordered, fallback=helpers.TENSOR_DEFAULT, shape=helpers.TENSOR_SHAPE)
+    np.testing.assert_allclose(tensor, helpers.TENSOR_DEFAULT)
+
+
+def test_complement_prob():
+    from maths_self_study.dashboards.utils import clamp_prob, complement_prob, redistribute_simplex
+
+    assert complement_prob(0.7) == pytest.approx(0.3)
+    assert clamp_prob(None, default=0.6) == 0.6
+    out = redistribute_simplex([0.4, 0.3, 0.2, 0.1], 0, 0.5)
+    assert sum(out) == pytest.approx(1.0)
+    assert out[0] == pytest.approx(0.5)
+
+
 def test_filter_bar_wraps_controls():
     bar = filter_bar(num_input("x", "x", 1.0))
     assert bar is not None
@@ -157,6 +231,42 @@ def test_filter_bar_wraps_controls():
 def test_table_component():
     block = table(["A", "B"], [["x", "1"], ["y", "2"]], caption="Demo")
     assert block is not None
+
+
+def test_text_box_renders_steps():
+    block = text_box(steps=["Definition", "Algorithm"], title="How it works")
+    assert block is not None
+
+
+def test_page_shell_includes_methodology():
+    from dash import html
+
+    shell = page_shell("Title", "Caption", html.Div("filters"), "body-id", methodology=["Step one"])
+    assert shell is not None
+
+
+def test_vectors_page_has_methodology():
+    ch2 = _load_dashboard_module(_CH2_DASHBOARD)
+    page = ch2.PAGES[0]
+    assert len(page.methodology) >= 3
+
+
+def test_plot_lp_unit_ball_l1_is_diamond():
+    from maths_self_study.deep_learning import ch2_helpers as helpers
+
+    xs, ys = helpers._lp_unit_ball_boundary(1.0)
+    assert (xs[0], ys[0]) == (1.0, 0.0)
+    assert (xs[1], ys[1]) == (0.0, 1.0)
+    assert len(xs) == 5
+
+
+def test_plot_markov_chain_builds_figure():
+    from maths_self_study.deep_learning import ch3_helpers as helpers
+
+    demo = helpers.markov_chain_demo()
+    fig = helpers.plot_markov_chain(demo.p_x1, demo.p_x2_given_x1, demo.p_x3_given_x2)
+    assert fig is not None
+    assert len(fig.layout.annotations) >= 4
 
 
 def test_configure_logging():

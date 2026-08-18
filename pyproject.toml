@@ -83,6 +83,8 @@ extra-paths = [
     "textbooks/elements-of-statistical-learning/16-Ensemble_Learning",
     "textbooks/elements-of-statistical-learning/17-Undirected_Graphical_Models",
     "textbooks/elements-of-statistical-learning/18-High_Dimensional_Problems",
+    "textbooks/deep-learning/2-Linear_Algebra",
+    "textbooks/deep-learning/3-Probability_Information_Theory",
 ]
 
 [tool.pytest.ini_options]
@@ -151,6 +153,7 @@ ignore = [
 
 [tool.ruff.lint.per-file-ignores]
 "tests/*" = ["S101"]
+"textbooks/**" = ["RUF001"]
 [tool.ruff.format]
 preview = true
 

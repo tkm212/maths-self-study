@@ -53,6 +53,25 @@ def num_input(
     )
 
 
+def prob_pair(
+    id_prefix: str,
+    label0: str,
+    label1: str,
+    p0: float,
+    p1: float,
+    *,
+    step: float = 0.05,
+) -> html.Div:
+    """Two linked probabilities that sum to 1 — use with register_complement_pair."""
+    return html.Div(
+        [
+            num_input(f"{id_prefix}-0", label0, p0, step=step, min_=0.0, max_=1.0),
+            num_input(f"{id_prefix}-1", label1, p1, step=step, min_=0.0, max_=1.0),
+        ],
+        style={"display": "flex", "flexWrap": "wrap", "gap": "12px", "width": "100%"},
+    )
+
+
 def slider(
     id_: str,
     label: str,
@@ -123,6 +142,20 @@ def matrix_callback_inputs(prefix: str) -> list[Input]:
     return [Input(matrix_cell_id(prefix, row, col), "value") for row in (1, 2) for col in (1, 2)]
 
 
+def tensor_cell_id(prefix: str, i: int, j: int, k: int) -> str:
+    return f"{prefix}-{i}{j}{k}"
+
+
+def tensor_callback_inputs(prefix: str, shape: tuple[int, int, int] = (2, 3, 3)) -> list[Input]:
+    ni, nj, nk = shape
+    return [
+        Input(tensor_cell_id(prefix, i + 1, j + 1, k + 1), "value")
+        for k in range(nk)
+        for i in range(ni)
+        for j in range(nj)
+    ]
+
+
 def _matrix_paren(side: str) -> html.Span:
     return html.Span(
         "(" if side == "left" else ")",
@@ -147,6 +180,78 @@ def _matrix_cell(prefix: str, row: int, col: int, value: float) -> dcc.Input:
         value=float(value),
         debounce=True,
         style=_MATRIX_CELL_STYLE,
+    )
+
+
+def _tensor_cell(prefix: str, i: int, j: int, k: int, value: float) -> dcc.Input:
+    return dcc.Input(
+        id=tensor_cell_id(prefix, i, j, k),
+        type="number",
+        value=float(value),
+        debounce=True,
+        style=_MATRIX_CELL_STYLE,
+    )
+
+
+def _tensor_slice_grid(prefix: str, slab: np.ndarray, *, k: int) -> html.Div:
+    ni, nj = slab.shape
+    return html.Div(
+        [_tensor_cell(prefix, i + 1, j + 1, k, slab[i, j]) for i in range(ni) for j in range(nj)],
+        style={
+            "display": "grid",
+            "gridTemplateColumns": f"repeat({nj}, auto)",
+            "columnGap": "14px",
+            "rowGap": "10px",
+            "alignItems": "center",
+            "justifyItems": "center",
+            "padding": "2px 6px",
+        },
+    )
+
+
+def tensor_grid_input(
+    id_: str,
+    label: str,
+    defaults: np.ndarray,
+    *,
+    shape: tuple[int, int, int] = (2, 3, 3),
+    hint: str | None = None,
+) -> html.Div:
+    """Editable rank-3 tensor as stacked 2D slices — same click-to-type UX as matrix_input."""
+    caption = hint or "Click any cell to edit — plots update automatically."
+    tensor = np.asarray(defaults, dtype=float).reshape(shape)
+    _, _, nk = shape
+    slices = []
+    for k in range(nk):
+        slice_label = html.Div(
+            f"k = {k}",
+            style={"fontSize": "0.8rem", "color": "#64748b", "marginBottom": "4px", "textAlign": "center"},
+        )
+        slice_grid = html.Div(
+            [
+                _matrix_paren("left"),
+                _tensor_slice_grid(id_, tensor[:, :, k], k=k + 1),
+                _matrix_paren("right"),
+            ],
+            style={
+                "display": "flex",
+                "alignItems": "center",
+                "gap": "4px",
+                "padding": "6px 8px",
+                "background": "#fff",
+                "border": "1px solid #e2e8f0",
+                "borderRadius": "8px",
+            },
+        )
+        slices.append(html.Div([slice_label, slice_grid], style={"flex": "0 0 auto"}))
+
+    return html.Div(
+        [
+            html.Label(label, style=_LABEL_STYLE),
+            html.Div(slices, style={"display": "flex", "flexWrap": "wrap", "gap": "16px"}),
+            html.Div(caption, style={"fontSize": "0.75rem", "color": "#64748b", "marginTop": "4px"}),
+        ],
+        style={"flex": "1 1 100%"},
     )
 
 
@@ -196,6 +301,49 @@ def matrix_input(id_: str, label: str, defaults: np.ndarray, *, hint: str | None
 
 def preformatted(text: str) -> html.Pre:
     return html.Pre(text, style={"background": "#f1f5f9", "padding": "12px", "borderRadius": "6px"})
+
+
+_TEXT_BOX_STYLE = {
+    "padding": "12px 14px",
+    "background": "#f8fafc",
+    "border": "1px solid #e2e8f0",
+    "borderRadius": "8px",
+    "marginBottom": "16px",
+}
+_TEXT_BOX_TITLE_STYLE = {
+    "fontWeight": 600,
+    "marginBottom": "8px",
+    "color": "#334155",
+    "fontSize": "0.9rem",
+}
+_TEXT_BOX_BODY_STYLE = {
+    "margin": 0,
+    "fontSize": "0.9rem",
+    "lineHeight": "1.55",
+    "color": "#475569",
+}
+
+
+def text_box(
+    content: str | None = None,
+    *,
+    steps: list[str] | None = None,
+    title: str | None = None,
+) -> html.Div:
+    """Read-only styled text panel — prose block or numbered methodology steps."""
+    children: list[Any] = []
+    if title:
+        children.append(html.Div(title, style=_TEXT_BOX_TITLE_STYLE))
+    if steps:
+        children.append(
+            html.Ol(
+                [html.Li(step, style={"marginBottom": "4px"}) for step in steps],
+                style={**_TEXT_BOX_BODY_STYLE, "paddingLeft": "20px"},
+            )
+        )
+    elif content is not None:
+        children.append(html.Div(content, style={**_TEXT_BOX_BODY_STYLE, "whiteSpace": "pre-wrap"}))
+    return html.Div(children, style=_TEXT_BOX_STYLE)
 
 
 def table(

@@ -25,11 +25,13 @@ from ch2_pages import (  # noqa: E402
     NormsPage,
     PcaPage,
     SvdPage,
+    TensorsPage,
     VectorsPage,
 )
 
 PAGES = [
     VectorsPage,
+    TensorsPage,
     NormsPage,
     EigendecompositionPage,
     SvdPage,

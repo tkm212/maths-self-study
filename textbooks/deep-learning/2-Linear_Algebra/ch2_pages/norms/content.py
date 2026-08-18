@@ -30,6 +30,11 @@ def render_body(x1, x2, inf_opts) -> html.Div:
     norm_rows.append(["cos(e₁, (1,1))", f"{cos_ab:.4f}"])
 
     return html.Div([
+        html.P(
+            "The Lᵖ unit ball is {x : ‖x‖ₚ = 1}: all points exactly one unit from the origin in that norm. "
+            "Each panel shows its boundary in ℝ².",
+            style={"color": "#64748b", "fontSize": "0.9rem", "marginBottom": "8px"},
+        ),
         graph(fig),
         table(
             ["Norm / metric", "Value"],

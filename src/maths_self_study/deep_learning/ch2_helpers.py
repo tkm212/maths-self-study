@@ -23,6 +23,11 @@ from maths_self_study.linalg import (
 # --- Demo fixtures (notebook cells stay declarative) ---
 
 GRID_MAP = np.array([[1.2, 0.4], [-0.3, 0.9]])
+TENSOR_A = np.array([1.0, 2.0])
+TENSOR_B = np.array([1.0, -1.0, 0.5])
+TENSOR_C = np.array([1.0, 2.0, 3.0])
+TENSOR_SHAPE = (2, 3, 3)
+TENSOR_DEFAULT = np.einsum("i,j,k->ijk", TENSOR_A, TENSOR_B, TENSOR_C)
 COV_2X2 = np.array([[2.0, 0.8], [0.8, 1.0]])
 SVD_MAP = np.array([[2.0, 0.5], [0.0, 1.5]])
 OVERDETERMINED_A = np.array([[1.0, 2.0], [3.0, 4.0], [5.0, 6.0]])
@@ -159,40 +164,260 @@ def plot_transformed_grid(
     return fig
 
 
+def tensor_product(a: np.ndarray, b: np.ndarray, c: np.ndarray) -> np.ndarray:
+    """Rank-3 tensor T[i, j, k] = a[i] b[j] c[k] — outer products stacked by a third axis."""
+    av = np.asarray(a, dtype=float).ravel()
+    bv = np.asarray(b, dtype=float).ravel()
+    cv = np.asarray(c, dtype=float).ravel()
+    return np.einsum("i,j,k->ijk", av, bv, cv)
+
+
+def plot_tensor_slice(
+    tensor: np.ndarray,
+    *,
+    axis: int = 2,
+    index: int = 0,
+    title: str = "2D slice of a rank-3 tensor",
+) -> go.Figure:
+    """Heatmap of one 2D face of a 3D tensor — indexing makes rank visible."""
+    t = np.asarray(tensor, dtype=float)
+    axis = int(axis) % 3
+    index = int(np.clip(index, 0, t.shape[axis] - 1))
+    if axis == 0:
+        slab = t[index, :, :]
+        y_label, x_label = "j", "k"
+        slice_desc = f"i = {index}"
+    elif axis == 1:
+        slab = t[:, index, :]
+        y_label, x_label = "i", "k"
+        slice_desc = f"j = {index}"
+    else:
+        slab = t[:, :, index]
+        y_label, x_label = "i", "j"
+        slice_desc = f"k = {index}"
+
+    fig = go.Figure(
+        go.Heatmap(
+            z=slab,
+            colorscale="Blues",
+            showscale=True,
+            text=np.round(slab, 3),
+            texttemplate="%{text}",
+            hovertemplate=f"T[{slice_desc}]<br>%{{y}} , %{{x}} = %{{z:.3f}}<extra></extra>",
+        )
+    )
+    fig.update_layout(
+        **_base_layout(
+            title=f"{title} ({slice_desc})",
+            xaxis_title=x_label,
+            yaxis_title=y_label,
+            height=420,
+        )
+    )
+    return fig
+
+
+def _tensor_entry_grid(tensor: np.ndarray) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    """Integer (i, j, k) coordinates and flattened values for a rank-3 tensor."""
+    t = np.asarray(tensor, dtype=float)
+    if t.ndim != 3:
+        msg = f"Expected rank-3 tensor, got shape {t.shape}"
+        raise ValueError(msg)
+    ii, jj, kk = np.indices(t.shape)
+    return ii.ravel(), jj.ravel(), kk.ravel(), t.ravel()
+
+
+def _tensor_slice_mask(
+    xs: np.ndarray,
+    ys: np.ndarray,
+    zs: np.ndarray,
+    *,
+    axis: int,
+    index: int,
+) -> np.ndarray:
+    if axis == 0:
+        return xs == index
+    if axis == 1:
+        return ys == index
+    return zs == index
+
+
+def plot_tensor_3d(
+    tensor: np.ndarray,
+    *,
+    axis: int | None = None,
+    index: int | None = None,
+    title: str = "Rank-3 tensor — entry values in 3D",
+) -> go.Figure:
+    """Interactive 3D grid: marker position is (i, j, k), size and colour encode T[i, j, k]."""
+    t = np.asarray(tensor, dtype=float)
+    xs, ys, zs, vals = _tensor_entry_grid(t)
+    abs_vals = np.abs(vals)
+    scale = float(abs_vals.max()) if abs_vals.max() > 0 else 1.0
+    sizes = 6.0 + 28.0 * (abs_vals / scale)
+    hover = [f"T[{int(x)}, {int(y)}, {int(z)}] = {float(v):.3f}" for x, y, z, v in zip(xs, ys, zs, vals, strict=True)]
+    marker_base: dict[str, Any] = {
+        "colorscale": "RdBu",
+        "cmid": 0.0,
+        "cmin": -scale,
+        "cmax": scale,
+        "line": {"width": 1, "color": "#334155"},
+    }
+
+    fig = go.Figure()
+    if axis is not None and index is not None:
+        axis = int(axis) % 3
+        index = int(np.clip(index, 0, t.shape[axis] - 1))
+        on_slice = _tensor_slice_mask(xs, ys, zs, axis=axis, index=index)
+        axis_names = ("i", "j", "k")
+        slice_label = f"{axis_names[axis]} = {index}"
+
+        fig.add_trace(
+            go.Scatter3d(
+                x=xs[~on_slice],
+                y=ys[~on_slice],
+                z=zs[~on_slice],
+                mode="markers",
+                name="other entries",
+                marker={
+                    **marker_base,
+                    "size": sizes[~on_slice] * 0.55,
+                    "color": vals[~on_slice],
+                    "opacity": 0.35,
+                    "showscale": False,
+                },
+                hovertext=[hover[i] for i in range(len(hover)) if not on_slice[i]],
+                hoverinfo="text",
+            )
+        )
+        fig.add_trace(
+            go.Scatter3d(
+                x=xs[on_slice],
+                y=ys[on_slice],
+                z=zs[on_slice],
+                mode="markers+text",
+                name=slice_label,
+                marker={
+                    **marker_base,
+                    "size": sizes[on_slice],
+                    "color": vals[on_slice],
+                    "opacity": 0.95,
+                    "symbol": "diamond",
+                    "showscale": True,
+                    "colorbar": {"title": "T[i,j,k]"},
+                },
+                text=[f"{float(v):.2g}" for v in vals[on_slice]],
+                textposition="top center",
+                textfont={"size": 10, "color": "#0f172a"},
+                hovertext=[hover[i] for i in range(len(hover)) if on_slice[i]],
+                hoverinfo="text",
+            )
+        )
+        title = f"{title} — highlight {slice_label}"
+    else:
+        fig.add_trace(
+            go.Scatter3d(
+                x=xs,
+                y=ys,
+                z=zs,
+                mode="markers+text",
+                marker={
+                    **marker_base,
+                    "size": sizes,
+                    "color": vals,
+                    "opacity": 0.9,
+                    "showscale": True,
+                    "colorbar": {"title": "T[i,j,k]"},
+                },
+                text=[f"{float(v):.2g}" for v in vals],
+                textposition="top center",
+                textfont={"size": 9, "color": "#0f172a"},
+                hovertext=hover,
+                hoverinfo="text",
+            )
+        )
+
+    ni, nj, nk = t.shape
+    fig.update_layout(
+        **_base_layout(title=title, height=520, showlegend=True),
+        scene={
+            "xaxis": {"title": "i", "tickmode": "linear", "dtick": 1, "range": [-0.5, ni - 0.5]},
+            "yaxis": {"title": "j", "tickmode": "linear", "dtick": 1, "range": [-0.5, nj - 0.5]},
+            "zaxis": {"title": "k", "tickmode": "linear", "dtick": 1, "range": [-0.5, nk - 0.5]},
+            "aspectmode": "cube",
+            "camera": {"eye": {"x": 1.6, "y": 1.6, "z": 1.2}},
+        },
+    )
+    return fig
+
+
+def _lp_unit_ball_subtitle(p: float) -> str:
+    if p == np.inf:
+        return "L∞ unit ball: max(|x₁|, |x₂|) = 1"
+    if p == 1:
+        return "L¹ unit ball: |x₁| + |x₂| = 1"
+    if p == 2:
+        return "L² unit ball: x₁² + x₂² = 1"
+    return f"L{p:g} unit ball: ‖x‖_{p:g} = 1"
+
+
+def _lp_unit_ball_boundary(p: float, *, n: int = 400) -> tuple[np.ndarray, np.ndarray]:
+    """Boundary of the 2D Lp unit ball {x : ‖x‖p = 1}."""
+    if p == np.inf:
+        return (
+            np.array([1.0, 1.0, -1.0, -1.0, 1.0]),
+            np.array([1.0, -1.0, -1.0, 1.0, 1.0]),
+        )
+    if p == 1:
+        return (
+            np.array([1.0, 0.0, -1.0, 0.0, 1.0]),
+            np.array([0.0, 1.0, 0.0, -1.0, 0.0]),
+        )
+    theta = np.linspace(0, 2 * np.pi, n)
+    cos_t, sin_t = np.cos(theta), np.sin(theta)
+    if p == 2:
+        return cos_t, sin_t
+    radius = 1.0 / (np.abs(cos_t) ** p + np.abs(sin_t) ** p) ** (1.0 / p)
+    return radius * cos_t, radius * sin_t
+
+
 def plot_lp_unit_balls(*, p_values: tuple[float, ...] = (1.0, 2.0, np.inf)) -> go.Figure:
     """Unit balls for L¹, L², L∞ — geometry of norm choice."""
-    theta = np.linspace(0, 2 * np.pi, 400)
     fig = make_subplots(
         rows=1,
         cols=len(p_values),
-        subplot_titles=[f"L{'' if p == np.inf else int(p) if p == p // 1 else p} unit ball" for p in p_values],
+        subplot_titles=[_lp_unit_ball_subtitle(p) for p in p_values],
     )
 
     for col, p in enumerate(p_values, start=1):
-        if p == np.inf:
-            xs = np.array([1, 1, -1, -1, 1], dtype=float)
-            ys = np.array([1, -1, -1, 1, 1], dtype=float)
-        elif p == 1:
-            xs = np.sign(np.cos(theta)) * np.maximum(np.abs(np.cos(theta)), np.abs(np.sin(theta)))
-            ys = np.sign(np.sin(theta)) * np.maximum(np.abs(np.cos(theta)), np.abs(np.sin(theta)))
-        else:
-            xs, ys = np.cos(theta), np.sin(theta)
+        xs, ys = _lp_unit_ball_boundary(p)
         fig.add_trace(
             go.Scatter(
                 x=xs,
                 y=ys,
                 mode="lines",
-                fill="toself",
-                fillcolor="rgba(37, 99, 235, 0.15)",
                 line={"color": "#2563eb", "width": 2},
                 showlegend=False,
             ),
             row=1,
             col=col,
         )
-        fig.update_xaxes(scaleanchor=f"y{col if col > 1 else ''}", scaleratio=1, row=1, col=col)
+        fig.update_xaxes(
+            scaleanchor=f"y{col if col > 1 else ''}",
+            scaleratio=1,
+            range=[-1.1, 1.1],
+            row=1,
+            col=col,
+        )
+        fig.update_yaxes(range=[-1.1, 1.1], row=1, col=col)
 
-    fig.update_layout(**_base_layout(title="Different norms, different geometries", height=380, showlegend=False))
+    fig.update_layout(
+        **_base_layout(
+            title="Unit balls: {x : ‖x‖ₚ = 1} — boundary of points one unit from the origin",
+            height=400,
+            showlegend=False,
+        )
+    )
     return fig
 
 

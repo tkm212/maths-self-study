@@ -2,16 +2,60 @@
 
 from __future__ import annotations
 
+from typing import Any
+
 from dash import dcc, html
 
+TAB_WRAP_STYLE = """
+#page-tabs .tab-container {
+    flex-wrap: wrap !important;
+    height: auto !important;
+    row-gap: 4px;
+}
+#page-tabs .tab {
+    white-space: normal !important;
+    height: auto !important;
+    min-height: 36px;
+    line-height: 1.25;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    max-width: 100%;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+    text-align: center;
+}
+"""
 
-def page_shell(title: str, caption: str, filters: html.Div, body_id: str) -> html.Div:
-    return html.Div([
-        html.H2(title, style={"marginBottom": "4px"}),
+
+def page_shell(
+    title: str,
+    caption: str,
+    filters: html.Div,
+    body_id: str,
+    *,
+    methodology: list[str] | None = None,
+) -> html.Div:
+    from maths_self_study.dashboards.components import text_box
+
+    children: list[Any] = [
+        html.H2(
+            title,
+            style={
+                "marginBottom": "4px",
+                "overflowWrap": "anywhere",
+                "wordBreak": "break-word",
+                "lineHeight": 1.25,
+            },
+        ),
         html.P(caption, style={"color": "#64748b", "marginTop": 0}),
-        filters,
-        html.Div(id=body_id),
-    ])
+    ]
+    if methodology:
+        children.append(text_box(steps=methodology, title="How it works"))
+    children.extend([filters, html.Div(id=body_id)])
+    return html.Div(children)
 
 
 def chapter_layout(
@@ -25,12 +69,24 @@ def chapter_layout(
 ) -> html.Div:
     return html.Div(
         [
-            html.H1(title),
+            html.H1(
+                title,
+                style={
+                    "overflowWrap": "anywhere",
+                    "wordBreak": "break-word",
+                    "lineHeight": 1.2,
+                },
+            ),
             html.P(subtitle, style={"color": "#64748b"}),
             dcc.Tabs(
                 id="page-tabs",
                 value=default_tab,
                 children=[dcc.Tab(label=tab["label"], value=tab["value"]) for tab in tabs],
+                parent_style={
+                    "flexWrap": "wrap",
+                    "height": "auto",
+                    "alignItems": "flex-start",
+                },
             ),
             html.Div(id="page-content", style={"marginTop": "18px"}),
             html.Div(
@@ -38,6 +94,7 @@ def chapter_layout(
                 style={"marginTop": "28px", "fontSize": "0.9rem"},
             ),
         ],
+        lang="en",
         style={
             "maxWidth": "1200px",
             "margin": "0 auto",

@@ -11,6 +11,12 @@ MarkovPage = define_page(
     value="markov",
     title="Structured models — factor the joint",
     caption="§3.14 — Each edge is a conditional. RNNs / HMMs / autoregressive LMs are this with neural conditionals.",
+    methodology=[
+        "A joint over many variables factorises: P(x₁, …, xₙ) = P(x₁) Πᵢ P(xᵢ | x₁, …, xᵢ₋₁) (chain rule).",
+        "Markov chain: P(xᵢ | x₁, …, xᵢ₋₁) = P(xᵢ | xᵢ₋₁) — only the previous state matters.",
+        "Each edge in the graph is one conditional factor; the product builds the full joint.",
+        "RNNs and autoregressive language models use the same factorisation with neural nets as conditionals.",
+    ],
     build_filters=build_filters,
     register_callbacks=register_callbacks,
 )

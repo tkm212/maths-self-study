@@ -11,6 +11,12 @@ InformationPage = define_page(
     value="info",
     title="Information and surprise",
     caption="§3.13 — I(x) = -log P(x). H(P) averages surprise; H(P,Q) is classification loss; KL is asymmetric.",
+    methodology=[
+        "Self-information: I(x) = −log P(x) — surprise of outcome x (nats with ln, bits with log₂).",
+        "Shannon entropy H(P) = E[−log P(X)] = −Σ P(x) log P(x) — average surprise over P.",
+        "Cross-entropy H(P, Q) = E_P[−log Q(X)] — expected code length using Q on P-generated data; softmax + log loss.",
+        "KL divergence KL(P ‖ Q) = E_P[log(P/Q)] = H(P, Q) − H(P) ≥ 0, zero iff P = Q; asymmetric, not a metric.",
+    ],
     build_filters=build_filters,
     register_callbacks=register_callbacks,
 )

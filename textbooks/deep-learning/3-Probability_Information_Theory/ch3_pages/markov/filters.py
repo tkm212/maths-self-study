@@ -2,22 +2,29 @@
 
 from __future__ import annotations
 
-from dash import html
-
-from maths_self_study.dashboards.components import filter_bar, section, slider
+from maths_self_study.dashboards.components import filter_bar, prob_pair, section
 
 
-def build_filters() -> html.Div:
+def build_filters():
     return filter_bar(
-        section("P(X₁)", slider("mk-px1", "P(X₁=0)", 0.0, 1.0, 0.6)),
         section(
-            "P(X₂ | X₁) — P(X₂=0 | ·)",
-            slider("mk-t00", "X₁=0 → X₂=0", 0.0, 1.0, 0.7),
-            slider("mk-t10", "X₁=1 → X₂=0", 0.0, 1.0, 0.2),
+            "P(X₁)",
+            prob_pair("mk-p", "P(X₁=0)", "P(X₁=1)", 0.6, 0.4),
         ),
         section(
-            "P(X₃ | X₂) — P(X₃=0 | ·)",
-            slider("mk-u00", "X₂=0 → X₃=0", 0.0, 1.0, 0.9),
-            slider("mk-u10", "X₂=1 → X₃=0", 0.0, 1.0, 0.4),
+            "P(X₂ | X₁=0)",
+            prob_pair("mk-t0", "P(X₂=0)", "P(X₂=1)", 0.7, 0.3),
+        ),
+        section(
+            "P(X₂ | X₁=1)",
+            prob_pair("mk-t1", "P(X₂=0)", "P(X₂=1)", 0.2, 0.8),
+        ),
+        section(
+            "P(X₃ | X₂=0)",
+            prob_pair("mk-u0", "P(X₃=0)", "P(X₃=1)", 0.9, 0.1),
+        ),
+        section(
+            "P(X₃ | X₂=1)",
+            prob_pair("mk-u1", "P(X₃=0)", "P(X₃=1)", 0.4, 0.6),
         ),
     )

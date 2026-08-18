@@ -11,9 +11,13 @@ from maths_self_study.dashboards.components import (
     metric,
     num_input,
     preformatted,
+    prob_pair,
     section,
     slider,
     table,
+    tensor_callback_inputs,
+    tensor_grid_input,
+    text_box,
 )
 from maths_self_study.dashboards.layout import chapter_layout, page_shell
 from maths_self_study.dashboards.page_factory import define_page
@@ -33,7 +37,11 @@ __all__ = [
     "num_input",
     "page_shell",
     "preformatted",
+    "prob_pair",
     "section",
     "slider",
     "table",
+    "tensor_callback_inputs",
+    "tensor_grid_input",
+    "text_box",
 ]

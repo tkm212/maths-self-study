@@ -7,7 +7,7 @@ from abc import ABC, abstractmethod
 
 from dash import Dash, Input, Output, html
 
-from maths_self_study.dashboards.layout import chapter_layout, page_shell
+from maths_self_study.dashboards.layout import TAB_WRAP_STYLE, chapter_layout, page_shell
 
 log = logging.getLogger(__name__)
 
@@ -19,6 +19,7 @@ class DashboardPage(ABC):
     value: str
     title: str
     caption: str
+    methodology: list[str]
 
     @property
     def body_id(self) -> str:
@@ -31,7 +32,13 @@ class DashboardPage(ABC):
     def register_callbacks(self, app: Dash) -> None: ...
 
     def build_shell(self) -> html.Div:
-        return page_shell(self.title, self.caption, self.build_filters(), self.body_id)
+        return page_shell(
+            self.title,
+            self.caption,
+            self.build_filters(),
+            self.body_id,
+            methodology=self.methodology or None,
+        )
 
 
 def create_chapter_dashboard(
@@ -47,6 +54,13 @@ def create_chapter_dashboard(
 ) -> Dash:
     """Build a tabbed chapter dashboard and register page callbacks."""
     app = Dash(module_name, title=dash_title, suppress_callback_exceptions=True)
+    index = app.index_string
+    if "<html lang=" not in index:
+        index = index.replace("<html>", '<html lang="en">')
+    app.index_string = index.replace(
+        "</head>",
+        f"<style>{TAB_WRAP_STYLE}</style></head>",
+    )
     page_by_value = {page.value: page for page in pages}
     default = default_page or pages[0].value
     page_names = [page.value for page in pages]

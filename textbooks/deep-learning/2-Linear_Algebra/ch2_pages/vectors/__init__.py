@@ -11,6 +11,12 @@ VectorsPage = define_page(
     value="vectors",
     title="Linear maps as geometry",
     caption="§2.1-2.2 — A matrix A is a linear map x ↦ Ax. Columns of A are where the basis goes.",
+    methodology=[
+        "A matrix A ∈ ℝᵐˣⁿ is a linear map x ↦ Ax. Column j is Aeⱼ — where the j-th basis vector lands.",
+        "Composition applies maps right-to-left: (BA)x = B(Ax). Matrix multiply is associative but not commutative.",
+        "The inner product xᵀy = Σᵢ xᵢyᵢ. In ℝ², xᵀy = ‖x‖₂ ‖y‖₂ cos θ — algebra encodes angle.",
+        "Elementary maps (rotation R(θ), shear S(k)) are building blocks; any linear map is their composition plus scaling.",
+    ],
     build_filters=build_filters,
     register_callbacks=register_callbacks,
 )
