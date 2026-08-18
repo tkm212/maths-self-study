@@ -53,6 +53,25 @@ def num_input(
     )
 
 
+def prob_pair(
+    id_prefix: str,
+    label0: str,
+    label1: str,
+    p0: float,
+    p1: float,
+    *,
+    step: float = 0.05,
+) -> html.Div:
+    """Two linked probabilities that sum to 1 — use with register_complement_pair."""
+    return html.Div(
+        [
+            num_input(f"{id_prefix}-0", label0, p0, step=step, min_=0.0, max_=1.0),
+            num_input(f"{id_prefix}-1", label1, p1, step=step, min_=0.0, max_=1.0),
+        ],
+        style={"display": "flex", "flexWrap": "wrap", "gap": "12px", "width": "100%"},
+    )
+
+
 def slider(
     id_: str,
     label: str,

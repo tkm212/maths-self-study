@@ -81,6 +81,39 @@ def renorm(values: np.ndarray) -> np.ndarray:
     return xs / total
 
 
+def clamp_prob(value: float | None, *, default: float = 0.5) -> float:
+    if value is None:
+        return default
+    try:
+        return float(np.clip(float(value), 0.0, 1.0))
+    except TypeError, ValueError:
+        return default
+
+
+def complement_prob(value: float | None, *, default: float = 0.5) -> float:
+    return 1.0 - clamp_prob(value, default=default)
+
+
+def redistribute_simplex(values: list[float | None], index: int, new_value: float | None) -> list[float]:
+    """Fix one probability mass; scale the others so the vector sums to 1."""
+    n = len(values)
+    clamped = [clamp_prob(v, default=1.0 / n) for v in values]
+    fixed = clamp_prob(new_value, default=clamped[index])
+    remainder = max(0.0, 1.0 - fixed)
+    other_indices = [i for i in range(n) if i != index]
+    other_sum = sum(clamped[i] for i in other_indices)
+    out = clamped.copy()
+    out[index] = fixed
+    if other_sum > 0:
+        for i in other_indices:
+            out[i] = remainder * clamped[i] / other_sum
+    else:
+        share = remainder / len(other_indices)
+        for i in other_indices:
+            out[i] = share
+    return [float(v) for v in out]
+
+
 def coerce_probs(values: list[float | None], *, fallback: np.ndarray) -> np.ndarray:
     """Build a probability vector from dashboard inputs, falling back per entry when empty."""
     default = np.asarray(fallback, dtype=float).ravel()

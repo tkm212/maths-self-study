@@ -6,6 +6,7 @@ import importlib.util
 from pathlib import Path
 
 import numpy as np
+import pytest
 
 from maths_self_study.dashboards.chapter_app import create_chapter_dashboard
 from maths_self_study.dashboards.components import (
@@ -188,6 +189,16 @@ def test_coerce_tensor_3d():
                 ordered.append(float(helpers.TENSOR_DEFAULT[i, j, k]))
     tensor = coerce_tensor_3d(ordered, fallback=helpers.TENSOR_DEFAULT, shape=helpers.TENSOR_SHAPE)
     np.testing.assert_allclose(tensor, helpers.TENSOR_DEFAULT)
+
+
+def test_complement_prob():
+    from maths_self_study.dashboards.utils import clamp_prob, complement_prob, redistribute_simplex
+
+    assert complement_prob(0.7) == pytest.approx(0.3)
+    assert clamp_prob(None, default=0.6) == 0.6
+    out = redistribute_simplex([0.4, 0.3, 0.2, 0.1], 0, 0.5)
+    assert sum(out) == pytest.approx(1.0)
+    assert out[0] == pytest.approx(0.5)
 
 
 def test_filter_bar_wraps_controls():
