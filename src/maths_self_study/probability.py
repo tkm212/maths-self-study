@@ -81,6 +81,21 @@ def cross_entropy(
     return float(-np.sum(p_norm[positive] * np.log(q_norm[positive])) / np.log(base))
 
 
+def align_model_to_support(
+    p: np.ndarray,
+    q: np.ndarray,
+    *,
+    eps: float = 1e-12,
+) -> np.ndarray:
+    """Floor Q on the support of P so cross-entropy and KL(P || Q) stay finite in demos."""
+    p_norm = _as_probabilities(p)
+    q_norm = _as_probabilities(q)
+    q_safe = q_norm.copy()
+    support = p_norm > 0
+    q_safe[support] = np.maximum(q_safe[support], eps)
+    return q_safe / q_safe.sum()
+
+
 def kl_divergence(
     p: np.ndarray,
     q: np.ndarray,

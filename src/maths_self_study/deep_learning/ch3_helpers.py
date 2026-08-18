@@ -11,6 +11,7 @@ from plotly.subplots import make_subplots
 from scipy import stats
 
 from maths_self_study.probability import (
+    align_model_to_support,
     bayes_posterior,
     cross_entropy,
     kl_divergence,
@@ -292,8 +293,10 @@ def plot_kl_asymmetric(
     q: np.ndarray,
 ) -> go.Figure:
     """Two distributions with KL(P‖Q) ≠ KL(Q‖P) — direction matters."""
-    d_pq = kl_divergence(p, q)
-    d_qp = kl_divergence(q, p)
+    q_for_p = align_model_to_support(p, q)
+    p_for_q = align_model_to_support(q, p)
+    d_pq = kl_divergence(p, q_for_p)
+    d_qp = kl_divergence(q, p_for_q)
     fig = make_subplots(
         rows=1,
         cols=2,
@@ -397,11 +400,15 @@ def plot_markov_chain(
 
 
 def summarize_information_measures(p: np.ndarray, q: np.ndarray) -> dict[str, float]:
+    p_arr = np.asarray(p, dtype=float)
+    q_arr = np.asarray(q, dtype=float)
+    q_for_p = align_model_to_support(p_arr, q_arr)
+    p_for_q = align_model_to_support(q_arr, p_arr)
     return {
-        "H(P)": shannon_entropy(p),
-        "H(P, Q)": cross_entropy(p, q),
-        "D_KL(P || Q)": kl_divergence(p, q),
-        "D_KL(Q || P)": kl_divergence(q, p),
+        "H(P)": shannon_entropy(p_arr),
+        "H(P, Q)": cross_entropy(p_arr, q_for_p),
+        "D_KL(P || Q)": kl_divergence(p_arr, q_for_p),
+        "D_KL(Q || P)": kl_divergence(q_arr, p_for_q),
     }
 
 

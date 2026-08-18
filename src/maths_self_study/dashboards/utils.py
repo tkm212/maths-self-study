@@ -73,11 +73,28 @@ def parse_matrix_2x2(text: str | None, *, fallback: np.ndarray) -> np.ndarray:
 
 def renorm(values: np.ndarray) -> np.ndarray:
     xs = np.asarray(values, dtype=float)
+    xs = np.nan_to_num(xs, nan=0.0, posinf=0.0, neginf=0.0)
     xs = np.clip(xs, 0.0, None)
     total = xs.sum()
     if total <= 0:
         return np.full_like(xs, 1.0 / len(xs))
     return xs / total
+
+
+def coerce_probs(values: list[float | None], *, fallback: np.ndarray) -> np.ndarray:
+    """Build a probability vector from dashboard inputs, falling back per entry when empty."""
+    default = np.asarray(fallback, dtype=float).ravel()
+    out: list[float] = []
+    for i, value in enumerate(values):
+        if value is None:
+            out.append(float(default[i]))
+            continue
+        try:
+            out.append(max(0.0, float(value)))
+        except TypeError, ValueError:
+            log.warning("Invalid probability input %r — using fallback", value)
+            out.append(float(default[i]))
+    return renorm(np.array(out, dtype=float))
 
 
 def coerce_tensor_3d(

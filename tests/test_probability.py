@@ -46,6 +46,16 @@ def test_kl_cross_entropy_identity() -> None:
     assert kl_divergence(p, p) == pytest.approx(0.0)
 
 
+def test_align_model_to_support_allows_kl_when_q_zeros_out() -> None:
+    from maths_self_study.probability import align_model_to_support
+
+    p = np.array([0.4, 0.3, 0.2, 0.1])
+    q = np.array([0.0, 0.0, 0.0, 1.0])
+    q_safe = align_model_to_support(p, q)
+    assert np.all(q_safe[p > 0] > 0)
+    assert kl_divergence(p, q_safe) >= 0.0
+
+
 def test_monty_hall_switch_wins() -> None:
     # Contestant picks door 0; host opens door 1 (goat).
     post = monty_hall_posterior(chosen_door=0, opened_door=1)
