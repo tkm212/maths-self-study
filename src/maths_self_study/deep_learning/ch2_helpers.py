@@ -364,9 +364,28 @@ def _lp_unit_ball_subtitle(p: float) -> str:
     return f"L{p:g} unit ball: ‖x‖_{p:g} = 1"
 
 
+def _lp_unit_ball_boundary(p: float, *, n: int = 400) -> tuple[np.ndarray, np.ndarray]:
+    """Boundary of the 2D Lp unit ball {x : ‖x‖p = 1}."""
+    if p == np.inf:
+        return (
+            np.array([1.0, 1.0, -1.0, -1.0, 1.0]),
+            np.array([1.0, -1.0, -1.0, 1.0, 1.0]),
+        )
+    if p == 1:
+        return (
+            np.array([1.0, 0.0, -1.0, 0.0, 1.0]),
+            np.array([0.0, 1.0, 0.0, -1.0, 0.0]),
+        )
+    theta = np.linspace(0, 2 * np.pi, n)
+    cos_t, sin_t = np.cos(theta), np.sin(theta)
+    if p == 2:
+        return cos_t, sin_t
+    radius = 1.0 / (np.abs(cos_t) ** p + np.abs(sin_t) ** p) ** (1.0 / p)
+    return radius * cos_t, radius * sin_t
+
+
 def plot_lp_unit_balls(*, p_values: tuple[float, ...] = (1.0, 2.0, np.inf)) -> go.Figure:
     """Unit balls for L¹, L², L∞ — geometry of norm choice."""
-    theta = np.linspace(0, 2 * np.pi, 400)
     fig = make_subplots(
         rows=1,
         cols=len(p_values),
@@ -374,14 +393,7 @@ def plot_lp_unit_balls(*, p_values: tuple[float, ...] = (1.0, 2.0, np.inf)) -> g
     )
 
     for col, p in enumerate(p_values, start=1):
-        if p == np.inf:
-            xs = np.array([1, 1, -1, -1, 1], dtype=float)
-            ys = np.array([1, -1, -1, 1, 1], dtype=float)
-        elif p == 1:
-            xs = np.sign(np.cos(theta)) * np.maximum(np.abs(np.cos(theta)), np.abs(np.sin(theta)))
-            ys = np.sign(np.sin(theta)) * np.maximum(np.abs(np.cos(theta)), np.abs(np.sin(theta)))
-        else:
-            xs, ys = np.cos(theta), np.sin(theta)
+        xs, ys = _lp_unit_ball_boundary(p)
         fig.add_trace(
             go.Scatter(
                 x=xs,
@@ -393,7 +405,14 @@ def plot_lp_unit_balls(*, p_values: tuple[float, ...] = (1.0, 2.0, np.inf)) -> g
             row=1,
             col=col,
         )
-        fig.update_xaxes(scaleanchor=f"y{col if col > 1 else ''}", scaleratio=1, row=1, col=col)
+        fig.update_xaxes(
+            scaleanchor=f"y{col if col > 1 else ''}",
+            scaleratio=1,
+            range=[-1.1, 1.1],
+            row=1,
+            col=col,
+        )
+        fig.update_yaxes(range=[-1.1, 1.1], row=1, col=col)
 
     fig.update_layout(
         **_base_layout(

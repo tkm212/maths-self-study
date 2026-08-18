@@ -246,6 +246,15 @@ def test_vectors_page_has_methodology():
     assert len(page.methodology) >= 3
 
 
+def test_plot_lp_unit_ball_l1_is_diamond():
+    from maths_self_study.deep_learning import ch2_helpers as helpers
+
+    xs, ys = helpers._lp_unit_ball_boundary(1.0)
+    assert (xs[0], ys[0]) == (1.0, 0.0)
+    assert (xs[1], ys[1]) == (0.0, 1.0)
+    assert len(xs) == 5
+
+
 def test_plot_markov_chain_builds_figure():
     from maths_self_study.deep_learning import ch3_helpers as helpers
 
