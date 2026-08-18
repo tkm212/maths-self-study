@@ -80,12 +80,13 @@ Implementations based on **Goodfellow, I., Bengio, Y., & Courville, A. (2016). [
 
 Source path: `textbooks/deep-learning/`
 
-Chapters 2–3 ship as multi-page **Dash** dashboards (filters for chapter constants on each page). Each chapter’s `dashboard.py` wires the app; page code lives in `ch{N}_pages/<page>/` with separate `filters.py`, `content.py`, and `callbacks.py` modules. Shared UI and app shell code is in `maths_self_study.dashboards`; plotting and math helpers are in `maths_self_study.deep_learning.ch{N}_helpers` plus `maths_self_study.linalg` / `maths_self_study.probability`.
+Chapters 2–4 ship as multi-page **Dash** dashboards (filters for chapter constants on each page). Each chapter’s `dashboard.py` wires the app; page code lives in `ch{N}_pages/<page>/` with separate `filters.py`, `content.py`, and `callbacks.py` modules. Shared UI and app shell code is in `maths_self_study.dashboards`; plotting and math helpers are in `maths_self_study.deep_learning.ch{N}_helpers` plus `maths_self_study.linalg`, `maths_self_study.probability`, and `maths_self_study.optimization`.
 
 | Chapter | Topic | App |
 |---------|-------|-----|
 | 2 | Linear Algebra | `2-Linear_Algebra/dashboard.py` |
 | 3 | Probability and Information Theory | `3-Probability_Information_Theory/dashboard.py` |
+| 4 | Numerical Computation | `4-Numerical_Computation/dashboard.py` |
 
 ### Chapter 2 — Linear Algebra
 
@@ -101,6 +102,14 @@ Interactive walkthrough of [Chapter 3](https://www.deeplearningbook.org/contents
 
 ```bash
 uv run python textbooks/deep-learning/3-Probability_Information_Theory/dashboard.py
+```
+
+### Chapter 4 — Numerical Computation
+
+Interactive walkthrough of [Chapter 4](https://www.deeplearningbook.org/contents/numerical.html): overflow and underflow, poor conditioning, gradient descent, Newton's method and the Hessian, and linear least squares.
+
+```bash
+uv run python textbooks/deep-learning/4-Numerical_Computation/dashboard.py
 ```
 
 ### Running a Marimo notebook
