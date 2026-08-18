@@ -15,7 +15,7 @@ BayesPage = define_page(
         "Bayes' rule: P(H | E) = P(E | H) P(H) / P(E). The denominator P(E) = Σ_H P(E | H) P(H) normalises.",
         "Posterior ∝ prior × likelihood — update beliefs about H after observing evidence E.",
         "Base rate P(H) matters: even a sensitive test yields low P(H | +) when the disease is rare.",
-        "Monty Hall: P(win | opened goat) = 2/3 for the unopened unchosen door — conditioning on the host's action.",
+        "Compare posterior P(disease | +) to the prior — evidence shifts beliefs, but rarely overturns a low base rate.",
     ],
     build_filters=build_filters,
     register_callbacks=register_callbacks,

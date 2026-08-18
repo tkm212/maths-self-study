@@ -11,8 +11,6 @@ INPUTS = [
     Input("bayes-prior", "value"),
     Input("bayes-sens", "value"),
     Input("bayes-fpr", "value"),
-    Input("bayes-chosen", "value"),
-    Input("bayes-opened", "value"),
 ]
 
 
