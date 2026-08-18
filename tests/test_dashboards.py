@@ -218,6 +218,15 @@ def test_vectors_page_has_methodology():
     assert len(page.methodology) >= 3
 
 
+def test_plot_markov_chain_builds_figure():
+    from maths_self_study.deep_learning import ch3_helpers as helpers
+
+    demo = helpers.markov_chain_demo()
+    fig = helpers.plot_markov_chain(demo.p_x1, demo.p_x2_given_x1, demo.p_x3_given_x2)
+    assert fig is not None
+    assert len(fig.layout.annotations) >= 4
+
+
 def test_configure_logging():
     import logging
 

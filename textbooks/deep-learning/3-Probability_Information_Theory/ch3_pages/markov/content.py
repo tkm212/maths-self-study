@@ -25,7 +25,7 @@ def render_body(px1_0, t00, t10, u00, u10) -> html.Div:
             for x3 in (0, 1):
                 joint[x1, x2, x3] = p_x1[x1] * p_x2_given_x1[x1, x2] * p_x3_given_x2[x2, x3]
 
-    fig = helpers.plot_markov_chain(p_x2_given_x1, labels=("X₁", "X₂"))
+    fig = helpers.plot_markov_chain(p_x1, p_x2_given_x1, p_x3_given_x2)
     rows = [
         ["Joint shape", str(joint.shape)],
         ["Joint sum", f"{joint.sum():.4f}"],
