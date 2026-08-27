@@ -6,19 +6,12 @@ Run from repo root:
 
 from __future__ import annotations
 
-import logging
-import sys
 from pathlib import Path
 
-from maths_self_study.dashboards.chapter_app import create_chapter_dashboard
-from maths_self_study.dashboards.logging import configure
+from maths_self_study.dashboards.runner import main_dashboard, setup_chapter_path
+from maths_self_study.deep_learning.dashboard import create_deep_learning_dashboard
 
-configure()
-log = logging.getLogger(__name__)
-
-_CHAPTER_DIR = Path(__file__).resolve().parent
-if str(_CHAPTER_DIR) not in sys.path:
-    sys.path.insert(0, str(_CHAPTER_DIR))
+setup_chapter_path(Path(__file__).resolve().parent)
 
 from ch3_pages import (  # noqa: E402
     BayesPage,
@@ -38,26 +31,20 @@ PAGES = [
 
 
 def create_app():
-    return create_chapter_dashboard(
-        module_name=__name__,
-        dash_title="Deep Learning Ch. 3 — Probability",
-        heading="Deep Learning — Chapter 3: Probability & Information Theory",
-        tagline="Interactive demos with live filters for the chapter constants.",
-        book_href="https://www.deeplearningbook.org/contents/prob.html",
+    return create_deep_learning_dashboard(
+        __name__,
+        chapter_number=3,
+        chapter_title="Probability & Information Theory",
+        dash_short_title="Probability",
+        book_slug="prob.html",
         book_link_text="Deep Learning Book — Probability and Information Theory",
         pages=PAGES,
         default_page="rv",
     )
 
 
-def run(*, debug: bool = True) -> None:
-    configure(level=logging.DEBUG if debug else logging.INFO, force=True)
-    log.info("Starting Deep Learning Ch. 3 dashboard (debug=%s)", debug)
-    app.run(debug=debug)
-
-
 app = create_app()
 server = app.server
 
 if __name__ == "__main__":
-    run(debug=True)
+    main_dashboard(app, label="Deep Learning Ch. 3")

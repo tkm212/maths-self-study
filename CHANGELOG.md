@@ -14,6 +14,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - `maths_self_study.linalg` module: Lp norms, symmetric eigendecomposition, PCA, Moore–Penrose pseudoinverse.
 - Deep Learning track (Goodfellow et al.): Chapter 3 — Probability and Information Theory Dash dashboard under `textbooks/deep-learning/3-Probability_Information_Theory/dashboard.py`.
 - `maths_self_study.probability` module: Bayes' rule, Shannon entropy, cross-entropy, KL divergence, Monty Hall posterior.
+- Deep Learning track (Goodfellow et al.): Chapter 4 — Numerical Computation Dash dashboard under `textbooks/deep-learning/4-Numerical_Computation/dashboard.py`.
+- `maths_self_study.optimization` module: stable softmax, condition number, gradient descent, Newton's method, linear least squares.
 - `dash` dependency for interactive Deep Learning chapter dashboards.
 
 ### Changed

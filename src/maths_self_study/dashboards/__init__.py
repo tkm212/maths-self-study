@@ -1,5 +1,15 @@
 """Reusable Dash dashboard framework for textbook chapter demos."""
 
+from maths_self_study.dashboards.callbacks import (
+    complement_pair_callback_inputs,
+    complement_pairs_callback_inputs,
+    define_page_callbacks,
+    register_body_callback,
+    register_complement_pair,
+    register_complement_pairs,
+    register_simplex_sync,
+    simplex_callback_inputs,
+)
 from maths_self_study.dashboards.chapter_app import DashboardPage, create_chapter_dashboard
 from maths_self_study.dashboards.components import (
     checklist,
@@ -10,38 +20,62 @@ from maths_self_study.dashboards.components import (
     matrix_input,
     metric,
     num_input,
+    num_input_row,
     preformatted,
     prob_pair,
+    prob_simplex,
+    prob_simplex_ids,
     section,
     slider,
     table,
     tensor_callback_inputs,
     tensor_grid_input,
     text_box,
+    vector2_input,
 )
 from maths_self_study.dashboards.layout import chapter_layout, page_shell
+from maths_self_study.dashboards.logging import configure, configure_for_run, log_dashboard_start
 from maths_self_study.dashboards.page_factory import define_page
+from maths_self_study.dashboards.runner import main_dashboard, run_dashboard, setup_chapter_path
 
 __all__ = [
     "DashboardPage",
     "chapter_layout",
     "checklist",
+    "complement_pair_callback_inputs",
+    "complement_pairs_callback_inputs",
+    "configure",
+    "configure_for_run",
     "create_chapter_dashboard",
     "define_page",
+    "define_page_callbacks",
     "dropdown",
     "filter_bar",
     "graph",
     "graph_row",
+    "log_dashboard_start",
+    "main_dashboard",
     "matrix_input",
     "metric",
     "num_input",
+    "num_input_row",
     "page_shell",
     "preformatted",
     "prob_pair",
+    "prob_simplex",
+    "prob_simplex_ids",
+    "register_body_callback",
+    "register_complement_pair",
+    "register_complement_pairs",
+    "register_simplex_sync",
+    "run_dashboard",
     "section",
+    "setup_chapter_path",
+    "simplex_callback_inputs",
     "slider",
     "table",
     "tensor_callback_inputs",
     "tensor_grid_input",
     "text_box",
+    "vector2_input",
 ]

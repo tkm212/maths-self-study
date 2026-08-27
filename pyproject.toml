@@ -85,6 +85,7 @@ extra-paths = [
     "textbooks/elements-of-statistical-learning/18-High_Dimensional_Problems",
     "textbooks/deep-learning/2-Linear_Algebra",
     "textbooks/deep-learning/3-Probability_Information_Theory",
+    "textbooks/deep-learning/4-Numerical_Computation",
 ]
 
 [tool.pytest.ini_options]

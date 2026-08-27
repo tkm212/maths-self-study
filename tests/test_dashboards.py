@@ -34,6 +34,7 @@ from maths_self_study.dashboards.utils import (
 _REPO_ROOT = Path(__file__).resolve().parents[1]
 _CH2_DASHBOARD = _REPO_ROOT / "textbooks/deep-learning/2-Linear_Algebra/dashboard.py"
 _CH3_DASHBOARD = _REPO_ROOT / "textbooks/deep-learning/3-Probability_Information_Theory/dashboard.py"
+_CH4_DASHBOARD = _REPO_ROOT / "textbooks/deep-learning/4-Numerical_Computation/dashboard.py"
 
 
 def _load_dashboard_module(path: Path):
@@ -95,6 +96,26 @@ def test_ch3_dashboard_app_layout():
     assert len(ch3.PAGES) == 5
 
 
+def test_ch4_dashboard_app_layout():
+    ch4 = _load_dashboard_module(_CH4_DASHBOARD)
+    app = ch4.create_app()
+    assert app.layout is not None
+    assert len(ch4.PAGES) == 5
+
+
+def test_stability_softmax_updates():
+    import sys
+
+    ch4_dir = _CH4_DASHBOARD.parent
+    sys.path.insert(0, str(ch4_dir))
+    from ch4_pages.stability.content import render_body
+
+    small = render_body(0.0, 1.0, 2.0)
+    large = render_body(1000.0, 1001.0, 1002.0)
+    assert small is not None and large is not None
+    assert str(small.to_plotly_json()) != str(large.to_plotly_json())
+
+
 def test_random_variables_moments_update():
     import sys
 
@@ -124,6 +145,23 @@ def test_create_chapter_dashboard_minimal():
         pages=[page],
     )
     assert app.layout is not None
+
+
+def test_create_deep_learning_dashboard():
+    from maths_self_study.deep_learning.dashboard import create_deep_learning_dashboard
+
+    ch2 = _load_dashboard_module(_CH2_DASHBOARD)
+    app = create_deep_learning_dashboard(
+        "test_dl_dashboard",
+        chapter_number=2,
+        chapter_title="Linear Algebra",
+        book_slug="linear_algebra.html",
+        book_link_text="Deep Learning Book — Linear Algebra",
+        pages=[ch2.PAGES[0]],
+        default_page=ch2.PAGES[0].value,
+    )
+    assert app.layout is not None
+    assert app.title == "Deep Learning Ch. 2 — Linear Algebra"
 
 
 def test_format_parse_matrix_2x2_roundtrip():
@@ -269,10 +307,58 @@ def test_plot_markov_chain_builds_figure():
     assert len(fig.layout.annotations) >= 4
 
 
+def test_plot_softmax_comparison_builds_figure():
+    from maths_self_study.deep_learning import ch4_helpers as helpers
+
+    fig = helpers.plot_softmax_comparison(helpers.SOFTMAX_LOGITS, labels=helpers.SOFTMAX_LABELS)
+    assert fig is not None
+    assert len(fig.data) >= 2
+
+
+def test_plot_gradient_descent_path_builds_figure():
+    from maths_self_study.deep_learning import ch4_helpers as helpers
+
+    fig = helpers.plot_gradient_descent_path(
+        helpers.GD_HESSIAN,
+        helpers.GD_LINEAR,
+        helpers.GD_START,
+        learning_rate=0.1,
+    )
+    assert fig is not None
+    assert len(fig.data) >= 2
+
+
 def test_configure_logging():
     import logging
 
-    from maths_self_study.dashboards.logging import configure
+    from maths_self_study.dashboards.logging import configure, configure_for_run
 
     configure(level=logging.WARNING, force=True)
     assert logging.getLogger().level == logging.WARNING
+    configure_for_run(debug=True)
+    assert logging.getLogger().level == logging.DEBUG
+    configure_for_run(debug=False)
+    assert logging.getLogger().level == logging.INFO
+
+
+def test_coerce_float_and_vector():
+    from maths_self_study.dashboards.utils import coerce_float, coerce_floats, coerce_vector2
+
+    assert coerce_float(None, default=1.5) == 1.5
+    assert coerce_float(2.5, default=0.0) == 2.5
+    np.testing.assert_allclose(coerce_vector2(None, 3.0, fallback=np.array([1.0, 2.0])), [1.0, 3.0])
+    np.testing.assert_allclose(coerce_floats([None, 2.0], fallback=np.array([5.0, 6.0])), [5.0, 2.0])
+
+
+def test_prob_simplex_ids():
+    from maths_self_study.dashboards.components import prob_simplex_ids
+
+    assert prob_simplex_ids("info-p", [0, 1, 2, 3]) == ["info-p0", "info-p1", "info-p2", "info-p3"]
+
+
+def test_base_layout():
+    from maths_self_study.viz.plotly import base_layout
+
+    layout = base_layout(title="Demo", height=400)
+    assert layout["template"] == "plotly_white"
+    assert layout["title"] == "Demo"

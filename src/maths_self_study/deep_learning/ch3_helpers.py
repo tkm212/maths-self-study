@@ -19,6 +19,8 @@ from maths_self_study.probability import (
     monty_hall_posterior,
     shannon_entropy,
 )
+from maths_self_study.viz.plotly import base_layout as _base_layout
+from maths_self_study.viz.plotly import equal_axes
 
 # --- Demo fixtures ---
 
@@ -48,15 +50,6 @@ def show(mo: Any, fig: go.Figure) -> Any:
 
 def show_all(mo: Any, *figs: go.Figure) -> Any:
     return mo.vstack([display(fig, mo) for fig in figs])
-
-
-def _base_layout(**overrides: Any) -> dict[str, Any]:
-    layout = {
-        "template": "plotly_white",
-        "margin": {"l": 60, "r": 30, "t": 60, "b": 50},
-    }
-    layout.update(overrides)
-    return layout
 
 
 def plot_binary_entropy_curve() -> go.Figure:
@@ -225,7 +218,7 @@ def plot_gaussian_2d_contour(
             )
         )
     fig.update_layout(**_base_layout(title=title, height=460))
-    fig.update_yaxes(scaleanchor="x", scaleratio=1)
+    equal_axes(fig)
     return fig
 
 
