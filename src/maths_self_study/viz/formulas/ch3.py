@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-# §3.2–3.3 — Random variables
+# §3.2-3.3 — Random variables
 EXPECTATION = r"\mathbb{E}[X] = \sum_x x \, P(X = x)"
 VARIANCE = r"\mathrm{Var}(X) = \mathbb{E}\big[(X - \mathbb{E}[X])^2\big]"
 CONDITIONAL_PROB = r"P(A \mid B) = \frac{P(A, B)}{P(B)}"

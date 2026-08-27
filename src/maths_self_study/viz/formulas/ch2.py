@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-# §2.1–2.3 — Vectors and matrices
+# §2.1-2.3 — Vectors and matrices
 MATRIX_VECTOR = r"y = Ax"
 INNER_PRODUCT = r"x^\top y = \|x\|_2 \|y\|_2 \cos\theta"
 
