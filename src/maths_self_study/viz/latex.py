@@ -1,11 +1,11 @@
-"""LaTeX formula rendering for Dash dashboards via KaTeX."""
+"""LaTeX formula rendering for Dash dashboards."""
 
 from __future__ import annotations
 
 from dash import html
 
-KATEX_VERSION = "0.16.11"
-KATEX_CDN = f"https://cdn.jsdelivr.net/npm/katex@{KATEX_VERSION}/dist"
+_RENDERER_VERSION = "0.16.11"
+_RENDERER_CDN = f"https://cdn.jsdelivr.net/npm/katex@{_RENDERER_VERSION}/dist"
 
 _FORMULA_BLOCK_STYLE = {
     "padding": "14px 18px",
@@ -28,15 +28,15 @@ _FORMULA_SOURCE_STYLE = {
 }
 
 
-def katex_head_html() -> str:
-    """KaTeX stylesheet — inject before ``</head>`` in the Dash index template."""
-    return f'<link rel="stylesheet" href="{KATEX_CDN}/katex.min.css" crossorigin="anonymous" />'
+def latex_head_html() -> str:
+    """LaTeX renderer stylesheet — inject before ``</head>`` in the Dash index template."""
+    return f'<link rel="stylesheet" href="{_RENDERER_CDN}/katex.min.css" crossorigin="anonymous" />'
 
 
-def katex_boot_script() -> str:
-    """KaTeX bootstrap — inject before ``</body>`` in the Dash index template."""
+def latex_boot_script() -> str:
+    """LaTeX renderer bootstrap — inject before ``</body>`` in the Dash index template."""
     return f"""
-<script src="{KATEX_CDN}/katex.min.js" crossorigin="anonymous"></script>
+<script src="{_RENDERER_CDN}/katex.min.js" crossorigin="anonymous"></script>
 <script>
 (function () {{
   var timer = null;
@@ -45,7 +45,7 @@ def katex_boot_script() -> str:
     if (typeof katex === "undefined") {{
       return;
     }}
-    document.querySelectorAll(".math-latex-source:not([data-katex-rendered])").forEach(function (el) {{
+    document.querySelectorAll(".math-latex-source:not([data-latex-rendered])").forEach(function (el) {{
       var latex = el.textContent.trim();
       if (!latex) {{
         return;
@@ -53,7 +53,7 @@ def katex_boot_script() -> str:
       var display = el.classList.contains("math-latex-display");
       try {{
         katex.render(latex, el, {{displayMode: display, throwOnError: false}});
-        el.setAttribute("data-katex-rendered", "1");
+        el.setAttribute("data-latex-rendered", "1");
       }} catch (err) {{
         el.textContent = latex;
       }}
@@ -91,10 +91,9 @@ def formula(
     display: bool = True,
     block_style: dict[str, str | int] | None = None,
 ) -> html.Div:
-    """Styled KaTeX formula block for dashboard page bodies.
+    """Styled LaTeX formula block for dashboard page bodies.
 
-    Stores raw LaTeX in ``data-latex``; requires :func:`katex_head_html` and
-    :func:`katex_boot_script` in the app index.
+    Requires :func:`latex_head_html` and :func:`latex_boot_script` in the app index.
     """
     stripped = latex.strip()
     children: list[html.Div] = []

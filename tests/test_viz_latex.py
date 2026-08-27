@@ -7,7 +7,7 @@ from pathlib import Path
 
 from maths_self_study.dashboards.chapter_app import create_chapter_dashboard
 from maths_self_study.viz.formulas import ch5 as ch5_formulas
-from maths_self_study.viz.latex import formula, formula_group, katex_boot_script, katex_head_html
+from maths_self_study.viz.latex import formula, formula_group, latex_boot_script, latex_head_html
 
 _REPO_ROOT = Path(__file__).resolve().parents[1]
 _CH2_DASHBOARD = _REPO_ROOT / "textbooks/deep-learning/2-Linear_Algebra/dashboard.py"
@@ -21,13 +21,13 @@ def _load_ch2():
     return module
 
 
-def test_katex_assets_include_cdn():
-    head = katex_head_html()
-    body = katex_boot_script()
+def test_latex_assets_include_renderer():
+    head = latex_head_html()
+    body = latex_boot_script()
     assert "katex.min.css" in head
     assert "katex.min.js" in body
     assert "katex.render" in body
-    assert "data-katex-rendered" in body
+    assert "data-latex-rendered" in body
 
 
 def test_formula_wraps_latex_in_delimiters():
@@ -49,6 +49,8 @@ def test_formula_group_stacks_items():
 
 
 def test_ch5_formula_strings_are_nonempty():
+    from maths_self_study.viz.formulas import ch5 as ch5_formulas
+
     names = [
         "EMPIRICAL_RISK",
         "POLYNOMIAL_MODEL",
@@ -65,11 +67,11 @@ def test_ch5_formula_strings_are_nonempty():
         assert len(getattr(ch5_formulas, name).strip()) > 5
 
 
-def test_chapter_dashboard_injects_katex():
+def test_chapter_dashboard_injects_latex():
     ch2 = _load_ch2()
     page = ch2.PAGES[0]
     app = create_chapter_dashboard(
-        module_name="test_katex_dashboard",
+        module_name="test_latex_dashboard",
         dash_title="Test",
         heading="Test heading",
         tagline="Test tagline",
