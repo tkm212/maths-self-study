@@ -10,9 +10,11 @@ from plotly.subplots import make_subplots
 
 from maths_self_study.optimization import (
     condition_number,
+    epsilon_for_condition_number,
     gradient_descent_quadratic,
     linear_least_squares,
     log_sum_exp,
+    near_singular_system,
     newton_quadratic,
     quadratic_value,
     softmax_naive,
@@ -25,8 +27,8 @@ from maths_self_study.optimization import (
 SOFTMAX_LOGITS = np.array([1000.0, 1001.0, 1002.0])
 SOFTMAX_LABELS = np.array(["class 0", "class 1", "class 2"])
 
-CONDITIONING_A = np.array([[1.0, 1.0], [1.0, 1.0001]])
-CONDITIONING_B = np.array([2.0, 2.0001])
+CONDITIONING_EPSILON = 1e-4
+CONDITIONING_DELTA = 1e-4
 
 GD_HESSIAN = np.array([[2.0, 0.0], [0.0, 8.0]])
 GD_LINEAR = np.array([0.0, 0.0])
@@ -49,10 +51,83 @@ def _base_layout(**overrides: Any) -> dict[str, Any]:
     return layout
 
 
-def ill_conditioned_matrix(ratio: float) -> np.ndarray:
-    """Build a 2x2 symmetric matrix with prescribed condition number."""
-    r = max(float(ratio), 1.01)
-    return np.array([[r, 0.0], [0.0, 1.0]])
+def conditioning_scenario(
+    kappa: float,
+    delta: float,
+) -> dict[str, Any]:
+    """Build the near-singular demo and quantify error amplification."""
+    eps = epsilon_for_condition_number(kappa)
+    matrix, rhs = near_singular_system(eps)
+    x, x_pert, b, b_pert, amplification = solve_perturbed(matrix, rhs, delta=delta, component=0)
+    return {
+        "matrix": matrix,
+        "epsilon": eps,
+        "kappa": condition_number(matrix),
+        "x": x,
+        "x_pert": x_pert,
+        "b": b,
+        "b_pert": b_pert,
+        "delta_x": x_pert - x,
+        "amplification": amplification,
+    }
+
+
+def plot_conditioning_demo(kappa: float, *, delta: float = 1e-4) -> go.Figure:
+    """Contrast tiny RHS change with large solution change (section 4.2)."""
+    demo = conditioning_scenario(kappa, delta)
+    b, b_pert = demo["b"], demo["b_pert"]
+    x, x_pert = demo["x"], demo["x_pert"]
+    kappa_val = demo["kappa"]
+    amplification = demo["amplification"]
+
+    fig = make_subplots(
+        rows=1,
+        cols=2,
+        subplot_titles=("RHS b — change is tiny", "Solution x — change is large"),
+        horizontal_spacing=0.14,
+    )
+    labels = ["component 0", "component 1"]
+    for col, base, pert, base_name, pert_name in [
+        (1, b, b_pert, "b", "b + delta"),
+        (2, x, x_pert, "x", "x'"),
+    ]:
+        fig.add_trace(
+            go.Bar(
+                x=labels,
+                y=base,
+                name=base_name,
+                marker={"color": "#2563eb"},
+                legendgroup=base_name,
+                showlegend=col == 1,
+                hovertemplate="%{x}: %{y:.6f}<extra></extra>",
+            ),
+            row=1,
+            col=col,
+        )
+        fig.add_trace(
+            go.Bar(
+                x=labels,
+                y=pert,
+                name=pert_name,
+                marker={"color": "#dc2626"},
+                legendgroup=pert_name,
+                showlegend=col == 1,
+                hovertemplate="%{x}: %{y:.6f}<extra></extra>",
+            ),
+            row=1,
+            col=col,
+        )
+    fig.update_layout(
+        **_base_layout(
+            title=(
+                f"A = [[1,1],[1,1+eps]] with eps={demo['epsilon']:.1e}, "
+                f"kappa={kappa_val:.1e}, amplification={amplification:.1e}x"
+            ),
+            barmode="group",
+            height=440,
+        )
+    )
+    return fig
 
 
 def summarize_softmax(logits: np.ndarray) -> dict[str, Any]:
@@ -100,40 +175,6 @@ def plot_softmax_comparison(logits: np.ndarray, *, labels: np.ndarray | None = N
     fig.update_layout(
         **_base_layout(
             title=f"Softmax — log-sum-exp = {summary['log_sum_exp']:.2f} nats",
-            height=400,
-        )
-    )
-    return fig
-
-
-def plot_conditioning_demo(matrix: np.ndarray, rhs: np.ndarray, *, delta: float = 1e-6) -> go.Figure:
-    """Show how a tiny RHS perturbation amplifies in the solution (§4.2)."""
-    a = np.asarray(matrix, dtype=float)
-    b = np.asarray(rhs, dtype=float).ravel()
-    x, x_pert, rel_error = solve_perturbed(a, b, delta=delta)
-    kappa = condition_number(a)
-
-    fig = make_subplots(
-        rows=1,
-        cols=2,
-        subplot_titles=("Solution x", "Perturbed solution x + delta x"),
-        horizontal_spacing=0.12,
-    )
-    for col, vec, color in [(1, x, "#2563eb"), (2, x_pert, "#dc2626")]:
-        fig.add_trace(
-            go.Bar(
-                x=[f"x{i}" for i in range(len(vec))],
-                y=vec,
-                marker={"color": color},
-                showlegend=False,
-                hovertemplate="=%{y:.6f}<extra></extra>",
-            ),
-            row=1,
-            col=col,
-        )
-    fig.update_layout(
-        **_base_layout(
-            title=f"Condition number kappa = {kappa:.1e}, relative error = {rel_error:.1e}",
             height=400,
         )
     )

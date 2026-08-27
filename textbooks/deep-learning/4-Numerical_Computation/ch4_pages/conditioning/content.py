@@ -6,24 +6,29 @@ from dash import html
 
 from maths_self_study.dashboards.components import graph, table
 from maths_self_study.deep_learning import ch4_helpers as helpers
-from maths_self_study.optimization import condition_number, solve_perturbed
 
 
 def render_body(kappa, delta) -> html.Div:
-    ratio = max(float(kappa or 10.0), 1.01)
-    perturb = float(delta or 1e-6)
-    matrix = helpers.ill_conditioned_matrix(ratio)
-    rhs = helpers.CONDITIONING_B
-    fig = helpers.plot_conditioning_demo(matrix, rhs, delta=perturb)
-    kappa_val = condition_number(matrix)
-    _, _, rel_error = solve_perturbed(matrix, rhs, delta=perturb)
+    ratio = max(float(kappa or 10_000.0), 2.0)
+    perturb = float(delta or helpers.CONDITIONING_DELTA)
+    demo = helpers.conditioning_scenario(ratio, perturb)
+    fig = helpers.plot_conditioning_demo(ratio, delta=perturb)
+    dx = demo["delta_x"]
     rows = [
-        ["κ(A)", f"{kappa_val:.2e}"],
-        ["Perturbation δ", f"{perturb:.2e}"],
-        ["Relative error ||δx|| / ||x||", f"{rel_error:.2e}"],
+        ["epsilon (near-singularity)", f"{demo['epsilon']:.2e}"],
+        ["kappa(A)", f"{demo['kappa']:.2e}"],
+        ["Perturbation delta on b0", f"{perturb:.2e}"],
+        ["x (exact)", f"[{demo['x'][0]:.4f}, {demo['x'][1]:.4f}]"],
+        ["x' (perturbed)", f"[{demo['x_pert'][0]:.4f}, {demo['x_pert'][1]:.4f}]"],
+        ["delta x", f"[{dx[0]:.4f}, {dx[1]:.4f}]"],
+        ["Error amplification ||delta x|| / ||delta b||", f"{demo['amplification']:.2e}x"],
     ]
     return html.Div([
-        html.H3("Tiny RHS change, large solution change"),
+        html.H3("Nearly parallel rows amplify rounding error"),
+        html.P(
+            "Rows of A are almost identical, so b and b + delta look the same but x and x' can differ wildly.",
+            style={"color": "#475569", "fontSize": "0.95rem"},
+        ),
         graph(fig),
         table(["Measure", "Value"], rows, caption="Conditioning summary"),
     ])

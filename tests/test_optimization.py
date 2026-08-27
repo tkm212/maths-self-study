@@ -10,9 +10,11 @@ from maths_self_study.optimization import (
     gradient_descent_quadratic,
     linear_least_squares,
     log_sum_exp,
+    near_singular_system,
     newton_quadratic,
     softmax_naive,
     softmax_stable,
+    solve_perturbed,
 )
 
 
@@ -67,3 +69,16 @@ def test_linear_least_squares_line_fit():
     weights, residuals = linear_least_squares(design, targets)
     np.testing.assert_allclose(weights, [1.0, 1.5], atol=1e-10)
     np.testing.assert_allclose(residuals, 0.0, atol=1e-10)
+
+
+def test_near_singular_system_solution_is_one_one():
+    matrix, rhs = near_singular_system(1e-4)
+    x = np.linalg.solve(matrix, rhs)
+    np.testing.assert_allclose(x, [1.0, 1.0], atol=1e-10)
+
+
+def test_conditioning_amplifies_rhs_perturbation():
+    matrix, rhs = near_singular_system(1e-4)
+    x, x_pert, _, _, amplification = solve_perturbed(matrix, rhs, delta=1e-4, component=0)
+    assert amplification > 100.0
+    assert np.linalg.norm(x_pert - x) > 0.5

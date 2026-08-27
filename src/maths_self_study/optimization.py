@@ -28,8 +28,9 @@ def log_sum_exp(logits: np.ndarray, axis: int | None = None) -> float | np.ndarr
 def softmax_naive(logits: np.ndarray) -> np.ndarray:
     """Softmax without stabilization — can overflow/underflow (§4.1)."""
     z = np.asarray(logits, dtype=float).ravel()
-    exp_z = np.exp(z)
-    return exp_z / exp_z.sum()
+    with np.errstate(over="ignore", invalid="ignore"):
+        exp_z = np.exp(z)
+        return exp_z / exp_z.sum()
 
 
 def softmax_stable(logits: np.ndarray) -> np.ndarray:
@@ -57,19 +58,41 @@ def solve_perturbed(
     rhs: np.ndarray,
     *,
     delta: float = 1e-6,
-) -> tuple[np.ndarray, np.ndarray, float]:
+    component: int = 0,
+) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, float]:
     """
-    Solve Ax = b and A(x + δx) = b + δb with small perturbation δb (§4.2).
+    Solve Ax = b and Ax' = b' with a one-component RHS perturbation (section 4.2).
 
-    Returns (x, x_perturbed, relative_error).
+    Returns (x, x_perturbed, b, b_perturbed, error_amplification).
     """
     a = np.asarray(matrix, dtype=float)
     b = np.asarray(rhs, dtype=float).ravel()
     x = np.linalg.solve(a, b)
-    b_pert = b + delta * np.ones_like(b)
+    perturb = np.zeros_like(b)
+    perturb[component] = delta
+    b_pert = b + perturb
     x_pert = np.linalg.solve(a, b_pert)
-    rel_error = float(np.linalg.norm(x_pert - x) / max(np.linalg.norm(x), 1e-12))
-    return x, x_pert, rel_error
+    rel_b = float(np.linalg.norm(perturb) / max(np.linalg.norm(b), 1e-12))
+    rel_x = float(np.linalg.norm(x_pert - x) / max(np.linalg.norm(x), 1e-12))
+    amplification = rel_x / max(rel_b, 1e-15)
+    return x, x_pert, b, b_pert, amplification
+
+
+def near_singular_system(epsilon: float) -> tuple[np.ndarray, np.ndarray]:
+    """
+    Classic nearly singular 2x2 system: rows almost parallel (section 4.2).
+
+    With rhs = [2, 2 + eps], the exact solution is x = [1, 1].
+    """
+    eps = max(float(epsilon), 1e-10)
+    matrix = np.array([[1.0, 1.0], [1.0, 1.0 + eps]])
+    rhs = np.array([2.0, 2.0 + eps])
+    return matrix, rhs
+
+
+def epsilon_for_condition_number(kappa: float) -> float:
+    """Map a target condition number to epsilon for near_singular_system."""
+    return max(2.0 / max(float(kappa), 2.0), 1e-10)
 
 
 def gradient_descent_quadratic(

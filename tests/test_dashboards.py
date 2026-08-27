@@ -147,6 +147,23 @@ def test_create_chapter_dashboard_minimal():
     assert app.layout is not None
 
 
+def test_create_deep_learning_dashboard():
+    from maths_self_study.deep_learning.dashboard import create_deep_learning_dashboard
+
+    ch2 = _load_dashboard_module(_CH2_DASHBOARD)
+    app = create_deep_learning_dashboard(
+        "test_dl_dashboard",
+        chapter_number=2,
+        chapter_title="Linear Algebra",
+        book_slug="linear_algebra.html",
+        book_link_text="Deep Learning Book — Linear Algebra",
+        pages=[ch2.PAGES[0]],
+        default_page=ch2.PAGES[0].value,
+    )
+    assert app.layout is not None
+    assert app.title == "Deep Learning Ch. 2 — Linear Algebra"
+
+
 def test_format_parse_matrix_2x2_roundtrip():
     m = np.array([[1.0, 2.5], [3.0, 4.0]])
     text = format_matrix_2x2(m)
@@ -314,7 +331,11 @@ def test_plot_gradient_descent_path_builds_figure():
 def test_configure_logging():
     import logging
 
-    from maths_self_study.dashboards.logging import configure
+    from maths_self_study.dashboards.logging import configure, configure_for_run
 
     configure(level=logging.WARNING, force=True)
     assert logging.getLogger().level == logging.WARNING
+    configure_for_run(debug=True)
+    assert logging.getLogger().level == logging.DEBUG
+    configure_for_run(debug=False)
+    assert logging.getLogger().level == logging.INFO
