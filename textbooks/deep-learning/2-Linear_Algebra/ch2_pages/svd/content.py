@@ -9,6 +9,8 @@ from maths_self_study.dashboards.components import graph, table, text_box
 from maths_self_study.dashboards.utils import coerce_matrix_2x2
 from maths_self_study.deep_learning import ch2_helpers as helpers
 from maths_self_study.linalg import moore_penrose_pseudoinverse
+from maths_self_study.viz.formulas.ch2 import PSEUDOINVERSE, SVD_DECOMPOSITION
+from maths_self_study.viz.latex import formula_group
 
 _LS_A = helpers.OVERDETERMINED_A
 
@@ -32,6 +34,11 @@ def render_body(a11, a12, a21, a22, b0, b1, b2) -> html.Div:
         ["Residual ‖Ax − b‖₂", f"{residual:.4f}"],
     ]
     return html.Div([
+        formula_group(
+            ("Singular value decomposition", SVD_DECOMPOSITION),
+            ("Moore–Penrose pseudoinverse", PSEUDOINVERSE),
+            title="Key formulas (§2.8)",
+        ),
         graph(fig),
         text_box(
             steps=[

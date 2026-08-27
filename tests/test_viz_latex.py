@@ -67,6 +67,18 @@ def test_ch5_formula_strings_are_nonempty():
         assert len(getattr(ch5_formulas, name).strip()) > 5
 
 
+def test_ch2_ch3_ch4_formula_modules_export_strings():
+    from maths_self_study.viz.formulas import ch2, ch3, ch4
+
+    for module, names in (
+        (ch2, ["MATRIX_VECTOR", "EIGENDECOMPOSITION", "SVD_DECOMPOSITION", "PCA_PROJECTION"]),
+        (ch3, ["BAYES_RULE", "SHANNON_ENTROPY", "KL_DIVERGENCE", "CHAIN_RULE"]),
+        (ch4, ["SOFTMAX", "LOG_SUM_EXP", "GD_UPDATE", "NORMAL_EQUATIONS"]),
+    ):
+        for name in names:
+            assert len(getattr(module, name).strip()) > 5
+
+
 def test_chapter_dashboard_injects_latex():
     ch2 = _load_ch2()
     page = ch2.PAGES[0]

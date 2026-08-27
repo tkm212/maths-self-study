@@ -8,6 +8,8 @@ from dash import html
 from maths_self_study.dashboards.components import graph, graph_row, table
 from maths_self_study.dashboards.utils import coerce_tensor_3d
 from maths_self_study.deep_learning import ch2_helpers as helpers
+from maths_self_study.viz.formulas.ch2 import FROBENIUS_NORM
+from maths_self_study.viz.latex import formula
 
 
 def render_body(*values) -> html.Div:
@@ -32,6 +34,7 @@ def render_body(*values) -> html.Div:
         ["‖T‖_F", f"{float(np.linalg.norm(tensor)):.4f}"],
     ]
     return html.Div([
+        formula(FROBENIUS_NORM, caption="Frobenius norm of a tensor (§2.3)"),
         graph(fig_3d),
         graph_row(graph(fig_slice, style={"flex": "1", "minWidth": "320px"})),
         table(["Quantity", "Value"], rows, caption="Tensor summary"),

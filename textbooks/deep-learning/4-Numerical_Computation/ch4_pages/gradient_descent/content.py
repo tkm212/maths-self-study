@@ -7,6 +7,8 @@ from dash import html
 from maths_self_study.dashboards.components import graph
 from maths_self_study.dashboards.utils import coerce_float, coerce_vector2
 from maths_self_study.deep_learning import ch4_helpers as helpers
+from maths_self_study.viz.formulas.ch4 import GD_UPDATE
+from maths_self_study.viz.latex import formula
 
 
 def render_body(eta, x0, x1) -> html.Div:
@@ -21,5 +23,6 @@ def render_body(eta, x0, x1) -> html.Div:
     )
     return html.Div([
         html.H3("Gradient descent on a quadratic bowl"),
+        formula(GD_UPDATE, caption="Gradient descent update (§4.3)"),
         graph(fig),
     ])

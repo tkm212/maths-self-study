@@ -7,6 +7,8 @@ from dash import html
 from maths_self_study.dashboards.components import graph, table
 from maths_self_study.dashboards.utils import coerce_float
 from maths_self_study.deep_learning import ch4_helpers as helpers
+from maths_self_study.viz.formulas.ch4 import CONDITION_BOUND, CONDITION_NUMBER
+from maths_self_study.viz.latex import formula_group
 
 
 def render_body(kappa, delta) -> html.Div:
@@ -26,6 +28,11 @@ def render_body(kappa, delta) -> html.Div:
     ]
     return html.Div([
         html.H3("Nearly parallel rows amplify rounding error"),
+        formula_group(
+            ("Condition number", CONDITION_NUMBER),
+            ("Error amplification bound", CONDITION_BOUND),
+            title="Key formulas (§4.2)",
+        ),
         html.P(
             "Rows of A are almost identical, so b and b + delta look the same but x and x' can differ wildly.",
             style={"color": "#475569", "fontSize": "0.95rem"},

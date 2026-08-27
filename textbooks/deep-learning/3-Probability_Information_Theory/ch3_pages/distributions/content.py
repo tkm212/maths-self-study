@@ -10,6 +10,8 @@ from dash import html
 from maths_self_study.dashboards.components import graph, graph_row, table
 from maths_self_study.dashboards.utils import coerce_matrix_2x2, renorm
 from maths_self_study.deep_learning import ch3_helpers as helpers
+from maths_self_study.viz.formulas.ch3 import BERNOULLI_ENTROPY, GAUSSIAN_PDF
+from maths_self_study.viz.latex import formula_group
 
 log = logging.getLogger(__name__)
 
@@ -40,6 +42,11 @@ def render_body(c0, c1, c2, c3, s11, s12, s21, s22) -> html.Div:
     cat_rows = [[label, f"{p:.4f}"] for label, p in zip(helpers.CATEGORICAL_LABELS, cat, strict=True)]
     cov_rows = [[f"λ{i + 1} (covariance)", f"{val:.4f}"] for i, val in enumerate(np.linalg.eigvalsh(cov))]
     return html.Div([
+        formula_group(
+            ("Bernoulli entropy", BERNOULLI_ENTROPY),
+            ("Gaussian density", GAUSSIAN_PDF),
+            title="Key formulas (§3.9)",
+        ),
         html.H3("Bernoulli — maximal uncertainty at p = ½"),
         graph(fig_entropy),
         html.H3("Gaussian — elliptical level sets from the covariance"),

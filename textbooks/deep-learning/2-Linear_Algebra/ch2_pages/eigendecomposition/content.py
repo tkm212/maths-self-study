@@ -11,6 +11,8 @@ from maths_self_study.dashboards.components import graph, table, text_box
 from maths_self_study.dashboards.utils import coerce_matrix_2x2
 from maths_self_study.deep_learning import ch2_helpers as helpers
 from maths_self_study.linalg import symmetric_eigendecomposition
+from maths_self_study.viz.formulas.ch2 import EIGENDECOMPOSITION
+from maths_self_study.viz.latex import formula
 
 log = logging.getLogger(__name__)
 
@@ -32,6 +34,7 @@ def render_body(a11, a12, a21, a22) -> html.Div:
     rows.append(["‖A - QΛQᵀ‖", f"{err:.2e}"])
     return html.Div([
         note,
+        formula(EIGENDECOMPOSITION, caption="Symmetric eigendecomposition (§2.7)"),
         graph(fig),
         text_box(
             steps=[
