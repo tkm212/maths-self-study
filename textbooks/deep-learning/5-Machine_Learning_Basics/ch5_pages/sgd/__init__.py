@@ -6,7 +6,6 @@ from ch5_pages.sgd.callbacks import register_callbacks
 from ch5_pages.sgd.filters import build_filters
 from maths_self_study.dashboards.page_factory import define_page
 from maths_self_study.viz.definitions.ch5 import SGD as SGD_DEFINITIONS
-from maths_self_study.viz.theorems.ch5 import SGD as SGD_THEOREMS
 
 SgdPage = define_page(
     label="SGD",
@@ -21,7 +20,6 @@ SgdPage = define_page(
         "Learning rate η sets step size; smaller batches mean noisier gradient estimates (more zig-zag in the loss curve).",
     ],
     definitions=SGD_DEFINITIONS,
-    theorems=SGD_THEOREMS,
     build_filters=build_filters,
     register_callbacks=register_callbacks,
 )

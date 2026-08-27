@@ -99,10 +99,10 @@ def test_chapter_definition_modules_are_nonempty():
 
 def test_chapter_theorem_modules_are_nonempty():
     modules = (
-        (th2, ["VECTORS", "NORMS", "EIGEN", "SVD", "PCA", "TENSORS"]),
-        (th3, ["RANDOM_VARIABLES", "DISTRIBUTIONS", "BAYES", "INFORMATION", "MARKOV"]),
-        (th4, ["STABILITY", "CONDITIONING", "GRADIENT_DESCENT", "NEWTON", "LEAST_SQUARES", "KKT"]),
-        (th5, ["CAPACITY", "VALIDATION", "BIAS_VARIANCE", "MLE", "SGD"]),
+        (th2, ["NORMS", "EIGEN", "SVD", "PCA"]),
+        (th3, ["RANDOM_VARIABLES", "BAYES", "INFORMATION", "MARKOV"]),
+        (th4, ["STABILITY", "CONDITIONING", "LEAST_SQUARES", "KKT"]),
+        (th5, ["BIAS_VARIANCE", "MLE"]),
     )
     for module, names in modules:
         for name in names:

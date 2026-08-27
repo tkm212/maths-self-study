@@ -6,7 +6,6 @@ from ch3_pages.distributions.callbacks import register_callbacks
 from ch3_pages.distributions.filters import build_filters
 from maths_self_study.dashboards.page_factory import define_page
 from maths_self_study.viz.definitions.ch3 import DISTRIBUTIONS as DISTRIBUTIONS_DEFINITIONS
-from maths_self_study.viz.theorems.ch3 import DISTRIBUTIONS as DISTRIBUTIONS_THEOREMS
 
 DistributionsPage = define_page(
     label="Distributions",
@@ -20,7 +19,6 @@ DistributionsPage = define_page(
         "Multivariate covariance Σ sets axis orientation and scale; eigenvalues of Σ are variance along principal axes.",
     ],
     definitions=DISTRIBUTIONS_DEFINITIONS,
-    theorems=DISTRIBUTIONS_THEOREMS,
     build_filters=build_filters,
     register_callbacks=register_callbacks,
 )

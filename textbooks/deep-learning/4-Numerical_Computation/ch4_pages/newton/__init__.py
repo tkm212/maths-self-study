@@ -6,7 +6,6 @@ from ch4_pages.newton.callbacks import register_callbacks
 from ch4_pages.newton.filters import build_filters
 from maths_self_study.dashboards.page_factory import define_page
 from maths_self_study.viz.definitions.ch4 import NEWTON as NEWTON_DEFINITIONS
-from maths_self_study.viz.theorems.ch4 import NEWTON as NEWTON_THEOREMS
 
 NewtonPage = define_page(
     label="Newton & Hessian",
@@ -20,7 +19,6 @@ NewtonPage = define_page(
         "First-order methods (GD) are cheaper per step; second-order (Newton) need fewer steps.",
     ],
     definitions=NEWTON_DEFINITIONS,
-    theorems=NEWTON_THEOREMS,
     build_filters=build_filters,
     register_callbacks=register_callbacks,
 )

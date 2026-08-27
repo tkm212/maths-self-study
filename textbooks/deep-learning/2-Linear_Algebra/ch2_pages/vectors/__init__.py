@@ -6,7 +6,6 @@ from ch2_pages.vectors.callbacks import register_callbacks
 from ch2_pages.vectors.filters import build_filters
 from maths_self_study.dashboards.page_factory import define_page
 from maths_self_study.viz.definitions.ch2 import VECTORS as VECTORS_DEFINITIONS
-from maths_self_study.viz.theorems.ch2 import VECTORS as VECTORS_THEOREMS
 
 VectorsPage = define_page(
     label="Vectors & matrices",
@@ -20,7 +19,6 @@ VectorsPage = define_page(
         "Elementary maps (rotation R(θ), shear S(k)) are building blocks; any linear map is their composition plus scaling.",
     ],
     definitions=VECTORS_DEFINITIONS,
-    theorems=VECTORS_THEOREMS,
     build_filters=build_filters,
     register_callbacks=register_callbacks,
 )

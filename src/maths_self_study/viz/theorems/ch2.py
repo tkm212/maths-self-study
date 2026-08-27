@@ -2,22 +2,10 @@
 
 from __future__ import annotations
 
-VECTORS = [
-    (
-        "Composition of linear maps",
-        "If S and T are linear, then (ST)x = S(Tx) and the product BA represents applying A first, then B. "
-        "Matrix multiplication encodes composition of linear maps.",
-    ),
-]
-
 NORMS = [
     (
         "Cauchy-Schwarz inequality",
         "For any x, y in an inner-product space, |xᵀy| ≤ ‖x‖₂ ‖y‖₂, with equality iff x and y are parallel.",
-    ),
-    (
-        "Norm equivalence in finite dimensions",
-        "On ℝⁿ, all norms induce the same topology: for any two norms there exist constants c, C with c‖x‖ ≤ ‖x‖' ≤ C‖x‖.",
     ),
 ]
 
@@ -42,13 +30,5 @@ PCA = [
         "PCA as eigendecomposition of covariance",
         "Principal components are eigenvectors of the sample covariance matrix Σ, ordered by decreasing eigenvalue. "
         "The first k PCs give the best rank-k linear reconstruction in mean squared error.",
-    ),
-]
-
-TENSORS = [
-    (
-        "Rank of an outer product",
-        "The outer product u ⊗ v (equivalently uvᵀ) has rank at most 1. "
-        "Summing r outer products yields a matrix of rank at most r.",
     ),
 ]

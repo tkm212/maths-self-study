@@ -16,21 +16,6 @@ CONDITIONING = [
     ),
 ]
 
-GRADIENT_DESCENT = [
-    (
-        "Descent lemma (smooth functions)",
-        "If f is L-smooth, then f(x − η∇f(x)) ≤ f(x) − η‖∇f(x)‖² + (Lη²/2)‖∇f(x)‖². "
-        "Choosing η ≤ 1/L guarantees decrease when ∇f(x) ≠ 0.",
-    ),
-]
-
-NEWTON = [
-    (
-        "Newton step on quadratics",
-        "For f(x) = ½xᵀHx + bᵀx with H positive definite, one Newton step x − H⁻¹∇f(x) reaches the unique minimiser.",
-    ),
-]
-
 LEAST_SQUARES = [
     (
         "Normal-equation solution",
