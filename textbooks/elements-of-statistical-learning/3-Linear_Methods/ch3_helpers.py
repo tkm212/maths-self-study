@@ -16,6 +16,8 @@ from sklearn.metrics import mean_squared_error, r2_score
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
+from maths_self_study.viz.plotly import line_chart
+
 
 def find_project_root(max_up: int = 12) -> Path:
     p = Path.cwd().resolve()
@@ -113,16 +115,17 @@ def subset_selection_figure(
 ) -> tuple[go.Figure, list[str]]:
     selected, train_mse, test_mse = forward_stepwise(X_train, X_test, y_train, y_test)
     n = list(range(1, len(selected) + 1))
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(x=n, y=train_mse, mode="lines+markers", name="train MSE"))
-    fig.add_trace(go.Scatter(x=n, y=test_mse, mode="lines+markers", name="test MSE"))
-    fig.update_layout(
+    fig = line_chart(
+        n,
+        train_mse,
+        name="train MSE",
+        mode="lines+markers",
         title="Forward stepwise selection: MSE vs number of features",
         xaxis_title="# features",
         yaxis_title="MSE",
-        template="plotly_white",
         legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
     )
+    line_chart(n, test_mse, name="test MSE", mode="lines+markers", fig=fig)
     return fig, selected
 
 
@@ -149,22 +152,22 @@ def ridge_alpha_path_figure(
         test_mse.append(float(mean_squared_error(y_test, ridge.predict(X_test_s))))
 
     best_idx = int(np.argmin(test_mse))
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(x=alphas, y=train_mse, mode="lines", name="train MSE"))
-    fig.add_trace(go.Scatter(x=alphas, y=test_mse, mode="lines", name="test MSE"))
+    fig = line_chart(
+        alphas,
+        train_mse,
+        name="train MSE",
+        title="Ridge: MSE vs regularisation strength (alpha)",
+        xaxis_title="alpha (log scale)",
+        yaxis_title="MSE",
+        xaxis_type="log",
+        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
+    )
+    line_chart(alphas, test_mse, name="test MSE", fig=fig)
     fig.add_vline(
         x=float(alphas[best_idx]),
         line_dash="dash",
         line_color="grey",
         annotation_text=f"best alpha={alphas[best_idx]:.1f}",
-    )
-    fig.update_layout(
-        title="Ridge: MSE vs regularisation strength (alpha)",
-        xaxis_title="alpha (log scale)",
-        xaxis_type="log",
-        yaxis_title="MSE",
-        template="plotly_white",
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
     )
     return fig, {"best_alpha": float(alphas[best_idx]), "min_test_mse": min(test_mse)}
 

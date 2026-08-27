@@ -19,8 +19,8 @@ from maths_self_study.math.probability import (
     monty_hall_posterior,
     shannon_entropy,
 )
+from maths_self_study.viz.plotly import bar_chart, equal_axes, line_chart
 from maths_self_study.viz.plotly import base_layout as _base_layout
-from maths_self_study.viz.plotly import equal_axes
 
 # --- Demo fixtures ---
 
@@ -56,25 +56,17 @@ def plot_binary_entropy_curve() -> go.Figure:
     """Shannon entropy of Bernoulli(p): maximal uncertainty at p = ½."""
     p_grid = np.linspace(0.001, 0.999, 200)
     ent = [-(p * np.log(p) + (1.0 - p) * np.log(1.0 - p)) for p in p_grid]
-    fig = go.Figure(
-        go.Scatter(
-            x=p_grid,
-            y=ent,
-            mode="lines",
-            name="H(p)",
-            line={"color": "#2563eb", "width": 2},
-            hovertemplate="p=%{x:.3f}<br>H=%{y:.3f} nats<extra></extra>",
-        )
+    fig = line_chart(
+        p_grid,
+        ent,
+        name="H(p)",
+        title="Binary entropy — uncertainty peaks at fair coin",
+        xaxis_title="p = P(X = 1)",
+        yaxis_title="H(X) (nats)",
+        height=420,
+        hovertemplate="p=%{x:.3f}<br>H=%{y:.3f} nats<extra></extra>",
     )
     fig.add_vline(x=0.5, line_dash="dot", line_color="#94a3b8", annotation_text="max at p=½")
-    fig.update_layout(
-        **_base_layout(
-            title="Binary entropy — uncertainty peaks at fair coin",
-            xaxis_title="p = P(X = 1)",
-            yaxis_title="H(X) (nats)",
-            height=420,
-        )
-    )
     return fig
 
 
@@ -85,16 +77,16 @@ def plot_discrete_distribution(
     title: str,
     color: str = "#60a5fa",
 ) -> go.Figure:
-    fig = go.Figure(
-        go.Bar(
-            x=values,
-            y=probs,
-            marker={"color": color},
-            hovertemplate="x=%{x}<br>P(x)=%{y:.3f}<extra></extra>",
-        )
+    return bar_chart(
+        values,
+        probs,
+        title=title,
+        xaxis_title="x",
+        yaxis_title="P(x)",
+        color=color,
+        height=380,
+        hovertemplate="x=%{x}<br>P(x)=%{y:.3f}<extra></extra>",
     )
-    fig.update_layout(**_base_layout(title=title, xaxis_title="x", yaxis_title="P(x)", height=380))
-    return fig
 
 
 def plot_joint_with_marginals(
@@ -318,23 +310,16 @@ def plot_self_information(probs: np.ndarray, *, labels: np.ndarray | None = None
     p = np.asarray(probs, dtype=float)
     info = -np.log(np.clip(p, 1e-12, None))
     xs = labels if labels is not None else np.arange(len(p))
-    fig = go.Figure(
-        go.Bar(
-            x=xs,
-            y=info,
-            marker={"color": "#7c3aed"},
-            hovertemplate="I(x)=%{y:.2f} nats<extra></extra>",
-        )
+    return bar_chart(
+        xs,
+        info,
+        title="Self-information — surprise grows as probability shrinks",
+        xaxis_title="outcome",
+        yaxis_title="I(x) = -log P(x)",
+        color="#7c3aed",
+        height=400,
+        hovertemplate="I(x)=%{y:.2f} nats<extra></extra>",
     )
-    fig.update_layout(
-        **_base_layout(
-            title="Self-information — surprise grows as probability shrinks",
-            xaxis_title="outcome",
-            yaxis_title="I(x) = -log P(x)",
-            height=400,
-        )
-    )
-    return fig
 
 
 def _markov_edge_label(name: str, parent: str, child: str, transition: np.ndarray) -> str:

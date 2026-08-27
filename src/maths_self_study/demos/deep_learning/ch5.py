@@ -20,6 +20,7 @@ from maths_self_study.math.ml import (
     train_test_split,
 )
 from maths_self_study.viz.plotly import base_layout as _base_layout
+from maths_self_study.viz.plotly import line_chart, scatter_chart
 
 # --- Demo fixtures ---
 
@@ -57,33 +58,14 @@ def plot_capacity_fit(degree: int, *, noise: float = CAPACITY_NOISE) -> go.Figur
     test_mse = mean_squared_error(predict_linear(xte, weights), y_test)
     y_line = predict_linear(polynomial_features(x_line, degree), weights)
 
-    fig = go.Figure()
-    fig.add_trace(
-        go.Scatter(
-            x=x_train,
-            y=y_train,
-            mode="markers",
-            name="train",
-            marker={"color": "#2563eb", "size": 8},
-        )
-    )
-    fig.add_trace(
-        go.Scatter(
-            x=x_test,
-            y=y_test,
-            mode="markers",
-            name="test",
-            marker={"color": "#dc2626", "size": 8, "symbol": "diamond"},
-        )
-    )
-    fig.add_trace(
-        go.Scatter(
-            x=x_line,
-            y=y_line,
-            mode="lines",
-            name=f"degree {degree}",
-            line={"color": "#16a34a", "width": 2},
-        )
+    fig = scatter_chart(x_train, y_train, name="train")
+    scatter_chart(x_test, y_test, name="test", color="#dc2626", symbol="diamond", fig=fig)
+    line_chart(
+        x_line,
+        y_line,
+        name=f"degree {degree}",
+        color="#16a34a",
+        fig=fig,
     )
     fig.update_layout(
         **_base_layout(
@@ -107,34 +89,18 @@ def plot_bias_variance(
     degrees, train_err, test_err = complexity_errors(x_train, y_train, x_test, y_test)
     selected = int(max(1, min(complexity, len(degrees))))
 
-    fig = go.Figure()
-    fig.add_trace(
-        go.Scatter(
-            x=degrees,
-            y=train_err,
-            mode="lines+markers",
-            name="train error",
-            line={"color": "#2563eb", "width": 2},
-        )
+    fig = line_chart(
+        degrees,
+        train_err,
+        name="train error",
+        mode="lines+markers",
+        title=title or "Bias-variance tradeoff — test error rises when capacity exceeds data",
+        xaxis_title="Polynomial degree (capacity)",
+        yaxis_title="MSE",
+        height=440,
     )
-    fig.add_trace(
-        go.Scatter(
-            x=degrees,
-            y=test_err,
-            mode="lines+markers",
-            name="test error",
-            line={"color": "#dc2626", "width": 2},
-        )
-    )
+    line_chart(degrees, test_err, name="test error", color="#dc2626", mode="lines+markers", fig=fig)
     fig.add_vline(x=selected, line_dash="dot", line_color="#64748b", annotation_text=f"degree={selected}")
-    fig.update_layout(
-        **_base_layout(
-            title=title or "Bias-variance tradeoff — test error rises when capacity exceeds data",
-            xaxis_title="Polynomial degree (capacity)",
-            yaxis_title="MSE",
-            height=440,
-        )
-    )
     return fig
 
 
