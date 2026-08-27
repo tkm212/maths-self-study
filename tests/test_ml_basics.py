@@ -35,8 +35,8 @@ def test_fit_linear_recovers_line():
 
 def test_train_test_split_is_disjoint():
     x = np.arange(10.0)
-    y = x ** 2
-    x_train, y_train, x_test, y_test = train_test_split(x, y, train_fraction=0.7, seed=0)
+    y = x**2
+    x_train, _y_train, x_test, _y_test = train_test_split(x, y, train_fraction=0.7, seed=0)
     assert len(x_train) + len(x_test) == len(x)
     assert len(set(x_train).intersection(set(x_test))) == 0
 

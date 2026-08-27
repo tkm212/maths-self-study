@@ -49,7 +49,7 @@ def train_test_split(
     ys = np.asarray(y, dtype=float).ravel()
     rng = np.random.default_rng(seed)
     order = rng.permutation(len(xs))
-    n_train = max(2, int(round(train_fraction * len(xs))))
+    n_train = max(2, round(train_fraction * len(xs)))
     train_idx = order[:n_train]
     test_idx = order[n_train:]
     return xs[train_idx], ys[train_idx], xs[test_idx], ys[test_idx]
@@ -89,10 +89,7 @@ def sgd_linear_regression_path(
     weights = np.zeros(n_features)
     path = [weights.copy()]
     for _ in range(n_steps):
-        if batch_size == n_samples:
-            idx = np.arange(n_samples)
-        else:
-            idx = rng.choice(n_samples, size=batch_size, replace=False)
+        idx = np.arange(n_samples) if batch_size == n_samples else rng.choice(n_samples, size=batch_size, replace=False)
         xb = x[idx]
         yb = y[idx]
         grad = (2.0 / len(idx)) * xb.T @ (xb @ weights - yb)

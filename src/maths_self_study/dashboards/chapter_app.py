@@ -8,6 +8,7 @@ from abc import ABC, abstractmethod
 from dash import Dash, Input, Output, html
 
 from maths_self_study.dashboards.layout import TAB_WRAP_STYLE, chapter_layout, page_shell
+from maths_self_study.viz.latex import katex_boot_script, katex_head_html
 
 log = logging.getLogger(__name__)
 
@@ -59,8 +60,8 @@ def create_chapter_dashboard(
         index = index.replace("<html>", '<html lang="en">')
     app.index_string = index.replace(
         "</head>",
-        f"<style>{TAB_WRAP_STYLE}</style></head>",
-    )
+        f"<style>{TAB_WRAP_STYLE}</style>{katex_head_html()}</head>",
+    ).replace("</body>", f"{katex_boot_script()}</body>")
     page_by_value = {page.value: page for page in pages}
     default = default_page or pages[0].value
     page_names = [page.value for page in pages]

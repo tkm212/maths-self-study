@@ -7,6 +7,8 @@ from dash import html
 from maths_self_study.dashboards.components import graph
 from maths_self_study.dashboards.utils import coerce_float
 from maths_self_study.deep_learning import ch5_helpers as helpers
+from maths_self_study.viz.formulas.ch5 import GENERALIZATION_GAP, RIDGE_OBJECTIVE
+from maths_self_study.viz.latex import formula_group
 
 
 def render_body(l2) -> html.Div:
@@ -14,9 +16,13 @@ def render_body(l2) -> html.Div:
     fig = helpers.plot_validation_curve(penalty)
     return html.Div([
         html.H3("Ridge regression on a high-degree polynomial"),
+        formula_group(
+            ("Ridge objective", RIDGE_OBJECTIVE),
+            ("Train vs validation gap", GENERALIZATION_GAP),
+            title="Key formulas (§5.3, §5.7)",
+        ),
         html.P(
-            "Degree-8 polynomial features with L2 regularization. "
-            "The vertical line marks the current lambda.",
+            "Degree-8 polynomial features with L2 regularization. The vertical line marks the current lambda.",
             style={"color": "#475569", "fontSize": "0.95rem"},
         ),
         graph(fig),

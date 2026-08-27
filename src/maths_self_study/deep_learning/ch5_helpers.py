@@ -92,8 +92,13 @@ def plot_capacity_fit(degree: int, *, noise: float = CAPACITY_NOISE) -> go.Figur
     return fig
 
 
-def plot_bias_variance(complexity: int, *, noise: float = CAPACITY_NOISE) -> go.Figure:
-    """Train vs test error vs model capacity (section 5.4)."""
+def plot_bias_variance(
+    complexity: int,
+    *,
+    noise: float = CAPACITY_NOISE,
+    title: str | None = None,
+) -> go.Figure:
+    """Train vs test error vs model capacity (sections 5.2, 5.4)."""
     x_train, y_train, x_test, y_test = _split_data(noise)
     degrees, train_err, test_err = complexity_errors(x_train, y_train, x_test, y_test)
     selected = int(max(1, min(complexity, len(degrees))))
@@ -120,7 +125,7 @@ def plot_bias_variance(complexity: int, *, noise: float = CAPACITY_NOISE) -> go.
     fig.add_vline(x=selected, line_dash="dot", line_color="#64748b", annotation_text=f"degree={selected}")
     fig.update_layout(
         **_base_layout(
-            title="Bias-variance tradeoff — test error rises when capacity exceeds data",
+            title=title or "Bias-variance tradeoff — test error rises when capacity exceeds data",
             xaxis_title="Polynomial degree (capacity)",
             yaxis_title="MSE",
             height=440,
@@ -237,6 +242,20 @@ def plot_sgd_paths(
         )
     )
     return fig
+
+
+def sgd_demo_context(batch_size: int) -> dict[str, int | str]:
+    """Training-set size and regime label for the SGD page explainer."""
+    _, y_train, _, _ = _split_data(CAPACITY_NOISE)
+    n_train = len(y_train)
+    batch = max(1, min(int(batch_size), n_train))
+    if batch == n_train:
+        regime = "full-batch gradient descent"
+    elif batch == 1:
+        regime = "pure stochastic GD (one example per step)"
+    else:
+        regime = f"mini-batch SGD (|B| = {batch} of {n_train})"
+    return {"n_train": n_train, "batch_size": batch, "regime": regime}
 
 
 def summarize_capacity(degree: int, *, noise: float = CAPACITY_NOISE) -> dict[str, float]:
