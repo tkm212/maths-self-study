@@ -81,6 +81,32 @@ def renorm(values: np.ndarray) -> np.ndarray:
     return xs / total
 
 
+def coerce_float(value: float | int | None, *, default: float) -> float:
+    """Parse a nullable Dash numeric input."""
+    if value is None:
+        return default
+    try:
+        return float(value)
+    except TypeError, ValueError:
+        log.warning("Invalid numeric input %r — using fallback", value)
+        return default
+
+
+def coerce_vector2(
+    x0: float | None,
+    x1: float | None,
+    *,
+    fallback: np.ndarray,
+) -> np.ndarray:
+    fb = np.asarray(fallback, dtype=float).ravel()
+    return np.array([coerce_float(x0, default=float(fb[0])), coerce_float(x1, default=float(fb[1]))])
+
+
+def coerce_floats(values: list[float | None], *, fallback: np.ndarray) -> np.ndarray:
+    fb = np.asarray(fallback, dtype=float).ravel()
+    return np.array([coerce_float(v, default=float(fb[i])) for i, v in enumerate(values)])
+
+
 def clamp_prob(value: float | None, *, default: float = 0.5) -> float:
     if value is None:
         return default

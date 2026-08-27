@@ -2,18 +2,14 @@
 
 from __future__ import annotations
 
-from dash import Dash, Input
-
 from ch4_pages.least_squares.content import render_body
-from maths_self_study.dashboards.callbacks import register_body_callback
+from maths_self_study.dashboards.callbacks import define_page_callbacks, simplex_callback_inputs
+from maths_self_study.dashboards.components import prob_simplex_ids
 
-INPUTS = [
-    Input("ls-y0", "value"),
-    Input("ls-y1", "value"),
-    Input("ls-y2", "value"),
-    Input("ls-y3", "value"),
-]
+_TARGET_IDS = prob_simplex_ids("ls-y", [0, 1, 2, 3])
 
-
-def register_callbacks(app: Dash, body_id: str) -> None:
-    register_body_callback(app, body_id, INPUTS, render_body, page="least_squares")
+register_callbacks = define_page_callbacks(
+    render_body=render_body,
+    inputs=simplex_callback_inputs(_TARGET_IDS),
+    page="least_squares",
+)

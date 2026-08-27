@@ -2,10 +2,10 @@
 
 from __future__ import annotations
 
-from dash import Dash, Input
+from dash import Input
 
 from ch3_pages.bayes.content import render_body
-from maths_self_study.dashboards.callbacks import register_body_callback
+from maths_self_study.dashboards.callbacks import define_page_callbacks
 
 INPUTS = [
     Input("bayes-prior", "value"),
@@ -13,6 +13,8 @@ INPUTS = [
     Input("bayes-fpr", "value"),
 ]
 
-
-def register_callbacks(app: Dash, body_id: str) -> None:
-    register_body_callback(app, body_id, INPUTS, render_body, page="bayes")
+register_callbacks = define_page_callbacks(
+    render_body=render_body,
+    inputs=INPUTS,
+    page="bayes",
+)

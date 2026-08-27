@@ -2,10 +2,10 @@
 
 from __future__ import annotations
 
-from dash import Dash, Input
+from dash import Input
 
 from ch2_pages.vectors.content import render_body
-from maths_self_study.dashboards.callbacks import register_body_callback
+from maths_self_study.dashboards.callbacks import define_page_callbacks
 from maths_self_study.dashboards.components import matrix_callback_inputs
 
 INPUTS = [
@@ -14,6 +14,8 @@ INPUTS = [
     Input("vm-shear", "value"),
 ]
 
-
-def register_callbacks(app: Dash, body_id: str) -> None:
-    register_body_callback(app, body_id, INPUTS, render_body, page="vectors")
+register_callbacks = define_page_callbacks(
+    render_body=render_body,
+    inputs=INPUTS,
+    page="vectors",
+)

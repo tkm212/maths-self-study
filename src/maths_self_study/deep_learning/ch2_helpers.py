@@ -19,6 +19,8 @@ from maths_self_study.linalg import (
     pca_transform,
     symmetric_eigendecomposition,
 )
+from maths_self_study.viz.plotly import base_layout as _base_layout
+from maths_self_study.viz.plotly import equal_axes as _equal_axes
 
 # --- Demo fixtures (notebook cells stay declarative) ---
 
@@ -45,20 +47,6 @@ def show(mo: Any, fig: go.Figure) -> Any:
 
 def show_all(mo: Any, *figs: go.Figure) -> Any:
     return mo.vstack([display(fig, mo) for fig in figs])
-
-
-def _base_layout(**overrides: Any) -> dict[str, Any]:
-    layout = {
-        "template": "plotly_white",
-        "margin": {"l": 60, "r": 30, "t": 60, "b": 50},
-        "hovermode": "closest",
-    }
-    layout.update(overrides)
-    return layout
-
-
-def _equal_axes(fig: go.Figure, **kwargs: Any) -> None:
-    fig.update_layout(yaxis={"scaleanchor": "x", "scaleratio": 1, **kwargs.get("yaxis", {})})
 
 
 def plot_vectors_2d(

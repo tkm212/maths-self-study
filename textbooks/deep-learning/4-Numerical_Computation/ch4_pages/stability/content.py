@@ -6,11 +6,12 @@ import numpy as np
 from dash import html
 
 from maths_self_study.dashboards.components import graph, table
+from maths_self_study.dashboards.utils import coerce_floats
 from maths_self_study.deep_learning import ch4_helpers as helpers
 
 
 def render_body(z0, z1, z2) -> html.Div:
-    logits = np.array([float(z0 or 0), float(z1 or 0), float(z2 or 0)])
+    logits = coerce_floats([z0, z1, z2], fallback=helpers.SOFTMAX_LOGITS)
     summary = helpers.summarize_softmax(logits)
     fig = helpers.plot_softmax_comparison(logits, labels=helpers.SOFTMAX_LABELS)
     rows = [

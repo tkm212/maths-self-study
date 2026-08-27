@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Sequence
 from typing import Any
 
 import numpy as np
@@ -69,6 +70,67 @@ def prob_pair(
             num_input(f"{id_prefix}-1", label1, p1, step=step, min_=0.0, max_=1.0),
         ],
         style={"display": "flex", "flexWrap": "wrap", "gap": "12px", "width": "100%"},
+    )
+
+
+def prob_simplex_ids(id_prefix: str, keys: Sequence[str | int]) -> list[str]:
+    """Dashboard ids for a probability simplex control group."""
+    return [f"{id_prefix}{key}" for key in keys]
+
+
+def prob_simplex(
+    id_prefix: str,
+    items: Sequence[tuple[str, float]],
+    *,
+    id_keys: Sequence[str | int] | None = None,
+    step: float = 0.05,
+) -> list[html.Div]:
+    """Probability inputs that sum to 1 — pair with register_simplex_sync."""
+    keys = list(id_keys) if id_keys is not None else list(range(len(items)))
+    if len(keys) != len(items):
+        msg = "id_keys must match items length"
+        raise ValueError(msg)
+    return [
+        num_input(f"{id_prefix}{key}", label, float(prob), step=step, min_=0.0, max_=1.0)
+        for key, (label, prob) in zip(keys, items, strict=True)
+    ]
+
+
+def num_input_row(
+    id_prefix: str,
+    items: Sequence[tuple[str, float]],
+    *,
+    id_keys: Sequence[str | int] | None = None,
+    step: float = 0.1,
+    min_: float | None = None,
+    max_: float | None = None,
+) -> list[html.Div]:
+    """Row of numeric inputs with a shared id prefix."""
+    keys = list(id_keys) if id_keys is not None else list(range(len(items)))
+    if len(keys) != len(items):
+        msg = "id_keys must match items length"
+        raise ValueError(msg)
+    return [
+        num_input(f"{id_prefix}{key}", label, float(value), step=step, min_=min_, max_=max_)
+        for key, (label, value) in zip(keys, items, strict=True)
+    ]
+
+
+def vector2_input(
+    id_prefix: str,
+    default: np.ndarray,
+    *,
+    labels: tuple[str, str] = ("x₁", "x₂"),
+    step: float = 0.1,
+) -> html.Div:
+    """Two-component numeric input for 2D start points."""
+    d = np.asarray(default, dtype=float).ravel()
+    return html.Div(
+        [
+            num_input(f"{id_prefix}-x0", labels[0], float(d[0]), step=step),
+            num_input(f"{id_prefix}-x1", labels[1], float(d[1]), step=step),
+        ],
+        style={"display": "flex", "flexWrap": "wrap", "gap": "12px"},
     )
 
 

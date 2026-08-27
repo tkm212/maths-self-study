@@ -21,6 +21,7 @@ from maths_self_study.optimization import (
     softmax_stable,
     solve_perturbed,
 )
+from maths_self_study.viz.plotly import base_layout as _base_layout
 
 # --- Demo fixtures ---
 
@@ -40,15 +41,6 @@ NEWTON_START = np.array([2.0, 2.0])
 
 LS_DESIGN = np.array([[1.0, 0.0], [1.0, 1.0], [1.0, 2.0], [1.0, 3.0]])
 LS_TARGETS = np.array([1.0, 2.5, 3.8, 5.2])
-
-
-def _base_layout(**overrides: Any) -> dict[str, Any]:
-    layout = {
-        "template": "plotly_white",
-        "margin": {"l": 60, "r": 30, "t": 60, "b": 50},
-    }
-    layout.update(overrides)
-    return layout
 
 
 def conditioning_scenario(

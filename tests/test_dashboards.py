@@ -339,3 +339,26 @@ def test_configure_logging():
     assert logging.getLogger().level == logging.DEBUG
     configure_for_run(debug=False)
     assert logging.getLogger().level == logging.INFO
+
+
+def test_coerce_float_and_vector():
+    from maths_self_study.dashboards.utils import coerce_float, coerce_floats, coerce_vector2
+
+    assert coerce_float(None, default=1.5) == 1.5
+    assert coerce_float(2.5, default=0.0) == 2.5
+    np.testing.assert_allclose(coerce_vector2(None, 3.0, fallback=np.array([1.0, 2.0])), [1.0, 3.0])
+    np.testing.assert_allclose(coerce_floats([None, 2.0], fallback=np.array([5.0, 6.0])), [5.0, 2.0])
+
+
+def test_prob_simplex_ids():
+    from maths_self_study.dashboards.components import prob_simplex_ids
+
+    assert prob_simplex_ids("info-p", [0, 1, 2, 3]) == ["info-p0", "info-p1", "info-p2", "info-p3"]
+
+
+def test_base_layout():
+    from maths_self_study.viz.plotly import base_layout
+
+    layout = base_layout(title="Demo", height=400)
+    assert layout["template"] == "plotly_white"
+    assert layout["title"] == "Demo"

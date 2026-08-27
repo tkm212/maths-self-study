@@ -2,16 +2,16 @@
 
 from __future__ import annotations
 
-import numpy as np
 from dash import html
 
 from maths_self_study.dashboards.components import graph
+from maths_self_study.dashboards.utils import coerce_float, coerce_vector2
 from maths_self_study.deep_learning import ch4_helpers as helpers
 
 
 def render_body(eta, x0, x1) -> html.Div:
-    learning_rate = float(eta or 0.1)
-    start = np.array([float(x0 or 0), float(x1 or 0)])
+    learning_rate = coerce_float(eta, default=0.1)
+    start = coerce_vector2(x0, x1, fallback=helpers.GD_START)
     fig = helpers.plot_gradient_descent_path(
         helpers.GD_HESSIAN,
         helpers.GD_LINEAR,

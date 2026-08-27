@@ -5,12 +5,13 @@ from __future__ import annotations
 from dash import html
 
 from maths_self_study.dashboards.components import graph, table
+from maths_self_study.dashboards.utils import coerce_float
 from maths_self_study.deep_learning import ch4_helpers as helpers
 
 
 def render_body(kappa, delta) -> html.Div:
-    ratio = max(float(kappa or 10_000.0), 2.0)
-    perturb = float(delta or helpers.CONDITIONING_DELTA)
+    ratio = max(coerce_float(kappa, default=10_000.0), 2.0)
+    perturb = coerce_float(delta, default=helpers.CONDITIONING_DELTA)
     demo = helpers.conditioning_scenario(ratio, perturb)
     fig = helpers.plot_conditioning_demo(ratio, delta=perturb)
     dx = demo["delta_x"]
