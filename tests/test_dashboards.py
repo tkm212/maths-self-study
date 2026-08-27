@@ -35,6 +35,7 @@ _REPO_ROOT = Path(__file__).resolve().parents[1]
 _CH2_DASHBOARD = _REPO_ROOT / "textbooks/deep-learning/2-Linear_Algebra/dashboard.py"
 _CH3_DASHBOARD = _REPO_ROOT / "textbooks/deep-learning/3-Probability_Information_Theory/dashboard.py"
 _CH4_DASHBOARD = _REPO_ROOT / "textbooks/deep-learning/4-Numerical_Computation/dashboard.py"
+_CH5_DASHBOARD = _REPO_ROOT / "textbooks/deep-learning/5-Machine_Learning_Basics/dashboard.py"
 
 
 def _load_dashboard_module(path: Path):
@@ -101,6 +102,26 @@ def test_ch4_dashboard_app_layout():
     app = ch4.create_app()
     assert app.layout is not None
     assert len(ch4.PAGES) == 5
+
+
+def test_ch5_dashboard_app_layout():
+    ch5 = _load_dashboard_module(_CH5_DASHBOARD)
+    app = ch5.create_app()
+    assert app.layout is not None
+    assert len(ch5.PAGES) == 5
+
+
+def test_capacity_page_updates():
+    import sys
+
+    ch5_dir = _CH5_DASHBOARD.parent
+    sys.path.insert(0, str(ch5_dir))
+    from ch5_pages.capacity.content import render_body
+
+    low = render_body(2, 0.05)
+    high = render_body(10, 0.3)
+    assert low is not None and high is not None
+    assert str(low.to_plotly_json()) != str(high.to_plotly_json())
 
 
 def test_stability_softmax_updates():
@@ -324,6 +345,22 @@ def test_plot_gradient_descent_path_builds_figure():
         helpers.GD_START,
         learning_rate=0.1,
     )
+    assert fig is not None
+    assert len(fig.data) >= 2
+
+
+def test_plot_capacity_fit_builds_figure():
+    from maths_self_study.deep_learning import ch5_helpers as helpers
+
+    fig = helpers.plot_capacity_fit(helpers.CAPACITY_DEGREE)
+    assert fig is not None
+    assert len(fig.data) >= 3
+
+
+def test_plot_sgd_paths_builds_figure():
+    from maths_self_study.deep_learning import ch5_helpers as helpers
+
+    fig = helpers.plot_sgd_paths(helpers.SGD_LEARNING_RATE, helpers.SGD_BATCH_SIZE)
     assert fig is not None
     assert len(fig.data) >= 2
 

@@ -6,7 +6,7 @@ Textbook-driven self-study tracks. Each row links a book to its notebook folder 
 |----------|---------|--------|---------------|
 | [Advances in Financial Machine Learning](https://www.wiley.com/en-us/Advances+in+Financial+Machine+Learning-p-9781119482086) | López de Prado (2018) | Ch. 2–4 | [`textbooks/financial-machine-learning/`](../textbooks/financial-machine-learning/) |
 | [The Elements of Statistical Learning](https://hastie.su.domains/ElemStatLearn/) | Hastie, Tibshirani & Friedman (2nd ed.) | Ch. 2–18 | [`textbooks/elements-of-statistical-learning/`](../textbooks/elements-of-statistical-learning/) |
-| [Deep Learning](https://www.deeplearningbook.org/) | Goodfellow, Bengio & Courville (2016) | Ch. 2–4 | [`textbooks/deep-learning/`](../textbooks/deep-learning/) |
+| [Deep Learning](https://www.deeplearningbook.org/) | Goodfellow, Bengio & Courville (2016) | Ch. 2–5 | [`textbooks/deep-learning/`](../textbooks/deep-learning/) |
 
 ## Advances in Financial Machine Learning
 
@@ -44,7 +44,8 @@ Foundations for the deep learning track: linear algebra, probability, informatio
 | 2 | Linear algebra — vectors, norms, eigendecomposition, SVD, PCA |
 | 3 | Probability and information theory — random variables, Bayes' rule, entropy, KL divergence, graphical models |
 | 4 | Numerical computation — stable softmax, conditioning, gradient descent, Newton's method, least squares |
+| 5 | Machine learning basics — capacity, validation, bias-variance, MLE, SGD |
 
 ## Planned tracks
 
-Future chapters from *Deep Learning* (machine learning basics and beyond) and other textbooks — pure maths (real analysis, linear algebra), additional applied stats/ML books. New tracks get a folder under `textbooks/` named after the book or a short slug, plus shared utilities in `maths_self_study` where they apply across books.
+Future chapters from *Deep Learning* (deep feedforward networks and beyond) and other textbooks — pure maths (real analysis, linear algebra), additional applied stats/ML books. New tracks get a folder under `textbooks/` named after the book or a short slug, plus shared utilities in `maths_self_study` where they apply across books.
