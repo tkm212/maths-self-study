@@ -30,10 +30,7 @@ _FORMULA_SOURCE_STYLE = {
 
 def katex_head_html() -> str:
     """KaTeX stylesheet — inject before ``</head>`` in the Dash index template."""
-    return (
-        f'<link rel="stylesheet" href="{KATEX_CDN}/katex.min.css" '
-        f'crossorigin="anonymous" />'
-    )
+    return f'<link rel="stylesheet" href="{KATEX_CDN}/katex.min.css" crossorigin="anonymous" />'
 
 
 def katex_boot_script() -> str:

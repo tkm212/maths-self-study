@@ -3,15 +3,11 @@
 from __future__ import annotations
 
 # §5.2 — Capacity and overfitting
-EMPIRICAL_RISK = (
-    r"\hat{R}_S(f) = \frac{1}{m} \sum_{i=1}^{m} L\big(f(x^{(i)}), y^{(i)}\big)"
-)
+EMPIRICAL_RISK = r"\hat{R}_S(f) = \frac{1}{m} \sum_{i=1}^{m} L\big(f(x^{(i)}), y^{(i)}\big)"
 POLYNOMIAL_MODEL = r"f(x; \theta) = \sum_{j=0}^{d} \theta_j x^j"
 
 # §5.3 — Validation and generalization
-GENERALIZATION_GAP = (
-    r"\text{gap} = \hat{R}_{\text{train}}(f) - \hat{R}_{\text{val}}(f)"
-)
+GENERALIZATION_GAP = r"\text{gap} = \hat{R}_{\text{train}}(f) - \hat{R}_{\text{val}}(f)"
 
 # §5.4 — Bias-variance decomposition
 BIAS_VARIANCE_DECOMP = (
@@ -22,9 +18,7 @@ BIAS_VARIANCE_DECOMP = (
 )
 
 # §5.5 — Maximum likelihood
-LOG_LIKELIHOOD = (
-    r"\ell(\theta) = \sum_{i=1}^{m} \log p_{\text{model}}(x^{(i)}; \theta)"
-)
+LOG_LIKELIHOOD = r"\ell(\theta) = \sum_{i=1}^{m} \log p_{\text{model}}(x^{(i)}; \theta)"
 GAUSSIAN_PDF = (
     r"p(x; \mu, \sigma^2) = \frac{1}{\sqrt{2\pi\sigma^2}}"
     r"\exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)"
