@@ -6,6 +6,7 @@ from ch4_pages.conditioning.callbacks import register_callbacks
 from ch4_pages.conditioning.filters import build_filters
 from maths_self_study.dashboards.page_factory import define_page
 from maths_self_study.viz.definitions.ch4 import CONDITIONING as CONDITIONING_DEFINITIONS
+from maths_self_study.viz.theorems.ch4 import CONDITIONING as CONDITIONING_THEOREMS
 
 ConditioningPage = define_page(
     label="Poor conditioning",
@@ -18,6 +19,7 @@ ConditioningPage = define_page(
         "Near-singular matrices (κ → ∞) make inversion numerically unstable even with exact arithmetic.",
     ],
     definitions=CONDITIONING_DEFINITIONS,
+    theorems=CONDITIONING_THEOREMS,
     build_filters=build_filters,
     register_callbacks=register_callbacks,
 )

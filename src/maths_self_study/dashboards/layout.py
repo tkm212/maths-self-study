@@ -38,8 +38,9 @@ def page_shell(
     *,
     methodology: list[str] | None = None,
     definitions: list[tuple[str, str]] | None = None,
+    theorems: list[tuple[str, str]] | None = None,
 ) -> html.Div:
-    from maths_self_study.dashboards.components import definition_group, text_box
+    from maths_self_study.dashboards.components import definition_group, text_box, theorem_group
 
     children: list[Any] = [
         html.H2(
@@ -55,6 +56,8 @@ def page_shell(
     ]
     if definitions:
         children.append(definition_group(*definitions))
+    if theorems:
+        children.append(theorem_group(*theorems))
     if methodology:
         children.append(text_box(steps=methodology, title="How it works"))
     children.extend([filters, html.Div(id=body_id)])

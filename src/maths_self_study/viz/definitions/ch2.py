@@ -46,8 +46,7 @@ SVD = [
     ),
     (
         "Moore–Penrose pseudoinverse",
-        "A⁺ generalises matrix inverse to rectangular or rank-deficient A. "
-        "Least-squares solutions use x = A⁺b.",
+        "A⁺ generalises matrix inverse to rectangular or rank-deficient A. Least-squares solutions use x = A⁺b.",
     ),
 ]
 

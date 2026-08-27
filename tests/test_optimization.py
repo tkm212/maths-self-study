@@ -8,6 +8,7 @@ import pytest
 from maths_self_study.optimization import (
     condition_number,
     gradient_descent_quadratic,
+    kkt_quadratic_halfspace,
     linear_least_squares,
     log_sum_exp,
     near_singular_system,
@@ -82,3 +83,23 @@ def test_conditioning_amplifies_rhs_perturbation():
     x, x_pert, _, _, amplification = solve_perturbed(matrix, rhs, delta=1e-4, component=0)
     assert amplification > 100.0
     assert np.linalg.norm(x_pert - x) > 0.5
+
+
+def test_kkt_inactive_when_origin_is_feasible():
+    h = np.diag([1.0, 4.0])
+    a = np.array([1.0, 1.0])
+    x_star, lagrange, active = kkt_quadratic_halfspace(h, a, lower_bound=-1.0)
+    np.testing.assert_allclose(x_star, [0.0, 0.0], atol=1e-12)
+    assert lagrange == pytest.approx(0.0)
+    assert active is False
+
+
+def test_kkt_active_on_halfspace_boundary():
+    h = np.diag([1.0, 4.0])
+    a = np.array([1.0, 1.0])
+    bound = 1.0
+    x_star, lagrange, active = kkt_quadratic_halfspace(h, a, lower_bound=bound)
+    np.testing.assert_allclose(a @ x_star, bound, atol=1e-10)
+    np.testing.assert_allclose(h @ x_star, lagrange * a, atol=1e-10)
+    assert active is True
+    assert lagrange > 0

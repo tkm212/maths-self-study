@@ -6,6 +6,7 @@ from ch5_pages.bias_variance.callbacks import register_callbacks
 from ch5_pages.bias_variance.filters import build_filters
 from maths_self_study.dashboards.page_factory import define_page
 from maths_self_study.viz.definitions.ch5 import BIAS_VARIANCE as BIAS_VARIANCE_DEFINITIONS
+from maths_self_study.viz.theorems.ch5 import BIAS_VARIANCE as BIAS_VARIANCE_THEOREMS
 
 BiasVariancePage = define_page(
     label="Bias-variance",
@@ -18,6 +19,7 @@ BiasVariancePage = define_page(
         "Generalization error balances both — the sweet spot minimizes test MSE.",
     ],
     definitions=BIAS_VARIANCE_DEFINITIONS,
+    theorems=BIAS_VARIANCE_THEOREMS,
     build_filters=build_filters,
     register_callbacks=register_callbacks,
 )

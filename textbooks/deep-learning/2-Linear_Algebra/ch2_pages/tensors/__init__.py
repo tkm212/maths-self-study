@@ -6,6 +6,7 @@ from ch2_pages.tensors.callbacks import register_callbacks
 from ch2_pages.tensors.filters import build_filters
 from maths_self_study.dashboards.page_factory import define_page
 from maths_self_study.viz.definitions.ch2 import TENSORS as TENSORS_DEFINITIONS
+from maths_self_study.viz.theorems.ch2 import TENSORS as TENSORS_THEOREMS
 
 TensorsPage = define_page(
     label="Tensors",
@@ -19,6 +20,7 @@ TensorsPage = define_page(
         "Slicing along i, j, or k gives a matrix face; the 3D view shows all entries at once.",
     ],
     definitions=TENSORS_DEFINITIONS,
+    theorems=TENSORS_THEOREMS,
     build_filters=build_filters,
     register_callbacks=register_callbacks,
 )

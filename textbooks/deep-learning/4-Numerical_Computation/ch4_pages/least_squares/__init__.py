@@ -6,6 +6,7 @@ from ch4_pages.least_squares.callbacks import register_callbacks
 from ch4_pages.least_squares.filters import build_filters
 from maths_self_study.dashboards.page_factory import define_page
 from maths_self_study.viz.definitions.ch4 import LEAST_SQUARES as LEAST_SQUARES_DEFINITIONS
+from maths_self_study.viz.theorems.ch4 import LEAST_SQUARES as LEAST_SQUARES_THEOREMS
 
 LeastSquaresPage = define_page(
     label="Least squares",
@@ -19,6 +20,7 @@ LeastSquaresPage = define_page(
         "Same framework as linear regression; pseudoinverse A⁺ from Ch. 2 generalises the formula.",
     ],
     definitions=LEAST_SQUARES_DEFINITIONS,
+    theorems=LEAST_SQUARES_THEOREMS,
     build_filters=build_filters,
     register_callbacks=register_callbacks,
 )

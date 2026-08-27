@@ -6,6 +6,7 @@ from ch2_pages.svd.callbacks import register_callbacks
 from ch2_pages.svd.filters import build_filters
 from maths_self_study.dashboards.page_factory import define_page
 from maths_self_study.viz.definitions.ch2 import SVD as SVD_DEFINITIONS
+from maths_self_study.viz.theorems.ch2 import SVD as SVD_THEOREMS
 
 SvdPage = define_page(
     label="SVD",
@@ -19,6 +20,7 @@ SvdPage = define_page(
         "Least squares: x = np.linalg.pinv(A) @ b minimises ‖Ax − b‖₂ when the system is overdetermined.",
     ],
     definitions=SVD_DEFINITIONS,
+    theorems=SVD_THEOREMS,
     build_filters=build_filters,
     register_callbacks=register_callbacks,
 )

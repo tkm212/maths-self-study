@@ -6,6 +6,7 @@ from ch5_pages.capacity.callbacks import register_callbacks
 from ch5_pages.capacity.filters import build_filters
 from maths_self_study.dashboards.page_factory import define_page
 from maths_self_study.viz.definitions.ch5 import CAPACITY as CAPACITY_DEFINITIONS
+from maths_self_study.viz.theorems.ch5 import CAPACITY as CAPACITY_THEOREMS
 
 CapacityPage = define_page(
     label="Capacity",
@@ -18,6 +19,7 @@ CapacityPage = define_page(
         "Overfitting: capacity too high; training error drops but test error rises.",
     ],
     definitions=CAPACITY_DEFINITIONS,
+    theorems=CAPACITY_THEOREMS,
     build_filters=build_filters,
     register_callbacks=register_callbacks,
 )

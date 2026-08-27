@@ -6,6 +6,7 @@ from ch3_pages.bayes.callbacks import register_callbacks
 from ch3_pages.bayes.filters import build_filters
 from maths_self_study.dashboards.page_factory import define_page
 from maths_self_study.viz.definitions.ch3 import BAYES as BAYES_DEFINITIONS
+from maths_self_study.viz.theorems.ch3 import BAYES as BAYES_THEOREMS
 
 BayesPage = define_page(
     label="Bayes' rule",
@@ -19,6 +20,7 @@ BayesPage = define_page(
         "Compare posterior P(disease | +) to the prior — evidence shifts beliefs, but rarely overturns a low base rate.",
     ],
     definitions=BAYES_DEFINITIONS,
+    theorems=BAYES_THEOREMS,
     build_filters=build_filters,
     register_callbacks=register_callbacks,
 )

@@ -33,6 +33,8 @@ from maths_self_study.dashboards.components import (
     tensor_callback_inputs,
     tensor_grid_input,
     text_box,
+    theorem_box,
+    theorem_group,
     vector2_input,
 )
 from maths_self_study.dashboards.layout import chapter_layout, page_shell
@@ -81,5 +83,7 @@ __all__ = [
     "tensor_callback_inputs",
     "tensor_grid_input",
     "text_box",
+    "theorem_box",
+    "theorem_group",
     "vector2_input",
 ]

@@ -455,6 +455,58 @@ def definition_group(*items: tuple[str, str]) -> html.Div:
     )
 
 
+_THEOREM_GROUP_STYLE = {"marginBottom": "16px"}
+_THEOREM_BOX_STYLE = {
+    "padding": "12px 14px",
+    "background": "#eff6ff",
+    "border": "1px solid #bfdbfe",
+    "borderLeft": "4px solid #2563eb",
+    "borderRadius": "6px",
+    "marginBottom": "10px",
+}
+_THEOREM_LABEL_STYLE = {
+    "fontSize": "0.75rem",
+    "fontWeight": 700,
+    "letterSpacing": "0.06em",
+    "textTransform": "uppercase",
+    "color": "#1e40af",
+    "marginBottom": "6px",
+}
+_THEOREM_NAME_STYLE = {
+    "fontWeight": 600,
+    "color": "#1e293b",
+    "marginBottom": "4px",
+    "fontSize": "0.95rem",
+}
+_THEOREM_PROOF_STYLE = {
+    **_TEXT_BOX_BODY_STYLE,
+    "marginTop": "8px",
+    "fontStyle": "italic",
+    "color": "#64748b",
+}
+
+
+def theorem_box(name: str, statement: str, *, proof: str | None = None) -> html.Div:
+    """Textbook-style theorem panel with a labelled name, statement, and optional proof sketch."""
+    children: list[Any] = [
+        html.Div("Theorem", style=_THEOREM_LABEL_STYLE),
+        html.Div(name, style=_THEOREM_NAME_STYLE),
+        html.Div(statement, style=_TEXT_BOX_BODY_STYLE),
+    ]
+    if proof:
+        children.append(html.Div(proof, style=_THEOREM_PROOF_STYLE))
+    return html.Div(children, style=_THEOREM_BOX_STYLE, className="theorem-box")
+
+
+def theorem_group(*items: tuple[str, str]) -> html.Div:
+    """Stack one or more theorem boxes on a dashboard page."""
+    return html.Div(
+        [theorem_box(name, statement) for name, statement in items],
+        style=_THEOREM_GROUP_STYLE,
+        className="theorem-group",
+    )
+
+
 def table(
     columns: list[str],
     rows: list[list[str | float | int]],

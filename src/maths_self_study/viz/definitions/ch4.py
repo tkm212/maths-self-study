@@ -57,7 +57,18 @@ LEAST_SQUARES = [
     ),
     (
         "Normal equations",
-        "Critical points satisfy XᵀXw = Xᵀy. "
-        "When XᵀX is invertible, w = (XᵀX)⁻¹Xᵀy is the unique minimiser.",
+        "Critical points satisfy XᵀXw = Xᵀy. When XᵀX is invertible, w = (XᵀX)⁻¹Xᵀy is the unique minimiser.",
+    ),
+]
+
+KKT = [
+    (
+        "Lagrangian",
+        "For inequality constraint g(x) ≤ 0, L(x, λ) = f(x) + λ g(x) with multiplier λ ≥ 0. "
+        "Stationarity, primal/dual feasibility, and complementary slackness characterise optima.",
+    ),
+    (
+        "Complementary slackness",
+        "At a KKT point, λᵢ gᵢ(x*) = 0 for each inequality: either the constraint is active (gᵢ = 0) or λᵢ = 0.",
     ),
 ]

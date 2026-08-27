@@ -16,6 +16,7 @@ setup_chapter_path(Path(__file__).resolve().parent)
 from ch4_pages import (  # noqa: E402
     ConditioningPage,
     GradientDescentPage,
+    KktPage,
     LeastSquaresPage,
     NewtonPage,
     StabilityPage,
@@ -27,6 +28,7 @@ PAGES = [
     GradientDescentPage,
     NewtonPage,
     LeastSquaresPage,
+    KktPage,
 ]
 
 

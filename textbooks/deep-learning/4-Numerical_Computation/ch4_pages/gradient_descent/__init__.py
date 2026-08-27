@@ -6,6 +6,7 @@ from ch4_pages.gradient_descent.callbacks import register_callbacks
 from ch4_pages.gradient_descent.filters import build_filters
 from maths_self_study.dashboards.page_factory import define_page
 from maths_self_study.viz.definitions.ch4 import GRADIENT_DESCENT as GRADIENT_DESCENT_DEFINITIONS
+from maths_self_study.viz.theorems.ch4 import GRADIENT_DESCENT as GRADIENT_DESCENT_THEOREMS
 
 GradientDescentPage = define_page(
     label="Gradient descent",
@@ -19,6 +20,7 @@ GradientDescentPage = define_page(
         "Critical points satisfy ∇f(x) = 0 — minima, maxima, or saddle points depending on H.",
     ],
     definitions=GRADIENT_DESCENT_DEFINITIONS,
+    theorems=GRADIENT_DESCENT_THEOREMS,
     build_filters=build_filters,
     register_callbacks=register_callbacks,
 )
