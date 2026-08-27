@@ -35,6 +35,11 @@
       show_root_heading: true
       members_order: source
 
+::: maths_self_study.ml_basics
+    options:
+      show_root_heading: true
+      members_order: source
+
 ::: maths_self_study.loaders
     options:
       show_root_heading: true

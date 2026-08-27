@@ -16,6 +16,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - `maths_self_study.probability` module: Bayes' rule, Shannon entropy, cross-entropy, KL divergence, Monty Hall posterior.
 - Deep Learning track (Goodfellow et al.): Chapter 4 — Numerical Computation Dash dashboard under `textbooks/deep-learning/4-Numerical_Computation/dashboard.py`.
 - `maths_self_study.optimization` module: stable softmax, condition number, gradient descent, Newton's method, linear least squares.
+- Deep Learning track (Goodfellow et al.): Chapter 5 — Machine Learning Basics Dash dashboard under `textbooks/deep-learning/5-Machine_Learning_Basics/dashboard.py`.
+- `maths_self_study.ml_basics` module: polynomial regression, train/test split, ridge fit, Gaussian MLE, SGD paths.
 - `dash` dependency for interactive Deep Learning chapter dashboards.
 
 ### Changed
