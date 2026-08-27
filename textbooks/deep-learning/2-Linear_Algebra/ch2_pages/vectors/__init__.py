@@ -5,7 +5,7 @@ from __future__ import annotations
 from ch2_pages.vectors.callbacks import register_callbacks
 from ch2_pages.vectors.filters import build_filters
 from maths_self_study.dashboards.page_factory import define_page
-from maths_self_study.viz.definitions.ch2 import VECTORS as VECTORS_DEFINITIONS
+from maths_self_study.viz.textbooks.deep_learning.ch2.definitions import VECTORS as VECTORS_DEFINITIONS
 
 VectorsPage = define_page(
     label="Vectors & matrices",

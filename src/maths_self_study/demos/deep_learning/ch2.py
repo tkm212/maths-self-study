@@ -9,7 +9,7 @@ import numpy as np
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
-from maths_self_study.linalg import (
+from maths_self_study.math.linear_algebra import (
     PCAModel,
     cosine_similarity,
     lp_norm,

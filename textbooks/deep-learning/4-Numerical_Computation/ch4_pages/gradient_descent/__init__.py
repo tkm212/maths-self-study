@@ -5,7 +5,7 @@ from __future__ import annotations
 from ch4_pages.gradient_descent.callbacks import register_callbacks
 from ch4_pages.gradient_descent.filters import build_filters
 from maths_self_study.dashboards.page_factory import define_page
-from maths_self_study.viz.definitions.ch4 import GRADIENT_DESCENT as GRADIENT_DESCENT_DEFINITIONS
+from maths_self_study.viz.textbooks.deep_learning.ch4.definitions import GRADIENT_DESCENT as GRADIENT_DESCENT_DEFINITIONS
 
 GradientDescentPage = define_page(
     label="Gradient descent",

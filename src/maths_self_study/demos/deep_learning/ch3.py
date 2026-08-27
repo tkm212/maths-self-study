@@ -10,7 +10,7 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from scipy import stats
 
-from maths_self_study.probability import (
+from maths_self_study.math.probability import (
     align_model_to_support,
     bayes_posterior,
     cross_entropy,

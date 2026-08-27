@@ -6,8 +6,8 @@ import numpy as np
 from dash import html
 
 from maths_self_study.dashboards.components import graph, graph_row, table, text_box
-from maths_self_study.deep_learning import ch2_helpers as helpers
-from maths_self_study.linalg import pca_fit, pca_inverse_transform, pca_transform, symmetric_eigendecomposition
+from maths_self_study.demos.deep_learning import ch2 as helpers
+from maths_self_study.math.linear_algebra import pca_fit, pca_inverse_transform, pca_transform, symmetric_eigendecomposition
 
 
 def render_body(seed, n_samples, sx, sy) -> html.Div:

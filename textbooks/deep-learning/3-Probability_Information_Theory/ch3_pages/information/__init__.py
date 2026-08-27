@@ -5,8 +5,8 @@ from __future__ import annotations
 from ch3_pages.information.callbacks import register_callbacks
 from ch3_pages.information.filters import build_filters
 from maths_self_study.dashboards.page_factory import define_page
-from maths_self_study.viz.definitions.ch3 import INFORMATION as INFORMATION_DEFINITIONS
-from maths_self_study.viz.theorems.ch3 import INFORMATION as INFORMATION_THEOREMS
+from maths_self_study.viz.textbooks.deep_learning.ch3.definitions import INFORMATION as INFORMATION_DEFINITIONS
+from maths_self_study.viz.textbooks.deep_learning.ch3.theorems import INFORMATION as INFORMATION_THEOREMS
 
 InformationPage = define_page(
     label="Information theory",

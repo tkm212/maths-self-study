@@ -5,7 +5,7 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
-from maths_self_study.optimization import (
+from maths_self_study.math.optimization import (
     condition_number,
     gradient_descent_quadratic,
     kkt_quadratic_halfspace,

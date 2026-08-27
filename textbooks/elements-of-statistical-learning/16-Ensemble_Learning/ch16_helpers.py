@@ -46,13 +46,13 @@ def init_paths() -> tuple[Path, Path, Path]:
 
 
 def load_tmdb_classification_xy(inputs_dir: Path) -> tuple[pd.DataFrame, pd.Series, str]:
-    from maths_self_study.loaders import load_tmdb_revenue_classification
+    from maths_self_study.data import load_tmdb_revenue_classification
 
     return load_tmdb_revenue_classification(inputs_dir)
 
 
 def load_tmdb_regression_xy(inputs_dir: Path) -> tuple[pd.DataFrame, pd.Series, str]:
-    from maths_self_study.loaders import load_tmdb_revenue_regression
+    from maths_self_study.data import load_tmdb_revenue_regression
 
     return load_tmdb_revenue_regression(inputs_dir)
 

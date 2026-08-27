@@ -96,7 +96,7 @@ addopts = ["--cov", "--cov-report=term-missing", "--cov-report=xml"]
 [tool.coverage.run]
 source = ["maths_self_study"]
 branch = true
-omit = ["*/loaders.py", "*/deep_learning/*"]
+omit = ["*/loaders.py", "*/demos/*", "*/data/*", "*/deep_learning/*"]
 
 [tool.coverage.report]
 fail_under = 80
@@ -156,6 +156,8 @@ ignore = [
 [tool.ruff.lint.per-file-ignores]
 "tests/*" = ["S101"]
 "textbooks/**" = ["RUF001"]
+"src/maths_self_study/viz/textbooks/deep_learning/**/definitions.py" = ["RUF001"]
+"src/maths_self_study/viz/textbooks/deep_learning/**/theorems.py" = ["RUF001"]
 "src/maths_self_study/viz/definitions/**" = ["RUF001"]
 "src/maths_self_study/viz/theorems/**" = ["RUF001"]
 [tool.ruff.format]

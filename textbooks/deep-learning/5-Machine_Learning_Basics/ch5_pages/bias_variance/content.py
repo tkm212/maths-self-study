@@ -6,8 +6,8 @@ from dash import html
 
 from maths_self_study.dashboards.components import graph
 from maths_self_study.dashboards.utils import coerce_float
-from maths_self_study.deep_learning import ch5_helpers as helpers
-from maths_self_study.viz.formulas.ch5 import BIAS_VARIANCE_DECOMP
+from maths_self_study.demos.deep_learning import ch5 as helpers
+from maths_self_study.viz.textbooks.deep_learning.ch5.formulas import BIAS_VARIANCE_DECOMP
 from maths_self_study.viz.latex import formula
 
 

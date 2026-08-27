@@ -5,7 +5,7 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
-from maths_self_study.ml_basics import (
+from maths_self_study.math.ml import (
     complexity_errors,
     fit_linear,
     gaussian_mle,

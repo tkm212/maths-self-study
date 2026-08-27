@@ -8,7 +8,7 @@ import numpy as np
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
-from maths_self_study.optimization import (
+from maths_self_study.math.optimization import (
     condition_number,
     epsilon_for_condition_number,
     gradient_descent_quadratic,

@@ -107,9 +107,9 @@ def _(OUTPUTS, pd):
 
 @app.cell
 def _(bars):
-    from maths_self_study.filters import cusum_filter
-    from maths_self_study.labeling import triple_barrier_labels
-    from maths_self_study.weights import (
+    from maths_self_study.quant.filters import cusum_filter
+    from maths_self_study.quant.labeling import triple_barrier_labels
+    from maths_self_study.quant.weights import (
         average_uniqueness,
         concurrent_labels_per_bar,
         time_decay_weights,

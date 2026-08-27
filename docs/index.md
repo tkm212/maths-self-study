@@ -67,9 +67,9 @@ The `maths_self_study` package contains shared code used across notebooks.
 ## Quick example
 
 ```python
-from maths_self_study.bars import dollar_bars
-from maths_self_study.filters import cusum_filter
-from maths_self_study.labeling import triple_barrier_labels
+from maths_self_study.quant.bars import dollar_bars
+from maths_self_study.quant.filters import cusum_filter
+from maths_self_study.quant.labeling import triple_barrier_labels
 
 # Build dollar bars from raw tick data
 bars = dollar_bars(ticks_df, threshold=1_000_000)

@@ -6,9 +6,9 @@ from dash import html
 
 from maths_self_study.dashboards.components import graph, table
 from maths_self_study.dashboards.utils import coerce_float
-from maths_self_study.deep_learning import ch5_helpers as helpers
-from maths_self_study.ml_basics import gaussian_mle
-from maths_self_study.viz.formulas.ch5 import GAUSSIAN_MLE, GAUSSIAN_PDF, LOG_LIKELIHOOD
+from maths_self_study.demos.deep_learning import ch5 as helpers
+from maths_self_study.math.ml import gaussian_mle
+from maths_self_study.viz.textbooks.deep_learning.ch5.formulas import GAUSSIAN_MLE, GAUSSIAN_PDF, LOG_LIKELIHOOD
 from maths_self_study.viz.latex import formula_group
 
 

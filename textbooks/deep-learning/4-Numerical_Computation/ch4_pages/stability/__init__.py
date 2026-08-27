@@ -5,8 +5,8 @@ from __future__ import annotations
 from ch4_pages.stability.callbacks import register_callbacks
 from ch4_pages.stability.filters import build_filters
 from maths_self_study.dashboards.page_factory import define_page
-from maths_self_study.viz.definitions.ch4 import STABILITY as STABILITY_DEFINITIONS
-from maths_self_study.viz.theorems.ch4 import STABILITY as STABILITY_THEOREMS
+from maths_self_study.viz.textbooks.deep_learning.ch4.definitions import STABILITY as STABILITY_DEFINITIONS
+from maths_self_study.viz.textbooks.deep_learning.ch4.theorems import STABILITY as STABILITY_THEOREMS
 
 StabilityPage = define_page(
     label="Overflow & underflow",

@@ -40,14 +40,15 @@ The `maths_self_study` package holds shared code used across notebooks.
 
 | Module | What it does |
 |--------|-------------|
-| `loaders` | Textbook dataset loaders (ATP/WTA tennis, TMDB movies) — requires data under `inputs/` |
-| `probability` | Discrete probability and information theory (entropy, cross-entropy, KL divergence, Bayes' rule) |
-| `linalg` | Linear algebra for deep learning — norms, eigendecomposition, PCA, pseudoinverse |
-| `optimization` | Numerical computation — stable softmax, conditioning, gradient descent, Newton, least squares |
+| `data` | Textbook dataset loaders (ATP/WTA tennis, TMDB movies) — requires data under `inputs/` |
+| `math.probability` | Discrete probability and information theory (entropy, cross-entropy, KL divergence, Bayes' rule) |
+| `math.linear_algebra` | Linear algebra for deep learning — norms, eigendecomposition, PCA, pseudoinverse |
+| `math.optimization` | Numerical computation — stable softmax, conditioning, gradient descent, Newton, least squares |
+| `math.ml` | Machine learning basics — polynomial features, ridge, MLE, SGD paths |
 
 ```python
 from pathlib import Path
-from maths_self_study.loaders import load_tmdb_revenue_regression
+from maths_self_study.data import load_tmdb_revenue_regression
 
 X, y, target = load_tmdb_revenue_regression(Path("inputs"))
 ```
@@ -56,15 +57,21 @@ X, y, target = load_tmdb_revenue_regression(Path("inputs"))
 
 | Module | What it does |
 |--------|-------------|
-| `bars` | Build time, tick, volume, and dollar bars from raw tick data |
-| `filters` | Symmetric CUSUM filter for event-driven sampling (Snippet 2.4) |
-| `labeling` | Triple-barrier labeling: profit-take, stop-loss, and vertical barriers |
-| `weights` | Concurrent label counts, average uniqueness, and time-decay sample weights |
+| `quant.bars` | Build time, tick, volume, and dollar bars from raw tick data |
+| `quant.filters` | Symmetric CUSUM filter for event-driven sampling (Snippet 2.4) |
+| `quant.labeling` | Triple-barrier labeling: profit-take, stop-loss, and vertical barriers |
+| `quant.weights` | Concurrent label counts, average uniqueness, and time-decay sample weights |
+
+Or import the pipeline from the package root:
 
 ```python
-from maths_self_study.bars import dollar_bars
-from maths_self_study.filters import cusum_filter
-from maths_self_study.labeling import triple_barrier_labels
+from maths_self_study import cusum_filter, dollar_bars, triple_barrier_labels
+```
+
+```python
+from maths_self_study.quant.bars import dollar_bars
+from maths_self_study.quant.filters import cusum_filter
+from maths_self_study.quant.labeling import triple_barrier_labels
 
 bars   = dollar_bars(ticks_df, threshold=1_000_000)
 events = cusum_filter(bars["close"], threshold=0.02)

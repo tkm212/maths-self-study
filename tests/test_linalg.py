@@ -3,7 +3,7 @@
 import numpy as np
 import pytest
 
-from maths_self_study.linalg import (
+from maths_self_study.math.linear_algebra import (
     cosine_similarity,
     lp_norm,
     moore_penrose_pseudoinverse,

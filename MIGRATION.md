@@ -12,8 +12,8 @@ from financial_machine_learning.bars import dollar_bars
 from financial_machine_learning.filters import cusum_filter
 
 # after (≥ 0.1.0)
-from maths_self_study.bars import dollar_bars
-from maths_self_study.filters import cusum_filter
+from maths_self_study.quant.bars import dollar_bars
+from maths_self_study.quant.filters import cusum_filter
 ```
 
 ### Install
@@ -37,7 +37,7 @@ The loaders module was renamed for use across multiple textbooks (not ESL-only):
 from maths_self_study.esl_loaders import load_tmdb_revenue_regression
 
 # after
-from maths_self_study.loaders import load_tmdb_revenue_regression
+from maths_self_study.data import load_tmdb_revenue_regression
 ```
 
 ### Repository clone URL
@@ -62,3 +62,38 @@ After merging the restructure, update on GitHub:
 2. **About:** *Marimo notebooks and Python code for self-directed study in maths, statistics, and machine learning — chapter-by-chapter from classic textbooks.*
 3. **Topics:** `self-study`, `statistics`, `machine-learning`, `marimo`, `textbooks`, `quantitative-finance`
 4. Verify **Codecov** and **GitHub Pages** still point at the new repo name (`tkm212.github.io/maths-self-study`).
+
+## Source layout restructure (0.2.0)
+
+Version **0.2.0** reorganizes `src/maths_self_study/` into domain-focused subpackages. Old import paths still work via thin re-export shims.
+
+### New layout
+
+| Path | Purpose |
+|------|---------|
+| `quant/` | AFML pipeline: bars, filters, labeling, weights |
+| `math/` | Reusable numerics: `linear_algebra`, `probability`, `optimization`, `ml` |
+| `data/` | Textbook dataset loaders |
+| `demos/` | Interactive dashboard plot helpers (not core library API) |
+| `dashboards/` | Generic Dash framework |
+| `viz/textbooks/deep_learning/` | LaTeX definitions, theorems, formulas per DL chapter |
+
+### Import changes
+
+```python
+# before (still works via shims)
+from maths_self_study.bars import dollar_bars
+from maths_self_study.linalg import pca_fit
+from maths_self_study.loaders import load_tmdb_revenue_regression
+from maths_self_study.deep_learning import ch2_helpers
+from maths_self_study.viz.definitions.ch2 import VECTORS
+
+# after (preferred)
+from maths_self_study.quant.bars import dollar_bars
+from maths_self_study.math.linear_algebra import pca_fit
+from maths_self_study.data import load_tmdb_revenue_regression
+from maths_self_study.demos.deep_learning import ch2
+from maths_self_study.viz.textbooks.deep_learning.ch2.definitions import VECTORS
+```
+
+Shims at the old top-level module paths (`bars.py`, `linalg.py`, `loaders.py`, etc.) will be removed in a future release.

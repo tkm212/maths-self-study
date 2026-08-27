@@ -5,7 +5,7 @@ from __future__ import annotations
 from ch5_pages.capacity.callbacks import register_callbacks
 from ch5_pages.capacity.filters import build_filters
 from maths_self_study.dashboards.page_factory import define_page
-from maths_self_study.viz.definitions.ch5 import CAPACITY as CAPACITY_DEFINITIONS
+from maths_self_study.viz.textbooks.deep_learning.ch5.definitions import CAPACITY as CAPACITY_DEFINITIONS
 
 CapacityPage = define_page(
     label="Capacity",

@@ -3,7 +3,7 @@
 import pandas as pd
 import pytest
 
-from maths_self_study.weights import (
+from maths_self_study.quant.weights import (
     average_uniqueness,
     concurrent_labels_per_bar,
     time_decay_weights,
