@@ -7,6 +7,8 @@ from dash import html
 from maths_self_study.dashboards.components import graph, table
 from maths_self_study.dashboards.utils import coerce_floats
 from maths_self_study.deep_learning import ch4_helpers as helpers
+from maths_self_study.viz.formulas.ch4 import NORMAL_EQUATIONS
+from maths_self_study.viz.latex import formula
 
 
 def render_body(y0, y1, y2, y3) -> html.Div:
@@ -21,6 +23,7 @@ def render_body(y0, y1, y2, y3) -> html.Div:
     ]
     return html.Div([
         html.H3("Normal-equation fit"),
+        formula(NORMAL_EQUATIONS, caption="Normal equations (§4.5)"),
         graph(fig),
         table(["Parameter", "Value"], rows, caption="Least squares solution"),
     ])

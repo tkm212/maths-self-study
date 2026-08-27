@@ -8,6 +8,8 @@ from dash import html
 from maths_self_study.dashboards.components import graph, graph_row, table, text_box
 from maths_self_study.deep_learning import ch2_helpers as helpers
 from maths_self_study.linalg import pca_fit, pca_inverse_transform, pca_transform, symmetric_eigendecomposition
+from maths_self_study.viz.formulas.ch2 import COVARIANCE, PCA_PROJECTION
+from maths_self_study.viz.latex import formula_group
 
 
 def render_body(seed, n_samples, sx, sy) -> html.Div:
@@ -33,6 +35,11 @@ def render_body(seed, n_samples, sx, sy) -> html.Div:
     var_rows.append(["Reconstruction error ‖X̂ − X‖", f"{error:.4f}"])
 
     return html.Div([
+        formula_group(
+            ("Sample covariance", COVARIANCE),
+            ("PCA projection and reconstruction", PCA_PROJECTION),
+            title="Key formulas (§2.12)",
+        ),
         text_box(
             steps=[
                 "Start with data matrix X ∈ ℝⁿˣᵈ (n samples, d features). Centre: X_c = X − μ with μ = X.mean(axis=0).",

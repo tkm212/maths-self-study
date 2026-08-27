@@ -8,6 +8,8 @@ from dash import html
 from maths_self_study.dashboards.components import graph, table
 from maths_self_study.dashboards.utils import clamp_prob
 from maths_self_study.deep_learning import ch3_helpers as helpers
+from maths_self_study.viz.formulas.ch3 import CHAIN_RULE
+from maths_self_study.viz.latex import formula
 
 
 def render_body(
@@ -49,6 +51,7 @@ def render_body(
         ["P(X₃=1)", f"{float(joint[:, :, 1].sum()):.4f}"],
     ]
     return html.Div([
+        formula(CHAIN_RULE, caption="Chain rule for a three-node model (§3.10)"),
         graph(fig),
         table(["Quantity", "Value"], rows, caption="Three-node chain joint"),
     ])

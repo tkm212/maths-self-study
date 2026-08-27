@@ -8,6 +8,8 @@ from dash import html
 from maths_self_study.dashboards.components import graph, table
 from maths_self_study.dashboards.utils import coerce_floats
 from maths_self_study.deep_learning import ch4_helpers as helpers
+from maths_self_study.viz.formulas.ch4 import LOG_SUM_EXP, SOFTMAX
+from maths_self_study.viz.latex import formula_group
 
 
 def render_body(z0, z1, z2) -> html.Div:
@@ -28,6 +30,11 @@ def render_body(z0, z1, z2) -> html.Div:
         )
     return html.Div([
         html.H3("Naive vs stable softmax"),
+        formula_group(
+            ("Softmax", SOFTMAX),
+            ("Log-sum-exp trick", LOG_SUM_EXP),
+            title="Key formulas (§4.1)",
+        ),
         note,
         graph(fig),
         table(["Quantity", "Value"], rows, caption="Numerical summary"),

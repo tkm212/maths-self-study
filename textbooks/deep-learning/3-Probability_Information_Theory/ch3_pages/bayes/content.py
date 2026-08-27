@@ -8,6 +8,8 @@ from dash import html
 from maths_self_study.dashboards.components import graph, table
 from maths_self_study.deep_learning import ch3_helpers as helpers
 from maths_self_study.probability import bayes_posterior
+from maths_self_study.viz.formulas.ch3 import BAYES_RULE
+from maths_self_study.viz.latex import formula
 
 
 def render_body(prior_d, sens, fpr) -> html.Div:
@@ -19,6 +21,7 @@ def render_body(prior_d, sens, fpr) -> html.Div:
     fig_med = helpers.plot_bayes_update(states, prior, likelihood, posterior)
     return html.Div([
         html.H3("Rare disease, positive test — base rate dominates"),
+        formula(BAYES_RULE, caption="Bayes' rule (§3.5)"),
         graph(fig_med),
         table(
             ["Quantity", "Value"],
