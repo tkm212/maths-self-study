@@ -108,7 +108,7 @@ def test_ch5_dashboard_app_layout():
     ch5 = _load_dashboard_module(_CH5_DASHBOARD)
     app = ch5.create_app()
     assert app.layout is not None
-    assert len(ch5.PAGES) == 5
+    assert len(ch5.PAGES) == 6
 
 
 def test_capacity_page_updates():

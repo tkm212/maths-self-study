@@ -69,6 +69,8 @@ def test_ch5_formula_strings_are_nonempty():
         "RIDGE_OBJECTIVE",
         "GD_UPDATE",
         "MINIBATCH_UPDATE",
+        "MANIFOLD_HYPOTHESIS",
+        "MANIFOLD_EMBEDDING",
     ]
     for name in names:
         assert len(getattr(ch5_formulas, name).strip()) > 5

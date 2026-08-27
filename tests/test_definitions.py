@@ -88,7 +88,7 @@ def test_chapter_definition_modules_are_nonempty():
         (ch2, ["VECTORS", "NORMS", "EIGEN", "SVD", "PCA", "TENSORS"]),
         (ch3, ["RANDOM_VARIABLES", "DISTRIBUTIONS", "BAYES", "INFORMATION", "MARKOV"]),
         (ch4, ["STABILITY", "CONDITIONING", "GRADIENT_DESCENT", "NEWTON", "LEAST_SQUARES", "KKT"]),
-        (ch5, ["CAPACITY", "VALIDATION", "BIAS_VARIANCE", "MLE", "SGD"]),
+        (ch5, ["CAPACITY", "VALIDATION", "BIAS_VARIANCE", "MLE", "MANIFOLD", "SGD"]),
     )
     for module, names in modules:
         for name in names:

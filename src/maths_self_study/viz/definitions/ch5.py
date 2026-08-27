@@ -59,3 +59,16 @@ SGD = [
         r"An iterative update $\theta \leftarrow \theta - \eta \nabla_\theta L$ using a gradient estimated from a mini-batch rather than the full dataset.",
     ),
 ]
+
+MANIFOLD = [
+    (
+        "Manifold hypothesis",
+        r"Natural data in $\mathbb{R}^d$ often concentrates on or near a low-dimensional manifold: "
+        r"$x = g(z)$ for latent $z \in \mathbb{R}^k$ with $k \ll d$ and smooth embedding $g$.",
+    ),
+    (
+        "Intrinsic dimension",
+        r"The number of degrees of freedom $k$ needed to describe data locally — "
+        r"much smaller than the ambient dimension $d$ of the raw representation.",
+    ),
+]

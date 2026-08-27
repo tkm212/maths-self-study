@@ -16,6 +16,7 @@ setup_chapter_path(Path(__file__).resolve().parent)
 from ch5_pages import (  # noqa: E402
     BiasVariancePage,
     CapacityPage,
+    ManifoldPage,
     MlePage,
     SgdPage,
     ValidationPage,
@@ -26,6 +27,7 @@ PAGES = [
     ValidationPage,
     BiasVariancePage,
     MlePage,
+    ManifoldPage,
     SgdPage,
 ]
 
