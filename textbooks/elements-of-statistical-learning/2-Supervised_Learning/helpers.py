@@ -16,6 +16,8 @@ from sklearn.neighbors import KNeighborsRegressor
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 
+from maths_self_study.viz.plotly import line_chart, scatter_chart
+
 
 def find_project_root(max_up: int = 12) -> Path:
     p = Path.cwd().resolve()
@@ -113,9 +115,8 @@ def knn_train_test_mse_figure(
         train_mse.append(mean_squared_error(y_train, knn.predict(X_train_s)))
         test_mse.append(mean_squared_error(y_test, knn.predict(X_test_s)))
 
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(x=ks, y=train_mse, name="train MSE", mode="lines+markers"))
-    fig.add_trace(go.Scatter(x=ks, y=test_mse, name="test MSE", mode="lines+markers"))
+    fig = line_chart(ks, train_mse, name="train MSE", mode="lines+markers")
+    line_chart(ks, test_mse, name="test MSE", mode="lines+markers", fig=fig)
     fig.update_layout(
         title="$k$-NN: train vs test MSE",
         xaxis_title="k (neighbors)",
@@ -147,25 +148,8 @@ def plot_predicted_vs_actual(
     lo = float(min(y_true.min(), y_pred.min()))
     hi = float(max(y_true.max(), y_pred.max()))
 
-    fig = go.Figure()
-    fig.add_trace(
-        go.Scatter(
-            x=y_true,
-            y=y_pred,
-            mode="markers",
-            name=label,
-            marker={"size": 5, "opacity": 0.5},
-        )
-    )
-    fig.add_trace(
-        go.Scatter(
-            x=[lo, hi],
-            y=[lo, hi],
-            mode="lines",
-            name="perfect fit",
-            line={"dash": "dash", "color": "black"},
-        )
-    )
+    fig = scatter_chart(y_true, y_pred, name=label, marker_size=5, marker_opacity=0.5)
+    line_chart([lo, hi], [lo, hi], mode="lines", name="perfect fit", line_dash="dash", color="black", fig=fig)
     fig.update_layout(
         title=title,
         xaxis_title="actual",
@@ -204,18 +188,9 @@ def linear_vs_knn_single_feature_figure(
         KNeighborsRegressor(n_neighbors=k_neighbors, n_jobs=-1),
     ).fit(X_train[[col]], y_train)
 
-    fig = go.Figure()
-    fig.add_trace(
-        go.Scatter(
-            x=x1[order],
-            y=y_train.iloc[order],
-            mode="markers",
-            name="train",
-            marker={"size": 4, "opacity": 0.35},
-        )
-    )
-    fig.add_trace(go.Scatter(x=grid.ravel(), y=lin1.predict(grid), mode="lines", name="linear"))
-    fig.add_trace(go.Scatter(x=grid.ravel(), y=knn1.predict(grid), mode="lines", name=f"k-NN (k={k_neighbors})"))
+    fig = scatter_chart(x1[order], y_train.iloc[order], name="train", marker_size=4, marker_opacity=0.35)
+    line_chart(grid.ravel(), lin1.predict(grid), mode="lines", name="linear", fig=fig)
+    line_chart(grid.ravel(), knn1.predict(grid), mode="lines", name=f"k-NN (k={k_neighbors})", fig=fig)
     fig.update_layout(
         title=f"Response vs {col}",
         xaxis_title=col,

@@ -20,7 +20,7 @@ from maths_self_study.math.ml import (
     train_test_split,
 )
 from maths_self_study.viz.plotly import base_layout as _base_layout
-from maths_self_study.viz.plotly import line_chart, scatter_chart
+from maths_self_study.viz.plotly import histogram_chart, line_chart, scatter_chart
 
 # --- Demo fixtures ---
 
@@ -117,19 +117,18 @@ def plot_validation_curve(l2: float, *, noise: float = CAPACITY_NOISE) -> go.Fig
         train_err[i] = mean_squared_error(predict_linear(xtr, weights), y_train)
         val_err[i] = mean_squared_error(predict_linear(xva, weights), y_test)
 
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(x=lambdas, y=train_err, mode="lines", name="train", line={"color": "#2563eb"}))
-    fig.add_trace(go.Scatter(x=lambdas, y=val_err, mode="lines", name="validation", line={"color": "#dc2626"}))
-    fig.add_vline(x=float(l2), line_dash="dot", line_color="#64748b", annotation_text=f"lambda={l2:g}")
-    fig.update_xaxes(type="log")
-    fig.update_layout(
-        **_base_layout(
-            title="Ridge penalty lambda — validation set picks generalization",
-            xaxis_title="L2 penalty lambda",
-            yaxis_title="MSE",
-            height=440,
-        )
+    fig = line_chart(
+        lambdas,
+        train_err,
+        name="train",
+        xaxis_type="log",
+        title="Ridge penalty lambda — validation set picks generalization",
+        xaxis_title="L2 penalty lambda",
+        yaxis_title="MSE",
+        height=440,
     )
+    line_chart(lambdas, val_err, name="validation", color="#dc2626", fig=fig)
+    fig.add_vline(x=float(l2), line_dash="dot", line_color="#64748b", annotation_text=f"lambda={l2:g}")
     return fig
 
 
@@ -142,12 +141,8 @@ def plot_gaussian_mle(samples: np.ndarray) -> go.Figure:
     pdf = (1.0 / (std * np.sqrt(2.0 * np.pi))) * np.exp(-0.5 * ((xs - mean) / std) ** 2)
 
     fig = make_subplots(rows=1, cols=2, subplot_titles=("Samples", "MLE Gaussian"), horizontal_spacing=0.12)
-    fig.add_trace(go.Histogram(x=data, nbinsx=8, marker={"color": "#2563eb"}, name="data"), row=1, col=1)
-    fig.add_trace(
-        go.Scatter(x=xs, y=pdf, mode="lines", name="N(mu, sigma^2)", line={"color": "#dc2626", "width": 2}),
-        row=1,
-        col=2,
-    )
+    histogram_chart(data, nbinsx=8, name="data", fig=fig, row=1, col=1)
+    line_chart(xs, pdf, name="N(mu, sigma^2)", color="#dc2626", fig=fig, row=1, col=2)
     fig.update_layout(
         **_base_layout(
             title=f"Gaussian MLE — mu={mean:.3f}, sigma^2={variance:.3f}",

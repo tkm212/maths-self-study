@@ -11,6 +11,8 @@ import pandas as pd
 import plotly.graph_objects as go
 from sklearn.neighbors import KernelDensity
 
+from maths_self_study.viz.plotly import line_chart
+
 
 def find_project_root(max_up: int = 12) -> Path:
     p = Path.cwd().resolve()
@@ -396,8 +398,7 @@ def bandwidth_loocv_figure(
     best_idx = int(np.argmin(cv_scores))
     best_bw = float(bws[best_idx])
 
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(x=np.log10(bws), y=cv_scores, mode="lines+markers", name="LOO-CV"))
+    fig = line_chart(np.log10(bws), cv_scores, mode="lines+markers", name="LOO-CV")
     fig.add_vline(
         x=float(np.log10(best_bw)),
         line_dash="dash",

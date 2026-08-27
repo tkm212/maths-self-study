@@ -17,6 +17,8 @@ from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import PolynomialFeatures, StandardScaler
 from sklearn.tree import DecisionTreeRegressor
 
+from maths_self_study.viz.plotly import histogram_chart, line_chart
+
 
 def find_project_root(max_up: int = 12) -> Path:
     p = Path.cwd().resolve()
@@ -147,40 +149,27 @@ def em_1d_figure(
         mixture_pdf += weights[k] * _gaussian_pdf(x_grid, means[k], stds[k])
 
     component_colors = ["steelblue", "tomato", "green", "purple"]
-    fig = go.Figure()
-    fig.add_trace(
-        go.Histogram(
-            x=x,
-            name="Observed data",
-            histnorm="probability density",
-            marker_color="lightblue",
-            opacity=0.5,
-            nbinsx=40,
-        )
+    fig = histogram_chart(
+        x,
+        name="Observed data",
+        histnorm="probability density",
+        color="lightblue",
+        opacity=0.5,
+        nbinsx=40,
     )
     for k in range(K):
         comp = weights[k] * _gaussian_pdf(x_grid, means[k], stds[k])
-        fig.add_trace(
-            go.Scatter(
-                x=x_grid,
-                y=comp,
-                mode="lines",
-                name=f"Component {k + 1}: mean={means[k]:.2f}, std={stds[k]:.2f}",
-                line={"dash": "dash", "color": component_colors[k % len(component_colors)]},
-            )
-        )
-    fig.add_trace(
-        go.Scatter(x=x_grid, y=mixture_pdf, mode="lines", name="Fitted mixture", line={"color": "black", "width": 2})
-    )
-    fig.add_trace(
-        go.Scatter(
-            x=x_grid,
-            y=true_pdf,
+        line_chart(
+            x_grid,
+            comp,
             mode="lines",
-            name="True density",
-            line={"dash": "dot", "color": "grey"},
+            name=f"Component {k + 1}: mean={means[k]:.2f}, std={stds[k]:.2f}",
+            line_dash="dash",
+            color=component_colors[k % len(component_colors)],
+            fig=fig,
         )
-    )
+    line_chart(x_grid, mixture_pdf, mode="lines", name="Fitted mixture", color="black", line_width=2, fig=fig)
+    line_chart(x_grid, true_pdf, mode="lines", name="True density", line_dash="dot", color="grey", fig=fig)
     fig.update_layout(
         title=f"EM Gaussian mixture (K={K}, n={n_samples}) — §8.5",
         xaxis_title="x",

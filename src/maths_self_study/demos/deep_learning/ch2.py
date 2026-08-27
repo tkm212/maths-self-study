@@ -21,6 +21,7 @@ from maths_self_study.math.linear_algebra import (
 )
 from maths_self_study.viz.plotly import base_layout as _base_layout
 from maths_self_study.viz.plotly import equal_axes as _equal_axes
+from maths_self_study.viz.plotly import heatmap_chart
 
 # --- Demo fixtures (notebook cells stay declarative) ---
 
@@ -184,15 +185,12 @@ def plot_tensor_slice(
         y_label, x_label = "i", "j"
         slice_desc = f"k = {index}"
 
-    fig = go.Figure(
-        go.Heatmap(
-            z=slab,
-            colorscale="Blues",
-            showscale=True,
-            text=np.round(slab, 3),
-            texttemplate="%{text}",
-            hovertemplate=f"T[{slice_desc}]<br>%{{y}} , %{{x}} = %{{z:.3f}}<extra></extra>",
-        )
+    fig = heatmap_chart(
+        slab,
+        colorscale="Blues",
+        text=np.round(slab, 3),
+        texttemplate="%{text}",
+        hovertemplate=f"T[{slice_desc}]<br>%{{y}} , %{{x}} = %{{z:.3f}}<extra></extra>",
     )
     fig.update_layout(
         **_base_layout(

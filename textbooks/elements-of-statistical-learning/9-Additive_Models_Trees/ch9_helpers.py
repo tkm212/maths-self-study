@@ -16,6 +16,8 @@ from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import SplineTransformer
 from sklearn.tree import DecisionTreeClassifier, DecisionTreeRegressor
 
+from maths_self_study.viz.plotly import line_chart
+
 
 def find_project_root(max_up: int = 12) -> Path:
     p = Path.cwd().resolve()
@@ -271,9 +273,8 @@ def tree_depth_error_figure(
         test_errs.append(float(mean_squared_error(y_te, tree.predict(X_te))))
 
     best_d = depths[int(np.argmin(test_errs))]
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(x=depths, y=train_errs, mode="lines+markers", name="Train MSE"))
-    fig.add_trace(go.Scatter(x=depths, y=test_errs, mode="lines+markers", name="Test MSE"))
+    fig = line_chart(depths, train_errs, mode="lines+markers", name="Train MSE")
+    line_chart(depths, test_errs, mode="lines+markers", name="Test MSE", fig=fig)
     fig.add_vline(x=best_d, line_dash="dash", line_color="grey", annotation_text=f"best depth={best_d}")
     fig.update_layout(
         title=f"CART tree depth vs train/test error — §9.2 (features: {feats[:3]}…)",
@@ -323,16 +324,16 @@ def cost_complexity_pruning_figure(
         n_leaves.append(int(tree.get_n_leaves()))
 
     best_alpha = float(ccp_alphas[int(np.argmin(test_errs))])
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(x=n_leaves, y=train_errs, mode="lines+markers", name="Train MSE"))
-    fig.add_trace(go.Scatter(x=n_leaves, y=test_errs, mode="lines+markers", name="Test MSE"))
-    fig.update_layout(
+    fig = line_chart(
+        n_leaves,
+        train_errs,
+        name="Train MSE",
+        mode="lines+markers",
         title="Cost-complexity pruning: test MSE vs number of leaves — §9.2",
         xaxis_title="number of terminal nodes |T̃|",
         yaxis_title="MSE (log₁p-space)",
-        template="plotly_white",
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
     )
+    line_chart(n_leaves, test_errs, name="Test MSE", mode="lines+markers", fig=fig)
     return fig, {
         "best_alpha": best_alpha,
         "best_n_leaves": n_leaves[int(np.argmin(test_errs))],

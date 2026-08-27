@@ -16,6 +16,8 @@ from sklearn.decomposition import NMF, PCA
 from sklearn.metrics import silhouette_score
 from sklearn.preprocessing import StandardScaler
 
+from maths_self_study.viz.plotly import heatmap_chart, line_chart
+
 
 def find_project_root(max_up: int = 12) -> Path:
     p = Path.cwd().resolve()
@@ -153,16 +155,8 @@ def kmeans_elbow_figure(
     best_k = int(max(2, min(best_k, n_samples)))
 
     fig = make_subplots(rows=1, cols=2, subplot_titles=["WCSS (elbow method)", "Silhouette score"])
-    fig.add_trace(
-        go.Scatter(x=k_values, y=inertias, mode="lines+markers", name="WCSS", line={"color": "steelblue"}),
-        row=1,
-        col=1,
-    )
-    fig.add_trace(
-        go.Scatter(x=k_values, y=silhouettes, mode="lines+markers", name="Silhouette", line={"color": "tomato"}),
-        row=1,
-        col=2,
-    )
+    line_chart(k_values, inertias, mode="lines+markers", name="WCSS", color="steelblue", fig=fig, row=1, col=1)
+    line_chart(k_values, silhouettes, mode="lines+markers", name="Silhouette", color="tomato", fig=fig, row=1, col=2)
     fig.add_vline(x=best_k, line_dash="dash", line_color="grey", row=1, col=2, annotation_text=f"best K={best_k}")
     fig.update_layout(
         title="K-means: elbow and silhouette vs K — §14.3.6",
@@ -219,21 +213,16 @@ def kmeans_centroid_figure(
     centroids = km.cluster_centers_  # shape (k, p) in standardised space
     sizes = [int((labels == c).sum()) for c in range(k)]
 
-    fig = go.Figure(
-        go.Heatmap(
-            z=centroids,
-            x=feats,
-            y=[f"Cluster {c + 1} (n={sizes[c]})" for c in range(k)],
-            colorscale="RdBu_r",
-            zmid=0,
-            colorbar={"title": "std. deviations"},
-        )
-    )
-    fig.update_layout(
+    fig = heatmap_chart(
+        centroids,
+        x=feats,
+        y=[f"Cluster {c + 1} (n={sizes[c]})" for c in range(k)],
+        colorscale="RdBu_r",
+        zmid=0,
+        colorbar={"title": "std. deviations"},
         title=f"K-means centroids heatmap (K={k}, standardised) — §14.3.6",
         xaxis_title="feature",
         yaxis_title="cluster",
-        template="plotly_white",
     )
     return fig, {
         "k": k,

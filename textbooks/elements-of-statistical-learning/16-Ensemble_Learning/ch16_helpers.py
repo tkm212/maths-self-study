@@ -24,6 +24,8 @@ from sklearn.linear_model import LogisticRegression, Ridge
 from sklearn.model_selection import KFold, StratifiedKFold, cross_val_predict, cross_val_score
 from sklearn.tree import DecisionTreeClassifier
 
+from maths_self_study.viz.plotly import heatmap_chart
+
 
 def find_project_root(max_up: int = 12) -> Path:
     p = Path.cwd().resolve()
@@ -300,21 +302,16 @@ def base_error_correlation_figure(
     e_mat = np.column_stack(err_cols)
     corr = np.corrcoef(e_mat.T)
 
-    fig = go.Figure(
-        go.Heatmap(
-            z=corr,
-            x=labels,
-            y=labels,
-            colorscale="RdBu",
-            zmid=0.0,
-            zmin=-1.0,
-            zmax=1.0,
-            colorbar={"title": "corr."},
-        )
-    )
-    fig.update_layout(
+    fig = heatmap_chart(
+        corr,
+        x=labels,
+        y=labels,
+        colorscale="RdBu",
+        zmid=0.0,
+        zmin=-1.0,
+        zmax=1.0,
+        colorbar={"title": "corr."},
         title="Pairwise correlation of base learners' mistake indicators (OOF) — §16.1",
-        template="plotly_white",
         xaxis_title="base learner",
         yaxis_title="base learner",
     )

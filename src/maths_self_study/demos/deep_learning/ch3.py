@@ -19,7 +19,7 @@ from maths_self_study.math.probability import (
     monty_hall_posterior,
     shannon_entropy,
 )
-from maths_self_study.viz.plotly import bar_chart, equal_axes, line_chart
+from maths_self_study.viz.plotly import bar_chart, contour_chart, equal_axes, heatmap_chart, line_chart
 from maths_self_study.viz.plotly import base_layout as _base_layout
 
 # --- Demo fixtures ---
@@ -114,27 +114,34 @@ def plot_joint_with_marginals(
         vertical_spacing=0.08,
     )
 
-    fig.add_trace(
-        go.Heatmap(
-            z=joint,
-            x=list(col_labels),
-            y=list(row_labels),
-            colorscale="Blues",
-            showscale=False,
-            text=np.round(joint, 3),
-            texttemplate="%{text}",
-            hovertemplate="P(A,B)=%{z:.3f}<extra></extra>",
-        ),
+    heatmap_chart(
+        joint,
+        x=list(col_labels),
+        y=list(row_labels),
+        colorscale="Blues",
+        showscale=False,
+        text=np.round(joint, 3),
+        texttemplate="%{text}",
+        hovertemplate="P(A,B)=%{z:.3f}<extra></extra>",
+        fig=fig,
         row=1,
         col=1,
     )
-    fig.add_trace(
-        go.Bar(x=list(col_labels), y=p_b, marker={"color": "#93c5fd"}, showlegend=False),
+    bar_chart(
+        list(col_labels),
+        p_b,
+        color="#93c5fd",
+        showlegend=False,
+        fig=fig,
         row=1,
         col=2,
     )
-    fig.add_trace(
-        go.Bar(x=list(row_labels), y=p_a, marker={"color": "#60a5fa"}, showlegend=False),
+    bar_chart(
+        list(row_labels),
+        p_a,
+        color="#60a5fa",
+        showlegend=False,
+        fig=fig,
         row=2,
         col=1,
     )
@@ -155,20 +162,19 @@ def plot_gaussian_pdf(
         x_range = (mu - 4 * sigma, mu + 4 * sigma)
     xs = np.linspace(x_range[0], x_range[1], 300)
     ys = stats.norm.pdf(xs, loc=mu, scale=sigma)
-    fig = go.Figure(
-        go.Scatter(
-            x=xs,
-            y=ys,
-            mode="lines",
-            name=f"N({mu}, {sigma**2:.2f})",
-            line={"color": "#2563eb", "width": 2},
-            fill="tozeroy",
-            fillcolor="rgba(37, 99, 235, 0.12)",
-            hovertemplate="x=%{x:.2f}<br>p(x)=%{y:.4f}<extra></extra>",
-        )
+    fig = line_chart(
+        xs,
+        ys,
+        name=f"N({mu}, {sigma**2:.2f})",
+        title=title,
+        xaxis_title="x",
+        yaxis_title="p(x)",
+        height=380,
+        fill="tozeroy",
+        fillcolor="rgba(37, 99, 235, 0.12)",
+        hovertemplate="x=%{x:.2f}<br>p(x)=%{y:.4f}<extra></extra>",
     )
     fig.add_vline(x=mu, line_dash="dot", line_color="#64748b", annotation_text="μ")
-    fig.update_layout(**_base_layout(title=title, xaxis_title="x", yaxis_title="p(x)", height=380))
     return fig
 
 
@@ -185,15 +191,14 @@ def plot_gaussian_2d_contour(
     rv = stats.multivariate_normal(mu, c)
     z = rv.pdf(pos)
 
-    fig = go.Figure(
-        go.Contour(
-            x=x[:, 0],
-            y=y[0, :],
-            z=z.T,
-            colorscale="Blues",
-            contours={"coloring": "lines", "showlabels": True},
-            line={"width": 2},
-        )
+    fig = contour_chart(
+        x[:, 0],
+        y[0, :],
+        z.T,
+        colorscale="Blues",
+        contours={"coloring": "lines", "showlabels": True},
+        title=title,
+        height=460,
     )
 
     eigvals, eigvecs = np.linalg.eigh(c)
@@ -209,7 +214,6 @@ def plot_gaussian_2d_contour(
                 marker={"size": [0, 8]},
             )
         )
-    fig.update_layout(**_base_layout(title=title, height=460))
     equal_axes(fig)
     return fig
 

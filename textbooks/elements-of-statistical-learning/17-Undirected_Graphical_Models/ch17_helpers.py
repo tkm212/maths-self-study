@@ -12,6 +12,8 @@ from plotly.subplots import make_subplots
 from sklearn.covariance import GraphicalLasso, GraphicalLassoCV
 from sklearn.preprocessing import StandardScaler
 
+from maths_self_study.viz.plotly import heatmap_chart, line_chart
+
 
 def find_project_root(max_up: int = 12) -> Path:
     p = Path.cwd().resolve()
@@ -139,18 +141,33 @@ def graphical_lasso_demo_figure(
         subplot_titles=("True precision Ω", "Graphical lasso Θ̂", "CV score vs alpha"),
         horizontal_spacing=0.06,
     )
-    fig.add_trace(
-        go.Heatmap(z=omega_true, colorscale="RdBu", zmid=0.0, zmin=zmin, zmax=zmax, showscale=True),
+    heatmap_chart(
+        omega_true,
+        colorscale="RdBu",
+        zmid=0.0,
+        zmin=zmin,
+        zmax=zmax,
+        fig=fig,
         row=1,
         col=1,
     )
-    fig.add_trace(
-        go.Heatmap(z=theta_hat, colorscale="RdBu", zmid=0.0, zmin=zmin, zmax=zmax, showscale=False),
+    heatmap_chart(
+        theta_hat,
+        colorscale="RdBu",
+        zmid=0.0,
+        zmin=zmin,
+        zmax=zmax,
+        showscale=False,
+        fig=fig,
         row=1,
         col=2,
     )
-    fig.add_trace(
-        go.Scatter(x=alphas, y=scores, mode="lines+markers", name="CV score"),
+    line_chart(
+        alphas,
+        scores,
+        name="CV score",
+        mode="lines+markers",
+        fig=fig,
         row=1,
         col=3,
     )
@@ -205,19 +222,14 @@ def partial_correlation_figure(
     prec = np.asarray(gl.precision_, dtype=float)
     pc = partial_correlation_from_precision(prec)
 
-    fig = go.Figure(
-        go.Heatmap(
-            z=pc,
-            colorscale="RdBu",
-            zmid=0.0,
-            zmin=-1.0,
-            zmax=1.0,
-            colorbar={"title": "partial corr."},
-        )
-    )
-    fig.update_layout(
+    fig = heatmap_chart(
+        pc,
+        colorscale="RdBu",
+        zmid=0.0,
+        zmin=-1.0,
+        zmax=1.0,
+        colorbar={"title": "partial corr."},
         title=f"Partial correlation matrix from Θ̂ — §17.3.2 (p={p}, n={n})",
-        template="plotly_white",
         xaxis_title="feature",
         yaxis_title="feature",
     )
@@ -265,18 +277,13 @@ def graphical_lasso_stability_figure(
 
     freq = accum / float(n_bootstrap)
 
-    fig = go.Figure(
-        go.Heatmap(
-            z=freq,
-            colorscale="Blues",
-            zmin=0.0,
-            zmax=1.0,
-            colorbar={"title": "freq."},
-        )
-    )
-    fig.update_layout(
+    fig = heatmap_chart(
+        freq,
+        colorscale="Blues",
+        zmin=0.0,
+        zmax=1.0,
+        colorbar={"title": "freq."},
         title=(f"Edge stability (bootstrap, n={n_bootstrap}) at alpha={alpha_sel:.3f} — §17.3 (p={p})"),
-        template="plotly_white",
         xaxis_title="feature",
         yaxis_title="feature",
     )
@@ -309,21 +316,16 @@ def tmdb_precision_figure(
     theta = np.asarray(gl.precision_, dtype=float)
     pc = partial_correlation_from_precision(theta)
 
-    fig = go.Figure(
-        go.Heatmap(
-            z=pc,
-            x=feat_names,
-            y=feat_names,
-            colorscale="RdBu",
-            zmid=0.0,
-            zmin=-1.0,
-            zmax=1.0,
-            colorbar={"title": "partial corr."},
-        )
-    )
-    fig.update_layout(
+    fig = heatmap_chart(
+        pc,
+        x=feat_names,
+        y=feat_names,
+        colorscale="RdBu",
+        zmid=0.0,
+        zmin=-1.0,
+        zmax=1.0,
+        colorbar={"title": "partial corr."},
         title=f"TMDB: partial correlations from graphical lasso (p={p}, n={len(x)}) — §17.3",
-        template="plotly_white",
     )
     return fig, {"alpha": float(gl.alpha_), "n": len(x), "p": p}
 
@@ -364,31 +366,27 @@ def tmdb_correlation_and_partial_panels_figure(
     )
     zc = 1.0
     zpc = 1.0
-    fig.add_trace(
-        go.Heatmap(
-            z=emp_corr,
-            x=feat_names,
-            y=feat_names,
-            colorscale="RdBu",
-            zmid=0.0,
-            zmin=-zc,
-            zmax=zc,
-            showscale=True,
-        ),
+    heatmap_chart(
+        emp_corr,
+        x=feat_names,
+        y=feat_names,
+        colorscale="RdBu",
+        zmid=0.0,
+        zmin=-zc,
+        zmax=zc,
+        fig=fig,
         row=1,
         col=1,
     )
-    fig.add_trace(
-        go.Heatmap(
-            z=pcorr,
-            x=feat_names,
-            y=feat_names,
-            colorscale="RdBu",
-            zmid=0.0,
-            zmin=-zpc,
-            zmax=zpc,
-            showscale=True,
-        ),
+    heatmap_chart(
+        pcorr,
+        x=feat_names,
+        y=feat_names,
+        colorscale="RdBu",
+        zmid=0.0,
+        zmin=-zpc,
+        zmax=zpc,
+        fig=fig,
         row=1,
         col=2,
     )
