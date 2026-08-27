@@ -13,6 +13,8 @@ from maths_self_study.dashboards.callbacks import (
 from maths_self_study.dashboards.chapter_app import DashboardPage, create_chapter_dashboard
 from maths_self_study.dashboards.components import (
     checklist,
+    definition_box,
+    definition_group,
     dropdown,
     filter_bar,
     graph,
@@ -49,6 +51,8 @@ __all__ = [
     "create_chapter_dashboard",
     "define_page",
     "define_page_callbacks",
+    "definition_box",
+    "definition_group",
     "dropdown",
     "filter_bar",
     "graph",

@@ -5,6 +5,7 @@ from __future__ import annotations
 from ch3_pages.markov.callbacks import register_callbacks
 from ch3_pages.markov.filters import build_filters
 from maths_self_study.dashboards.page_factory import define_page
+from maths_self_study.viz.definitions.ch3 import MARKOV as MARKOV_DEFINITIONS
 
 MarkovPage = define_page(
     label="Structured models",
@@ -17,6 +18,7 @@ MarkovPage = define_page(
         "Each edge in the graph is one conditional factor; the product builds the full joint.",
         "RNNs and autoregressive language models use the same factorisation with neural nets as conditionals.",
     ],
+    definitions=MARKOV_DEFINITIONS,
     build_filters=build_filters,
     register_callbacks=register_callbacks,
 )

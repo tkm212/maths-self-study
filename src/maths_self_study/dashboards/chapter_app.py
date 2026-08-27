@@ -21,6 +21,7 @@ class DashboardPage(ABC):
     title: str
     caption: str
     methodology: list[str]
+    definitions: list[tuple[str, str]]
 
     @property
     def body_id(self) -> str:
@@ -39,6 +40,7 @@ class DashboardPage(ABC):
             self.build_filters(),
             self.body_id,
             methodology=self.methodology or None,
+            definitions=self.definitions or None,
         )
 
 

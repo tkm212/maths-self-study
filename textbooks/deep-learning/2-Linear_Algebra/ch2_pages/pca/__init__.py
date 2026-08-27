@@ -5,6 +5,7 @@ from __future__ import annotations
 from ch2_pages.pca.callbacks import register_callbacks
 from ch2_pages.pca.filters import build_filters
 from maths_self_study.dashboards.page_factory import define_page
+from maths_self_study.viz.definitions.ch2 import PCA as PCA_DEFINITIONS
 
 PcaPage = define_page(
     label="PCA",
@@ -17,6 +18,7 @@ PcaPage = define_page(
         "Project with Z = X_c @ Wᵀ (W = top k eigenvectors as rows); reconstruct with X̂ = Z @ W + μ.",
         "Same result from SVD: np.linalg.svd(X_c) gives PCs in Vh; truncating k components minimises reconstruction error.",
     ],
+    definitions=PCA_DEFINITIONS,
     build_filters=build_filters,
     register_callbacks=register_callbacks,
 )

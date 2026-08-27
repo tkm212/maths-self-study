@@ -5,6 +5,7 @@ from __future__ import annotations
 from ch2_pages.tensors.callbacks import register_callbacks
 from ch2_pages.tensors.filters import build_filters
 from maths_self_study.dashboards.page_factory import define_page
+from maths_self_study.viz.definitions.ch2 import TENSORS as TENSORS_DEFINITIONS
 
 TensorsPage = define_page(
     label="Tensors",
@@ -17,6 +18,7 @@ TensorsPage = define_page(
         "Each entry is stored at grid position (i, j, k) — edit cells directly to set T[i, j, k].",
         "Slicing along i, j, or k gives a matrix face; the 3D view shows all entries at once.",
     ],
+    definitions=TENSORS_DEFINITIONS,
     build_filters=build_filters,
     register_callbacks=register_callbacks,
 )

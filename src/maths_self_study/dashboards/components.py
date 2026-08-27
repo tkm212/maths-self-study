@@ -408,6 +408,53 @@ def text_box(
     return html.Div(children, style=_TEXT_BOX_STYLE)
 
 
+_DEFINITION_GROUP_STYLE = {"marginBottom": "16px"}
+_DEFINITION_BOX_STYLE = {
+    "padding": "12px 14px",
+    "background": "#fffbeb",
+    "border": "1px solid #fde68a",
+    "borderLeft": "4px solid #d97706",
+    "borderRadius": "6px",
+    "marginBottom": "10px",
+}
+_DEFINITION_LABEL_STYLE = {
+    "fontSize": "0.75rem",
+    "fontWeight": 700,
+    "letterSpacing": "0.06em",
+    "textTransform": "uppercase",
+    "color": "#92400e",
+    "marginBottom": "6px",
+}
+_DEFINITION_TERM_STYLE = {
+    "fontWeight": 600,
+    "color": "#1e293b",
+    "marginBottom": "4px",
+    "fontSize": "0.95rem",
+}
+
+
+def definition_box(term: str, definition: str) -> html.Div:
+    """Textbook-style definition panel with a labelled term and prose body."""
+    return html.Div(
+        [
+            html.Div("Definition", style=_DEFINITION_LABEL_STYLE),
+            html.Div(term, style=_DEFINITION_TERM_STYLE),
+            html.Div(definition, style=_TEXT_BOX_BODY_STYLE),
+        ],
+        style=_DEFINITION_BOX_STYLE,
+        className="definition-box",
+    )
+
+
+def definition_group(*items: tuple[str, str]) -> html.Div:
+    """Stack one or more definition boxes on a dashboard page."""
+    return html.Div(
+        [definition_box(term, definition) for term, definition in items],
+        style=_DEFINITION_GROUP_STYLE,
+        className="definition-group",
+    )
+
+
 def table(
     columns: list[str],
     rows: list[list[str | float | int]],

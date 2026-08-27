@@ -5,6 +5,7 @@ from __future__ import annotations
 from ch4_pages.stability.callbacks import register_callbacks
 from ch4_pages.stability.filters import build_filters
 from maths_self_study.dashboards.page_factory import define_page
+from maths_self_study.viz.definitions.ch4 import STABILITY as STABILITY_DEFINITIONS
 
 StabilityPage = define_page(
     label="Overflow & underflow",
@@ -17,6 +18,7 @@ StabilityPage = define_page(
         "Stable form: exp(z_i - max(z)) / Σ_j exp(z_j - max(z)) — identical mathematically, safe numerically.",
         "Log-sum-exp: log Σ exp(z_i) = max(z) + log Σ exp(z_i - max(z)) — the same max-subtraction trick.",
     ],
+    definitions=STABILITY_DEFINITIONS,
     build_filters=build_filters,
     register_callbacks=register_callbacks,
 )

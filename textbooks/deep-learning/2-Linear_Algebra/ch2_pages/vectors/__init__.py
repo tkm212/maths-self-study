@@ -5,6 +5,7 @@ from __future__ import annotations
 from ch2_pages.vectors.callbacks import register_callbacks
 from ch2_pages.vectors.filters import build_filters
 from maths_self_study.dashboards.page_factory import define_page
+from maths_self_study.viz.definitions.ch2 import VECTORS as VECTORS_DEFINITIONS
 
 VectorsPage = define_page(
     label="Vectors & matrices",
@@ -17,6 +18,7 @@ VectorsPage = define_page(
         "The inner product xᵀy = Σᵢ xᵢyᵢ. In ℝ², xᵀy = ‖x‖₂ ‖y‖₂ cos θ — algebra encodes angle.",
         "Elementary maps (rotation R(θ), shear S(k)) are building blocks; any linear map is their composition plus scaling.",
     ],
+    definitions=VECTORS_DEFINITIONS,
     build_filters=build_filters,
     register_callbacks=register_callbacks,
 )

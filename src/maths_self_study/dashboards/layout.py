@@ -37,8 +37,9 @@ def page_shell(
     body_id: str,
     *,
     methodology: list[str] | None = None,
+    definitions: list[tuple[str, str]] | None = None,
 ) -> html.Div:
-    from maths_self_study.dashboards.components import text_box
+    from maths_self_study.dashboards.components import definition_group, text_box
 
     children: list[Any] = [
         html.H2(
@@ -52,6 +53,8 @@ def page_shell(
         ),
         html.P(caption, style={"color": "#64748b", "marginTop": 0}),
     ]
+    if definitions:
+        children.append(definition_group(*definitions))
     if methodology:
         children.append(text_box(steps=methodology, title="How it works"))
     children.extend([filters, html.Div(id=body_id)])

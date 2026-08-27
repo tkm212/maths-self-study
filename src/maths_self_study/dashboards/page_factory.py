@@ -18,6 +18,7 @@ def define_page(
     build_filters: Callable[[], html.Div],
     register_callbacks: Callable[[Dash, str], None],
     methodology: list[str] | None = None,
+    definitions: list[tuple[str, str]] | None = None,
 ) -> DashboardPage:
     """Wire chapter page modules into a tabbed DashboardPage."""
 
@@ -33,4 +34,5 @@ def define_page(
     _Page.title = title
     _Page.caption = caption
     _Page.methodology = methodology or []
+    _Page.definitions = definitions or []
     return _Page()

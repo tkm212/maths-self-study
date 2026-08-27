@@ -5,6 +5,7 @@ from __future__ import annotations
 from ch2_pages.svd.callbacks import register_callbacks
 from ch2_pages.svd.filters import build_filters
 from maths_self_study.dashboards.page_factory import define_page
+from maths_self_study.viz.definitions.ch2 import SVD as SVD_DEFINITIONS
 
 SvdPage = define_page(
     label="SVD",
@@ -17,6 +18,7 @@ SvdPage = define_page(
         "σᵢ = √λᵢ(AᵀA). Geometrically, σᵢ are ellipse axis lengths for {Ax : ‖x‖₂ = 1}.",
         "Least squares: x = np.linalg.pinv(A) @ b minimises ‖Ax − b‖₂ when the system is overdetermined.",
     ],
+    definitions=SVD_DEFINITIONS,
     build_filters=build_filters,
     register_callbacks=register_callbacks,
 )

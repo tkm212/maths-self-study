@@ -5,6 +5,7 @@ from __future__ import annotations
 from ch3_pages.distributions.callbacks import register_callbacks
 from ch3_pages.distributions.filters import build_filters
 from maths_self_study.dashboards.page_factory import define_page
+from maths_self_study.viz.definitions.ch3 import DISTRIBUTIONS as DISTRIBUTIONS_DEFINITIONS
 
 DistributionsPage = define_page(
     label="Distributions",
@@ -17,6 +18,7 @@ DistributionsPage = define_page(
         "Gaussian (normal): N(μ, σ²) has PDF ∝ exp(−(x−μ)²/(2σ²)); bivariate N(μ, Σ) has elliptical level sets.",
         "Multivariate covariance Σ sets axis orientation and scale; eigenvalues of Σ are variance along principal axes.",
     ],
+    definitions=DISTRIBUTIONS_DEFINITIONS,
     build_filters=build_filters,
     register_callbacks=register_callbacks,
 )

@@ -5,6 +5,7 @@ from __future__ import annotations
 from ch2_pages.eigendecomposition.callbacks import register_callbacks
 from ch2_pages.eigendecomposition.filters import build_filters
 from maths_self_study.dashboards.page_factory import define_page
+from maths_self_study.viz.definitions.ch2 import EIGEN as EIGEN_DEFINITIONS
 
 EigendecompositionPage = define_page(
     label="Eigendecomposition",
@@ -17,6 +18,7 @@ EigendecompositionPage = define_page(
         "Spectral decomposition: A = QΛQᵀ — Q's columns are orthonormal eigenvectors, Λ is diagonal of eigenvalues.",
         "This page symmetrises A, then calls np.linalg.eigh(A): LAPACK reduces A to tridiagonal form (Householder), solves for λ and Q, and verifies A ≈ QΛQᵀ.",
     ],
+    definitions=EIGEN_DEFINITIONS,
     build_filters=build_filters,
     register_callbacks=register_callbacks,
 )

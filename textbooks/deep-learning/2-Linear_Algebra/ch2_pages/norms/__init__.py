@@ -5,6 +5,7 @@ from __future__ import annotations
 from ch2_pages.norms.callbacks import register_callbacks
 from ch2_pages.norms.filters import build_filters
 from maths_self_study.dashboards.page_factory import define_page
+from maths_self_study.viz.definitions.ch2 import NORMS as NORMS_DEFINITIONS
 
 NormsPage = define_page(
     label="Norms",
@@ -17,6 +18,7 @@ NormsPage = define_page(
         "All norms measure 'size' but weight coordinates differently — optimisation and regularisation depend on this choice.",
         "Cosine similarity cos θ = xᵀy / (‖x‖₂ ‖y‖₂) depends only on direction, not magnitude.",
     ],
+    definitions=NORMS_DEFINITIONS,
     build_filters=build_filters,
     register_callbacks=register_callbacks,
 )
