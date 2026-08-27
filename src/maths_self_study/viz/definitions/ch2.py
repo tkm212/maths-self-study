@@ -5,71 +5,71 @@ from __future__ import annotations
 VECTORS = [
     (
         "Linear map",
-        "A function T is linear if T(ax + by) = aT(x) + bT(y) for all vectors x, y and scalars a, b. "
-        "Every matrix A defines a linear map x ↦ Ax.",
+        r"A function $T$ is linear if $T(ax + by) = aT(x) + bT(y)$ for all vectors $x, y$ and scalars $a, b$. "
+        r"Every matrix $A$ defines a linear map $x \mapsto Ax$.",
     ),
     (
         "Inner product",
-        "The inner product xᵀy sums coordinate-wise products. In ℝⁿ it generalises dot product and encodes angle and length.",
+        r"The inner product $x^\top y$ sums coordinate-wise products. In $\mathbb{R}^n$ it generalises dot product and encodes angle and length.",
     ),
 ]
 
 NORMS = [
     (
         "Norm",
-        "A norm ‖·‖ assigns a non-negative length to each vector, with ‖ax‖ = |a|‖x‖ and the triangle inequality. "
-        "The Lᵖ family includes L₁, L₂, and L∞.",
+        r"A norm $\|\cdot\|$ assigns a non-negative length to each vector, with $\|ax\| = |a|\|x\|$ and the triangle inequality. "
+        r"The $L^p$ family includes $L^1$, $L^2$, and $L^\infty$.",
     ),
     (
         "Unit ball",
-        "The unit ball of a norm is {x : ‖x‖ = 1} — the set of points exactly one unit from the origin in that geometry.",
+        r"The unit ball of a norm is $\{x : \|x\| = 1\}$ — the set of points exactly one unit from the origin in that geometry.",
     ),
 ]
 
 EIGEN = [
     (
         "Eigenvector and eigenvalue",
-        "For square A, a non-zero vector v is an eigenvector with eigenvalue λ if Av = λv. "
-        "Geometrically, A stretches v without rotating its direction.",
+        r"For square $A$, a non-zero vector $v$ is an eigenvector with eigenvalue $\lambda$ if $Av = \lambda v$. "
+        r"Geometrically, $A$ stretches $v$ without rotating its direction.",
     ),
     (
         "Spectral decomposition",
-        "A symmetric matrix equals QΛQᵀ where Q is orthogonal and Λ is diagonal — eigenvalues on the diagonal, eigenvectors in columns of Q.",
+        r"A symmetric matrix equals $Q \Lambda Q^\top$ where $Q$ is orthogonal and $\Lambda$ is diagonal — eigenvalues on the diagonal, eigenvectors in columns of $Q$.",
     ),
 ]
 
 SVD = [
     (
         "Singular value decomposition",
-        "Every matrix A = UΣVᵀ with orthogonal U, V and diagonal Σ ≥ 0. "
-        "Singular values σᵢ measure how much A stretches each orthogonal input direction.",
+        r"Every matrix $A = U \Sigma V^\top$ with orthogonal $U, V$ and diagonal $\Sigma \ge 0$. "
+        r"Singular values $\sigma_i$ measure how much $A$ stretches each orthogonal input direction.",
     ),
     (
-        "Moore–Penrose pseudoinverse",
-        "A⁺ generalises matrix inverse to rectangular or rank-deficient A. Least-squares solutions use x = A⁺b.",
+        "Moore-Penrose pseudoinverse",
+        r"$A^+$ generalises matrix inverse to rectangular or rank-deficient $A$. Least-squares solutions use $x = A^+ b$.",
     ),
 ]
 
 PCA = [
     (
         "Principal component",
-        "An orthogonal direction of maximum variance in centred data. "
-        "The k-th PC captures the next-largest spread after earlier components are removed.",
+        r"An orthogonal direction of maximum variance in centred data. "
+        r"The $k$-th PC captures the next-largest spread after earlier components are removed.",
     ),
     (
         "Sample covariance",
-        "Σ = X_cᵀX_c/(n−1) measures how features vary and co-vary around the mean after centring X.",
+        r"$\Sigma = X_c^\top X_c / (n-1)$ measures how features vary and co-vary around the mean after centring $X$.",
     ),
 ]
 
 TENSORS = [
     (
         "Tensor",
-        "A multi-dimensional array generalising vectors (1D) and matrices (2D). "
-        "An order-k tensor has k indices, e.g. T[i, j, k].",
+        r"A multi-dimensional array generalising vectors (1D) and matrices (2D). "
+        r"An order-$k$ tensor has $k$ indices, e.g. $T[i, j, k]$.",
     ),
     (
         "Frobenius norm",
-        "‖T‖_F = √(Σᵢⱼₖ Tᵢⱼₖ²) — the L₂ norm of all entries, treating the tensor as one long vector.",
+        r"$\|T\|_F = \sqrt{\sum_{ijk} T_{ijk}^2}$ — the $L_2$ norm of all entries, treating the tensor as one long vector.",
     ),
 ]

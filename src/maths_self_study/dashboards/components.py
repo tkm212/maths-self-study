@@ -8,6 +8,8 @@ from typing import Any
 import numpy as np
 from dash import Input, dcc, html
 
+from maths_self_study.viz.latex import math_text
+
 _LABEL_STYLE = {"fontSize": "0.85rem", "color": "#475569"}
 _CONTROL_STYLE = {"flex": "1", "minWidth": "110px"}
 _SLIDER_STYLE = {"flex": "1", "minWidth": "180px", "padding": "0 8px"}
@@ -434,12 +436,12 @@ _DEFINITION_TERM_STYLE = {
 
 
 def definition_box(term: str, definition: str) -> html.Div:
-    """Textbook-style definition panel with a labelled term and prose body."""
+    """Textbook-style definition panel with a labelled term and KaTeX body."""
     return html.Div(
         [
             html.Div("Definition", style=_DEFINITION_LABEL_STYLE),
             html.Div(term, style=_DEFINITION_TERM_STYLE),
-            html.Div(definition, style=_TEXT_BOX_BODY_STYLE),
+            math_text(definition, style=_TEXT_BOX_BODY_STYLE),
         ],
         style=_DEFINITION_BOX_STYLE,
         className="definition-box",
@@ -487,14 +489,14 @@ _THEOREM_PROOF_STYLE = {
 
 
 def theorem_box(name: str, statement: str, *, proof: str | None = None) -> html.Div:
-    """Textbook-style theorem panel with a labelled name, statement, and optional proof sketch."""
+    """Textbook-style theorem panel with a labelled name, KaTeX statement, and optional proof."""
     children: list[Any] = [
         html.Div("Theorem", style=_THEOREM_LABEL_STYLE),
         html.Div(name, style=_THEOREM_NAME_STYLE),
-        html.Div(statement, style=_TEXT_BOX_BODY_STYLE),
+        math_text(statement, style=_TEXT_BOX_BODY_STYLE),
     ]
     if proof:
-        children.append(html.Div(proof, style=_THEOREM_PROOF_STYLE))
+        children.append(math_text(proof, style=_THEOREM_PROOF_STYLE))
     return html.Div(children, style=_THEOREM_BOX_STYLE, className="theorem-box")
 
 

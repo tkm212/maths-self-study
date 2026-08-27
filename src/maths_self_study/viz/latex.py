@@ -2,10 +2,14 @@
 
 from __future__ import annotations
 
+import re
+
 from dash import html
 
 KATEX_VERSION = "0.16.11"
 KATEX_CDN = f"https://cdn.jsdelivr.net/npm/katex@{KATEX_VERSION}/dist"
+
+_MATH_INLINE_RE = re.compile(r"\$([^$]+)\$")
 
 _FORMULA_BLOCK_STYLE = {
     "padding": "14px 18px",
@@ -26,6 +30,42 @@ _FORMULA_SOURCE_STYLE = {
     "fontSize": "1.05rem",
     "lineHeight": 1.6,
 }
+_MATH_TEXT_STYLE = {
+    "fontSize": "0.95rem",
+    "lineHeight": 1.55,
+    "color": "#334155",
+}
+
+
+def math_span(latex: str, *, display: bool = False) -> html.Span | html.Div:
+    """Single KaTeX-renderable fragment for inline or display math."""
+    display_class = "math-latex-display" if display else "math-latex-inline"
+    element = html.Div if display else html.Span
+    return element(
+        latex.strip(),
+        className=f"math-latex-source {display_class}",
+        style=_FORMULA_SOURCE_STYLE if display else {"display": "inline"},
+    )
+
+
+def math_text(
+    text: str,
+    *,
+    style: dict[str, str | int] | None = None,
+) -> html.Div:
+    """Render prose with inline math marked by ``$...$`` delimiters via KaTeX."""
+    children: list[html.Span | html.Div] = []
+    last = 0
+    for match in _MATH_INLINE_RE.finditer(text):
+        if match.start() > last:
+            children.append(html.Span(text[last : match.start()]))
+        children.append(math_span(match.group(1)))
+        last = match.end()
+    if last < len(text):
+        children.append(html.Span(text[last:]))
+    if not children:
+        children.append(html.Span(text))
+    return html.Div(children, style=style or _MATH_TEXT_STYLE, className="math-text")
 
 
 def katex_head_html() -> str:

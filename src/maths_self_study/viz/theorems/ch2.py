@@ -5,30 +5,30 @@ from __future__ import annotations
 NORMS = [
     (
         "Cauchy-Schwarz inequality",
-        "For any x, y in an inner-product space, |xᵀy| ≤ ‖x‖₂ ‖y‖₂, with equality iff x and y are parallel.",
+        r"For any $x, y$ in an inner-product space, $|x^\top y| \le \|x\|_2 \|y\|_2$, with equality iff $x$ and $y$ are parallel.",
     ),
 ]
 
 EIGEN = [
     (
         "Spectral theorem (symmetric matrices)",
-        "Every real symmetric A admits A = QΛQᵀ with Q orthogonal and Λ diagonal. "
-        "Eigenvalues are real and eigenvectors for distinct eigenvalues are orthogonal.",
+        r"Every real symmetric $A$ admits $A = Q \Lambda Q^\top$ with $Q$ orthogonal and $\Lambda$ diagonal. "
+        r"Eigenvalues are real and eigenvectors for distinct eigenvalues are orthogonal.",
     ),
 ]
 
 SVD = [
     (
         "Existence of the SVD",
-        "For every A ∈ ℝᵐˣⁿ there exist orthogonal U, V and diagonal Σ ≥ 0 such that A = UΣVᵀ. "
-        "The singular values are uniquely determined.",
+        r"For every $A \in \mathbb{R}^{m \times n}$ there exist orthogonal $U, V$ and diagonal $\Sigma \ge 0$ such that $A = U \Sigma V^\top$. "
+        r"The singular values are uniquely determined.",
     ),
 ]
 
 PCA = [
     (
         "PCA as eigendecomposition of covariance",
-        "Principal components are eigenvectors of the sample covariance matrix Σ, ordered by decreasing eigenvalue. "
-        "The first k PCs give the best rank-k linear reconstruction in mean squared error.",
+        r"Principal components are eigenvectors of the sample covariance matrix $\Sigma$, ordered by decreasing eigenvalue. "
+        r"The first $k$ PCs give the best rank-$k$ linear reconstruction in mean squared error.",
     ),
 ]

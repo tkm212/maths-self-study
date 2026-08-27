@@ -6,6 +6,8 @@ from typing import Any
 
 from dash import dcc, html
 
+from maths_self_study.dashboards.components import definition_group, text_box, theorem_group
+
 TAB_WRAP_STYLE = """
 #page-tabs .tab-container {
     flex-wrap: wrap !important;
@@ -40,8 +42,6 @@ def page_shell(
     definitions: list[tuple[str, str]] | None = None,
     theorems: list[tuple[str, str]] | None = None,
 ) -> html.Div:
-    from maths_self_study.dashboards.components import definition_group, text_box, theorem_group
-
     children: list[Any] = [
         html.H2(
             title,

@@ -19,11 +19,12 @@ from maths_self_study.viz.theorems import ch5 as th5
 
 
 def test_definition_box_renders_term_and_body():
-    box = definition_box("Linear map", "A function T is linear if T(ax + by) = aT(x) + bT(y).")
+    box = definition_box("Linear map", r"A function $T$ is linear if $T(ax + by) = aT(x) + bT(y)$.")
     rendered = str(box)
     assert "definition-box" in rendered
     assert "Definition" in rendered
     assert "Linear map" in rendered
+    assert "math-latex-source" in rendered
 
 
 def test_definition_group_stacks_items():
@@ -51,11 +52,12 @@ def test_page_shell_includes_definitions():
 
 
 def test_theorem_box_renders_name_and_statement():
-    box = theorem_box("Spectral theorem", "Every real symmetric matrix is orthogonally diagonalisable.")
+    box = theorem_box("Spectral theorem", r"Every real symmetric $A$ admits $A = Q \Lambda Q^\top$.")
     rendered = str(box)
     assert "theorem-box" in rendered
     assert "Theorem" in rendered
     assert "Spectral theorem" in rendered
+    assert "math-latex-source" in rendered
 
 
 def test_theorem_group_stacks_items():
