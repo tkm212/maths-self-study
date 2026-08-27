@@ -11,10 +11,12 @@ from maths_self_study.ml_basics import (
     fit_linear,
     gaussian_mle,
     mean_squared_error,
+    pca_project,
     polynomial_features,
     predict_linear,
     ridge_fit,
     sgd_linear_regression_path,
+    swiss_roll,
     train_test_split,
 )
 from maths_self_study.viz.plotly import base_layout as _base_layout
@@ -27,6 +29,8 @@ VALIDATION_L2 = 0.1
 GAUSSIAN_SAMPLES = np.array([0.2, 0.5, 0.7, 1.1, 1.3, 1.6, 1.9, 2.2])
 SGD_LEARNING_RATE = 0.05
 SGD_BATCH_SIZE = 4
+MANIFOLD_NOISE = 0.3
+MANIFOLD_SAMPLES = 800
 
 
 def _synthetic_sine(*, noise: float = CAPACITY_NOISE, seed: int = 0) -> tuple[np.ndarray, np.ndarray]:
@@ -268,3 +272,69 @@ def summarize_capacity(degree: int, *, noise: float = CAPACITY_NOISE) -> dict[st
         "train_mse": mean_squared_error(predict_linear(xtr, weights), y_train),
         "test_mse": mean_squared_error(predict_linear(xte, weights), y_test),
     }
+
+
+def summarize_manifold(*, noise: float = MANIFOLD_NOISE, n_samples: int = MANIFOLD_SAMPLES) -> dict[str, float]:
+    """Return ambient/intrinsic dimensions and PCA variance explained."""
+    ambient, _intrinsic = swiss_roll(n_samples, noise=noise, seed=0)
+    _, explained = pca_project(ambient, n_components=2)
+    return {
+        "ambient_dim": float(ambient.shape[1]),
+        "intrinsic_dim": 2.0,
+        "pca_var_1": float(explained[0]),
+        "pca_var_2": float(explained[1]),
+        "n_samples": float(n_samples),
+    }
+
+
+def plot_manifold_demo(*, noise: float = MANIFOLD_NOISE, n_samples: int = MANIFOLD_SAMPLES) -> go.Figure:
+    """Swiss roll in R^3 vs linear PCA projection (section 5.11.4)."""
+    ambient, intrinsic = swiss_roll(n_samples, noise=noise, seed=0)
+    pca_2d, explained = pca_project(ambient, n_components=2)
+    color = intrinsic[:, 0]
+
+    fig = make_subplots(
+        rows=1,
+        cols=2,
+        specs=[[{"type": "scene"}, {"type": "xy"}]],
+        subplot_titles=(
+            "Ambient space R^3 (d = 3)",
+            f"PCA to R^2 (linear — {100 * explained.sum():.0f}% variance)",
+        ),
+        horizontal_spacing=0.08,
+    )
+    fig.add_trace(
+        go.Scatter3d(
+            x=ambient[:, 0],
+            y=ambient[:, 1],
+            z=ambient[:, 2],
+            mode="markers",
+            marker={"size": 3, "color": color, "colorscale": "Viridis", "opacity": 0.85},
+            name="swiss roll",
+            hovertemplate="x=%{x:.2f}, y=%{y:.2f}, z=%{z:.2f}<extra></extra>",
+        ),
+        row=1,
+        col=1,
+    )
+    fig.add_trace(
+        go.Scatter(
+            x=pca_2d[:, 0],
+            y=pca_2d[:, 1],
+            mode="markers",
+            marker={"size": 5, "color": color, "colorscale": "Viridis", "opacity": 0.85},
+            name="PCA",
+            showlegend=False,
+            hovertemplate="PC1=%{x:.2f}, PC2=%{y:.2f}<extra></extra>",
+        ),
+        row=1,
+        col=2,
+    )
+    fig.update_layout(
+        **_base_layout(
+            title=(f"Manifold hypothesis — k=2 intrinsic coords embedded in d=3 (noise sigma={noise:.2g})"),
+            height=480,
+            showlegend=False,
+        )
+    )
+    fig.update_scenes(aspectmode="data")
+    return fig

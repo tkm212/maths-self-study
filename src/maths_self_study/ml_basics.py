@@ -117,3 +117,44 @@ def complexity_errors(
         train_err[i] = mean_squared_error(predict_linear(xtr, weights), y_train)
         test_err[i] = mean_squared_error(predict_linear(xte, weights), y_test)
     return degrees, train_err, test_err
+
+
+def swiss_roll(
+    n_samples: int,
+    *,
+    noise: float = 0.0,
+    seed: int = 0,
+) -> tuple[np.ndarray, np.ndarray]:
+    """
+    Swiss-roll manifold embedded in R^3 with intrinsic coordinates (section 5.11.4).
+
+    Returns ambient points X of shape (n, 3) and intrinsic coords Z of shape (n, 2).
+    """
+    n = max(int(n_samples), 3)
+    rng = np.random.default_rng(seed)
+    t = 1.5 * np.pi * (1.0 + 2.0 * rng.random(n))
+    h = 21.0 * rng.random(n)
+    ambient = np.column_stack([t * np.cos(t), h, t * np.sin(t)])
+    if noise > 0:
+        ambient += rng.normal(0.0, float(noise), size=ambient.shape)
+    intrinsic = np.column_stack([t, h])
+    return ambient, intrinsic
+
+
+def pca_project(
+    data: np.ndarray,
+    *,
+    n_components: int = 2,
+) -> tuple[np.ndarray, np.ndarray]:
+    """PCA projection and per-component variance-explained ratios."""
+    x = np.asarray(data, dtype=float)
+    if x.ndim != 2:
+        msg = "data must be two-dimensional"
+        raise ValueError(msg)
+    n_components = max(1, min(int(n_components), x.shape[1]))
+    centered = x - x.mean(axis=0)
+    _, singular_values, vt = np.linalg.svd(centered, full_matrices=False)
+    projected = centered @ vt[:n_components].T
+    total_var = float(np.sum(singular_values**2))
+    explained = (singular_values[:n_components] ** 2) / max(total_var, 1e-15)
+    return projected, explained

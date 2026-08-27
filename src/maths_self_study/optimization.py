@@ -170,3 +170,26 @@ def linear_least_squares(
     weights = np.linalg.solve(ata, atb)
     residuals = b - a @ weights
     return weights, residuals
+
+
+def kkt_quadratic_halfspace(
+    hessian: np.ndarray,
+    constraint_normal: np.ndarray,
+    lower_bound: float,
+) -> tuple[np.ndarray, float, bool]:
+    """
+    KKT solution for min ½ xᵀHx s.t. aᵀx ≥ b with H positive definite (§4.4).
+
+    Uses g(x) = b - aᵀx <= 0. Returns (x*, λ*, constraint_active).
+    """
+    h = np.asarray(hessian, dtype=float)
+    a = np.asarray(constraint_normal, dtype=float).ravel()
+    b = float(lower_bound)
+    h_inv_a = np.linalg.solve(h, a)
+    denom = float(a @ h_inv_a)
+    unconstrained = np.zeros(h.shape[0])
+    if float(a @ unconstrained) >= b - 1e-12:
+        return unconstrained, 0.0, False
+    lagrange = b / denom if denom > 0 else 0.0
+    x_star = lagrange * h_inv_a
+    return x_star, lagrange, True

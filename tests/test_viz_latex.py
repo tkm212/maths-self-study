@@ -7,7 +7,7 @@ from pathlib import Path
 
 from maths_self_study.dashboards.chapter_app import create_chapter_dashboard
 from maths_self_study.viz.formulas import ch5 as ch5_formulas
-from maths_self_study.viz.latex import formula, formula_group, katex_boot_script, katex_head_html
+from maths_self_study.viz.latex import formula, formula_group, katex_boot_script, katex_head_html, math_text
 
 _REPO_ROOT = Path(__file__).resolve().parents[1]
 _CH2_DASHBOARD = _REPO_ROOT / "textbooks/deep-learning/2-Linear_Algebra/dashboard.py"
@@ -48,6 +48,15 @@ def test_formula_group_stacks_items():
     assert len(group.children) == 2
 
 
+def test_math_text_marks_inline_latex():
+    block = math_text(r"The norm $\|x\|_2$ equals the square root of $x^\top x$.")
+    rendered = str(block)
+    assert "math-text" in rendered
+    assert "math-latex-inline" in rendered
+    assert block.children is not None
+    assert len(block.children) >= 3
+
+
 def test_ch5_formula_strings_are_nonempty():
     names = [
         "EMPIRICAL_RISK",
@@ -60,6 +69,8 @@ def test_ch5_formula_strings_are_nonempty():
         "RIDGE_OBJECTIVE",
         "GD_UPDATE",
         "MINIBATCH_UPDATE",
+        "MANIFOLD_HYPOTHESIS",
+        "MANIFOLD_EMBEDDING",
     ]
     for name in names:
         assert len(getattr(ch5_formulas, name).strip()) > 5

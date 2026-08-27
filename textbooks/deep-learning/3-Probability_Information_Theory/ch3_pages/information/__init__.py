@@ -5,6 +5,8 @@ from __future__ import annotations
 from ch3_pages.information.callbacks import register_callbacks
 from ch3_pages.information.filters import build_filters
 from maths_self_study.dashboards.page_factory import define_page
+from maths_self_study.viz.definitions.ch3 import INFORMATION as INFORMATION_DEFINITIONS
+from maths_self_study.viz.theorems.ch3 import INFORMATION as INFORMATION_THEOREMS
 
 InformationPage = define_page(
     label="Information theory",
@@ -17,6 +19,8 @@ InformationPage = define_page(
         "Cross-entropy H(P, Q) = E_P[−log Q(X)] — expected code length using Q on P-generated data; softmax + log loss.",
         "KL divergence KL(P ‖ Q) = E_P[log(P/Q)] = H(P, Q) − H(P) ≥ 0, zero iff P = Q; asymmetric, not a metric.",
     ],
+    definitions=INFORMATION_DEFINITIONS,
+    theorems=INFORMATION_THEOREMS,
     build_filters=build_filters,
     register_callbacks=register_callbacks,
 )

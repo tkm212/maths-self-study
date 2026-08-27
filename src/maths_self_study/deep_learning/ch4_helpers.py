@@ -12,6 +12,7 @@ from maths_self_study.optimization import (
     condition_number,
     epsilon_for_condition_number,
     gradient_descent_quadratic,
+    kkt_quadratic_halfspace,
     linear_least_squares,
     log_sum_exp,
     near_singular_system,
@@ -41,6 +42,10 @@ NEWTON_START = np.array([2.0, 2.0])
 
 LS_DESIGN = np.array([[1.0, 0.0], [1.0, 1.0], [1.0, 2.0], [1.0, 3.0]])
 LS_TARGETS = np.array([1.0, 2.5, 3.8, 5.2])
+
+KKT_HESSIAN = np.array([[1.0, 0.0], [0.0, 4.0]])
+KKT_CONSTRAINT = np.array([1.0, 1.0])
+KKT_LOWER_BOUND = 1.0
 
 
 def conditioning_scenario(
@@ -363,3 +368,105 @@ def summarize_least_squares(design: np.ndarray, targets: np.ndarray) -> dict[str
         "w1": float(weights[1]) if len(weights) > 1 else 0.0,
         "rmse": float(np.sqrt(np.mean(residuals**2))),
     }
+
+
+def summarize_kkt(
+    hessian: np.ndarray,
+    constraint_normal: np.ndarray,
+    lower_bound: float,
+) -> dict[str, Any]:
+    """Return the KKT point, multiplier, and feasibility diagnostics (§4.4)."""
+    h = np.asarray(hessian, dtype=float)
+    a = np.asarray(constraint_normal, dtype=float).ravel()
+    b = float(lower_bound)
+    x_star, lagrange, active = kkt_quadratic_halfspace(h, a, b)
+    slack = b - float(a @ x_star)
+    return {
+        "x1": float(x_star[0]),
+        "x2": float(x_star[1]),
+        "lambda": float(lagrange),
+        "active": active,
+        "slack": slack,
+        "objective": quadratic_value(h, np.zeros(2), x_star),
+        "constraint_value": float(a @ x_star),
+    }
+
+
+def plot_kkt_halfspace(
+    hessian: np.ndarray,
+    constraint_normal: np.ndarray,
+    lower_bound: float,
+    *,
+    span: float = 3.0,
+) -> go.Figure:
+    """Contour plot with halfspace constraint and KKT optimum (§4.4)."""
+    h = np.asarray(hessian, dtype=float)
+    a = np.asarray(constraint_normal, dtype=float).ravel()
+    b = float(lower_bound)
+    summary = summarize_kkt(h, a, b)
+    xx, yy, zz = _quadratic_contour_grid(h, np.zeros(2), span=span)
+
+    fig = go.Figure()
+    fig.add_trace(
+        go.Contour(
+            x=xx[0],
+            y=yy[:, 0],
+            z=zz,
+            colorscale="Blues",
+            showscale=False,
+            contours={"coloring": "lines"},
+            line={"width": 1},
+            name="f(x)",
+        )
+    )
+    xs = np.linspace(-span, span, 100)
+    boundary = b - a[0] * xs
+    if abs(a[1]) > 1e-12:
+        fig.add_trace(
+            go.Scatter(
+                x=xs,
+                y=boundary / a[1],
+                mode="lines",
+                name=f"aᵀx = {b:g} (active boundary)",
+                line={"color": "#f59e0b", "width": 2, "dash": "dash"},
+            )
+        )
+    feasible_y = np.linspace(-span, span, 80)
+    feasible_x = np.full_like(feasible_y, span)
+    mask = a[0] * feasible_x + a[1] * feasible_y >= b
+    fig.add_trace(
+        go.Scatter(
+            x=feasible_x[mask],
+            y=feasible_y[mask],
+            mode="markers",
+            name="feasible region",
+            marker={"color": "rgba(34,197,94,0.15)", "size": 3},
+            showlegend=True,
+        )
+    )
+    fig.add_trace(
+        go.Scatter(
+            x=[summary["x1"]],
+            y=[summary["x2"]],
+            mode="markers",
+            name="KKT optimum",
+            marker={"color": "#dc2626", "size": 12, "symbol": "star"},
+            hovertemplate=(
+                f"x* = ({summary['x1']:.3f}, {summary['x2']:.3f})<br>λ* = {summary['lambda']:.3f}<extra></extra>"
+            ),
+        )
+    )
+    status = "active" if summary["active"] else "inactive (λ = 0)"
+    fig.update_layout(
+        **_base_layout(
+            title=(
+                f"min ½xᵀHx s.t. aᵀx ≥ {b:g} — "
+                f"x* = ({summary['x1']:.3f}, {summary['x2']:.3f}), "
+                f"λ* = {summary['lambda']:.3f} ({status})"
+            ),
+            xaxis_title="x₁",
+            yaxis_title="x₂",
+            height=480,
+        )
+    )
+    return fig

@@ -5,6 +5,8 @@ from __future__ import annotations
 from ch3_pages.random_variables.callbacks import register_callbacks
 from ch3_pages.random_variables.filters import build_filters
 from maths_self_study.dashboards.page_factory import define_page
+from maths_self_study.viz.definitions.ch3 import RANDOM_VARIABLES as RANDOM_VARIABLES_DEFINITIONS
+from maths_self_study.viz.theorems.ch3 import RANDOM_VARIABLES as RANDOM_VARIABLES_THEOREMS
 
 RandomVariablesPage = define_page(
     label="Random variables",
@@ -17,6 +19,8 @@ RandomVariablesPage = define_page(
         "Conditional: P(X | Y = y) = P(X, Y = y) / P(Y = y) — restrict to one row/column and renormalise.",
         "Expectation E[X] = Σ x P(x); variance Var(X) = E[(X − E[X])²] = E[X²] − E[X]².",
     ],
+    definitions=RANDOM_VARIABLES_DEFINITIONS,
+    theorems=RANDOM_VARIABLES_THEOREMS,
     build_filters=build_filters,
     register_callbacks=register_callbacks,
 )

@@ -10,10 +10,12 @@ from maths_self_study.ml_basics import (
     fit_linear,
     gaussian_mle,
     mean_squared_error,
+    pca_project,
     polynomial_features,
     predict_linear,
     ridge_fit,
     sgd_linear_regression_path,
+    swiss_roll,
     train_test_split,
 )
 
@@ -81,3 +83,17 @@ def test_complexity_errors_shapes():
     assert len(degrees) == 4
     assert train_err.shape == (4,)
     assert test_err.shape == (4,)
+
+
+def test_swiss_roll_has_ambient_and_intrinsic_coords():
+    ambient, intrinsic = swiss_roll(100, noise=0.0, seed=0)
+    assert ambient.shape == (100, 3)
+    assert intrinsic.shape == (100, 2)
+
+
+def test_pca_project_returns_two_components():
+    ambient, _ = swiss_roll(50, seed=1)
+    projected, explained = pca_project(ambient, n_components=2)
+    assert projected.shape == (50, 2)
+    assert explained.shape == (2,)
+    assert float(explained.sum()) <= 1.0 + 1e-9

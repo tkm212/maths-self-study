@@ -43,3 +43,7 @@ MINIBATCH_UPDATE = (
     r"\theta \leftarrow \theta - \epsilon \nabla_\theta"
     r" \frac{1}{|B|}\sum_{i \in B} L\big(f(x^{(i)};\theta), y^{(i)}\big)"
 )
+
+# §5.11.4 — Manifold learning
+MANIFOLD_HYPOTHESIS = r"x = g(z), \quad z \in \mathbb{R}^k,\; x \in \mathbb{R}^d,\; k \ll d"
+MANIFOLD_EMBEDDING = r"g : \mathbb{R}^k \to \mathbb{R}^d \text{ smooth; data lie near } g(\mathbb{R}^k)"

@@ -13,6 +13,8 @@ from maths_self_study.dashboards.callbacks import (
 from maths_self_study.dashboards.chapter_app import DashboardPage, create_chapter_dashboard
 from maths_self_study.dashboards.components import (
     checklist,
+    definition_box,
+    definition_group,
     dropdown,
     filter_bar,
     graph,
@@ -31,6 +33,8 @@ from maths_self_study.dashboards.components import (
     tensor_callback_inputs,
     tensor_grid_input,
     text_box,
+    theorem_box,
+    theorem_group,
     vector2_input,
 )
 from maths_self_study.dashboards.layout import chapter_layout, page_shell
@@ -49,6 +53,8 @@ __all__ = [
     "create_chapter_dashboard",
     "define_page",
     "define_page_callbacks",
+    "definition_box",
+    "definition_group",
     "dropdown",
     "filter_bar",
     "graph",
@@ -77,5 +83,7 @@ __all__ = [
     "tensor_callback_inputs",
     "tensor_grid_input",
     "text_box",
+    "theorem_box",
+    "theorem_group",
     "vector2_input",
 ]
