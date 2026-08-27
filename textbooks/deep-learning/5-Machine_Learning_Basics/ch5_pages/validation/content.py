@@ -7,8 +7,8 @@ from dash import html
 from maths_self_study.dashboards.components import graph
 from maths_self_study.dashboards.utils import coerce_float
 from maths_self_study.demos.deep_learning import ch5 as helpers
-from maths_self_study.viz.textbooks.deep_learning.ch5.formulas import GENERALIZATION_GAP, RIDGE_OBJECTIVE
 from maths_self_study.viz.latex import formula_group
+from maths_self_study.viz.textbooks.deep_learning.ch5.formulas import GENERALIZATION_GAP, RIDGE_OBJECTIVE
 
 
 def render_body(l2) -> html.Div:
