@@ -1,4 +1,4 @@
-"""Unit tests for maths_self_study.bars."""
+"""Unit tests for maths_self_study.quant.bars."""
 
 import pandas as pd
 import pytest

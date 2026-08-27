@@ -1,4 +1,4 @@
-"""Unit tests for maths_self_study.probability."""
+"""Unit tests for maths_self_study.math.probability."""
 
 import numpy as np
 import pytest

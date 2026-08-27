@@ -34,7 +34,7 @@ uv run python scripts/download_tmdb_movie_metadata.py
 
 - Notebooks are `.py` Marimo files, not `.ipynb`.
 - ESL chapter folders include `ch{N}_helpers.py` for shared plotting and data loading.
-- AFML notebooks import from `maths_self_study` (`bars`, `filters`, `labeling`, `weights`).
-- Deep Learning Ch. 2–5 use Dash dashboards: `dashboard.py` plus a `ch{N}_pages/` package per chapter. Each page is a subfolder with `filters.py`, `content.py`, and `callbacks.py`. Shared UI and bootstrap code live in `maths_self_study.dashboards`; Deep Learning entrypoint helpers live in `maths_self_study.deep_learning.dashboard`; plotting and math helpers live in `maths_self_study.deep_learning`.
+- AFML notebooks import from `maths_self_study.quant` (`bars`, `filters`, `labeling`, `weights`).
+- Deep Learning Ch. 2–5 use Dash dashboards: `dashboard.py` plus a `ch{N}_pages/` package per chapter. Each page is a subfolder with `filters.py`, `content.py`, and `callbacks.py`. Shared UI and bootstrap code live in `maths_self_study.dashboards`; dashboard entrypoint helpers live in `maths_self_study.demos.deep_learning.dashboard`; plot helpers live in `maths_self_study.demos.deep_learning`.
 
 See [docs/notebooks.md](../docs/notebooks.md) for chapter-by-chapter details and [docs/curriculum.md](../docs/curriculum.md) for the full study plan.

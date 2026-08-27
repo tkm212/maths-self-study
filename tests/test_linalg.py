@@ -1,4 +1,4 @@
-"""Unit tests for maths_self_study.linalg."""
+"""Unit tests for maths_self_study.math.linear_algebra."""
 
 import numpy as np
 import pytest

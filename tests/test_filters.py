@@ -1,4 +1,4 @@
-"""Unit tests for maths_self_study.filters."""
+"""Unit tests for maths_self_study.quant.filters."""
 
 import pandas as pd
 

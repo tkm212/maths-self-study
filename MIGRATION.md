@@ -65,7 +65,7 @@ After merging the restructure, update on GitHub:
 
 ## Source layout restructure (0.2.0)
 
-Version **0.2.0** reorganizes `src/maths_self_study/` into domain-focused subpackages. Old import paths still work via thin re-export shims.
+Version **0.2.0** reorganizes `src/maths_self_study/` into domain-focused subpackages.
 
 ### New layout
 
@@ -81,19 +81,17 @@ Version **0.2.0** reorganizes `src/maths_self_study/` into domain-focused subpac
 ### Import changes
 
 ```python
-# before (still works via shims)
+# before
 from maths_self_study.bars import dollar_bars
 from maths_self_study.linalg import pca_fit
 from maths_self_study.loaders import load_tmdb_revenue_regression
 from maths_self_study.deep_learning import ch2_helpers
 from maths_self_study.viz.definitions.ch2 import VECTORS
 
-# after (preferred)
+# after
 from maths_self_study.quant.bars import dollar_bars
 from maths_self_study.math.linear_algebra import pca_fit
 from maths_self_study.data import load_tmdb_revenue_regression
 from maths_self_study.demos.deep_learning import ch2
 from maths_self_study.viz.textbooks.deep_learning.ch2.definitions import VECTORS
 ```
-
-Shims at the old top-level module paths (`bars.py`, `linalg.py`, `loaders.py`, etc.) will be removed in a future release.
