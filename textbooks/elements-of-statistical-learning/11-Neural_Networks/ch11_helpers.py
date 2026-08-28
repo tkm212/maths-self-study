@@ -2,9 +2,7 @@
 
 from __future__ import annotations
 
-import sys
 import warnings
-from pathlib import Path
 from typing import Any
 
 import numpy as np
@@ -17,43 +15,16 @@ from sklearn.model_selection import cross_val_score, train_test_split
 from sklearn.neural_network import MLPClassifier, MLPRegressor
 from sklearn.preprocessing import StandardScaler
 
+from maths_self_study.data import notebooks as _notebooks
 from maths_self_study.viz.graphs import add_vline, apply_layout, line_chart
+
+init_paths = _notebooks.init_paths
+load_tmdb_classification_xy = _notebooks.load_tmdb_classification_xy
+load_tmdb_xy = _notebooks.load_tmdb_xy
 
 # Suppress the per-epoch ConvergenceWarning that fires when max_iter=1 is used
 # intentionally for warm-start epoch-by-epoch training curve tracking.
 warnings.filterwarnings("ignore", category=ConvergenceWarning)
-
-
-def find_project_root(max_up: int = 12) -> Path:
-    p = Path.cwd().resolve()
-    for _ in range(max_up):
-        if (p / "pyproject.toml").exists():
-            return p
-        if p.parent == p:
-            break
-        p = p.parent
-    msg = "Could not find project root (pyproject.toml)."
-    raise RuntimeError(msg)
-
-
-def init_paths() -> tuple[Path, Path, Path]:
-    """Return ``(project_root, inputs_dir, outputs_dir)`` and put the package on ``sys.path``."""
-    root = find_project_root()
-    if str(root) not in sys.path:
-        sys.path.insert(0, str(root))
-    return root, root / "inputs", root / "outputs"
-
-
-def load_tmdb_classification_xy(inputs_dir: Path) -> tuple[pd.DataFrame, pd.Series, str]:
-    from maths_self_study.data import load_tmdb_revenue_classification
-
-    return load_tmdb_revenue_classification(inputs_dir)
-
-
-def load_tmdb_xy(inputs_dir: Path) -> tuple[pd.DataFrame, pd.Series, str]:
-    from maths_self_study.data import load_tmdb_revenue_regression
-
-    return load_tmdb_revenue_regression(inputs_dir)
 
 
 def _prepare_cls_arrays(

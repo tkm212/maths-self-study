@@ -22,6 +22,7 @@ from maths_self_study.math.linear_algebra import (
 from maths_self_study.viz.graphs import base_layout as _base_layout
 from maths_self_study.viz.graphs import equal_axes as _equal_axes
 from maths_self_study.viz.graphs import heatmap_chart
+from maths_self_study.viz.marimo import show, show_all
 
 # --- Demo fixtures (notebook cells stay declarative) ---
 
@@ -35,19 +36,6 @@ COV_2X2 = np.array([[2.0, 0.8], [0.8, 1.0]])
 SVD_MAP = np.array([[2.0, 0.5], [0.0, 1.5]])
 OVERDETERMINED_A = np.array([[1.0, 2.0], [3.0, 4.0], [5.0, 6.0]])
 OVERDETERMINED_B = np.array([1.0, 2.0, 3.0])
-
-
-def display(fig: go.Figure, mo: Any) -> Any:
-    """Render a Plotly figure in Marimo. Do not use ``fig.show()`` — it won't appear inline."""
-    return mo.ui.plotly(fig)
-
-
-def show(mo: Any, fig: go.Figure) -> Any:
-    return display(fig, mo)
-
-
-def show_all(mo: Any, *figs: go.Figure) -> Any:
-    return mo.vstack([display(fig, mo) for fig in figs])
 
 
 def plot_vectors_2d(

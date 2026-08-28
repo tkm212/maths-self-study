@@ -17,6 +17,7 @@ from maths_self_study.viz.graphs import (
     train_test_chart,
 )
 from maths_self_study.viz.latex import formula, formula_group, katex_boot_script, katex_head_html, math_text
+from maths_self_study.viz.marimo import display, show, show_all
 
 __all__ = [
     "add_vline",
@@ -25,6 +26,7 @@ __all__ = [
     "base_layout",
     "contour_chart",
     "decision_boundary_chart",
+    "display",
     "equal_axes",
     "formula",
     "formula_group",
@@ -37,5 +39,7 @@ __all__ = [
     "scatter3d_chart",
     "scatter_chart",
     "series_xy",
+    "show",
+    "show_all",
     "train_test_chart",
 ]

@@ -21,6 +21,7 @@ from maths_self_study.math.probability import (
 )
 from maths_self_study.viz.graphs import bar_chart, contour_chart, equal_axes, heatmap_chart, line_chart
 from maths_self_study.viz.graphs import base_layout as _base_layout
+from maths_self_study.viz.marimo import show
 
 # --- Demo fixtures ---
 
@@ -37,19 +38,6 @@ CATEGORICAL_PROBS = np.array([0.05, 0.15, 0.30, 0.50])
 
 GAUSSIAN_2D_MEAN = np.array([0.0, 0.0])
 GAUSSIAN_2D_COV = np.array([[1.0, 0.6], [0.6, 1.0]])
-
-
-def display(fig: go.Figure, mo: Any) -> Any:
-    """Render a Plotly figure in Marimo. Do not use ``fig.show()`` — it won't appear inline."""
-    return mo.ui.plotly(fig)
-
-
-def show(mo: Any, fig: go.Figure) -> Any:
-    return display(fig, mo)
-
-
-def show_all(mo: Any, *figs: go.Figure) -> Any:
-    return mo.vstack([display(fig, mo) for fig in figs])
 
 
 def plot_binary_entropy_curve() -> go.Figure:
