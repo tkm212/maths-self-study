@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 from typing import Any
 
 import numpy as np
@@ -14,59 +12,15 @@ from sklearn.linear_model import LinearRegression, Ridge
 from sklearn.metrics import mean_squared_error
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import make_pipeline
-from sklearn.preprocessing import SplineTransformer, StandardScaler
+from sklearn.preprocessing import SplineTransformer
 
-from maths_self_study.viz.graphs import line_chart, scatter_chart
+from maths_self_study.data import notebooks as _notebooks
+from maths_self_study.viz.graphs import add_vline, apply_layout, line_chart, scatter_chart
 
-
-def find_project_root(max_up: int = 12) -> Path:
-    p = Path.cwd().resolve()
-    for _ in range(max_up):
-        if (p / "pyproject.toml").exists():
-            return p
-        if p.parent == p:
-            break
-        p = p.parent
-    msg = "Could not find project root (pyproject.toml)."
-    raise RuntimeError(msg)
-
-
-def init_paths() -> tuple[Path, Path, Path]:
-    """Return ``(project_root, inputs_dir, outputs_dir)`` and put the package on ``sys.path``."""
-    root = find_project_root()
-    if str(root) not in sys.path:
-        sys.path.insert(0, str(root))
-    return root, root / "inputs", root / "outputs"
-
-
-def load_tmdb_xy(inputs_dir: Path) -> tuple[pd.DataFrame, pd.Series, str]:
-    from maths_self_study.data import load_tmdb_revenue_regression
-
-    return load_tmdb_revenue_regression(inputs_dir)
-
-
-def scale_split(
-    X: pd.DataFrame,
-    y: pd.Series,
-    *,
-    test_size: float = 0.25,
-    random_state: int = 0,
-) -> dict[str, Any]:
-    """Train/test split then standard-scale X. Returns a dict with all pieces."""
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=random_state)
-    scaler = StandardScaler()
-    X_train_s = scaler.fit_transform(X_train)
-    X_test_s = scaler.transform(X_test)
-    return {
-        "X_train": X_train,
-        "X_test": X_test,
-        "y_train": y_train,
-        "y_test": y_test,
-        "X_train_s": X_train_s,
-        "X_test_s": X_test_s,
-        "scaler": scaler,
-        "feat_names": list(X_train.columns),
-    }
+find_project_root = _notebooks.find_project_root
+init_paths = _notebooks.init_paths
+load_tmdb_xy = _notebooks.load_tmdb_xy
+scale_split = _notebooks.scale_split
 
 
 def _single_feature_subsample(
@@ -135,14 +89,14 @@ def piecewise_poly_figure(
     )
 
     for kv in knot_vals:
-        fig.add_vline(x=float(kv), line_dash="dot", line_color="grey", opacity=0.5)
+        add_vline(fig, x=float(kv), line_dash="dot", line_color="grey", opacity=0.5)
 
-    fig.update_layout(
+    apply_layout(
+        fig,
         title=f"Piecewise polynomials vs cubic spline on `{feat}` (§5.2)",
         xaxis_title=feat,
         yaxis_title="revenue",
-        template="plotly_white",
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
+        legend="horizontal",
     )
     return fig
 
@@ -183,12 +137,12 @@ def natural_cubic_spline_figure(
         test_mse_list.append(float(mean_squared_error(y_test_1d, pipe.predict(X_test_1d))))
         line_chart(grid.ravel(), pipe.predict(grid), mode="lines", name=f"NCS {k} knots", fig=fig)
 
-    fig.update_layout(
+    apply_layout(
+        fig,
         title=f"Natural cubic splines on `{feat}`: varying knot count (§5.2.1)",
         xaxis_title=feat,
         yaxis_title="revenue",
-        template="plotly_white",
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
+        legend="horizontal",
     )
     return fig, {"knot_counts": knot_counts, "train_mse": train_mse_list, "test_mse": test_mse_list}
 
@@ -217,13 +171,13 @@ def spline_knot_bias_variance_figure(
     best_k = ks[int(np.argmin(test_mse))]
     fig = line_chart(ks, train_mse, mode="lines+markers", name="train MSE")
     line_chart(ks, test_mse, mode="lines+markers", name="test MSE", fig=fig)
-    fig.add_vline(x=best_k, line_dash="dash", line_color="grey", annotation_text=f"best k={best_k}")
-    fig.update_layout(
+    add_vline(fig, x=best_k, line_dash="dash", line_color="grey", annotation_text=f"best k={best_k}")
+    apply_layout(
+        fig,
         title=f"Spline bias-variance tradeoff on `{feat}` (§5.2)",
         xaxis_title="number of knots",
         yaxis_title="MSE",
-        template="plotly_white",
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
+        legend="horizontal",
     )
     return fig
 
@@ -282,12 +236,12 @@ def smoothing_spline_lambda_figure(
         preds = np.expm1(sp(grid_fit))
         fig.add_trace(go.Scatter(x=grid_orig, y=preds, mode="lines", name=label))
 
-    fig.update_layout(
+    apply_layout(
+        fig,
         title=f"Smoothing splines on `{feat}` (log-space fit, §5.4)",
         xaxis_title=feat,
         yaxis_title="revenue",
-        template="plotly_white",
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
+        legend="horizontal",
     )
     return fig
 
@@ -346,12 +300,12 @@ def smoothing_spline_df_figure(
         preds = np.expm1(sp(grid_fit))
         fig.add_trace(go.Scatter(x=grid_orig, y=preds, mode="lines", name=f"df≈{actual_df}"))
 
-    fig.update_layout(
+    apply_layout(
+        fig,
         title="Smoothing splines: effective degrees of freedom (log-space fit, §5.4.1)",
         xaxis_title=feat,
         yaxis_title="revenue",
-        template="plotly_white",
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
+        legend="horizontal",
     )
     return fig
 
@@ -390,18 +344,19 @@ def smoothing_spline_bias_variance_figure(
     best_idx = int(np.argmin(test_mse))
     fig = line_chart(np.log10(alphas), train_mse, mode="lines", name="train MSE")
     line_chart(np.log10(alphas), test_mse, mode="lines", name="test MSE", fig=fig)
-    fig.add_vline(
+    add_vline(
+        fig,
         x=float(np.log10(alphas[best_idx])),
         line_dash="dash",
         line_color="grey",
         annotation_text=f"best λ=10^{np.log10(alphas[best_idx]):.1f}",
     )
-    fig.update_layout(
+    apply_layout(
+        fig,
         title=f"Smoothing spline bias-variance tradeoff on `{feat}` (§5.5.2)",
         xaxis_title="log10(lambda)  [lambda = smoothness penalty]",
         yaxis_title="MSE",
-        template="plotly_white",
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
+        legend="horizontal",
     )
     return fig, {
         "best_alpha": float(alphas[best_idx]),
@@ -451,18 +406,14 @@ def gcv_lambda_figure(
 
     best_idx = int(np.argmin(gcv_scores))
     fig = line_chart(np.log10(alphas), gcv_scores, mode="lines", name="GCV")
-    fig.add_vline(
+    add_vline(
+        fig,
         x=float(np.log10(alphas[best_idx])),
         line_dash="dash",
         line_color="grey",
         annotation_text=f"best λ=10^{np.log10(alphas[best_idx]):.1f}",
     )
-    fig.update_layout(
-        title=f"GCV score vs lambda on `{feat}` (§5.5)",
-        xaxis_title="log10(lambda)",
-        yaxis_title="GCV",
-        template="plotly_white",
-    )
+    apply_layout(fig, title=f"GCV score vs lambda on `{feat}` (§5.5)", xaxis_title="log10(lambda)", yaxis_title="GCV")
     return fig, {
         "best_alpha": float(alphas[best_idx]),
         "min_gcv": float(min(gcv_scores)),

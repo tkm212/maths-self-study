@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 from typing import Any
 
 import numpy as np
@@ -13,62 +11,15 @@ from sklearn.decomposition import PCA
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis, QuadraticDiscriminantAnalysis
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
 from sklearn.svm import LinearSVC
 
-from maths_self_study.viz.graphs import contour_chart, line_chart, scatter_chart
+from maths_self_study.data import notebooks as _notebooks
+from maths_self_study.viz.graphs import add_vline, apply_layout, contour_chart, line_chart, scatter_chart
 
-
-def find_project_root(max_up: int = 12) -> Path:
-    p = Path.cwd().resolve()
-    for _ in range(max_up):
-        if (p / "pyproject.toml").exists():
-            return p
-        if p.parent == p:
-            break
-        p = p.parent
-    msg = "Could not find project root (pyproject.toml)."
-    raise RuntimeError(msg)
-
-
-def init_paths() -> tuple[Path, Path, Path]:
-    """Return ``(project_root, inputs_dir, outputs_dir)`` and put the package on ``sys.path``."""
-    root = find_project_root()
-    if str(root) not in sys.path:
-        sys.path.insert(0, str(root))
-    return root, root / "inputs", root / "outputs"
-
-
-def load_tmdb_xy(inputs_dir: Path) -> tuple[pd.DataFrame, pd.Series, str]:
-    from maths_self_study.data import load_tmdb_revenue_classification
-
-    return load_tmdb_revenue_classification(inputs_dir)
-
-
-def scale_split(
-    X: pd.DataFrame,
-    y: pd.Series,
-    *,
-    test_size: float = 0.25,
-    random_state: int = 0,
-) -> dict[str, Any]:
-    """Train/test split then standard-scale X. Returns a dict with all pieces."""
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=random_state)
-    scaler = StandardScaler()
-    X_train_s = scaler.fit_transform(X_train)
-    X_test_s = scaler.transform(X_test)
-    return {
-        "X_train": X_train,
-        "X_test": X_test,
-        "y_train": y_train,
-        "y_test": y_test,
-        "X_train_s": X_train_s,
-        "X_test_s": X_test_s,
-        "scaler": scaler,
-        "feat_names": list(X_train.columns),
-    }
-
+find_project_root = _notebooks.find_project_root
+init_paths = _notebooks.init_paths
+load_tmdb_xy = _notebooks.load_tmdb_xy
+scale_split = _notebooks.scale_split
 
 # ---------------------------------------------------------------------------
 # LDA / QDA (§4.3)
@@ -122,12 +73,12 @@ def lda_2d_boundary_figure(
             marker_opacity=0.6,
             fig=fig,
         )
-    fig.update_layout(
+    apply_layout(
+        fig,
         title="LDA decision boundary (PCA 2D projection, §4.3)",
         xaxis_title="PC1",
         yaxis_title="PC2",
-        template="plotly_white",
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
+        legend="horizontal",
     )
     return fig, lda, pca
 
@@ -158,12 +109,12 @@ def lda_vs_qda_logistic_figure(
     fig = go.Figure()
     fig.add_trace(go.Bar(x=df["model"], y=df["train_accuracy"], name="train accuracy"))
     fig.add_trace(go.Bar(x=df["model"], y=df["test_accuracy"], name="test accuracy"))
-    fig.update_layout(
+    apply_layout(
+        fig,
         title="LDA vs QDA vs Logistic: accuracy comparison (§4.3 / §4.4)",
         yaxis_title="accuracy",
         barmode="group",
-        template="plotly_white",
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
+        legend="horizontal",
         yaxis={"range": [0, 1]},
     )
     return fig, df
@@ -189,18 +140,19 @@ def rda_shrinkage_figure(
     best_idx = int(np.argmax(test_acc))
     fig = line_chart(shrinkages, train_acc, mode="lines", name="train accuracy")
     line_chart(shrinkages, test_acc, mode="lines", name="test accuracy", fig=fig)
-    fig.add_vline(
+    add_vline(
+        fig,
         x=float(shrinkages[best_idx]),
         line_dash="dash",
         line_color="grey",
         annotation_text=f"best={shrinkages[best_idx]:.2f}",
     )
-    fig.update_layout(
+    apply_layout(
+        fig,
         title="Regularized LDA: accuracy vs shrinkage (§4.3.1)",
         xaxis_title="shrinkage (0 = full LDA, 1 = diagonal)",
         yaxis_title="accuracy",
-        template="plotly_white",
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
+        legend="horizontal",
     )
     return fig, {
         "best_shrinkage": float(shrinkages[best_idx]),
@@ -232,11 +184,11 @@ def logistic_l1_coef_path_figure(
     fig = line_chart(np.log10(Cs), coefs_arr[:, 0], mode="lines", name=feat_names[0])
     for i, name in enumerate(feat_names[1:], start=1):
         line_chart(np.log10(Cs), coefs_arr[:, i], mode="lines", name=name, fig=fig)
-    fig.update_layout(
+    apply_layout(
+        fig,
         title="L1 Logistic Regression: coefficient paths as penalty relaxes (§4.4.4)",
         xaxis_title="log10(C)  [C = 1/lambda; left = heavy penalty]",
         yaxis_title="coefficient",
-        template="plotly_white",
     )
     return fig
 
@@ -345,10 +297,7 @@ def perceptron_convergence_figure(X: np.ndarray, y: np.ndarray) -> tuple[go.Figu
         go.Scatter(x=list(range(1, len(tracer.misclassified) + 1)), y=tracer.misclassified, mode="lines+markers")
     )
     fig_conv.update_layout(
-        title="Perceptron: misclassifications per epoch (§4.5.1)",
-        xaxis_title="epoch",
-        yaxis_title="# misclassified",
-        template="plotly_white",
+        title="Perceptron: misclassifications per epoch (§4.5.1)", xaxis_title="epoch", yaxis_title="# misclassified"
     )
 
     fig_boundary = _scatter_with_boundary(X, y, tracer.w_, tracer.b_, "Perceptron final boundary (§4.5.1)")
@@ -366,28 +315,18 @@ def _scatter_with_boundary(
     colors = {0: "#4393c3", 1: "#d6604d"}
     labels = {0: "Class 0", 1: "Class 1"}
 
-    fig = go.Figure()
-    for cls in [0, 1]:
-        mask = y == cls
-        fig.add_trace(
-            go.Scatter(
-                x=X[mask, 0],
-                y=X[mask, 1],
-                mode="markers",
-                marker={"size": 7, "color": colors[cls], "opacity": 0.7},
-                name=labels[cls],
-            )
-        )
+    fig = scatter_chart(X[y == 0, 0], X[y == 0, 1], name=labels[0], color=colors[0], marker_size=7, marker_opacity=0.7)
+    scatter_chart(
+        X[y == 1, 0], X[y == 1, 1], name=labels[1], color=colors[1], marker_size=7, marker_opacity=0.7, fig=fig
+    )
 
     x_lo, x_hi = float(X[:, 0].min()) - 0.5, float(X[:, 0].max()) + 0.5
     if abs(w[1]) > 1e-10:
         y_lo = -(w[0] * x_lo + b) / w[1]
         y_hi = -(w[0] * x_hi + b) / w[1]
-        fig.add_trace(
-            go.Scatter(x=[x_lo, x_hi], y=[y_lo, y_hi], mode="lines", name="boundary", line={"color": "black"})
-        )
+        line_chart([x_lo, x_hi], [y_lo, y_hi], mode="lines", name="boundary", color="black", fig=fig)
 
-    fig.update_layout(title=title, xaxis_title="x1", yaxis_title="x2", template="plotly_white")
+    apply_layout(fig, title=title, xaxis_title="x1", yaxis_title="x2")
     return fig
 
 
@@ -443,12 +382,12 @@ def svm_margin_figure(X: np.ndarray, y: np.ndarray) -> go.Figure:
             )
         )
 
-    fig.update_layout(
+    apply_layout(
+        fig,
         title=f"Optimal separating hyperplane (§4.5.2) — margin = {margin:.3f}",
         xaxis_title="x1",
         yaxis_title="x2",
-        template="plotly_white",
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
+        legend="horizontal",
     )
     return fig
 
@@ -493,11 +432,11 @@ def perceptron_vs_svm_figure(X: np.ndarray, y: np.ndarray) -> go.Figure:
             go.Scatter(x=xs.tolist(), y=ys.tolist(), mode="lines", name="SVM (max-margin)", line={"color": "black"})
         )
 
-    fig.update_layout(
+    apply_layout(
+        fig,
         title="Perceptron vs SVM: boundary comparison",
         xaxis_title="x1",
         yaxis_title="x2",
-        template="plotly_white",
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
+        legend="horizontal",
     )
     return fig

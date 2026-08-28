@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import sys
 from pathlib import Path
 from typing import Any
 
@@ -12,27 +11,10 @@ from plotly.subplots import make_subplots
 from sklearn.covariance import GraphicalLasso, GraphicalLassoCV
 from sklearn.preprocessing import StandardScaler
 
-from maths_self_study.viz.graphs import heatmap_chart, line_chart
+from maths_self_study.data import notebooks as _notebooks
+from maths_self_study.viz.graphs import add_vline, apply_layout, heatmap_chart, line_chart
 
-
-def find_project_root(max_up: int = 12) -> Path:
-    p = Path.cwd().resolve()
-    for _ in range(max_up):
-        if (p / "pyproject.toml").exists():
-            return p
-        if p.parent == p:
-            break
-        p = p.parent
-    msg = "Could not find project root (pyproject.toml)."
-    raise RuntimeError(msg)
-
-
-def init_paths() -> tuple[Path, Path, Path]:
-    """Return ``(project_root, inputs_dir, outputs_dir)`` and put the package on ``sys.path``."""
-    root = find_project_root()
-    if str(root) not in sys.path:
-        sys.path.insert(0, str(root))
-    return root, root / "inputs", root / "outputs"
+init_paths = _notebooks.init_paths
 
 
 def load_tmdb_numeric_features(
@@ -175,7 +157,6 @@ def graphical_lasso_demo_figure(
 
     fig.update_layout(
         title_text=f"Gaussian graphical model — graphical lasso (p={p}, n={n}) — §17.3.1",
-        template="plotly_white",
         height=420,
         showlegend=False,
     )
@@ -394,7 +375,6 @@ def tmdb_correlation_and_partial_panels_figure(
         title_text=(
             f"TMDB: correlation vs partial correlation (n={n}, p={p}, alpha_hat = {float(gl.alpha_):.4f}) — §17.3"
         ),
-        template="plotly_white",
         height=450,
     )
     return fig, {"alpha": float(gl.alpha_), "n": n, "p": p}
@@ -467,7 +447,6 @@ def network_sketch_from_precision_figure(
         yaxis_title="",
         xaxis={"visible": False, "zeroline": False, "showgrid": False, "scaleanchor": "y", "scaleratio": 1},
         yaxis={"visible": False, "zeroline": False, "showgrid": False},
-        template="plotly_white",
         height=480,
     )
     return fig, {"alpha": float(gl.alpha_), "n_edges_drawn": n_edges, "threshold": thresh}
@@ -513,19 +492,13 @@ def graphical_lasso_edge_count_vs_alpha_figure(
     offc = thc - np.diag(np.diag(thc))
     n_at_cv = int(np.sum(np.abs(offc) > 1e-4))
 
-    fig = go.Figure(
-        go.Scatter(
-            x=alphas,
-            y=n_edges,
-            mode="lines+markers",
-        )
-    )
-    fig.add_vline(x=a_cv, line_dash="dash", line_color="gray", annotation_text="CV alpha", annotation_position="top")
-    fig.update_layout(
+    fig = line_chart(alphas, n_edges, mode="lines+markers")
+    add_vline(fig, x=a_cv, line_dash="dash", line_color="gray", annotation_text="CV alpha", annotation_position="top")
+    apply_layout(
+        fig,
         title=f"Graphical lasso: number of selected edges vs alpha (p={p}, n={n}) — §17.3.1",
         xaxis_title="alpha (penalty; log scale)",
         yaxis_title="number of |Θ̂ⱼₖ|>ε, j≠k",
-        template="plotly_white",
         xaxis_type="log",
     )
     return fig, {"alpha_cv": a_cv, "n_edges_at_cv": n_at_cv}

@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 from typing import Any
 
 import numpy as np
@@ -11,41 +9,12 @@ import pandas as pd
 import plotly.graph_objects as go
 from sklearn.neighbors import KernelDensity
 
-from maths_self_study.viz.graphs import line_chart
+from maths_self_study.data import notebooks as _notebooks
+from maths_self_study.viz.graphs import add_vline, apply_layout, line_chart
 
-
-def find_project_root(max_up: int = 12) -> Path:
-    p = Path.cwd().resolve()
-    for _ in range(max_up):
-        if (p / "pyproject.toml").exists():
-            return p
-        if p.parent == p:
-            break
-        p = p.parent
-    msg = "Could not find project root (pyproject.toml)."
-    raise RuntimeError(msg)
-
-
-def init_paths() -> tuple[Path, Path, Path]:
-    """Return ``(project_root, inputs_dir, outputs_dir)`` and put the package on ``sys.path``."""
-    root = find_project_root()
-    if str(root) not in sys.path:
-        sys.path.insert(0, str(root))
-    return root, root / "inputs", root / "outputs"
-
-
-def load_tmdb_xy(inputs_dir: Path) -> tuple[pd.DataFrame, pd.Series, str]:
-    from maths_self_study.data import load_tmdb_revenue_regression
-
-    return load_tmdb_revenue_regression(inputs_dir)
-
-
-def load_tmdb_cls(inputs_dir: Path) -> tuple[pd.DataFrame, pd.Series, str]:
-    """Binary classification: high_revenue = 1 if revenue >= median (else 0)."""
-    from maths_self_study.data import load_tmdb_revenue_classification
-
-    return load_tmdb_revenue_classification(inputs_dir)
-
+init_paths = _notebooks.init_paths
+load_tmdb_cls = _notebooks.load_tmdb_cls
+load_tmdb_xy = _notebooks.load_tmdb_xy
 
 # ---------------------------------------------------------------------------
 # Kernel functions (§6.1)
@@ -238,12 +207,12 @@ def nadaraya_watson_figure(
         preds_log = np.clip(_nw_predict(x_fit, y_fit, grid_fit, bw, kernel=kernel), y_lo, y_hi)
         fig.add_trace(go.Scatter(x=grid_fit, y=preds_log, mode="lines", name=f"h={bw} ({label})"))
 
-    fig.update_layout(
+    apply_layout(
+        fig,
         title=f"Nadaraya-Watson ({kernel} kernel) on `{feat}` (§6.1, log1p axes)",
         xaxis_title=f"log1p({feat})",
         yaxis_title="log1p(revenue)",
-        template="plotly_white",
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
+        legend="horizontal",
     )
     return fig
 
@@ -301,12 +270,12 @@ def local_linear_vs_nw_figure(
         font={"size": 10, "color": "goldenrod"},
     )
 
-    fig.update_layout(
+    apply_layout(
+        fig,
         title=f"NW vs Local Linear on `{feat}` — boundary bias (§6.1.1, h={bw}, log1p axes)",
         xaxis_title=f"log1p({feat})",
         yaxis_title="log1p(revenue)",
-        template="plotly_white",
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
+        legend="horizontal",
     )
     return fig
 
@@ -366,12 +335,12 @@ def local_poly_figure(
         preds_log = np.clip(preds_log, y_lo, y_hi)
         fig.add_trace(go.Scatter(x=grid_fit, y=preds_log, mode="lines", name=degree_names.get(d, f"degree {d}")))
 
-    fig.update_layout(
+    apply_layout(
+        fig,
         title=f"Local polynomial regression on `{feat}` (§6.1.2, h={bw}, log1p axes)",
         xaxis_title=f"log1p({feat})",
         yaxis_title="log1p(revenue)",
-        template="plotly_white",
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
+        legend="horizontal",
     )
     return fig
 
@@ -399,17 +368,18 @@ def bandwidth_loocv_figure(
     best_bw = float(bws[best_idx])
 
     fig = line_chart(np.log10(bws), cv_scores, mode="lines+markers", name="LOO-CV")
-    fig.add_vline(
+    add_vline(
+        fig,
         x=float(np.log10(best_bw)),
         line_dash="dash",
         line_color="grey",
         annotation_text=f"best h={best_bw:.3f}",
     )
-    fig.update_layout(
+    apply_layout(
+        fig,
         title=f"Bandwidth selection via LOO-CV on `{feat}` ({kernel} kernel, §6.2)",
         xaxis_title="log₁₀(bandwidth h)",
         yaxis_title="LOO-CV score (log1p-space)",
-        template="plotly_white",
     )
     return fig, {"best_bw": best_bw, "min_cv": float(min(cv_scores))}
 
@@ -455,12 +425,12 @@ def kde_figure(
         dens = np.exp(kde.score_samples(grid_log))
         fig.add_trace(go.Scatter(x=grid_orig, y=dens, mode="lines", name=f"h={bw}"))
 
-    fig.update_layout(
+    apply_layout(
+        fig,
         title=f"Kernel density estimation of `{feat}` (§6.6.1)",
         xaxis_title=feat,
         yaxis_title="density (log-space Gaussian kernel)",
-        template="plotly_white",
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
+        legend="horizontal",
     )
     return fig
 
@@ -531,13 +501,13 @@ def naive_bayes_figure(
         )
     )
 
-    fig.update_layout(
+    apply_layout(
+        fig,
         title=f"Naive Bayes: class-conditional densities of `{feat}` (§6.6.3, h={bw})",
         xaxis_title=feat,
         yaxis_title="p(x | class)",
         yaxis2={"title": "posterior P(class=1 | x)", "overlaying": "y", "side": "right", "range": [0, 1]},
-        template="plotly_white",
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
+        legend="horizontal",
     )
     class_labels = list(classes)
     return fig, {"classes": class_labels, "priors": {int(c): p for c, p in zip(class_labels, priors, strict=False)}}

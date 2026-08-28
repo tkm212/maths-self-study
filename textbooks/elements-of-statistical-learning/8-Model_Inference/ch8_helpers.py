@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 from typing import Any
 
 import numpy as np
@@ -17,33 +15,11 @@ from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import PolynomialFeatures, StandardScaler
 from sklearn.tree import DecisionTreeRegressor
 
-from maths_self_study.viz.graphs import histogram_chart, line_chart
+from maths_self_study.data import notebooks as _notebooks
+from maths_self_study.viz.graphs import apply_layout, histogram_chart, line_chart
 
-
-def find_project_root(max_up: int = 12) -> Path:
-    p = Path.cwd().resolve()
-    for _ in range(max_up):
-        if (p / "pyproject.toml").exists():
-            return p
-        if p.parent == p:
-            break
-        p = p.parent
-    msg = "Could not find project root (pyproject.toml)."
-    raise RuntimeError(msg)
-
-
-def init_paths() -> tuple[Path, Path, Path]:
-    """Return ``(project_root, inputs_dir, outputs_dir)`` and put the package on ``sys.path``."""
-    root = find_project_root()
-    if str(root) not in sys.path:
-        sys.path.insert(0, str(root))
-    return root, root / "inputs", root / "outputs"
-
-
-def load_tmdb_xy(inputs_dir: Path) -> tuple[pd.DataFrame, pd.Series, str]:
-    from maths_self_study.data import load_tmdb_revenue_regression
-
-    return load_tmdb_revenue_regression(inputs_dir)
+init_paths = _notebooks.init_paths
+load_tmdb_xy = _notebooks.load_tmdb_xy
 
 
 def _log_feature(
@@ -170,13 +146,13 @@ def em_1d_figure(
         )
     line_chart(x_grid, mixture_pdf, mode="lines", name="Fitted mixture", color="black", line_width=2, fig=fig)
     line_chart(x_grid, true_pdf, mode="lines", name="True density", line_dash="dot", color="grey", fig=fig)
-    fig.update_layout(
+    apply_layout(
+        fig,
         title=f"EM Gaussian mixture (K={K}, n={n_samples}) — §8.5",
         xaxis_title="x",
         yaxis_title="density",
         barmode="overlay",
-        template="plotly_white",
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
+        legend="horizontal",
     )
     return fig
 
@@ -214,12 +190,12 @@ def em_convergence_figure(
                 marker={"size": 4},
             )
         )
-    fig.update_layout(
+    apply_layout(
+        fig,
         title=f"EM log-likelihood convergence (K={K}, {n_restarts} restarts) — §8.5",
         xaxis_title="iteration",
         yaxis_title="log-likelihood",
-        template="plotly_white",
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
+        legend="horizontal",
     )
     return fig
 
@@ -298,12 +274,12 @@ def bootstrap_confidence_bands_figure(
             x=x_flat, y=y_hat, mode="lines", name=f"Degree-{degree} fit", line={"color": "steelblue", "width": 2}
         )
     )
-    fig.update_layout(
+    apply_layout(
+        fig,
         title=f"Bootstrap confidence bands on `{feat}` (degree={degree}, B={n_boot}) — §8.2",
         xaxis_title=f"log₁p({feat})",
         yaxis_title="log₁p(revenue)",
-        template="plotly_white",
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
+        legend="horizontal",
     )
     return fig
 
@@ -371,12 +347,12 @@ def bagging_figure(
         annotation_text=f"Single tree MSE = {single_avg:.4f}",
         annotation_position="bottom right",
     )
-    fig.update_layout(
+    apply_layout(
+        fig,
         title=f"Bagging variance reduction on `{feat}` (tree depth={tree_depth}) — §8.7",
         xaxis_title="number of bootstrap trees B",
         yaxis_title="test MSE (log₁p-space)",
-        template="plotly_white",
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
+        legend="horizontal",
     )
     best_b = bag_sizes[int(np.argmin(bagged_avg))]
     return fig, {"single_tree_mse": single_avg, "best_b": best_b, "best_bagged_mse": min(bagged_avg)}

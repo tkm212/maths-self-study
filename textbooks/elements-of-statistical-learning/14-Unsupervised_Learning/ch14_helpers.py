@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 from typing import Any
 
 import numpy as np
@@ -16,33 +14,11 @@ from sklearn.decomposition import NMF, PCA
 from sklearn.metrics import silhouette_score
 from sklearn.preprocessing import StandardScaler
 
+from maths_self_study.data import notebooks as _notebooks
 from maths_self_study.viz.graphs import heatmap_chart, line_chart
 
-
-def find_project_root(max_up: int = 12) -> Path:
-    p = Path.cwd().resolve()
-    for _ in range(max_up):
-        if (p / "pyproject.toml").exists():
-            return p
-        if p.parent == p:
-            break
-        p = p.parent
-    msg = "Could not find project root (pyproject.toml)."
-    raise RuntimeError(msg)
-
-
-def init_paths() -> tuple[Path, Path, Path]:
-    """Return ``(project_root, inputs_dir, outputs_dir)`` and put the package on ``sys.path``."""
-    root = find_project_root()
-    if str(root) not in sys.path:
-        sys.path.insert(0, str(root))
-    return root, root / "inputs", root / "outputs"
-
-
-def load_tmdb_xy(inputs_dir: Path) -> tuple[pd.DataFrame, pd.Series, str]:
-    from maths_self_study.data import load_tmdb_revenue_regression
-
-    return load_tmdb_revenue_regression(inputs_dir)
+init_paths = _notebooks.init_paths
+load_tmdb_xy = _notebooks.load_tmdb_xy
 
 
 def _prepare_arrays(
@@ -160,7 +136,6 @@ def kmeans_elbow_figure(
     fig.add_vline(x=best_k, line_dash="dash", line_color="grey", row=1, col=2, annotation_text=f"best K={best_k}")
     fig.update_layout(
         title="K-means: elbow and silhouette vs K — §14.3.6",
-        template="plotly_white",
         showlegend=False,
     )
     fig.update_xaxes(title_text="K (number of clusters)")
@@ -297,7 +272,6 @@ def hierarchical_linkage_figure(
         title=f"Hierarchical clustering dendrogram ({method} linkage) — §14.3.12",
         xaxis={"showticklabels": False, "title": "observations"},
         yaxis={"title": "merge distance"},
-        template="plotly_white",
     )
     return fig
 
@@ -364,7 +338,6 @@ def linkage_comparison_figure(
         xaxis_title="linkage method",
         yaxis_title="silhouette score",
         yaxis={"range": [max(-1.0, y_lo), min(1.0, y_hi)]},
-        template="plotly_white",
     )
     return fig, {
         "best_method": methods[best_idx],
@@ -436,7 +409,6 @@ def pca_variance_figure(
     fig.add_hline(y=0.90, line_dash="dash", line_color="grey", annotation_text="90%", row=1, col=2)
     fig.update_layout(
         title="PCA scree plot — §14.5",
-        template="plotly_white",
         showlegend=False,
     )
     fig.update_xaxes(title_text="principal component")
@@ -523,7 +495,6 @@ def pca_biplot_figure(
         title=f"PCA biplot (PC{pc_x} vs PC{pc_y}) — §14.5.1",
         xaxis_title=f"PC{pc_x} ({pca.explained_variance_ratio_[pc_x - 1]:.1%} var)",
         yaxis_title=f"PC{pc_y} ({pca.explained_variance_ratio_[pc_y - 1]:.1%} var)",
-        template="plotly_white",
     )
     return fig
 
@@ -579,10 +550,7 @@ def nmf_rank_figure(
         go.Scatter(x=ranks, y=errors, mode="lines+markers", line={"color": "steelblue"}, name="Frobenius error")
     )
     fig.update_layout(
-        title="NMF reconstruction error vs rank r — §14.6",
-        xaxis_title="rank r",
-        yaxis_title="||X - WH||_F",
-        template="plotly_white",
+        title="NMF reconstruction error vs rank r — §14.6", xaxis_title="rank r", yaxis_title="||X - WH||_F"
     )
     return fig, {
         "ranks": ranks,

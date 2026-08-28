@@ -2,9 +2,7 @@
 
 from __future__ import annotations
 
-import sys
 import warnings
-from pathlib import Path
 from typing import Any
 
 import numpy as np
@@ -17,41 +15,16 @@ from sklearn.model_selection import cross_val_score, train_test_split
 from sklearn.neural_network import MLPClassifier, MLPRegressor
 from sklearn.preprocessing import StandardScaler
 
+from maths_self_study.data import notebooks as _notebooks
+from maths_self_study.viz.graphs import add_vline, apply_layout, line_chart
+
+init_paths = _notebooks.init_paths
+load_tmdb_classification_xy = _notebooks.load_tmdb_classification_xy
+load_tmdb_xy = _notebooks.load_tmdb_xy
+
 # Suppress the per-epoch ConvergenceWarning that fires when max_iter=1 is used
 # intentionally for warm-start epoch-by-epoch training curve tracking.
 warnings.filterwarnings("ignore", category=ConvergenceWarning)
-
-
-def find_project_root(max_up: int = 12) -> Path:
-    p = Path.cwd().resolve()
-    for _ in range(max_up):
-        if (p / "pyproject.toml").exists():
-            return p
-        if p.parent == p:
-            break
-        p = p.parent
-    msg = "Could not find project root (pyproject.toml)."
-    raise RuntimeError(msg)
-
-
-def init_paths() -> tuple[Path, Path, Path]:
-    """Return ``(project_root, inputs_dir, outputs_dir)`` and put the package on ``sys.path``."""
-    root = find_project_root()
-    if str(root) not in sys.path:
-        sys.path.insert(0, str(root))
-    return root, root / "inputs", root / "outputs"
-
-
-def load_tmdb_classification_xy(inputs_dir: Path) -> tuple[pd.DataFrame, pd.Series, str]:
-    from maths_self_study.data import load_tmdb_revenue_classification
-
-    return load_tmdb_revenue_classification(inputs_dir)
-
-
-def load_tmdb_xy(inputs_dir: Path) -> tuple[pd.DataFrame, pd.Series, str]:
-    from maths_self_study.data import load_tmdb_revenue_regression
-
-    return load_tmdb_revenue_regression(inputs_dir)
 
 
 def _prepare_cls_arrays(
@@ -157,34 +130,16 @@ def nn_training_curve_figure(
     epochs = list(range(1, max_epochs + 1))
     best_epoch = epochs[int(np.argmin(test_errors))]
 
-    fig = go.Figure()
-    fig.add_trace(
-        go.Scatter(
-            x=epochs,
-            y=train_losses,
-            mode="lines",
-            name="Train loss (cross-entropy)",
-            line={"color": "steelblue"},
-        )
-    )
-    fig.add_trace(
-        go.Scatter(
-            x=epochs,
-            y=test_errors,
-            mode="lines",
-            name="Test error rate",
-            line={"color": "tomato"},
-            yaxis="y2",
-        )
-    )
-    fig.add_vline(x=best_epoch, line_dash="dash", line_color="grey", annotation_text=f"best epoch={best_epoch}")
-    fig.update_layout(
+    fig = line_chart(epochs, train_losses, name="Train loss (cross-entropy)", color="steelblue")
+    line_chart(epochs, test_errors, name="Test error rate", color="tomato", yaxis="y2", fig=fig)
+    add_vline(fig, x=best_epoch, line_dash="dash", line_color="grey", annotation_text=f"best epoch={best_epoch}")
+    apply_layout(
+        fig,
         title=f"Neural network training curve (hidden={hidden_layer_sizes}) — §11.4",
         xaxis_title="epoch",
         yaxis_title="cross-entropy loss",
         yaxis2={"title": "test error rate", "overlaying": "y", "side": "right", "showgrid": False},
-        template="plotly_white",
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
+        legend="horizontal",
     )
     return fig, {
         "best_epoch": best_epoch,
@@ -259,12 +214,12 @@ def nn_weight_decay_figure(
             )
         )
 
-    fig.update_layout(
+    apply_layout(
+        fig,
         title=f"Weight decay: test error vs epoch (hidden={hidden_layer_sizes}) — §11.5.2",
         xaxis_title="epoch",
         yaxis_title="test error rate",
-        template="plotly_white",
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
+        legend="horizontal",
     )
     return fig
 
@@ -330,12 +285,12 @@ def nn_architecture_figure(
             name=f"{n_cv}-fold CV accuracy (±1 SD)",
         )
     )
-    fig.update_layout(
+    apply_layout(
+        fig,
         title=f"Architecture comparison: {n_cv}-fold CV accuracy — §11.5.4",
         xaxis_title="hidden layer sizes",
         yaxis_title="CV accuracy",
         yaxis={"range": [max(0.0, min(mean_accs) - 0.05), 1.0]},
-        template="plotly_white",
     )
     return fig, {
         "best_arch": arch_labels[best_idx],
@@ -409,11 +364,11 @@ def ppr_vs_linear_figure(
             name=f"{n_cv}-fold CV MSE (±1 SD)",
         )
     )
-    fig.update_layout(
+    apply_layout(
+        fig,
         title=f"PPR (1-hidden-layer MLP) vs OLS: {n_cv}-fold CV MSE — §11.2",
         xaxis_title="model / number of ridge terms M",
         yaxis_title="CV MSE (log₁p-space)",
-        template="plotly_white",
     )
     return fig, {
         "best_model": labels[best_idx],
@@ -484,11 +439,11 @@ def ppr_ridge_functions_figure(
             )
         )
 
-    fig.update_layout(
+    apply_layout(
+        fig,
         title=f"PPR ridge functions: M={M} hidden units (weighted activations) — §11.2",
         xaxis_title="projection  wₘᵀx + bₘ",
         yaxis_title="βₘ · sigma(wₘᵀx + bₘ)",
-        template="plotly_white",
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
+        legend="horizontal",
     )
     return fig

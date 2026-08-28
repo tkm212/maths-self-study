@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 from typing import Any
 
 import numpy as np
@@ -24,39 +22,12 @@ from sklearn.linear_model import LogisticRegression, Ridge
 from sklearn.model_selection import KFold, StratifiedKFold, cross_val_predict, cross_val_score
 from sklearn.tree import DecisionTreeClassifier
 
+from maths_self_study.data import notebooks as _notebooks
 from maths_self_study.viz.graphs import heatmap_chart
 
-
-def find_project_root(max_up: int = 12) -> Path:
-    p = Path.cwd().resolve()
-    for _ in range(max_up):
-        if (p / "pyproject.toml").exists():
-            return p
-        if p.parent == p:
-            break
-        p = p.parent
-    msg = "Could not find project root (pyproject.toml)."
-    raise RuntimeError(msg)
-
-
-def init_paths() -> tuple[Path, Path, Path]:
-    """Return ``(project_root, inputs_dir, outputs_dir)`` and put the package on ``sys.path``."""
-    root = find_project_root()
-    if str(root) not in sys.path:
-        sys.path.insert(0, str(root))
-    return root, root / "inputs", root / "outputs"
-
-
-def load_tmdb_classification_xy(inputs_dir: Path) -> tuple[pd.DataFrame, pd.Series, str]:
-    from maths_self_study.data import load_tmdb_revenue_classification
-
-    return load_tmdb_revenue_classification(inputs_dir)
-
-
-def load_tmdb_regression_xy(inputs_dir: Path) -> tuple[pd.DataFrame, pd.Series, str]:
-    from maths_self_study.data import load_tmdb_revenue_regression
-
-    return load_tmdb_revenue_regression(inputs_dir)
+init_paths = _notebooks.init_paths
+load_tmdb_classification_xy = _notebooks.load_tmdb_classification_xy
+load_tmdb_regression_xy = _notebooks.load_tmdb_regression_xy
 
 
 def _prepare_arrays(
@@ -167,7 +138,6 @@ def ensemble_comparison_figure(
         xaxis_title="method",
         yaxis_title="accuracy",
         yaxis={"range": [max(0.0, min(mean_accs) - 0.05), 1.0]},
-        template="plotly_white",
     )
     return fig, {
         "best_method": names[best_idx],
@@ -247,7 +217,6 @@ def meta_learner_sweep_figure(
         xaxis_title="final estimator",
         yaxis_title="accuracy",
         yaxis={"range": [max(0.0, min(means) - 0.05), 1.0]},
-        template="plotly_white",
     )
     return fig, {
         "best_meta": labels[best_idx],
@@ -426,7 +395,6 @@ def regression_stacking_figure(
         title=f"Regression ensembles: voting vs stacking — §16.2 (TMDB log revenue, {n_cv}-fold CV R²)",
         xaxis_title="method",
         yaxis_title="R² (per-fold mean)",
-        template="plotly_white",
         yaxis={"range": [min(0.0, min(r2_vals) - 0.05), min(1.0, max(r2_vals) + 0.1)]},
     )
     return fig, {
@@ -516,7 +484,6 @@ def tree_bagging_rf_figure(
         xaxis_title="model",
         yaxis_title="accuracy",
         yaxis={"range": [max(0.0, min(means) - 0.08), 1.0]},
-        template="plotly_white",
     )
     return fig, {
         "best": names[best_idx],
@@ -568,7 +535,6 @@ def oob_error_vs_n_trees_figure(
         title="Random forest: OOB error vs number of trees (bagging/RF perspective) — §16.1",
         xaxis_title="number of trees (B)",
         yaxis_title="1 - OOB score (classification)",
-        template="plotly_white",
     )
     return fig, {"n_list": n_list, "final_oob_1minus": oob_err[-1] if oob_err else 0.0}
 
@@ -642,7 +608,6 @@ def stacking_meta_learned_weights_figure(
         title="Stacking: logistic meta-learner weights on P(Y=1 | base) — §16.2 (OOF meta-features)",
         xaxis_title="level-0 model (positive class prob. as feature)",
         yaxis_title="meta-coefficient (log-odds scale)",
-        template="plotly_white",
     )
     return fig, {
         "base_labels": base_labels,

@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 from typing import Any
 
 import numpy as np
@@ -13,61 +11,14 @@ from sklearn.cross_decomposition import PLSRegression
 from sklearn.decomposition import PCA
 from sklearn.linear_model import Lasso, LinearRegression, Ridge, lasso_path
 from sklearn.metrics import mean_squared_error, r2_score
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
 
-from maths_self_study.viz.graphs import bar_chart, line_chart
+from maths_self_study.data import notebooks as _notebooks
+from maths_self_study.viz.graphs import add_vline, apply_layout, bar_chart, line_chart
 
-
-def find_project_root(max_up: int = 12) -> Path:
-    p = Path.cwd().resolve()
-    for _ in range(max_up):
-        if (p / "pyproject.toml").exists():
-            return p
-        if p.parent == p:
-            break
-        p = p.parent
-    msg = "Could not find project root (pyproject.toml)."
-    raise RuntimeError(msg)
-
-
-def init_paths() -> tuple[Path, Path, Path]:
-    """Return ``(project_root, inputs_dir, outputs_dir)`` and put the package on ``sys.path``."""
-    root = find_project_root()
-    if str(root) not in sys.path:
-        sys.path.insert(0, str(root))
-    return root, root / "inputs", root / "outputs"
-
-
-def load_tmdb_xy(inputs_dir: Path) -> tuple[pd.DataFrame, pd.Series, str]:
-    from maths_self_study.data import load_tmdb_revenue_regression
-
-    return load_tmdb_revenue_regression(inputs_dir)
-
-
-def scale_split(
-    X: pd.DataFrame,
-    y: pd.Series,
-    *,
-    test_size: float = 0.25,
-    random_state: int = 0,
-) -> dict[str, Any]:
-    """Train/test split then standard-scale X. Returns a dict with all pieces."""
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=random_state)
-    scaler = StandardScaler()
-    X_train_s = scaler.fit_transform(X_train)
-    X_test_s = scaler.transform(X_test)
-    return {
-        "X_train": X_train,
-        "X_test": X_test,
-        "y_train": y_train,
-        "y_test": y_test,
-        "X_train_s": X_train_s,
-        "X_test_s": X_test_s,
-        "scaler": scaler,
-        "feat_names": list(X_train.columns),
-    }
-
+find_project_root = _notebooks.find_project_root
+init_paths = _notebooks.init_paths
+load_tmdb_xy = _notebooks.load_tmdb_xy
+scale_split = _notebooks.scale_split
 
 # ---------------------------------------------------------------------------
 # Subset selection
@@ -123,7 +74,7 @@ def subset_selection_figure(
         title="Forward stepwise selection: MSE vs number of features",
         xaxis_title="# features",
         yaxis_title="MSE",
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
+        legend="horizontal",
     )
     line_chart(n, test_mse, name="test MSE", mode="lines+markers", fig=fig)
     return fig, selected
@@ -160,10 +111,11 @@ def ridge_alpha_path_figure(
         xaxis_title="alpha (log scale)",
         yaxis_title="MSE",
         xaxis_type="log",
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
+        legend="horizontal",
     )
     line_chart(alphas, test_mse, name="test MSE", fig=fig)
-    fig.add_vline(
+    add_vline(
+        fig,
         x=float(alphas[best_idx]),
         line_dash="dash",
         line_color="grey",
@@ -185,12 +137,12 @@ def ridge_coef_figure(
     fig = line_chart(alphas, coefs[:, 0], mode="lines", name=feat_names[0])
     for i, name in enumerate(feat_names[1:], start=1):
         line_chart(alphas, coefs[:, i], mode="lines", name=name, fig=fig)
-    fig.update_layout(
+    apply_layout(
+        fig,
         title="Ridge: coefficient shrinkage paths",
         xaxis_title="alpha (log scale)",
         xaxis_type="log",
         yaxis_title="coefficient",
-        template="plotly_white",
     )
     return fig
 
@@ -210,11 +162,11 @@ def lasso_coef_path_figure(
     fig = line_chart(np.log10(alphas_path + 1e-10), coefs_path[0], mode="lines", name=feat_names[0])
     for i, name in enumerate(feat_names[1:], start=1):
         line_chart(np.log10(alphas_path + 1e-10), coefs_path[i], mode="lines", name=name, fig=fig)
-    fig.update_layout(
+    apply_layout(
+        fig,
         title="Lasso: coefficient paths (features entering as alpha decreases)",
         xaxis_title="log10(alpha)",
         yaxis_title="coefficient",
-        template="plotly_white",
     )
     return fig
 
@@ -240,19 +192,20 @@ def lasso_alpha_path_figure(
     best_idx = int(np.argmin(test_mse))
     fig = line_chart(alphas, train_mse, mode="lines", name="train MSE")
     line_chart(alphas, test_mse, mode="lines", name="test MSE", fig=fig)
-    fig.add_vline(
+    add_vline(
+        fig,
         x=float(alphas[best_idx]),
         line_dash="dash",
         line_color="grey",
         annotation_text=f"best alpha={alphas[best_idx]:.1f}",
     )
-    fig.update_layout(
+    apply_layout(
+        fig,
         title="Lasso: MSE vs regularisation strength (alpha)",
         xaxis_title="alpha (log scale)",
         xaxis_type="log",
         yaxis_title="MSE",
-        template="plotly_white",
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
+        legend="horizontal",
     )
     return fig, {
         "best_alpha": float(alphas[best_idx]),

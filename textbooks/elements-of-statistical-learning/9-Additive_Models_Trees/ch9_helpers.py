@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 from typing import Any
 
 import numpy as np
@@ -16,39 +14,12 @@ from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import SplineTransformer
 from sklearn.tree import DecisionTreeClassifier, DecisionTreeRegressor
 
-from maths_self_study.viz.graphs import line_chart
+from maths_self_study.data import notebooks as _notebooks
+from maths_self_study.viz.graphs import add_vline, apply_layout, line_chart
 
-
-def find_project_root(max_up: int = 12) -> Path:
-    p = Path.cwd().resolve()
-    for _ in range(max_up):
-        if (p / "pyproject.toml").exists():
-            return p
-        if p.parent == p:
-            break
-        p = p.parent
-    msg = "Could not find project root (pyproject.toml)."
-    raise RuntimeError(msg)
-
-
-def init_paths() -> tuple[Path, Path, Path]:
-    """Return ``(project_root, inputs_dir, outputs_dir)`` and put the package on ``sys.path``."""
-    root = find_project_root()
-    if str(root) not in sys.path:
-        sys.path.insert(0, str(root))
-    return root, root / "inputs", root / "outputs"
-
-
-def load_tmdb_xy(inputs_dir: Path) -> tuple[pd.DataFrame, pd.Series, str]:
-    from maths_self_study.data import load_tmdb_revenue_regression
-
-    return load_tmdb_revenue_regression(inputs_dir)
-
-
-def load_tmdb_classification_xy(inputs_dir: Path) -> tuple[pd.DataFrame, pd.Series, str]:
-    from maths_self_study.data import load_tmdb_revenue_classification
-
-    return load_tmdb_revenue_classification(inputs_dir)
+init_paths = _notebooks.init_paths
+load_tmdb_classification_xy = _notebooks.load_tmdb_classification_xy
+load_tmdb_xy = _notebooks.load_tmdb_xy
 
 
 def _log_features(
@@ -159,12 +130,12 @@ def gam_partial_plots_figure(
     pred = alpha + f_hats.sum(axis=1)
     test_mse = float(mean_squared_error(y_log, pred))
 
-    fig.update_layout(
+    apply_layout(
+        fig,
         title=f"GAM partial effects (backfitting, n_knots={n_knots}) — §9.1",
         xaxis_title="log₁p(feature)",
         yaxis_title="partial effect f_j(x_j)",
-        template="plotly_white",
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
+        legend="horizontal",
     )
     return fig, {
         "final_rss": rss_trace[-1] if rss_trace else float("nan"),
@@ -223,11 +194,11 @@ def gam_vs_linear_figure(
             marker_color=["grey", "steelblue", "tomato", "green"],
         )
     )
-    fig.update_layout(
+    apply_layout(
+        fig,
         title=f"5-fold CV MSE: linear vs additive spline models — §9.1 (features: {feats})",
         xaxis_title="model",
         yaxis_title="CV MSE (log₁p-space)",
-        template="plotly_white",
     )
     best = all_labels[int(np.argmin(all_mses))]
     return fig, {"best_model": best, "linear_mse": linear_mse, "best_mse": min(all_mses)}
@@ -275,13 +246,13 @@ def tree_depth_error_figure(
     best_d = depths[int(np.argmin(test_errs))]
     fig = line_chart(depths, train_errs, mode="lines+markers", name="Train MSE")
     line_chart(depths, test_errs, mode="lines+markers", name="Test MSE", fig=fig)
-    fig.add_vline(x=best_d, line_dash="dash", line_color="grey", annotation_text=f"best depth={best_d}")
-    fig.update_layout(
+    add_vline(fig, x=best_d, line_dash="dash", line_color="grey", annotation_text=f"best depth={best_d}")
+    apply_layout(
+        fig,
         title=f"CART tree depth vs train/test error — §9.2 (features: {feats[:3]}…)",
         xaxis_title="tree max_depth",
         yaxis_title="MSE (log₁p-space)",
-        template="plotly_white",
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
+        legend="horizontal",
     )
     return fig, {"best_depth": best_d, "best_test_mse": min(test_errs)}
 
