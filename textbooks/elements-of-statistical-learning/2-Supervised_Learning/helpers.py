@@ -16,7 +16,7 @@ from sklearn.neighbors import KNeighborsRegressor
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 
-from maths_self_study.viz.plotly import line_chart, scatter_chart
+from maths_self_study.viz.graphs import line_chart, scatter_chart
 
 
 def find_project_root(max_up: int = 12) -> Path:

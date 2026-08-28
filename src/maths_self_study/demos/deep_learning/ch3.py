@@ -19,8 +19,8 @@ from maths_self_study.math.probability import (
     monty_hall_posterior,
     shannon_entropy,
 )
-from maths_self_study.viz.plotly import bar_chart, contour_chart, equal_axes, heatmap_chart, line_chart
-from maths_self_study.viz.plotly import base_layout as _base_layout
+from maths_self_study.viz.graphs import bar_chart, contour_chart, equal_axes, heatmap_chart, line_chart
+from maths_self_study.viz.graphs import base_layout as _base_layout
 
 # --- Demo fixtures ---
 

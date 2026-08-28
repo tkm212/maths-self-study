@@ -1,4 +1,4 @@
-"""Shared Plotly layout and chart helpers for textbook dashboards."""
+"""Shared Plotly chart helpers for textbook dashboards and notebooks."""
 
 from __future__ import annotations
 

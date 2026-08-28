@@ -1,7 +1,6 @@
 """Shared visualization helpers."""
 
-from maths_self_study.viz.latex import formula, formula_group, katex_boot_script, katex_head_html, math_text
-from maths_self_study.viz.plotly import (
+from maths_self_study.viz.graphs import (
     bar_chart,
     base_layout,
     contour_chart,
@@ -12,6 +11,7 @@ from maths_self_study.viz.plotly import (
     scatter_chart,
     series_xy,
 )
+from maths_self_study.viz.latex import formula, formula_group, katex_boot_script, katex_head_html, math_text
 
 __all__ = [
     "bar_chart",

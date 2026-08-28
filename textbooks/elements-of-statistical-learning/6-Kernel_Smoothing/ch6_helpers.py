@@ -11,7 +11,7 @@ import pandas as pd
 import plotly.graph_objects as go
 from sklearn.neighbors import KernelDensity
 
-from maths_self_study.viz.plotly import line_chart
+from maths_self_study.viz.graphs import line_chart
 
 
 def find_project_root(max_up: int = 12) -> Path:

@@ -17,7 +17,7 @@ from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import PolynomialFeatures, StandardScaler
 from sklearn.tree import DecisionTreeRegressor
 
-from maths_self_study.viz.plotly import histogram_chart, line_chart
+from maths_self_study.viz.graphs import histogram_chart, line_chart
 
 
 def find_project_root(max_up: int = 12) -> Path:

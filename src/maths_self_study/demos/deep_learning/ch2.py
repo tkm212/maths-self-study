@@ -19,9 +19,9 @@ from maths_self_study.math.linear_algebra import (
     pca_transform,
     symmetric_eigendecomposition,
 )
-from maths_self_study.viz.plotly import base_layout as _base_layout
-from maths_self_study.viz.plotly import equal_axes as _equal_axes
-from maths_self_study.viz.plotly import heatmap_chart
+from maths_self_study.viz.graphs import base_layout as _base_layout
+from maths_self_study.viz.graphs import equal_axes as _equal_axes
+from maths_self_study.viz.graphs import heatmap_chart
 
 # --- Demo fixtures (notebook cells stay declarative) ---
 

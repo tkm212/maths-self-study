@@ -19,8 +19,8 @@ from maths_self_study.math.ml import (
     swiss_roll,
     train_test_split,
 )
-from maths_self_study.viz.plotly import base_layout as _base_layout
-from maths_self_study.viz.plotly import histogram_chart, line_chart, scatter_chart
+from maths_self_study.viz.graphs import base_layout as _base_layout
+from maths_self_study.viz.graphs import histogram_chart, line_chart, scatter_chart
 
 # --- Demo fixtures ---
 

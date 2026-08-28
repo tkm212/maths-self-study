@@ -22,8 +22,8 @@ from maths_self_study.math.optimization import (
     softmax_stable,
     solve_perturbed,
 )
-from maths_self_study.viz.plotly import base_layout as _base_layout
-from maths_self_study.viz.plotly import contour_chart, line_chart, scatter_chart
+from maths_self_study.viz.graphs import base_layout as _base_layout
+from maths_self_study.viz.graphs import contour_chart, line_chart, scatter_chart
 
 # --- Demo fixtures ---
 

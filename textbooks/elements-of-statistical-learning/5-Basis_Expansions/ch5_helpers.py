@@ -16,7 +16,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import SplineTransformer, StandardScaler
 
-from maths_self_study.viz.plotly import line_chart, scatter_chart
+from maths_self_study.viz.graphs import line_chart, scatter_chart
 
 
 def find_project_root(max_up: int = 12) -> Path:

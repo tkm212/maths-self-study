@@ -84,7 +84,7 @@ def _():
     import plotly.graph_objects as go
     from plotly.subplots import make_subplots
 
-    from maths_self_study.viz.plotly import histogram_chart, line_chart
+    from maths_self_study.viz.graphs import histogram_chart, line_chart
 
     ROOT = Path.cwd().resolve()
     for _ in range(5):

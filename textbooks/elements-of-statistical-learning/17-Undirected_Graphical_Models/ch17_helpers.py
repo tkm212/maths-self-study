@@ -12,7 +12,7 @@ from plotly.subplots import make_subplots
 from sklearn.covariance import GraphicalLasso, GraphicalLassoCV
 from sklearn.preprocessing import StandardScaler
 
-from maths_self_study.viz.plotly import heatmap_chart, line_chart
+from maths_self_study.viz.graphs import heatmap_chart, line_chart
 
 
 def find_project_root(max_up: int = 12) -> Path:

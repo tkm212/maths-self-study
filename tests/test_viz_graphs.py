@@ -1,10 +1,10 @@
-"""Tests for maths_self_study.viz.plotly chart helpers."""
+"""Tests for maths_self_study.viz.graphs chart helpers."""
 
 from __future__ import annotations
 
 import plotly.graph_objects as go
 
-from maths_self_study.viz.plotly import (
+from maths_self_study.viz.graphs import (
     bar_chart,
     contour_chart,
     heatmap_chart,

@@ -14,7 +14,7 @@ from sklearn.metrics import accuracy_score, mean_squared_error
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
 
-from maths_self_study.viz.plotly import histogram_chart, line_chart
+from maths_self_study.viz.graphs import histogram_chart, line_chart
 
 
 def find_project_root(max_up: int = 12) -> Path:

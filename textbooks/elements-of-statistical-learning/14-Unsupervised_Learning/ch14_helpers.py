@@ -16,7 +16,7 @@ from sklearn.decomposition import NMF, PCA
 from sklearn.metrics import silhouette_score
 from sklearn.preprocessing import StandardScaler
 
-from maths_self_study.viz.plotly import heatmap_chart, line_chart
+from maths_self_study.viz.graphs import heatmap_chart, line_chart
 
 
 def find_project_root(max_up: int = 12) -> Path:

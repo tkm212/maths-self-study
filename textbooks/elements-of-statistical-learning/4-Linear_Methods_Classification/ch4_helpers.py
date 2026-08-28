@@ -17,7 +17,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.svm import LinearSVC
 
-from maths_self_study.viz.plotly import contour_chart, line_chart, scatter_chart
+from maths_self_study.viz.graphs import contour_chart, line_chart, scatter_chart
 
 
 def find_project_root(max_up: int = 12) -> Path:

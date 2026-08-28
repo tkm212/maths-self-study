@@ -55,7 +55,7 @@ def _():
     import plotly.graph_objects as go
     from plotly.subplots import make_subplots
 
-    from maths_self_study.viz.plotly import histogram_chart
+    from maths_self_study.viz.graphs import histogram_chart
 
     # Project root (find directory containing pyproject.toml)
     ROOT = Path.cwd().resolve()

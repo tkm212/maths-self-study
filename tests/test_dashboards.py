@@ -394,7 +394,7 @@ def test_prob_simplex_ids():
 
 
 def test_base_layout():
-    from maths_self_study.viz.plotly import base_layout
+    from maths_self_study.viz.graphs import base_layout
 
     layout = base_layout(title="Demo", height=400)
     assert layout["template"] == "plotly_white"
