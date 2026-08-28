@@ -10,7 +10,7 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from scipy import stats
 
-from maths_self_study.probability import (
+from maths_self_study.math.probability import (
     align_model_to_support,
     bayes_posterior,
     cross_entropy,
@@ -19,8 +19,8 @@ from maths_self_study.probability import (
     monty_hall_posterior,
     shannon_entropy,
 )
-from maths_self_study.viz.plotly import base_layout as _base_layout
-from maths_self_study.viz.plotly import equal_axes
+from maths_self_study.viz.graphs import bar_chart, contour_chart, equal_axes, heatmap_chart, line_chart
+from maths_self_study.viz.graphs import base_layout as _base_layout
 
 # --- Demo fixtures ---
 
@@ -56,25 +56,17 @@ def plot_binary_entropy_curve() -> go.Figure:
     """Shannon entropy of Bernoulli(p): maximal uncertainty at p = ½."""
     p_grid = np.linspace(0.001, 0.999, 200)
     ent = [-(p * np.log(p) + (1.0 - p) * np.log(1.0 - p)) for p in p_grid]
-    fig = go.Figure(
-        go.Scatter(
-            x=p_grid,
-            y=ent,
-            mode="lines",
-            name="H(p)",
-            line={"color": "#2563eb", "width": 2},
-            hovertemplate="p=%{x:.3f}<br>H=%{y:.3f} nats<extra></extra>",
-        )
+    fig = line_chart(
+        p_grid,
+        ent,
+        name="H(p)",
+        title="Binary entropy — uncertainty peaks at fair coin",
+        xaxis_title="p = P(X = 1)",
+        yaxis_title="H(X) (nats)",
+        height=420,
+        hovertemplate="p=%{x:.3f}<br>H=%{y:.3f} nats<extra></extra>",
     )
     fig.add_vline(x=0.5, line_dash="dot", line_color="#94a3b8", annotation_text="max at p=½")
-    fig.update_layout(
-        **_base_layout(
-            title="Binary entropy — uncertainty peaks at fair coin",
-            xaxis_title="p = P(X = 1)",
-            yaxis_title="H(X) (nats)",
-            height=420,
-        )
-    )
     return fig
 
 
@@ -85,16 +77,16 @@ def plot_discrete_distribution(
     title: str,
     color: str = "#60a5fa",
 ) -> go.Figure:
-    fig = go.Figure(
-        go.Bar(
-            x=values,
-            y=probs,
-            marker={"color": color},
-            hovertemplate="x=%{x}<br>P(x)=%{y:.3f}<extra></extra>",
-        )
+    return bar_chart(
+        values,
+        probs,
+        title=title,
+        xaxis_title="x",
+        yaxis_title="P(x)",
+        color=color,
+        height=380,
+        hovertemplate="x=%{x}<br>P(x)=%{y:.3f}<extra></extra>",
     )
-    fig.update_layout(**_base_layout(title=title, xaxis_title="x", yaxis_title="P(x)", height=380))
-    return fig
 
 
 def plot_joint_with_marginals(
@@ -122,27 +114,34 @@ def plot_joint_with_marginals(
         vertical_spacing=0.08,
     )
 
-    fig.add_trace(
-        go.Heatmap(
-            z=joint,
-            x=list(col_labels),
-            y=list(row_labels),
-            colorscale="Blues",
-            showscale=False,
-            text=np.round(joint, 3),
-            texttemplate="%{text}",
-            hovertemplate="P(A,B)=%{z:.3f}<extra></extra>",
-        ),
+    heatmap_chart(
+        joint,
+        x=list(col_labels),
+        y=list(row_labels),
+        colorscale="Blues",
+        showscale=False,
+        text=np.round(joint, 3),
+        texttemplate="%{text}",
+        hovertemplate="P(A,B)=%{z:.3f}<extra></extra>",
+        fig=fig,
         row=1,
         col=1,
     )
-    fig.add_trace(
-        go.Bar(x=list(col_labels), y=p_b, marker={"color": "#93c5fd"}, showlegend=False),
+    bar_chart(
+        list(col_labels),
+        p_b,
+        color="#93c5fd",
+        showlegend=False,
+        fig=fig,
         row=1,
         col=2,
     )
-    fig.add_trace(
-        go.Bar(x=list(row_labels), y=p_a, marker={"color": "#60a5fa"}, showlegend=False),
+    bar_chart(
+        list(row_labels),
+        p_a,
+        color="#60a5fa",
+        showlegend=False,
+        fig=fig,
         row=2,
         col=1,
     )
@@ -163,20 +162,19 @@ def plot_gaussian_pdf(
         x_range = (mu - 4 * sigma, mu + 4 * sigma)
     xs = np.linspace(x_range[0], x_range[1], 300)
     ys = stats.norm.pdf(xs, loc=mu, scale=sigma)
-    fig = go.Figure(
-        go.Scatter(
-            x=xs,
-            y=ys,
-            mode="lines",
-            name=f"N({mu}, {sigma**2:.2f})",
-            line={"color": "#2563eb", "width": 2},
-            fill="tozeroy",
-            fillcolor="rgba(37, 99, 235, 0.12)",
-            hovertemplate="x=%{x:.2f}<br>p(x)=%{y:.4f}<extra></extra>",
-        )
+    fig = line_chart(
+        xs,
+        ys,
+        name=f"N({mu}, {sigma**2:.2f})",
+        title=title,
+        xaxis_title="x",
+        yaxis_title="p(x)",
+        height=380,
+        fill="tozeroy",
+        fillcolor="rgba(37, 99, 235, 0.12)",
+        hovertemplate="x=%{x:.2f}<br>p(x)=%{y:.4f}<extra></extra>",
     )
     fig.add_vline(x=mu, line_dash="dot", line_color="#64748b", annotation_text="μ")
-    fig.update_layout(**_base_layout(title=title, xaxis_title="x", yaxis_title="p(x)", height=380))
     return fig
 
 
@@ -193,15 +191,14 @@ def plot_gaussian_2d_contour(
     rv = stats.multivariate_normal(mu, c)
     z = rv.pdf(pos)
 
-    fig = go.Figure(
-        go.Contour(
-            x=x[:, 0],
-            y=y[0, :],
-            z=z.T,
-            colorscale="Blues",
-            contours={"coloring": "lines", "showlabels": True},
-            line={"width": 2},
-        )
+    fig = contour_chart(
+        x[:, 0],
+        y[0, :],
+        z.T,
+        colorscale="Blues",
+        contours={"coloring": "lines", "showlabels": True},
+        title=title,
+        height=460,
     )
 
     eigvals, eigvecs = np.linalg.eigh(c)
@@ -217,7 +214,6 @@ def plot_gaussian_2d_contour(
                 marker={"size": [0, 8]},
             )
         )
-    fig.update_layout(**_base_layout(title=title, height=460))
     equal_axes(fig)
     return fig
 
@@ -318,23 +314,16 @@ def plot_self_information(probs: np.ndarray, *, labels: np.ndarray | None = None
     p = np.asarray(probs, dtype=float)
     info = -np.log(np.clip(p, 1e-12, None))
     xs = labels if labels is not None else np.arange(len(p))
-    fig = go.Figure(
-        go.Bar(
-            x=xs,
-            y=info,
-            marker={"color": "#7c3aed"},
-            hovertemplate="I(x)=%{y:.2f} nats<extra></extra>",
-        )
+    return bar_chart(
+        xs,
+        info,
+        title="Self-information — surprise grows as probability shrinks",
+        xaxis_title="outcome",
+        yaxis_title="I(x) = -log P(x)",
+        color="#7c3aed",
+        height=400,
+        hovertemplate="I(x)=%{y:.2f} nats<extra></extra>",
     )
-    fig.update_layout(
-        **_base_layout(
-            title="Self-information — surprise grows as probability shrinks",
-            xaxis_title="outcome",
-            yaxis_title="I(x) = -log P(x)",
-            height=400,
-        )
-    )
-    return fig
 
 
 def _markov_edge_label(name: str, parent: str, child: str, transition: np.ndarray) -> str:

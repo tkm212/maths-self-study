@@ -5,8 +5,10 @@ from __future__ import annotations
 from ch3_pages.random_variables.callbacks import register_callbacks
 from ch3_pages.random_variables.filters import build_filters
 from maths_self_study.dashboards.page_factory import define_page
-from maths_self_study.viz.definitions.ch3 import RANDOM_VARIABLES as RANDOM_VARIABLES_DEFINITIONS
-from maths_self_study.viz.theorems.ch3 import RANDOM_VARIABLES as RANDOM_VARIABLES_THEOREMS
+from maths_self_study.viz.textbooks.deep_learning.ch3.definitions import (
+    RANDOM_VARIABLES as RANDOM_VARIABLES_DEFINITIONS,
+)
+from maths_self_study.viz.textbooks.deep_learning.ch3.theorems import RANDOM_VARIABLES as RANDOM_VARIABLES_THEOREMS
 
 RandomVariablesPage = define_page(
     label="Random variables",

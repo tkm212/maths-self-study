@@ -6,9 +6,9 @@ from dash import html
 
 from maths_self_study.dashboards.components import graph, table
 from maths_self_study.dashboards.utils import coerce_float
-from maths_self_study.deep_learning import ch4_helpers as helpers
-from maths_self_study.viz.formulas.ch4 import KKT_COMPLEMENTARITY, KKT_STATIONARITY, LAGRANGIAN
+from maths_self_study.demos.deep_learning import ch4 as helpers
 from maths_self_study.viz.latex import formula_group
+from maths_self_study.viz.textbooks.deep_learning.ch4.formulas import KKT_COMPLEMENTARITY, KKT_STATIONARITY, LAGRANGIAN
 
 
 def render_body(lower_bound) -> html.Div:

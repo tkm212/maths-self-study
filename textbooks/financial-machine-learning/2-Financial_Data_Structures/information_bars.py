@@ -55,6 +55,8 @@ def _():
     import plotly.graph_objects as go
     from plotly.subplots import make_subplots
 
+    from maths_self_study.viz.graphs import histogram_chart
+
     # Project root (find directory containing pyproject.toml)
     ROOT = Path.cwd().resolve()
     for _ in range(5):
@@ -66,7 +68,7 @@ def _():
 
     INPUTS = ROOT / "inputs"
     OUTPUTS = ROOT / "outputs"
-    return INPUTS, OUTPUTS, go, make_subplots, pd
+    return INPUTS, OUTPUTS, go, histogram_chart, make_subplots, pd
 
 
 @app.cell
@@ -83,7 +85,7 @@ def _(INPUTS, pd):
 @app.cell
 def _(df):
     # Generate bars using López de Prado formulations
-    from maths_self_study.bars import dollar_bars, tick_bars, time_bars, volume_bars
+    from maths_self_study.quant.bars import dollar_bars, tick_bars, time_bars, volume_bars
 
     # Time bars (1-second)
     time_bars_df = time_bars(df)
@@ -169,7 +171,7 @@ def _(mo):
 
 
 @app.cell
-def _(dollar_b, go, make_subplots, pd, tick_b, time_bars_df, vol_b):
+def _(dollar_b, histogram_chart, make_subplots, pd, tick_b, time_bars_df, vol_b):
     def returns(bars: pd.DataFrame) -> pd.Series:
         return bars["close"].pct_change().dropna()
 
@@ -196,8 +198,15 @@ def _(dollar_b, go, make_subplots, pd, tick_b, time_bars_df, vol_b):
     ]):
         ret = returns(_bars)
         _r, _c = (_i // 2 + 1, _i % 2 + 1)
-        _fig.add_trace(
-            go.Histogram(x=ret, nbinsx=50, histnorm="probability density", name=_name, showlegend=False), row=_r, col=_c
+        histogram_chart(
+            ret,
+            nbinsx=50,
+            histnorm="probability density",
+            name=_name,
+            showlegend=False,
+            fig=_fig,
+            row=_r,
+            col=_c,
         )
         _fig.add_vline(x=0, line_dash="dash", line_color="red", row=_r, col=_c)
     _fig.update_layout(height=500, title_text="Log returns distribution by bar type")

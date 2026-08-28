@@ -11,11 +11,14 @@ from maths_self_study.dashboards.components import (
     theorem_group,
 )
 from maths_self_study.dashboards.layout import page_shell
-from maths_self_study.viz.definitions import ch2, ch3, ch4, ch5
-from maths_self_study.viz.theorems import ch2 as th2
-from maths_self_study.viz.theorems import ch3 as th3
-from maths_self_study.viz.theorems import ch4 as th4
-from maths_self_study.viz.theorems import ch5 as th5
+from maths_self_study.viz.textbooks.deep_learning.ch2 import definitions as ch2
+from maths_self_study.viz.textbooks.deep_learning.ch2 import theorems as th2
+from maths_self_study.viz.textbooks.deep_learning.ch3 import definitions as ch3
+from maths_self_study.viz.textbooks.deep_learning.ch3 import theorems as th3
+from maths_self_study.viz.textbooks.deep_learning.ch4 import definitions as ch4
+from maths_self_study.viz.textbooks.deep_learning.ch4 import theorems as th4
+from maths_self_study.viz.textbooks.deep_learning.ch5 import definitions as ch5
+from maths_self_study.viz.textbooks.deep_learning.ch5 import theorems as th5
 
 
 def test_definition_box_renders_term_and_body():

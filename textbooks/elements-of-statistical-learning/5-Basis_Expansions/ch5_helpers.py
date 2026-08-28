@@ -16,6 +16,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import SplineTransformer, StandardScaler
 
+from maths_self_study.viz.graphs import line_chart, scatter_chart
+
 
 def find_project_root(max_up: int = 12) -> Path:
     p = Path.cwd().resolve()
@@ -38,7 +40,7 @@ def init_paths() -> tuple[Path, Path, Path]:
 
 
 def load_tmdb_xy(inputs_dir: Path) -> tuple[pd.DataFrame, pd.Series, str]:
-    from maths_self_study.loaders import load_tmdb_revenue_regression
+    from maths_self_study.data import load_tmdb_revenue_regression
 
     return load_tmdb_revenue_regression(inputs_dir)
 
@@ -121,20 +123,15 @@ def piecewise_poly_figure(
     spline_pipe = make_pipeline(SplineTransformer(n_knots=n_knots, degree=3, knots="quantile"), LinearRegression())
     spline_pipe.fit(x2d, y_raw)
 
-    fig = go.Figure()
-    fig.add_trace(
-        go.Scatter(
-            x=x_raw,
-            y=y_raw,
-            mode="markers",
-            name="data",
-            marker={"size": 3, "opacity": 0.3},
-        )
-    )
-    fig.add_trace(go.Scatter(x=grid.ravel(), y=lin.predict(grid), mode="lines", name="linear"))
-    fig.add_trace(go.Scatter(x=grid.ravel(), y=step_pred, mode="lines", name=f"piecewise constant ({n_knots} knots)"))
-    fig.add_trace(
-        go.Scatter(x=grid.ravel(), y=spline_pipe.predict(grid), mode="lines", name=f"cubic spline ({n_knots} knots)")
+    fig = scatter_chart(x_raw, y_raw, name="data", marker_size=3, marker_opacity=0.3)
+    line_chart(grid.ravel(), lin.predict(grid), mode="lines", name="linear", fig=fig)
+    line_chart(grid.ravel(), step_pred, mode="lines", name=f"piecewise constant ({n_knots} knots)", fig=fig)
+    line_chart(
+        grid.ravel(),
+        spline_pipe.predict(grid),
+        mode="lines",
+        name=f"cubic spline ({n_knots} knots)",
+        fig=fig,
     )
 
     for kv in knot_vals:
@@ -172,15 +169,8 @@ def natural_cubic_spline_figure(
 
     grid = np.linspace(float(x_raw.min()), float(x_raw.max()), 400).reshape(-1, 1)
 
-    fig = go.Figure()
-    fig.add_trace(
-        go.Scatter(
-            x=X_train_1d.ravel(),
-            y=y_train_1d,
-            mode="markers",
-            name="train",
-            marker={"size": 3, "opacity": 0.25, "color": "steelblue"},
-        )
+    fig = scatter_chart(
+        X_train_1d.ravel(), y_train_1d, name="train", marker_size=3, marker_opacity=0.25, color="steelblue"
     )
 
     train_mse_list, test_mse_list = [], []
@@ -191,7 +181,7 @@ def natural_cubic_spline_figure(
         pipe.fit(X_train_1d, y_train_1d)
         train_mse_list.append(float(mean_squared_error(y_train_1d, pipe.predict(X_train_1d))))
         test_mse_list.append(float(mean_squared_error(y_test_1d, pipe.predict(X_test_1d))))
-        fig.add_trace(go.Scatter(x=grid.ravel(), y=pipe.predict(grid), mode="lines", name=f"NCS {k} knots"))
+        line_chart(grid.ravel(), pipe.predict(grid), mode="lines", name=f"NCS {k} knots", fig=fig)
 
     fig.update_layout(
         title=f"Natural cubic splines on `{feat}`: varying knot count (§5.2.1)",
@@ -225,9 +215,8 @@ def spline_knot_bias_variance_figure(
         test_mse.append(float(mean_squared_error(y_te, pipe.predict(X_te))))
 
     best_k = ks[int(np.argmin(test_mse))]
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(x=ks, y=train_mse, mode="lines+markers", name="train MSE"))
-    fig.add_trace(go.Scatter(x=ks, y=test_mse, mode="lines+markers", name="test MSE"))
+    fig = line_chart(ks, train_mse, mode="lines+markers", name="train MSE")
+    line_chart(ks, test_mse, mode="lines+markers", name="test MSE", fig=fig)
     fig.add_vline(x=best_k, line_dash="dash", line_color="grey", annotation_text=f"best k={best_k}")
     fig.update_layout(
         title=f"Spline bias-variance tradeoff on `{feat}` (§5.2)",
@@ -399,9 +388,8 @@ def smoothing_spline_bias_variance_figure(
         test_mse.append(float(mean_squared_error(y_te, ridge.predict(X_te_b))))
 
     best_idx = int(np.argmin(test_mse))
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(x=np.log10(alphas), y=train_mse, mode="lines", name="train MSE"))
-    fig.add_trace(go.Scatter(x=np.log10(alphas), y=test_mse, mode="lines", name="test MSE"))
+    fig = line_chart(np.log10(alphas), train_mse, mode="lines", name="train MSE")
+    line_chart(np.log10(alphas), test_mse, mode="lines", name="test MSE", fig=fig)
     fig.add_vline(
         x=float(np.log10(alphas[best_idx])),
         line_dash="dash",
@@ -462,8 +450,7 @@ def gcv_lambda_figure(
         gcv_scores.append(gcv)
 
     best_idx = int(np.argmin(gcv_scores))
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(x=np.log10(alphas), y=gcv_scores, mode="lines", name="GCV"))
+    fig = line_chart(np.log10(alphas), gcv_scores, mode="lines", name="GCV")
     fig.add_vline(
         x=float(np.log10(alphas[best_idx])),
         line_dash="dash",

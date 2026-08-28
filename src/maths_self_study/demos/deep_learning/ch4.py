@@ -8,7 +8,7 @@ import numpy as np
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
-from maths_self_study.optimization import (
+from maths_self_study.math.optimization import (
     condition_number,
     epsilon_for_condition_number,
     gradient_descent_quadratic,
@@ -22,7 +22,8 @@ from maths_self_study.optimization import (
     softmax_stable,
     solve_perturbed,
 )
-from maths_self_study.viz.plotly import base_layout as _base_layout
+from maths_self_study.viz.graphs import base_layout as _base_layout
+from maths_self_study.viz.graphs import contour_chart, line_chart, scatter_chart
 
 # --- Demo fixtures ---
 
@@ -212,38 +213,35 @@ def plot_gradient_descent_path(
     path = gradient_descent_quadratic(h, b, start, learning_rate=learning_rate, n_steps=n_steps)
     xx, yy, zz = _quadratic_contour_grid(h, b)
 
-    fig = go.Figure()
-    fig.add_trace(
-        go.Contour(
-            x=xx[0],
-            y=yy[:, 0],
-            z=zz,
-            colorscale="Blues",
-            showscale=False,
-            contours={"coloring": "lines"},
-            line={"width": 1},
-            name="f(x)",
-        )
+    fig = contour_chart(
+        xx[0],
+        yy[:, 0],
+        zz,
+        showscale=False,
+        contours={"coloring": "lines"},
+        line_width=1,
+        name="f(x)",
     )
-    fig.add_trace(
-        go.Scatter(
-            x=path[:, 0],
-            y=path[:, 1],
-            mode="lines+markers",
-            name="GD path",
-            line={"color": "#dc2626", "width": 2},
-            marker={"size": 6},
-            hovertemplate="x=%{x:.3f}, y=%{y:.3f}<extra></extra>",
-        )
+    scatter_chart(
+        path[:, 0],
+        path[:, 1],
+        mode="lines+markers",
+        name="GD path",
+        color="#dc2626",
+        line_width=2,
+        marker_size=6,
+        hovertemplate="x=%{x:.3f}, y=%{y:.3f}<extra></extra>",
+        fig=fig,
     )
-    fig.add_trace(
-        go.Scatter(
-            x=[path[0, 0]],
-            y=[path[0, 1]],
-            mode="markers",
-            name="start",
-            marker={"color": "#16a34a", "size": 10, "symbol": "circle"},
-        )
+    scatter_chart(
+        [path[0, 0]],
+        [path[0, 1]],
+        mode="markers",
+        name="start",
+        color="#16a34a",
+        marker_size=10,
+        symbol="circle",
+        fig=fig,
     )
     fig.update_layout(
         **_base_layout(
@@ -271,38 +269,35 @@ def plot_newton_vs_gd(
     newton_path = newton_quadratic(h, b, start, n_steps=min(n_steps, 3))
     xx, yy, zz = _quadratic_contour_grid(h, b, span=2.5)
 
-    fig = go.Figure()
-    fig.add_trace(
-        go.Contour(
-            x=xx[0],
-            y=yy[:, 0],
-            z=zz,
-            colorscale="Blues",
-            showscale=False,
-            contours={"coloring": "lines"},
-            line={"width": 1},
-            name="f(x)",
-        )
+    fig = contour_chart(
+        xx[0],
+        yy[:, 0],
+        zz,
+        showscale=False,
+        contours={"coloring": "lines"},
+        line_width=1,
+        name="f(x)",
     )
-    fig.add_trace(
-        go.Scatter(
-            x=gd_path[:, 0],
-            y=gd_path[:, 1],
-            mode="lines+markers",
-            name=f"GD (eta={learning_rate})",
-            line={"color": "#dc2626", "width": 2},
-            marker={"size": 5},
-        )
+    scatter_chart(
+        gd_path[:, 0],
+        gd_path[:, 1],
+        mode="lines+markers",
+        name=f"GD (eta={learning_rate})",
+        color="#dc2626",
+        line_width=2,
+        marker_size=5,
+        fig=fig,
     )
-    fig.add_trace(
-        go.Scatter(
-            x=newton_path[:, 0],
-            y=newton_path[:, 1],
-            mode="lines+markers",
-            name="Newton",
-            line={"color": "#16a34a", "width": 2},
-            marker={"size": 7, "symbol": "diamond"},
-        )
+    scatter_chart(
+        newton_path[:, 0],
+        newton_path[:, 1],
+        mode="lines+markers",
+        name="Newton",
+        color="#16a34a",
+        line_width=2,
+        marker_size=7,
+        symbol="diamond",
+        fig=fig,
     )
     kappa = condition_number(h)
     fig.update_layout(
@@ -406,55 +401,52 @@ def plot_kkt_halfspace(
     summary = summarize_kkt(h, a, b)
     xx, yy, zz = _quadratic_contour_grid(h, np.zeros(2), span=span)
 
-    fig = go.Figure()
-    fig.add_trace(
-        go.Contour(
-            x=xx[0],
-            y=yy[:, 0],
-            z=zz,
-            colorscale="Blues",
-            showscale=False,
-            contours={"coloring": "lines"},
-            line={"width": 1},
-            name="f(x)",
-        )
+    fig = contour_chart(
+        xx[0],
+        yy[:, 0],
+        zz,
+        showscale=False,
+        contours={"coloring": "lines"},
+        line_width=1,
+        name="f(x)",
     )
     xs = np.linspace(-span, span, 100)
     boundary = b - a[0] * xs
     if abs(a[1]) > 1e-12:
-        fig.add_trace(
-            go.Scatter(
-                x=xs,
-                y=boundary / a[1],
-                mode="lines",
-                name=f"aᵀx = {b:g} (active boundary)",
-                line={"color": "#f59e0b", "width": 2, "dash": "dash"},
-            )
+        line_chart(
+            xs,
+            boundary / a[1],
+            mode="lines",
+            name=f"aᵀx = {b:g} (active boundary)",
+            color="#f59e0b",
+            line_width=2,
+            line_dash="dash",
+            fig=fig,
         )
     feasible_y = np.linspace(-span, span, 80)
     feasible_x = np.full_like(feasible_y, span)
     mask = a[0] * feasible_x + a[1] * feasible_y >= b
-    fig.add_trace(
-        go.Scatter(
-            x=feasible_x[mask],
-            y=feasible_y[mask],
-            mode="markers",
-            name="feasible region",
-            marker={"color": "rgba(34,197,94,0.15)", "size": 3},
-            showlegend=True,
-        )
+    scatter_chart(
+        feasible_x[mask],
+        feasible_y[mask],
+        mode="markers",
+        name="feasible region",
+        color="rgba(34,197,94,0.15)",
+        marker_size=3,
+        fig=fig,
     )
-    fig.add_trace(
-        go.Scatter(
-            x=[summary["x1"]],
-            y=[summary["x2"]],
-            mode="markers",
-            name="KKT optimum",
-            marker={"color": "#dc2626", "size": 12, "symbol": "star"},
-            hovertemplate=(
-                f"x* = ({summary['x1']:.3f}, {summary['x2']:.3f})<br>λ* = {summary['lambda']:.3f}<extra></extra>"
-            ),
-        )
+    scatter_chart(
+        [summary["x1"]],
+        [summary["x2"]],
+        mode="markers",
+        name="KKT optimum",
+        color="#dc2626",
+        marker_size=12,
+        symbol="star",
+        hovertemplate=(
+            f"x* = ({summary['x1']:.3f}, {summary['x2']:.3f})<br>λ* = {summary['lambda']:.3f}<extra></extra>"
+        ),
+        fig=fig,
     )
     status = "active" if summary["active"] else "inactive (λ = 0)"
     fig.update_layout(

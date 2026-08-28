@@ -1,9 +1,9 @@
-"""Unit tests for maths_self_study.labeling."""
+"""Unit tests for maths_self_study.quant.labeling."""
 
 import pandas as pd
 import pytest
 
-from maths_self_study.labeling import triple_barrier_labels
+from maths_self_study.quant.labeling import triple_barrier_labels
 
 
 @pytest.fixture

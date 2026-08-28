@@ -16,6 +16,8 @@ from sklearn.metrics import mean_squared_error, r2_score
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
+from maths_self_study.viz.graphs import bar_chart, line_chart
+
 
 def find_project_root(max_up: int = 12) -> Path:
     p = Path.cwd().resolve()
@@ -38,7 +40,7 @@ def init_paths() -> tuple[Path, Path, Path]:
 
 
 def load_tmdb_xy(inputs_dir: Path) -> tuple[pd.DataFrame, pd.Series, str]:
-    from maths_self_study.loaders import load_tmdb_revenue_regression
+    from maths_self_study.data import load_tmdb_revenue_regression
 
     return load_tmdb_revenue_regression(inputs_dir)
 
@@ -113,16 +115,17 @@ def subset_selection_figure(
 ) -> tuple[go.Figure, list[str]]:
     selected, train_mse, test_mse = forward_stepwise(X_train, X_test, y_train, y_test)
     n = list(range(1, len(selected) + 1))
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(x=n, y=train_mse, mode="lines+markers", name="train MSE"))
-    fig.add_trace(go.Scatter(x=n, y=test_mse, mode="lines+markers", name="test MSE"))
-    fig.update_layout(
+    fig = line_chart(
+        n,
+        train_mse,
+        name="train MSE",
+        mode="lines+markers",
         title="Forward stepwise selection: MSE vs number of features",
         xaxis_title="# features",
         yaxis_title="MSE",
-        template="plotly_white",
         legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
     )
+    line_chart(n, test_mse, name="test MSE", mode="lines+markers", fig=fig)
     return fig, selected
 
 
@@ -149,22 +152,22 @@ def ridge_alpha_path_figure(
         test_mse.append(float(mean_squared_error(y_test, ridge.predict(X_test_s))))
 
     best_idx = int(np.argmin(test_mse))
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(x=alphas, y=train_mse, mode="lines", name="train MSE"))
-    fig.add_trace(go.Scatter(x=alphas, y=test_mse, mode="lines", name="test MSE"))
+    fig = line_chart(
+        alphas,
+        train_mse,
+        name="train MSE",
+        title="Ridge: MSE vs regularisation strength (alpha)",
+        xaxis_title="alpha (log scale)",
+        yaxis_title="MSE",
+        xaxis_type="log",
+        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
+    )
+    line_chart(alphas, test_mse, name="test MSE", fig=fig)
     fig.add_vline(
         x=float(alphas[best_idx]),
         line_dash="dash",
         line_color="grey",
         annotation_text=f"best alpha={alphas[best_idx]:.1f}",
-    )
-    fig.update_layout(
-        title="Ridge: MSE vs regularisation strength (alpha)",
-        xaxis_title="alpha (log scale)",
-        xaxis_type="log",
-        yaxis_title="MSE",
-        template="plotly_white",
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
     )
     return fig, {"best_alpha": float(alphas[best_idx]), "min_test_mse": min(test_mse)}
 
@@ -179,9 +182,9 @@ def ridge_coef_figure(
     """Coefficient shrinkage paths as alpha increases."""
     alphas = np.logspace(-2, 6, n_alphas)
     coefs = np.array([Ridge(alpha=float(a)).fit(X_train_s, y_train).coef_ for a in alphas])
-    fig = go.Figure()
-    for i, name in enumerate(feat_names):
-        fig.add_trace(go.Scatter(x=alphas, y=coefs[:, i], mode="lines", name=name))
+    fig = line_chart(alphas, coefs[:, 0], mode="lines", name=feat_names[0])
+    for i, name in enumerate(feat_names[1:], start=1):
+        line_chart(alphas, coefs[:, i], mode="lines", name=name, fig=fig)
     fig.update_layout(
         title="Ridge: coefficient shrinkage paths",
         xaxis_title="alpha (log scale)",
@@ -204,9 +207,9 @@ def lasso_coef_path_figure(
 ) -> go.Figure:
     """Lasso coefficient paths vs log(alpha) — shows which features are selected."""
     alphas_path, coefs_path, _ = lasso_path(X_train_s, np.asarray(y_train))
-    fig = go.Figure()
-    for i, name in enumerate(feat_names):
-        fig.add_trace(go.Scatter(x=np.log10(alphas_path + 1e-10), y=coefs_path[i], mode="lines", name=name))
+    fig = line_chart(np.log10(alphas_path + 1e-10), coefs_path[0], mode="lines", name=feat_names[0])
+    for i, name in enumerate(feat_names[1:], start=1):
+        line_chart(np.log10(alphas_path + 1e-10), coefs_path[i], mode="lines", name=name, fig=fig)
     fig.update_layout(
         title="Lasso: coefficient paths (features entering as alpha decreases)",
         xaxis_title="log10(alpha)",
@@ -235,9 +238,8 @@ def lasso_alpha_path_figure(
         n_nonzero.append(int(np.sum(np.abs(lasso.coef_) > 1e-8)))
 
     best_idx = int(np.argmin(test_mse))
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(x=alphas, y=train_mse, mode="lines", name="train MSE"))
-    fig.add_trace(go.Scatter(x=alphas, y=test_mse, mode="lines", name="test MSE"))
+    fig = line_chart(alphas, train_mse, mode="lines", name="train MSE")
+    line_chart(alphas, test_mse, mode="lines", name="test MSE", fig=fig)
     fig.add_vline(
         x=float(alphas[best_idx]),
         line_dash="dash",
@@ -270,11 +272,12 @@ def lasso_selected_coef_figure(
     lasso.fit(X_train_s, y_train)
     coefs = pd.Series(lasso.coef_, index=feat_names).sort_values()
     coefs = coefs[coefs.abs() > 1e-8]
-    fig = go.Figure(go.Bar(x=coefs.values, y=coefs.index.tolist(), orientation="h"))
-    fig.update_layout(
+    fig = bar_chart(
+        coefs.values,
+        coefs.index.tolist(),
+        orientation="h",
         title=f"Lasso selected features (alpha={best_alpha:.1f})",
         xaxis_title="coefficient",
-        template="plotly_white",
     )
     return fig
 
@@ -310,16 +313,16 @@ def pcr_pls_figure(
     best_pcr_n = int(n_range[int(np.argmin(pcr_mse))])
     best_pls_n = int(n_range[int(np.argmin(pls_mse))])
 
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(x=n_range, y=pcr_mse, mode="lines+markers", name="PCR"))
-    fig.add_trace(go.Scatter(x=n_range, y=pls_mse, mode="lines+markers", name="PLS"))
-    fig.update_layout(
+    fig = line_chart(
+        n_range,
+        pcr_mse,
+        name="PCR",
+        mode="lines+markers",
         title="PCR vs PLS: test MSE vs number of components",
         xaxis_title="# components",
         yaxis_title="test MSE",
-        template="plotly_white",
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
     )
+    line_chart(n_range, pls_mse, name="PLS", mode="lines+markers", fig=fig)
     return fig, {
         "best_pcr_n": best_pcr_n,
         "min_pcr_mse": min(pcr_mse),

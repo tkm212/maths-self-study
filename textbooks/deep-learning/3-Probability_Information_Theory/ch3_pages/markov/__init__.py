@@ -5,8 +5,8 @@ from __future__ import annotations
 from ch3_pages.markov.callbacks import register_callbacks
 from ch3_pages.markov.filters import build_filters
 from maths_self_study.dashboards.page_factory import define_page
-from maths_self_study.viz.definitions.ch3 import MARKOV as MARKOV_DEFINITIONS
-from maths_self_study.viz.theorems.ch3 import MARKOV as MARKOV_THEOREMS
+from maths_self_study.viz.textbooks.deep_learning.ch3.definitions import MARKOV as MARKOV_DEFINITIONS
+from maths_self_study.viz.textbooks.deep_learning.ch3.theorems import MARKOV as MARKOV_THEOREMS
 
 MarkovPage = define_page(
     label="Structured models",

@@ -5,7 +5,7 @@ from __future__ import annotations
 from ch5_pages.sgd.callbacks import register_callbacks
 from ch5_pages.sgd.filters import build_filters
 from maths_self_study.dashboards.page_factory import define_page
-from maths_self_study.viz.definitions.ch5 import SGD as SGD_DEFINITIONS
+from maths_self_study.viz.textbooks.deep_learning.ch5.definitions import SGD as SGD_DEFINITIONS
 
 SgdPage = define_page(
     label="SGD",

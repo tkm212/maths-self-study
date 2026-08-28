@@ -5,7 +5,7 @@ from __future__ import annotations
 from ch3_pages.distributions.callbacks import register_callbacks
 from ch3_pages.distributions.filters import build_filters
 from maths_self_study.dashboards.page_factory import define_page
-from maths_self_study.viz.definitions.ch3 import DISTRIBUTIONS as DISTRIBUTIONS_DEFINITIONS
+from maths_self_study.viz.textbooks.deep_learning.ch3.definitions import DISTRIBUTIONS as DISTRIBUTIONS_DEFINITIONS
 
 DistributionsPage = define_page(
     label="Distributions",

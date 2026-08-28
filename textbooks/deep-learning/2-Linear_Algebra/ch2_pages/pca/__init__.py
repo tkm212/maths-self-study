@@ -5,8 +5,8 @@ from __future__ import annotations
 from ch2_pages.pca.callbacks import register_callbacks
 from ch2_pages.pca.filters import build_filters
 from maths_self_study.dashboards.page_factory import define_page
-from maths_self_study.viz.definitions.ch2 import PCA as PCA_DEFINITIONS
-from maths_self_study.viz.theorems.ch2 import PCA as PCA_THEOREMS
+from maths_self_study.viz.textbooks.deep_learning.ch2.definitions import PCA as PCA_DEFINITIONS
+from maths_self_study.viz.textbooks.deep_learning.ch2.theorems import PCA as PCA_THEOREMS
 
 PcaPage = define_page(
     label="PCA",

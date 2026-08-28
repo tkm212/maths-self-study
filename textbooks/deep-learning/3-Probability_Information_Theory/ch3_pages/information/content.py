@@ -7,8 +7,8 @@ from dash import html
 
 from maths_self_study.dashboards.components import graph, table
 from maths_self_study.dashboards.utils import coerce_probs
-from maths_self_study.deep_learning import ch3_helpers as helpers
-from maths_self_study.probability import align_model_to_support
+from maths_self_study.demos.deep_learning import ch3 as helpers
+from maths_self_study.math.probability import align_model_to_support
 
 
 def render_body(p0, p1, p2, p3, q0, q1, q2, q3) -> html.Div:

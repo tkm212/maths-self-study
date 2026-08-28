@@ -17,6 +17,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.svm import LinearSVC
 
+from maths_self_study.viz.graphs import contour_chart, line_chart, scatter_chart
+
 
 def find_project_root(max_up: int = 12) -> Path:
     p = Path.cwd().resolve()
@@ -39,7 +41,7 @@ def init_paths() -> tuple[Path, Path, Path]:
 
 
 def load_tmdb_xy(inputs_dir: Path) -> tuple[pd.DataFrame, pd.Series, str]:
-    from maths_self_study.loaders import load_tmdb_revenue_classification
+    from maths_self_study.data import load_tmdb_revenue_classification
 
     return load_tmdb_revenue_classification(inputs_dir)
 
@@ -99,29 +101,26 @@ def lda_2d_boundary_figure(
     colors = {0: "#4393c3", 1: "#d6604d"}
     labels = {0: "Low revenue", 1: "High revenue"}
 
-    fig = go.Figure()
-    fig.add_trace(
-        go.Contour(
-            x=np.linspace(float(xx.min()), float(xx.max()), n_grid),
-            y=np.linspace(float(yy.min()), float(yy.max()), n_grid),
-            z=Z_pred.astype(float),
-            showscale=False,
-            colorscale=[[0, "rgba(67,147,195,0.25)"], [1, "rgba(214,96,77,0.25)"]],
-            contours={"coloring": "fill"},
-            name="boundary",
-        )
+    fig = contour_chart(
+        np.linspace(float(xx.min()), float(xx.max()), n_grid),
+        np.linspace(float(yy.min()), float(yy.max()), n_grid),
+        Z_pred.astype(float),
+        showscale=False,
+        colorscale=[[0, "rgba(67,147,195,0.25)"], [1, "rgba(214,96,77,0.25)"]],
+        contours={"coloring": "fill"},
+        name="boundary",
     )
     y_arr = np.asarray(y_train)
     for cls in [0, 1]:
         mask = y_arr == cls
-        fig.add_trace(
-            go.Scatter(
-                x=Z[mask, 0],
-                y=Z[mask, 1],
-                mode="markers",
-                marker={"size": 4, "color": colors[cls], "opacity": 0.6},
-                name=labels[cls],
-            )
+        scatter_chart(
+            Z[mask, 0],
+            Z[mask, 1],
+            name=labels[cls],
+            color=colors[cls],
+            marker_size=4,
+            marker_opacity=0.6,
+            fig=fig,
         )
     fig.update_layout(
         title="LDA decision boundary (PCA 2D projection, §4.3)",
@@ -188,9 +187,8 @@ def rda_shrinkage_figure(
         test_acc.append(float(accuracy_score(y_test, lda.predict(X_test_s))))
 
     best_idx = int(np.argmax(test_acc))
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(x=shrinkages, y=train_acc, mode="lines", name="train accuracy"))
-    fig.add_trace(go.Scatter(x=shrinkages, y=test_acc, mode="lines", name="test accuracy"))
+    fig = line_chart(shrinkages, train_acc, mode="lines", name="train accuracy")
+    line_chart(shrinkages, test_acc, mode="lines", name="test accuracy", fig=fig)
     fig.add_vline(
         x=float(shrinkages[best_idx]),
         line_dash="dash",
@@ -231,9 +229,9 @@ def logistic_l1_coef_path_figure(
         coefs.append(lr.coef_[0].copy())
     coefs_arr = np.array(coefs)
 
-    fig = go.Figure()
-    for i, name in enumerate(feat_names):
-        fig.add_trace(go.Scatter(x=np.log10(Cs), y=coefs_arr[:, i], mode="lines", name=name))
+    fig = line_chart(np.log10(Cs), coefs_arr[:, 0], mode="lines", name=feat_names[0])
+    for i, name in enumerate(feat_names[1:], start=1):
+        line_chart(np.log10(Cs), coefs_arr[:, i], mode="lines", name=name, fig=fig)
     fig.update_layout(
         title="L1 Logistic Regression: coefficient paths as penalty relaxes (§4.4.4)",
         xaxis_title="log10(C)  [C = 1/lambda; left = heavy penalty]",
@@ -265,16 +263,15 @@ def logistic_l1_vs_l2_accuracy_figure(
     best_l1_idx = int(np.argmax(l1_acc))
     best_l2_idx = int(np.argmax(l2_acc))
 
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(x=np.log10(Cs), y=l1_acc, mode="lines", name="L1 (lasso-logistic)"))
-    fig.add_trace(go.Scatter(x=np.log10(Cs), y=l2_acc, mode="lines", name="L2 (ridge-logistic)"))
-    fig.update_layout(
+    fig = line_chart(
+        np.log10(Cs),
+        l1_acc,
+        name="L1 (lasso-logistic)",
         title="Logistic Regression: L1 vs L2 test accuracy (§4.4.4)",
         xaxis_title="log10(C)  [C = 1/lambda]",
         yaxis_title="test accuracy",
-        template="plotly_white",
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
     )
+    line_chart(np.log10(Cs), l2_acc, name="L2 (ridge-logistic)", fig=fig)
     return fig, {
         "best_l1_C": float(Cs[best_l1_idx]),
         "best_l1_acc": float(max(l1_acc)),

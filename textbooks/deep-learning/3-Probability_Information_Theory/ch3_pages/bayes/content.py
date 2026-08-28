@@ -6,8 +6,8 @@ import numpy as np
 from dash import html
 
 from maths_self_study.dashboards.components import graph, table
-from maths_self_study.deep_learning import ch3_helpers as helpers
-from maths_self_study.probability import bayes_posterior
+from maths_self_study.demos.deep_learning import ch3 as helpers
+from maths_self_study.math.probability import bayes_posterior
 
 
 def render_body(prior_d, sens, fpr) -> html.Div:

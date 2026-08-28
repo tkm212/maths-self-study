@@ -169,7 +169,7 @@ def test_create_chapter_dashboard_minimal():
 
 
 def test_create_deep_learning_dashboard():
-    from maths_self_study.deep_learning.dashboard import create_deep_learning_dashboard
+    from maths_self_study.demos.deep_learning.dashboard import create_deep_learning_dashboard
 
     ch2 = _load_dashboard_module(_CH2_DASHBOARD)
     app = create_deep_learning_dashboard(
@@ -229,7 +229,7 @@ def test_matrix_input_component():
 
 
 def test_suggest_grid_range_scales_with_stretch():
-    from maths_self_study.deep_learning import ch2_helpers as helpers
+    from maths_self_study.demos.deep_learning import ch2 as helpers
 
     small = helpers.suggest_grid_range(np.array([[0.5, 0.0], [0.0, 0.5]]))
     large = helpers.suggest_grid_range(np.array([[3.0, 0.0], [0.0, 3.0]]))
@@ -237,7 +237,7 @@ def test_suggest_grid_range_scales_with_stretch():
 
 
 def test_plot_tensor_3d_builds_figure():
-    from maths_self_study.deep_learning import ch2_helpers as helpers
+    from maths_self_study.demos.deep_learning import ch2 as helpers
 
     tensor = helpers.TENSOR_DEFAULT
     fig = helpers.plot_tensor_3d(tensor, axis=2, index=0)
@@ -247,7 +247,7 @@ def test_plot_tensor_3d_builds_figure():
 
 
 def test_tensor_grid_input_component():
-    from maths_self_study.deep_learning import ch2_helpers as helpers
+    from maths_self_study.demos.deep_learning import ch2 as helpers
 
     block = tensor_grid_input("tensor", "T", helpers.TENSOR_DEFAULT, shape=helpers.TENSOR_SHAPE)
     assert block is not None
@@ -260,7 +260,7 @@ def test_tensor_callback_inputs():
 
 
 def test_coerce_tensor_3d():
-    from maths_self_study.deep_learning import ch2_helpers as helpers
+    from maths_self_study.demos.deep_learning import ch2 as helpers
 
     ni, nj, nk = helpers.TENSOR_SHAPE
     ordered: list[int | float | None] = []
@@ -311,7 +311,7 @@ def test_vectors_page_has_methodology():
 
 
 def test_plot_lp_unit_ball_l1_is_diamond():
-    from maths_self_study.deep_learning import ch2_helpers as helpers
+    from maths_self_study.demos.deep_learning import ch2 as helpers
 
     xs, ys = helpers._lp_unit_ball_boundary(1.0)
     assert (xs[0], ys[0]) == (1.0, 0.0)
@@ -320,7 +320,7 @@ def test_plot_lp_unit_ball_l1_is_diamond():
 
 
 def test_plot_markov_chain_builds_figure():
-    from maths_self_study.deep_learning import ch3_helpers as helpers
+    from maths_self_study.demos.deep_learning import ch3 as helpers
 
     demo = helpers.markov_chain_demo()
     fig = helpers.plot_markov_chain(demo.p_x1, demo.p_x2_given_x1, demo.p_x3_given_x2)
@@ -329,7 +329,7 @@ def test_plot_markov_chain_builds_figure():
 
 
 def test_plot_softmax_comparison_builds_figure():
-    from maths_self_study.deep_learning import ch4_helpers as helpers
+    from maths_self_study.demos.deep_learning import ch4 as helpers
 
     fig = helpers.plot_softmax_comparison(helpers.SOFTMAX_LOGITS, labels=helpers.SOFTMAX_LABELS)
     assert fig is not None
@@ -337,7 +337,7 @@ def test_plot_softmax_comparison_builds_figure():
 
 
 def test_plot_gradient_descent_path_builds_figure():
-    from maths_self_study.deep_learning import ch4_helpers as helpers
+    from maths_self_study.demos.deep_learning import ch4 as helpers
 
     fig = helpers.plot_gradient_descent_path(
         helpers.GD_HESSIAN,
@@ -350,7 +350,7 @@ def test_plot_gradient_descent_path_builds_figure():
 
 
 def test_plot_capacity_fit_builds_figure():
-    from maths_self_study.deep_learning import ch5_helpers as helpers
+    from maths_self_study.demos.deep_learning import ch5 as helpers
 
     fig = helpers.plot_capacity_fit(helpers.CAPACITY_DEGREE)
     assert fig is not None
@@ -358,7 +358,7 @@ def test_plot_capacity_fit_builds_figure():
 
 
 def test_plot_sgd_paths_builds_figure():
-    from maths_self_study.deep_learning import ch5_helpers as helpers
+    from maths_self_study.demos.deep_learning import ch5 as helpers
 
     fig = helpers.plot_sgd_paths(helpers.SGD_LEARNING_RATE, helpers.SGD_BATCH_SIZE)
     assert fig is not None
@@ -394,7 +394,7 @@ def test_prob_simplex_ids():
 
 
 def test_base_layout():
-    from maths_self_study.viz.plotly import base_layout
+    from maths_self_study.viz.graphs import base_layout
 
     layout = base_layout(title="Demo", height=400)
     assert layout["template"] == "plotly_white"

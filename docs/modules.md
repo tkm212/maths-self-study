@@ -1,46 +1,46 @@
 # API Reference
 
-::: maths_self_study.bars
+::: maths_self_study.quant.bars
     options:
       show_root_heading: true
       members_order: source
 
-::: maths_self_study.filters
+::: maths_self_study.quant.filters
     options:
       show_root_heading: true
       members_order: source
 
-::: maths_self_study.labeling
+::: maths_self_study.quant.labeling
     options:
       show_root_heading: true
       members_order: source
 
-::: maths_self_study.weights
+::: maths_self_study.quant.weights
     options:
       show_root_heading: true
       members_order: source
 
-::: maths_self_study.linalg
+::: maths_self_study.math.linear_algebra
     options:
       show_root_heading: true
       members_order: source
 
-::: maths_self_study.probability
+::: maths_self_study.math.probability
     options:
       show_root_heading: true
       members_order: source
 
-::: maths_self_study.optimization
+::: maths_self_study.math.optimization
     options:
       show_root_heading: true
       members_order: source
 
-::: maths_self_study.ml_basics
+::: maths_self_study.math.ml
     options:
       show_root_heading: true
       members_order: source
 
-::: maths_self_study.loaders
+::: maths_self_study.data
     options:
       show_root_heading: true
       members_order: source

@@ -1,8 +1,8 @@
-"""Unit tests for maths_self_study.filters."""
+"""Unit tests for maths_self_study.quant.filters."""
 
 import pandas as pd
 
-from maths_self_study.filters import cusum_filter
+from maths_self_study.quant.filters import cusum_filter
 
 
 def test_cusum_filter_returns_datetime_index(price_series: pd.Series) -> None:

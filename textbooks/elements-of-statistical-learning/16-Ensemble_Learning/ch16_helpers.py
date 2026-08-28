@@ -24,6 +24,8 @@ from sklearn.linear_model import LogisticRegression, Ridge
 from sklearn.model_selection import KFold, StratifiedKFold, cross_val_predict, cross_val_score
 from sklearn.tree import DecisionTreeClassifier
 
+from maths_self_study.viz.graphs import heatmap_chart
+
 
 def find_project_root(max_up: int = 12) -> Path:
     p = Path.cwd().resolve()
@@ -46,13 +48,13 @@ def init_paths() -> tuple[Path, Path, Path]:
 
 
 def load_tmdb_classification_xy(inputs_dir: Path) -> tuple[pd.DataFrame, pd.Series, str]:
-    from maths_self_study.loaders import load_tmdb_revenue_classification
+    from maths_self_study.data import load_tmdb_revenue_classification
 
     return load_tmdb_revenue_classification(inputs_dir)
 
 
 def load_tmdb_regression_xy(inputs_dir: Path) -> tuple[pd.DataFrame, pd.Series, str]:
-    from maths_self_study.loaders import load_tmdb_revenue_regression
+    from maths_self_study.data import load_tmdb_revenue_regression
 
     return load_tmdb_revenue_regression(inputs_dir)
 
@@ -300,21 +302,16 @@ def base_error_correlation_figure(
     e_mat = np.column_stack(err_cols)
     corr = np.corrcoef(e_mat.T)
 
-    fig = go.Figure(
-        go.Heatmap(
-            z=corr,
-            x=labels,
-            y=labels,
-            colorscale="RdBu",
-            zmid=0.0,
-            zmin=-1.0,
-            zmax=1.0,
-            colorbar={"title": "corr."},
-        )
-    )
-    fig.update_layout(
+    fig = heatmap_chart(
+        corr,
+        x=labels,
+        y=labels,
+        colorscale="RdBu",
+        zmid=0.0,
+        zmin=-1.0,
+        zmax=1.0,
+        colorbar={"title": "corr."},
         title="Pairwise correlation of base learners' mistake indicators (OOF) — §16.1",
-        template="plotly_white",
         xaxis_title="base learner",
         yaxis_title="base learner",
     )

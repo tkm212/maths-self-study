@@ -15,6 +15,8 @@ from sklearn.model_selection import cross_val_score, train_test_split
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import PolynomialFeatures, StandardScaler
 
+from maths_self_study.viz.graphs import line_chart
+
 
 def find_project_root(max_up: int = 12) -> Path:
     p = Path.cwd().resolve()
@@ -37,7 +39,7 @@ def init_paths() -> tuple[Path, Path, Path]:
 
 
 def load_tmdb_xy(inputs_dir: Path) -> tuple[pd.DataFrame, pd.Series, str]:
-    from maths_self_study.loaders import load_tmdb_revenue_regression
+    from maths_self_study.data import load_tmdb_revenue_regression
 
     return load_tmdb_revenue_regression(inputs_dir)
 
@@ -101,9 +103,13 @@ def train_test_error_figure(
         test_mse.append(float(mean_squared_error(y_te, pipe.predict(X_te))))
 
     best_d = degrees[int(np.argmin(test_mse))]
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(x=degrees, y=train_mse, mode="lines+markers", name="Train MSE"))
-    fig.add_trace(go.Scatter(x=degrees, y=test_mse, mode="lines+markers", name="Test MSE"))
+    fig = line_chart(
+        degrees,
+        train_mse,
+        name="Train MSE",
+        mode="lines+markers",
+    )
+    line_chart(degrees, test_mse, name="Test MSE", mode="lines+markers", fig=fig)
     fig.add_vline(x=best_d, line_dash="dash", line_color="grey", annotation_text=f"best d={best_d}")
     fig.update_layout(
         title=f"Train vs test error on `{feat}` (§7.2)",
@@ -164,19 +170,18 @@ def bias_variance_decomposition_figure(
 
     noise_level = noise_std**2
 
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(x=degrees, y=bias2_list, mode="lines+markers", name="Bias²"))
-    fig.add_trace(go.Scatter(x=degrees, y=var_list, mode="lines+markers", name="Variance"))
-    fig.add_trace(
-        go.Scatter(
-            x=degrees,
-            y=[noise_level] * len(degrees),
-            mode="lines",
-            name=f"Irreducible noise σ²={noise_level:.2f}",
-            line={"dash": "dot", "color": "grey"},
-        )
+    fig = line_chart(degrees, bias2_list, name="Bias²", mode="lines+markers")
+    line_chart(degrees, var_list, name="Variance", mode="lines+markers", fig=fig)
+    line_chart(
+        degrees,
+        [noise_level] * len(degrees),
+        name=f"Irreducible noise σ²={noise_level:.2f}",
+        mode="lines",
+        line_dash="dot",
+        color="grey",
+        fig=fig,
     )
-    fig.add_trace(go.Scatter(x=degrees, y=total_list, mode="lines+markers", name="Total = Bias²+Var+σ²"))
+    line_chart(degrees, total_list, name="Total = Bias²+Var+σ²", mode="lines+markers", fig=fig)
     best_d = degrees[int(np.argmin(total_list))]
     fig.add_vline(x=best_d, line_dash="dash", line_color="grey", annotation_text=f"best d={best_d}")
     fig.update_layout(
@@ -233,17 +238,15 @@ def optimism_figure(
         oob_mse_avg.append(mu_oob)
         optimism_list.append(mu_oob - mu_tr)
 
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(x=degrees, y=train_mse_avg, mode="lines+markers", name="In-bag (train) MSE"))
-    fig.add_trace(go.Scatter(x=degrees, y=oob_mse_avg, mode="lines+markers", name="OOB (test) MSE"))
-    fig.add_trace(
-        go.Scatter(
-            x=degrees,
-            y=optimism_list,
-            mode="lines+markers",
-            name="Optimism (OOB - in-bag)",
-            line={"dash": "dot"},
-        )
+    fig = line_chart(degrees, train_mse_avg, name="In-bag (train) MSE", mode="lines+markers")
+    line_chart(degrees, oob_mse_avg, name="OOB (test) MSE", mode="lines+markers", fig=fig)
+    line_chart(
+        degrees,
+        optimism_list,
+        name="Optimism (OOB - in-bag)",
+        mode="lines+markers",
+        line_dash="dot",
+        fig=fig,
     )
     fig.update_layout(
         title=f"Training error optimism on `{feat}` (§7.4, bootstrap estimation)",
@@ -309,10 +312,9 @@ def model_selection_criteria_figure(
     best_aic = degrees[int(np.argmin(aic_list))]
     best_bic = degrees[int(np.argmin(bic_list))]
 
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(x=degrees, y=_norm(cp_list), mode="lines+markers", name="Cₚ (normalised)"))
-    fig.add_trace(go.Scatter(x=degrees, y=_norm(aic_list), mode="lines+markers", name="AIC (normalised)"))
-    fig.add_trace(go.Scatter(x=degrees, y=_norm(bic_list), mode="lines+markers", name="BIC (normalised)"))
+    fig = line_chart(degrees, _norm(cp_list), name="Cₚ (normalised)", mode="lines+markers")
+    line_chart(degrees, _norm(aic_list), name="AIC (normalised)", mode="lines+markers", fig=fig)
+    line_chart(degrees, _norm(bic_list), name="BIC (normalised)", mode="lines+markers", fig=fig)
     fig.add_vline(x=best_cp, line_dash="dot", line_color="steelblue", annotation_text=f"Cₚ: d={best_cp}")
     fig.add_vline(x=best_aic, line_dash="dot", line_color="orange", annotation_text=f"AIC: d={best_aic}")
     fig.add_vline(x=best_bic, line_dash="dot", line_color="green", annotation_text=f"BIC: d={best_bic}")
@@ -347,10 +349,21 @@ def kfold_cv_figure(
     x, y_log = _log_feature(X, y, feat, max_rows=max_rows)
     degrees = list(range(1, max_degree + 1))
 
-    fig = go.Figure()
+    fig: go.Figure | None = None
     best_degrees: dict[str, int] = {}
 
-    for k in k_values:
+    k_iter = iter(k_values)
+    first_k = next(k_iter)
+    cv_scores = []
+    for d in degrees:
+        pipe = _poly_pipe(d)
+        scores = cross_val_score(pipe, x, y_log, cv=first_k, scoring="neg_mean_squared_error")
+        cv_scores.append(float(-scores.mean()))
+    best_d = degrees[int(np.argmin(cv_scores))]
+    best_degrees[f"{first_k}-fold"] = best_d
+    fig = line_chart(degrees, cv_scores, mode="lines+markers", name=f"{first_k}-fold CV")
+
+    for k in k_iter:
         cv_scores = []
         for d in degrees:
             pipe = _poly_pipe(d)
@@ -358,7 +371,7 @@ def kfold_cv_figure(
             cv_scores.append(float(-scores.mean()))
         best_d = degrees[int(np.argmin(cv_scores))]
         best_degrees[f"{k}-fold"] = best_d
-        fig.add_trace(go.Scatter(x=degrees, y=cv_scores, mode="lines+markers", name=f"{k}-fold CV"))
+        fig = line_chart(degrees, cv_scores, mode="lines+markers", name=f"{k}-fold CV", fig=fig)
 
     # Training error for reference
     train_mse = []
@@ -366,14 +379,14 @@ def kfold_cv_figure(
         pipe = _poly_pipe(d)
         pipe.fit(x, y_log)
         train_mse.append(float(mean_squared_error(y_log, pipe.predict(x))))
-    fig.add_trace(
-        go.Scatter(
-            x=degrees,
-            y=train_mse,
-            mode="lines+markers",
-            name="Train MSE",
-            line={"dash": "dot", "color": "grey"},
-        )
+    fig = line_chart(
+        degrees,
+        train_mse,
+        mode="lines+markers",
+        name="Train MSE",
+        line_dash="dot",
+        color="grey",
+        fig=fig,
     )
 
     fig.update_layout(
@@ -440,10 +453,9 @@ def bootstrap_632_figure(
         boot_632_list.append(0.368 * train_err + 0.632 * err1)
 
     best_d = degrees[int(np.nanargmin(boot_632_list))]
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(x=degrees, y=train_mse_list, mode="lines+markers", name="Train MSE"))
-    fig.add_trace(go.Scatter(x=degrees, y=boot_oob_list, mode="lines+markers", name="Bootstrap Err⁽¹⁾ (OOB)"))
-    fig.add_trace(go.Scatter(x=degrees, y=boot_632_list, mode="lines+markers", name=".632 Bootstrap"))
+    fig = line_chart(degrees, train_mse_list, name="Train MSE", mode="lines+markers")
+    line_chart(degrees, boot_oob_list, name="Bootstrap Err⁽¹⁾ (OOB)", mode="lines+markers", fig=fig)
+    line_chart(degrees, boot_632_list, name=".632 Bootstrap", mode="lines+markers", fig=fig)
     fig.add_vline(x=best_d, line_dash="dash", line_color="grey", annotation_text=f".632 best d={best_d}")
     fig.update_layout(
         title=f"Bootstrap .632 estimator on `{feat}` (§7.11, n_boot={n_boot})",

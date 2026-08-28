@@ -1,9 +1,9 @@
-"""Unit tests for maths_self_study.bars."""
+"""Unit tests for maths_self_study.quant.bars."""
 
 import pandas as pd
 import pytest
 
-from maths_self_study.bars import dollar_bars, tick_bars, time_bars, volume_bars
+from maths_self_study.quant.bars import dollar_bars, tick_bars, time_bars, volume_bars
 
 
 def test_time_bars(tick_df: pd.DataFrame) -> None:

@@ -1,9 +1,9 @@
-"""Unit tests for maths_self_study.probability."""
+"""Unit tests for maths_self_study.math.probability."""
 
 import numpy as np
 import pytest
 
-from maths_self_study.probability import (
+from maths_self_study.math.probability import (
     bayes_posterior,
     binary_entropy,
     cross_entropy,
@@ -47,7 +47,7 @@ def test_kl_cross_entropy_identity() -> None:
 
 
 def test_align_model_to_support_allows_kl_when_q_zeros_out() -> None:
-    from maths_self_study.probability import align_model_to_support
+    from maths_self_study.math.probability import align_model_to_support
 
     p = np.array([0.4, 0.3, 0.2, 0.1])
     q = np.array([0.0, 0.0, 0.0, 1.0])

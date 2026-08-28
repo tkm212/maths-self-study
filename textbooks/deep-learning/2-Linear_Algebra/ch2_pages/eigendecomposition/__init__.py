@@ -5,8 +5,8 @@ from __future__ import annotations
 from ch2_pages.eigendecomposition.callbacks import register_callbacks
 from ch2_pages.eigendecomposition.filters import build_filters
 from maths_self_study.dashboards.page_factory import define_page
-from maths_self_study.viz.definitions.ch2 import EIGEN as EIGEN_DEFINITIONS
-from maths_self_study.viz.theorems.ch2 import EIGEN as EIGEN_THEOREMS
+from maths_self_study.viz.textbooks.deep_learning.ch2.definitions import EIGEN as EIGEN_DEFINITIONS
+from maths_self_study.viz.textbooks.deep_learning.ch2.theorems import EIGEN as EIGEN_THEOREMS
 
 EigendecompositionPage = define_page(
     label="Eigendecomposition",

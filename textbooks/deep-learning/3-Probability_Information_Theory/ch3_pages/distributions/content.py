@@ -9,7 +9,7 @@ from dash import html
 
 from maths_self_study.dashboards.components import graph, graph_row, table
 from maths_self_study.dashboards.utils import coerce_matrix_2x2, renorm
-from maths_self_study.deep_learning import ch3_helpers as helpers
+from maths_self_study.demos.deep_learning import ch3 as helpers
 
 log = logging.getLogger(__name__)
 

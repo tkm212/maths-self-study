@@ -7,7 +7,7 @@ from dash import html
 
 from maths_self_study.dashboards.components import graph, table
 from maths_self_study.dashboards.utils import clamp_prob
-from maths_self_study.deep_learning import ch3_helpers as helpers
+from maths_self_study.demos.deep_learning import ch3 as helpers
 
 
 def render_body(

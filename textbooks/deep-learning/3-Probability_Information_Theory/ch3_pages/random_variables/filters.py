@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from maths_self_study.dashboards.components import filter_bar, prob_simplex, section
-from maths_self_study.deep_learning import ch3_helpers as helpers
+from maths_self_study.demos.deep_learning import ch3 as helpers
 
 
 def build_filters():

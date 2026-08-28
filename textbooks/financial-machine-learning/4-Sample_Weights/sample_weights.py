@@ -84,6 +84,8 @@ def _():
     import plotly.graph_objects as go
     from plotly.subplots import make_subplots
 
+    from maths_self_study.viz.graphs import histogram_chart, line_chart
+
     ROOT = Path.cwd().resolve()
     for _ in range(5):
         if (ROOT / "pyproject.toml").exists():
@@ -93,7 +95,7 @@ def _():
         sys.path.insert(0, str(ROOT))
 
     OUTPUTS = ROOT / "outputs"
-    return OUTPUTS, go, make_subplots, pd
+    return OUTPUTS, go, histogram_chart, line_chart, make_subplots, pd
 
 
 @app.cell
@@ -107,9 +109,9 @@ def _(OUTPUTS, pd):
 
 @app.cell
 def _(bars):
-    from maths_self_study.filters import cusum_filter
-    from maths_self_study.labeling import triple_barrier_labels
-    from maths_self_study.weights import (
+    from maths_self_study.quant.filters import cusum_filter
+    from maths_self_study.quant.labeling import triple_barrier_labels
+    from maths_self_study.quant.weights import (
         average_uniqueness,
         concurrent_labels_per_bar,
         time_decay_weights,
@@ -191,21 +193,26 @@ def _(bars, conc, go, make_subplots):
 
 
 @app.cell
-def _(go, labels_2):
-    _fig = go.Figure()
-    _fig.add_trace(go.Histogram(x=labels_2["avg_uniqueness"], nbinsx=50, name="Avg uniqueness"))
-    _fig.update_layout(
-        title="Distribution of average uniqueness per event", xaxis_title="Uniqueness", yaxis_title="Count", height=400
+def _(histogram_chart, labels_2):
+    _fig = histogram_chart(
+        labels_2["avg_uniqueness"],
+        nbinsx=50,
+        name="Avg uniqueness",
+        title="Distribution of average uniqueness per event",
+        xaxis_title="Uniqueness",
+        yaxis_title="Count",
+        height=400,
     )
     _fig.show()
     return
 
 
 @app.cell
-def _(go, labels_2):
-    _fig = go.Figure()
-    _fig.add_trace(go.Histogram(x=labels_2["sample_weight"], nbinsx=50, name="Combined weight"))
-    _fig.update_layout(
+def _(histogram_chart, labels_2):
+    _fig = histogram_chart(
+        labels_2["sample_weight"],
+        nbinsx=50,
+        name="Combined weight",
         title="Combined sample weights (uniqueness * time decay, mean-normalized)",
         xaxis_title="Weight",
         yaxis_title="Count",

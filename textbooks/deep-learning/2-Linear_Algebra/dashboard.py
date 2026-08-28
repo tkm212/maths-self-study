@@ -9,7 +9,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from maths_self_study.dashboards.runner import main_dashboard, setup_chapter_path
-from maths_self_study.deep_learning.dashboard import create_deep_learning_dashboard
+from maths_self_study.demos.deep_learning.dashboard import create_deep_learning_dashboard
 
 setup_chapter_path(Path(__file__).resolve().parent)
 

@@ -14,6 +14,8 @@ from sklearn.metrics import accuracy_score, mean_squared_error
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
 
+from maths_self_study.viz.graphs import histogram_chart, line_chart
+
 
 def find_project_root(max_up: int = 12) -> Path:
     p = Path.cwd().resolve()
@@ -36,13 +38,13 @@ def init_paths() -> tuple[Path, Path, Path]:
 
 
 def load_tmdb_classification_xy(inputs_dir: Path) -> tuple[pd.DataFrame, pd.Series, str]:
-    from maths_self_study.loaders import load_tmdb_revenue_classification
+    from maths_self_study.data import load_tmdb_revenue_classification
 
     return load_tmdb_revenue_classification(inputs_dir)
 
 
 def load_tmdb_xy(inputs_dir: Path) -> tuple[pd.DataFrame, pd.Series, str]:
-    from maths_self_study.loaders import load_tmdb_revenue_regression
+    from maths_self_study.data import load_tmdb_revenue_regression
 
     return load_tmdb_revenue_regression(inputs_dir)
 
@@ -126,11 +128,8 @@ def adaboost_training_curve_figure(
     rounds = list(range(1, len(train_errors) + 1))
     best_round = rounds[int(np.argmin(test_errors))]
 
-    fig = go.Figure()
-    fig.add_trace(
-        go.Scatter(x=rounds, y=train_errors, mode="lines", name="Train error rate", line={"color": "steelblue"})
-    )
-    fig.add_trace(go.Scatter(x=rounds, y=test_errors, mode="lines", name="Test error rate", line={"color": "tomato"}))
+    fig = line_chart(rounds, train_errors, mode="lines", name="Train error rate", color="steelblue")
+    line_chart(rounds, test_errors, mode="lines", name="Test error rate", color="tomato", fig=fig)
     fig.add_vline(x=best_round, line_dash="dash", line_color="grey", annotation_text=f"best round={best_round}")
     fig.update_layout(
         title=f"AdaBoost training curve (stumps, {n_estimators} rounds) — §10.1",
@@ -180,9 +179,9 @@ def margin_distribution_figure(
     X_tr, X_te, y_tr, y_te = train_test_split(x_arr, y_cls, test_size=0.25, random_state=0)
     y_te_signed = np.where(y_te == 1, 1, -1).astype(float)
 
-    fig = go.Figure()
     colors = ["steelblue", "tomato", "green", "purple"]
-    for i, m in enumerate(n_estimators_list):
+
+    def _margin_histogram(fig: go.Figure | None, m: int, color: str) -> go.Figure:
         clf = AdaBoostClassifier(
             estimator=DecisionTreeClassifier(max_depth=1),
             n_estimators=m,
@@ -192,15 +191,18 @@ def margin_distribution_figure(
         decision = clf.decision_function(X_te)
         norm = float(np.sum(np.abs(clf.estimator_weights_)))
         margins = y_te_signed * decision / (norm + 1e-10)
-        fig.add_trace(
-            go.Histogram(
-                x=margins,
-                name=f"M={m}",
-                opacity=0.5,
-                nbinsx=40,
-                marker_color=colors[i % len(colors)],
-            )
+        return histogram_chart(
+            margins,
+            name=f"M={m}",
+            opacity=0.5,
+            nbinsx=40,
+            color=color,
+            fig=fig,
         )
+
+    fig = _margin_histogram(None, n_estimators_list[0], colors[0])
+    for i, m in enumerate(n_estimators_list[1:], start=1):
+        fig = _margin_histogram(fig, m, colors[i % len(colors)])
     fig.add_vline(x=0, line_dash="dash", line_color="black", annotation_text="margin=0")
     fig.update_layout(
         title="AdaBoost margin distribution at increasing rounds — §10.4",
@@ -262,9 +264,8 @@ def gbm_n_estimators_figure(
     rounds = list(range(1, len(train_mse) + 1))
     best_round = rounds[int(np.argmin(test_mse))]
 
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(x=rounds, y=train_mse, mode="lines", name="Train MSE", line={"color": "steelblue"}))
-    fig.add_trace(go.Scatter(x=rounds, y=test_mse, mode="lines", name="Test MSE", line={"color": "tomato"}))
+    fig = line_chart(rounds, train_mse, mode="lines", name="Train MSE", color="steelblue")
+    line_chart(rounds, test_mse, mode="lines", name="Test MSE", color="tomato", fig=fig)
     fig.add_vline(x=best_round, line_dash="dash", line_color="grey", annotation_text=f"best M={best_round}")
     fig.update_layout(
         title=f"GBM MSE vs rounds (nu={learning_rate}, depth={max_depth}) — §10.9",
@@ -305,9 +306,9 @@ def gbm_shrinkage_figure(
     x_arr, y_log = _select_features(X, y, feats, max_rows=max_rows, log_transform=True)
     X_tr, X_te, y_tr, y_te = train_test_split(x_arr, y_log, test_size=0.25, random_state=0)
 
-    fig = go.Figure()
     colors = ["steelblue", "tomato", "green", "purple"]
-    for i, lr in enumerate(learning_rates):
+
+    def _shrinkage_curve(fig: go.Figure | None, lr: float, color: str) -> go.Figure:
         gbm = GradientBoostingRegressor(
             n_estimators=n_estimators,
             learning_rate=lr,
@@ -318,15 +319,18 @@ def gbm_shrinkage_figure(
         test_mse = [float(mean_squared_error(y_te, pred)) for pred in gbm.staged_predict(X_te)]
         rounds = list(range(1, len(test_mse) + 1))
         best_m = rounds[int(np.argmin(test_mse))]
-        fig.add_trace(
-            go.Scatter(
-                x=rounds,
-                y=test_mse,
-                mode="lines",
-                name=f"nu={lr} (best M={best_m})",
-                line={"color": colors[i % len(colors)]},
-            )
+        return line_chart(
+            rounds,
+            test_mse,
+            mode="lines",
+            name=f"nu={lr} (best M={best_m})",
+            color=color,
+            fig=fig,
         )
+
+    fig = _shrinkage_curve(None, learning_rates[0], colors[0])
+    for i, lr in enumerate(learning_rates[1:], start=1):
+        fig = _shrinkage_curve(fig, lr, colors[i % len(colors)])
     fig.update_layout(
         title=f"GBM shrinkage: test MSE vs rounds for different nu (depth={max_depth}) — §10.12",
         xaxis_title="number of trees M",

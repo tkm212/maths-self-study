@@ -5,8 +5,8 @@ from __future__ import annotations
 from ch4_pages.kkt.callbacks import register_callbacks
 from ch4_pages.kkt.filters import build_filters
 from maths_self_study.dashboards.page_factory import define_page
-from maths_self_study.viz.definitions.ch4 import KKT as KKT_DEFINITIONS
-from maths_self_study.viz.theorems.ch4 import KKT as KKT_THEOREMS
+from maths_self_study.viz.textbooks.deep_learning.ch4.definitions import KKT as KKT_DEFINITIONS
+from maths_self_study.viz.textbooks.deep_learning.ch4.theorems import KKT as KKT_THEOREMS
 
 KktPage = define_page(
     label="KKT conditions",

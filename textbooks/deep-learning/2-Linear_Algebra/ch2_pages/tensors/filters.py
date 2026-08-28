@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from maths_self_study.dashboards.components import dropdown, filter_bar, slider, tensor_grid_input
-from maths_self_study.deep_learning import ch2_helpers as helpers
+from maths_self_study.demos.deep_learning import ch2 as helpers
 
 
 def build_filters():

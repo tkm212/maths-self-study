@@ -5,7 +5,7 @@ from __future__ import annotations
 from ch5_pages.validation.callbacks import register_callbacks
 from ch5_pages.validation.filters import build_filters
 from maths_self_study.dashboards.page_factory import define_page
-from maths_self_study.viz.definitions.ch5 import VALIDATION as VALIDATION_DEFINITIONS
+from maths_self_study.viz.textbooks.deep_learning.ch5.definitions import VALIDATION as VALIDATION_DEFINITIONS
 
 ValidationPage = define_page(
     label="Validation",

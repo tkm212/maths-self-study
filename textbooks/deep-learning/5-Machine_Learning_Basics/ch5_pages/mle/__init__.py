@@ -5,8 +5,8 @@ from __future__ import annotations
 from ch5_pages.mle.callbacks import register_callbacks
 from ch5_pages.mle.filters import build_filters
 from maths_self_study.dashboards.page_factory import define_page
-from maths_self_study.viz.definitions.ch5 import MLE as MLE_DEFINITIONS
-from maths_self_study.viz.theorems.ch5 import MLE as MLE_THEOREMS
+from maths_self_study.viz.textbooks.deep_learning.ch5.definitions import MLE as MLE_DEFINITIONS
+from maths_self_study.viz.textbooks.deep_learning.ch5.theorems import MLE as MLE_THEOREMS
 
 MlePage = define_page(
     label="MLE",

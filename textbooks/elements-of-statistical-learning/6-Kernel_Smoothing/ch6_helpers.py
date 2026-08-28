@@ -11,6 +11,8 @@ import pandas as pd
 import plotly.graph_objects as go
 from sklearn.neighbors import KernelDensity
 
+from maths_self_study.viz.graphs import line_chart
+
 
 def find_project_root(max_up: int = 12) -> Path:
     p = Path.cwd().resolve()
@@ -33,14 +35,14 @@ def init_paths() -> tuple[Path, Path, Path]:
 
 
 def load_tmdb_xy(inputs_dir: Path) -> tuple[pd.DataFrame, pd.Series, str]:
-    from maths_self_study.loaders import load_tmdb_revenue_regression
+    from maths_self_study.data import load_tmdb_revenue_regression
 
     return load_tmdb_revenue_regression(inputs_dir)
 
 
 def load_tmdb_cls(inputs_dir: Path) -> tuple[pd.DataFrame, pd.Series, str]:
     """Binary classification: high_revenue = 1 if revenue >= median (else 0)."""
-    from maths_self_study.loaders import load_tmdb_revenue_classification
+    from maths_self_study.data import load_tmdb_revenue_classification
 
     return load_tmdb_revenue_classification(inputs_dir)
 
@@ -396,8 +398,7 @@ def bandwidth_loocv_figure(
     best_idx = int(np.argmin(cv_scores))
     best_bw = float(bws[best_idx])
 
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(x=np.log10(bws), y=cv_scores, mode="lines+markers", name="LOO-CV"))
+    fig = line_chart(np.log10(bws), cv_scores, mode="lines+markers", name="LOO-CV")
     fig.add_vline(
         x=float(np.log10(best_bw)),
         line_dash="dash",

@@ -5,8 +5,8 @@ from __future__ import annotations
 from ch2_pages.norms.callbacks import register_callbacks
 from ch2_pages.norms.filters import build_filters
 from maths_self_study.dashboards.page_factory import define_page
-from maths_self_study.viz.definitions.ch2 import NORMS as NORMS_DEFINITIONS
-from maths_self_study.viz.theorems.ch2 import NORMS as NORMS_THEOREMS
+from maths_self_study.viz.textbooks.deep_learning.ch2.definitions import NORMS as NORMS_DEFINITIONS
+from maths_self_study.viz.textbooks.deep_learning.ch2.theorems import NORMS as NORMS_THEOREMS
 
 NormsPage = define_page(
     label="Norms",

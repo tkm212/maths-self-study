@@ -5,7 +5,7 @@ from __future__ import annotations
 from ch2_pages.tensors.callbacks import register_callbacks
 from ch2_pages.tensors.filters import build_filters
 from maths_self_study.dashboards.page_factory import define_page
-from maths_self_study.viz.definitions.ch2 import TENSORS as TENSORS_DEFINITIONS
+from maths_self_study.viz.textbooks.deep_learning.ch2.definitions import TENSORS as TENSORS_DEFINITIONS
 
 TensorsPage = define_page(
     label="Tensors",

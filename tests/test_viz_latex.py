@@ -6,8 +6,8 @@ import importlib.util
 from pathlib import Path
 
 from maths_self_study.dashboards.chapter_app import create_chapter_dashboard
-from maths_self_study.viz.formulas import ch5 as ch5_formulas
 from maths_self_study.viz.latex import formula, formula_group, katex_boot_script, katex_head_html, math_text
+from maths_self_study.viz.textbooks.deep_learning.ch5 import formulas as ch5_formulas
 
 _REPO_ROOT = Path(__file__).resolve().parents[1]
 _CH2_DASHBOARD = _REPO_ROOT / "textbooks/deep-learning/2-Linear_Algebra/dashboard.py"

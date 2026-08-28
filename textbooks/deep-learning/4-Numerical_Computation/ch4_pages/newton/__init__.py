@@ -5,7 +5,7 @@ from __future__ import annotations
 from ch4_pages.newton.callbacks import register_callbacks
 from ch4_pages.newton.filters import build_filters
 from maths_self_study.dashboards.page_factory import define_page
-from maths_self_study.viz.definitions.ch4 import NEWTON as NEWTON_DEFINITIONS
+from maths_self_study.viz.textbooks.deep_learning.ch4.definitions import NEWTON as NEWTON_DEFINITIONS
 
 NewtonPage = define_page(
     label="Newton & Hessian",
