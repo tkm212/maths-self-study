@@ -17,6 +17,8 @@ from sklearn.model_selection import cross_val_predict, cross_val_score
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 
+from maths_self_study.viz.graphs import apply_layout, line_chart, scatter_chart
+
 
 def find_project_root(max_up: int = 12) -> Path:
     p = Path.cwd().resolve()
@@ -152,7 +154,6 @@ def highdim_regularization_comparison_figure(
     fig.update_layout(
         title=f"High-dimensional regression (n={n}, p={p}, {n_nonzero} true nonzeros) — §18.2-18.3",
         yaxis_title="cross-validated R² (predicted)",
-        template="plotly_white",
         yaxis={"range": [min(0.0, min(r2_vals) - 0.05), min(1.0, max(r2_vals) + 0.1)]},
     )
 
@@ -200,7 +201,6 @@ def lasso_path_sparsity_figure(
         title=f"Lasso active set size vs log₁₀(λ) — §18.4 (n={n}, p={p})",
         xaxis_title="log₁₀(λ)",
         yaxis_title="number of nonzero coefficients",
-        template="plotly_white",
     )
     return fig, {"max_active": max(n_nonzeros), "n": n}
 
@@ -267,7 +267,6 @@ def tmdb_with_noise_features_figure(
     fig.update_layout(
         title=f"TMDB log-revenue: p={p_tot} (incl. {n_noise} noise), n={n_samp} — §18",
         yaxis_title=f"mean {n_cv}-fold CV R²",
-        template="plotly_white",
     )
 
     return fig, {
@@ -367,7 +366,6 @@ def marginal_screening_lasso_figure(
     fig.update_layout(
         title=f"Marginal screening + lasso vs lasso on full X (n={n}) — §18",
         yaxis_title=f"{n_cv}-fold CV R² (predicted)",
-        template="plotly_white",
     )
     return fig, {
         "r2_full": r2_full,
@@ -447,7 +445,6 @@ def fdr_vs_bonferroni_figure(
     )
     fig.update_layout(
         title_text=(f"Marginal tests: multiple testing (n={n}, p={p}, {n_signal} signals, {n_rep} reps) — §18"),
-        template="plotly_white",
         height=400,
     )
     fig.update_yaxes(title_text="count", row=1, col=1)
@@ -491,7 +488,6 @@ def curse_of_dimensionality_volume_figure(
         title="Curse of dimensionality: (1-eps)^d volume in [0,1]^d (eps=0.05) — §18.1",
         xaxis_title="dimension d",
         yaxis_title="volume fraction of inner cube of side 1-eps",
-        template="plotly_white",
     )
     return fig, {"epsilon": eps, "at_d_30": float((1.0 - eps) ** 30)}
 
@@ -517,30 +513,29 @@ def lasso_true_vs_fitted_figure(
     hat = lcv.coef_.ravel()
 
     hit = (np.abs(beta) > 1e-12) | (np.abs(hat) > 1e-8)
-    fig = go.Figure()
+    fig: go.Figure | None = None
     if np.any(hit):
-        fig.add_trace(
-            go.Scatter(
-                x=beta[hit],
-                y=hat[hit],
-                mode="markers",
-                marker={"size": 6, "opacity": 0.65, "color": "steelblue"},
-            )
+        fig = scatter_chart(
+            beta[hit],
+            hat[hit],
+            marker_size=6,
+            marker_opacity=0.65,
+            color="steelblue",
         )
-    fig.add_trace(
-        go.Scatter(
-            x=[float(beta.min()), float(beta.max())],
-            y=[float(beta.min()), float(beta.max())],
-            mode="lines",
-            line={"dash": "dash", "color": "gray"},
-            name="y = x (perfect recovery)",
-        )
+    fig = line_chart(
+        [float(beta.min()), float(beta.max())],
+        [float(beta.min()), float(beta.max())],
+        mode="lines",
+        name="y = x (perfect recovery)",
+        line_dash="dash",
+        color="gray",
+        fig=fig,
     )
-    fig.update_layout(
+    apply_layout(
+        fig,
         title="True β vs lasso fit (one simulation, p≫n) — §18.3",
         xaxis_title="true βⱼ",
         yaxis_title="lasso β̂ⱼ",
-        template="plotly_white",
     )
     r_rec = float(np.corrcoef(beta, hat)[0, 1]) if np.var(beta) > 0 and np.var(hat) > 0 else 0.0
     return fig, {"lasso_r_correlation_true_hat": r_rec, "n_nonzero_true": int(n_nonzero)}
@@ -568,27 +563,12 @@ def ridge_vs_lasso_coefficient_magnitude_figure(
     l_coef = np.abs(lcv.coef_.ravel())
     idx = np.argsort(-np.maximum(r_coef, l_coef))[: min(30, p)]
 
-    fig = go.Figure()
-    fig.add_trace(
-        go.Scatter(
-            x=list(range(len(idx))),
-            y=r_coef[idx],
-            mode="lines+markers",
-            name="Ridge |coef| (sorted by max)",
-        )
-    )
-    fig.add_trace(
-        go.Scatter(
-            x=list(range(len(idx))),
-            y=l_coef[idx],
-            mode="lines+markers",
-            name="Lasso |coef|",
-        )
-    )
-    fig.update_layout(
+    fig = line_chart(list(range(len(idx))), r_coef[idx], mode="lines+markers", name="Ridge |coef| (sorted by max)")
+    line_chart(list(range(len(idx))), l_coef[idx], mode="lines+markers", name="Lasso |coef|", fig=fig)
+    apply_layout(
+        fig,
         title="Top-30 (by max |coef|) features: ridge vs lasso (p > n) — §18.2-18.3",
         xaxis_title="rank in sorted set",
         yaxis_title="|coefficient|",
-        template="plotly_white",
     )
     return fig, {"n_nonzero_lasso": int(np.sum(l_coef > 1e-8))}

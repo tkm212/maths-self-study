@@ -160,7 +160,6 @@ def kmeans_elbow_figure(
     fig.add_vline(x=best_k, line_dash="dash", line_color="grey", row=1, col=2, annotation_text=f"best K={best_k}")
     fig.update_layout(
         title="K-means: elbow and silhouette vs K — §14.3.6",
-        template="plotly_white",
         showlegend=False,
     )
     fig.update_xaxes(title_text="K (number of clusters)")
@@ -297,7 +296,6 @@ def hierarchical_linkage_figure(
         title=f"Hierarchical clustering dendrogram ({method} linkage) — §14.3.12",
         xaxis={"showticklabels": False, "title": "observations"},
         yaxis={"title": "merge distance"},
-        template="plotly_white",
     )
     return fig
 
@@ -364,7 +362,6 @@ def linkage_comparison_figure(
         xaxis_title="linkage method",
         yaxis_title="silhouette score",
         yaxis={"range": [max(-1.0, y_lo), min(1.0, y_hi)]},
-        template="plotly_white",
     )
     return fig, {
         "best_method": methods[best_idx],
@@ -436,7 +433,6 @@ def pca_variance_figure(
     fig.add_hline(y=0.90, line_dash="dash", line_color="grey", annotation_text="90%", row=1, col=2)
     fig.update_layout(
         title="PCA scree plot — §14.5",
-        template="plotly_white",
         showlegend=False,
     )
     fig.update_xaxes(title_text="principal component")
@@ -523,7 +519,6 @@ def pca_biplot_figure(
         title=f"PCA biplot (PC{pc_x} vs PC{pc_y}) — §14.5.1",
         xaxis_title=f"PC{pc_x} ({pca.explained_variance_ratio_[pc_x - 1]:.1%} var)",
         yaxis_title=f"PC{pc_y} ({pca.explained_variance_ratio_[pc_y - 1]:.1%} var)",
-        template="plotly_white",
     )
     return fig
 
@@ -579,10 +574,7 @@ def nmf_rank_figure(
         go.Scatter(x=ranks, y=errors, mode="lines+markers", line={"color": "steelblue"}, name="Frobenius error")
     )
     fig.update_layout(
-        title="NMF reconstruction error vs rank r — §14.6",
-        xaxis_title="rank r",
-        yaxis_title="||X - WH||_F",
-        template="plotly_white",
+        title="NMF reconstruction error vs rank r — §14.6", xaxis_title="rank r", yaxis_title="||X - WH||_F"
     )
     return fig, {
         "ranks": ranks,

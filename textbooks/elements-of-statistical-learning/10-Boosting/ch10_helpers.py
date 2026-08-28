@@ -14,7 +14,7 @@ from sklearn.metrics import accuracy_score, mean_squared_error
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
 
-from maths_self_study.viz.graphs import histogram_chart, line_chart
+from maths_self_study.viz.graphs import add_vline, apply_layout, histogram_chart, line_chart
 
 
 def find_project_root(max_up: int = 12) -> Path:
@@ -130,13 +130,13 @@ def adaboost_training_curve_figure(
 
     fig = line_chart(rounds, train_errors, mode="lines", name="Train error rate", color="steelblue")
     line_chart(rounds, test_errors, mode="lines", name="Test error rate", color="tomato", fig=fig)
-    fig.add_vline(x=best_round, line_dash="dash", line_color="grey", annotation_text=f"best round={best_round}")
-    fig.update_layout(
+    add_vline(fig, x=best_round, line_dash="dash", line_color="grey", annotation_text=f"best round={best_round}")
+    apply_layout(
+        fig,
         title=f"AdaBoost training curve (stumps, {n_estimators} rounds) — §10.1",
         xaxis_title="boosting round M",
         yaxis_title="misclassification rate",
-        template="plotly_white",
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
+        legend="horizontal",
     )
     return fig, {
         "best_round": best_round,
@@ -203,14 +203,14 @@ def margin_distribution_figure(
     fig = _margin_histogram(None, n_estimators_list[0], colors[0])
     for i, m in enumerate(n_estimators_list[1:], start=1):
         fig = _margin_histogram(fig, m, colors[i % len(colors)])
-    fig.add_vline(x=0, line_dash="dash", line_color="black", annotation_text="margin=0")
-    fig.update_layout(
+    add_vline(fig, x=0, line_dash="dash", line_color="black", annotation_text="margin=0")
+    apply_layout(
+        fig,
         title="AdaBoost margin distribution at increasing rounds — §10.4",
         xaxis_title="margin  y·F(x) / Σ|αₘ|",
         yaxis_title="count",
         barmode="overlay",
-        template="plotly_white",
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
+        legend="horizontal",
     )
     return fig
 
@@ -266,13 +266,13 @@ def gbm_n_estimators_figure(
 
     fig = line_chart(rounds, train_mse, mode="lines", name="Train MSE", color="steelblue")
     line_chart(rounds, test_mse, mode="lines", name="Test MSE", color="tomato", fig=fig)
-    fig.add_vline(x=best_round, line_dash="dash", line_color="grey", annotation_text=f"best M={best_round}")
-    fig.update_layout(
+    add_vline(fig, x=best_round, line_dash="dash", line_color="grey", annotation_text=f"best M={best_round}")
+    apply_layout(
+        fig,
         title=f"GBM MSE vs rounds (nu={learning_rate}, depth={max_depth}) — §10.9",
         xaxis_title="number of trees M",
         yaxis_title="MSE (log₁p-space)",
-        template="plotly_white",
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
+        legend="horizontal",
     )
     return fig, {"best_round": best_round, "best_test_mse": min(test_mse)}
 
@@ -331,12 +331,12 @@ def gbm_shrinkage_figure(
     fig = _shrinkage_curve(None, learning_rates[0], colors[0])
     for i, lr in enumerate(learning_rates[1:], start=1):
         fig = _shrinkage_curve(fig, lr, colors[i % len(colors)])
-    fig.update_layout(
+    apply_layout(
+        fig,
         title=f"GBM shrinkage: test MSE vs rounds for different nu (depth={max_depth}) — §10.12",
         xaxis_title="number of trees M",
         yaxis_title="test MSE (log₁p-space)",
-        template="plotly_white",
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
+        legend="horizontal",
     )
     return fig
 
@@ -386,11 +386,11 @@ def gbm_feature_importance_figure(
             marker_color="steelblue",
         )
     )
-    fig.update_layout(
+    apply_layout(
+        fig,
         title=f"GBM variable importance (M={n_estimators}, nu={learning_rate}, depth={max_depth}) — §10.13",
         xaxis_title="feature",
         yaxis_title="relative importance",
-        template="plotly_white",
     )
     top_feat = sorted_feats[0]
     return fig, {"top_feature": top_feat, "top_importance": float(sorted_imp[0])}

@@ -13,6 +13,8 @@ from sklearn.ensemble import GradientBoostingClassifier, RandomForestClassifier
 from sklearn.model_selection import cross_val_score
 from sklearn.tree import DecisionTreeClassifier
 
+from maths_self_study.viz.graphs import apply_layout, bar_chart, scatter_chart
+
 
 def find_project_root(max_up: int = 12) -> Path:
     p = Path.cwd().resolve()
@@ -140,12 +142,12 @@ def rf_oob_figure(
             "min_oob_error": min(oob_errors),
         }
 
-    fig.update_layout(
+    apply_layout(
+        fig,
         title="Random forest OOB error vs number of trees — §15.3.1",
         xaxis_title="number of trees B",
         yaxis_title="OOB error rate",
-        template="plotly_white",
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
+        legend="horizontal",
     )
     return fig, summary
 
@@ -212,11 +214,11 @@ def rf_variable_importance_figure(
             name="MDI importance",
         )
     )
-    fig.update_layout(
+    apply_layout(
+        fig,
         title=f"Random forest variable importance (MDI, B={n_estimators}) — §15.3.2",
         xaxis_title="feature",
         yaxis_title="mean decrease in impurity",
-        template="plotly_white",
     )
     return fig, {
         "importances": dict(zip(sorted_feats, sorted_imp.tolist(), strict=False)),
@@ -314,13 +316,13 @@ def rf_max_features_figure(
             marker={"color": "tomato", "size": 10, "symbol": "diamond"},
         )
     )
-    fig.update_layout(
+    apply_layout(
+        fig,
         title=f"max_features: CV and OOB accuracy (B={n_estimators}) — §15.4.1",
         xaxis_title="max_features (m)",
         yaxis_title="accuracy",
         yaxis={"range": [max(0.0, min(cv_accs) - 0.05), 1.0]},
-        template="plotly_white",
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
+        legend="horizontal",
     )
     return fig, {
         "best_max_features": labels[best_idx],
@@ -396,12 +398,12 @@ def rf_comparison_figure(
             name=f"{n_cv}-fold CV accuracy",
         )
     )
-    fig.update_layout(
+    apply_layout(
+        fig,
         title=f"Ensemble comparison: {n_cv}-fold CV accuracy — §15.3",
         xaxis_title="method",
         yaxis_title="CV accuracy",
         yaxis={"range": [max(0.0, min(mean_accs) - 0.05), 1.0]},
-        template="plotly_white",
     )
     return fig, {
         "best_method": names[best_idx],
@@ -473,32 +475,30 @@ def rf_tree_depth_figure(
 
     best_idx = int(np.argmax(cv_accs))
 
-    fig = go.Figure()
-    fig.add_trace(
-        go.Bar(
-            x=labels,
-            y=cv_accs,
-            error_y={"type": "data", "array": cv_stds, "visible": True},
-            name=f"{n_cv}-fold CV accuracy",
-            marker_color="steelblue",
-        )
+    fig = bar_chart(
+        labels,
+        cv_accs,
+        name=f"{n_cv}-fold CV accuracy",
+        color="steelblue",
+        error_y={"type": "data", "array": cv_stds, "visible": True},
     )
-    fig.add_trace(
-        go.Scatter(
-            x=labels,
-            y=oob_accs,
-            mode="markers",
-            name="OOB accuracy",
-            marker={"color": "tomato", "size": 10, "symbol": "diamond"},
-        )
+    scatter_chart(
+        labels,
+        oob_accs,
+        mode="markers",
+        name="OOB accuracy",
+        color="tomato",
+        marker_size=10,
+        symbol="diamond",
+        fig=fig,
     )
-    fig.update_layout(
+    apply_layout(
+        fig,
         title=f"Tree depth: CV and OOB accuracy (B={n_estimators}, m=√p) — §15.3",
         xaxis_title="max_depth",
         yaxis_title="accuracy",
         yaxis={"range": [max(0.0, min(cv_accs) - 0.05), 1.0]},
-        template="plotly_white",
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
+        legend="horizontal",
     )
     return fig, {
         "best_depth": labels[best_idx],

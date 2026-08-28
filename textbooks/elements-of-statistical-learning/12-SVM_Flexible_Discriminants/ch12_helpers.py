@@ -15,6 +15,8 @@ from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import PolynomialFeatures, StandardScaler
 from sklearn.svm import SVC
 
+from maths_self_study.viz.graphs import add_vline, apply_layout, line_chart
+
 
 def find_project_root(max_up: int = 12) -> Path:
     p = Path.cwd().resolve()
@@ -125,40 +127,38 @@ def svm_cost_figure(
     log_C = [float(np.log10(c)) for c in C_values]
     best_idx = int(np.argmax(mean_accs))
 
-    fig = go.Figure()
-    fig.add_trace(
-        go.Scatter(
-            x=log_C,
-            y=mean_accs,
-            error_y={"type": "data", "array": std_accs, "visible": True},
-            mode="lines+markers",
-            name=f"CV accuracy (kernel={kernel})",
-            line={"color": "steelblue"},
-        )
+    fig = line_chart(
+        log_C,
+        mean_accs,
+        mode="lines+markers",
+        name=f"CV accuracy (kernel={kernel})",
+        color="steelblue",
+        error_y={"type": "data", "array": std_accs, "visible": True},
     )
-    fig.add_trace(
-        go.Scatter(
-            x=log_C,
-            y=[n / (len(X_tr) * 0.8) for n in n_svs],
-            mode="lines+markers",
-            name="fraction support vectors",
-            line={"color": "tomato", "dash": "dot"},
-            yaxis="y2",
-        )
+    line_chart(
+        log_C,
+        [n / (len(X_tr) * 0.8) for n in n_svs],
+        mode="lines+markers",
+        name="fraction support vectors",
+        color="tomato",
+        line_dash="dot",
+        yaxis="y2",
+        fig=fig,
     )
-    fig.add_vline(
+    add_vline(
+        fig,
         x=np.log10(C_values[best_idx]),
         line_dash="dash",
         line_color="grey",
         annotation_text=f"best C={C_values[best_idx]}",
     )
-    fig.update_layout(
+    apply_layout(
+        fig,
         title=f"SVM cost parameter C vs accuracy (kernel={kernel}) — §12.2",
         xaxis_title="log₁₀(C)",
         yaxis_title="CV accuracy",
         yaxis2={"title": "fraction support vectors", "overlaying": "y", "side": "right", "showgrid": False},
-        template="plotly_white",
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
+        legend="horizontal",
     )
     return fig, {
         "best_C": C_values[best_idx],
@@ -227,12 +227,12 @@ def svm_kernel_figure(
             name=f"{n_cv}-fold CV accuracy (C={C})",
         )
     )
-    fig.update_layout(
+    apply_layout(
+        fig,
         title=f"SVM kernel comparison: {n_cv}-fold CV accuracy (C={C}) — §12.3",
         xaxis_title="kernel",
         yaxis_title="CV accuracy",
         yaxis={"range": [max(0.0, min(mean_accs) - 0.05), 1.0]},
-        template="plotly_white",
     )
     return fig, {
         "best_kernel": kernels[best_idx],
@@ -304,12 +304,12 @@ def fda_vs_lda_figure(
             name=f"{n_cv}-fold CV accuracy (±1 SD)",
         )
     )
-    fig.update_layout(
+    apply_layout(
+        fig,
         title=f"FDA vs LDA: {n_cv}-fold CV accuracy by polynomial degree — §12.5",
         xaxis_title="method",
         yaxis_title="CV accuracy",
         yaxis={"range": [max(0.0, min(mean_accs) - 0.05), 1.0]},
-        template="plotly_white",
     )
     return fig, {
         "best_model": labels[best_idx],
@@ -382,12 +382,12 @@ def pda_shrinkage_figure(
         annotation_text="MLE baseline",
         annotation_position="right",
     )
-    fig.update_layout(
+    apply_layout(
+        fig,
         title=f"PDA covariance shrinkage: {n_cv}-fold CV accuracy — §12.6",
         xaxis_title="shrinkage parameter",
         yaxis_title="CV accuracy",
         yaxis={"range": [max(0.0, min(mean_accs) - 0.05), 1.0]},
-        template="plotly_white",
     )
     return fig, {
         "best_shrinkage": labels[best_idx],
@@ -460,12 +460,12 @@ def method_comparison_figure(
             name=f"{n_cv}-fold CV accuracy (±1 SD)",
         )
     )
-    fig.update_layout(
+    apply_layout(
+        fig,
         title=f"Method comparison: {n_cv}-fold CV accuracy — §12.4-12.6",
         xaxis_title="method",
         yaxis_title="CV accuracy",
         yaxis={"range": [max(0.0, min(mean_accs) - 0.05), 1.0]},
-        template="plotly_white",
     )
     return fig, {
         "best_method": names[best_idx],

@@ -16,7 +16,7 @@ from sklearn.neighbors import KNeighborsRegressor
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 
-from maths_self_study.viz.graphs import line_chart, scatter_chart
+from maths_self_study.viz.graphs import apply_layout, line_chart, scatter_chart
 
 
 def find_project_root(max_up: int = 12) -> Path:
@@ -117,12 +117,12 @@ def knn_train_test_mse_figure(
 
     fig = line_chart(ks, train_mse, name="train MSE", mode="lines+markers")
     line_chart(ks, test_mse, name="test MSE", mode="lines+markers", fig=fig)
-    fig.update_layout(
+    apply_layout(
+        fig,
         title="$k$-NN: train vs test MSE",
         xaxis_title="k (neighbors)",
         yaxis_title="MSE",
-        template="plotly_white",
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
+        legend="horizontal",
     )
 
     k_best = int(ks[int(np.argmin(test_mse))])
@@ -150,12 +150,12 @@ def plot_predicted_vs_actual(
 
     fig = scatter_chart(y_true, y_pred, name=label, marker_size=5, marker_opacity=0.5)
     line_chart([lo, hi], [lo, hi], mode="lines", name="perfect fit", line_dash="dash", color="black", fig=fig)
-    fig.update_layout(
+    apply_layout(
+        fig,
         title=title,
         xaxis_title="actual",
         yaxis_title="predicted",
-        template="plotly_white",
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
+        legend="horizontal",
     )
     return fig
 
@@ -191,10 +191,5 @@ def linear_vs_knn_single_feature_figure(
     fig = scatter_chart(x1[order], y_train.iloc[order], name="train", marker_size=4, marker_opacity=0.35)
     line_chart(grid.ravel(), lin1.predict(grid), mode="lines", name="linear", fig=fig)
     line_chart(grid.ravel(), knn1.predict(grid), mode="lines", name=f"k-NN (k={k_neighbors})", fig=fig)
-    fig.update_layout(
-        title=f"Response vs {col}",
-        xaxis_title=col,
-        yaxis_title=target_name,
-        template="plotly_white",
-    )
+    apply_layout(fig, title=f"Response vs {col}", xaxis_title=col, yaxis_title=target_name)
     return fig, col

@@ -15,7 +15,7 @@ from sklearn.model_selection import cross_val_score, train_test_split
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import PolynomialFeatures, StandardScaler
 
-from maths_self_study.viz.graphs import line_chart
+from maths_self_study.viz.graphs import add_vline, apply_layout, line_chart
 
 
 def find_project_root(max_up: int = 12) -> Path:
@@ -110,13 +110,13 @@ def train_test_error_figure(
         mode="lines+markers",
     )
     line_chart(degrees, test_mse, name="Test MSE", mode="lines+markers", fig=fig)
-    fig.add_vline(x=best_d, line_dash="dash", line_color="grey", annotation_text=f"best d={best_d}")
-    fig.update_layout(
+    add_vline(fig, x=best_d, line_dash="dash", line_color="grey", annotation_text=f"best d={best_d}")
+    apply_layout(
+        fig,
         title=f"Train vs test error on `{feat}` (§7.2)",
         xaxis_title="polynomial degree (model complexity)",
         yaxis_title="MSE (log₁p-space)",
-        template="plotly_white",
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
+        legend="horizontal",
     )
     return fig
 
@@ -183,13 +183,13 @@ def bias_variance_decomposition_figure(
     )
     line_chart(degrees, total_list, name="Total = Bias²+Var+σ²", mode="lines+markers", fig=fig)
     best_d = degrees[int(np.argmin(total_list))]
-    fig.add_vline(x=best_d, line_dash="dash", line_color="grey", annotation_text=f"best d={best_d}")
-    fig.update_layout(
+    add_vline(fig, x=best_d, line_dash="dash", line_color="grey", annotation_text=f"best d={best_d}")
+    apply_layout(
+        fig,
         title=f"Bias-variance decomposition: y=sin(2πx)+ε, n_train={n_train}, n_boot={n_boot} (§7.3)",
         xaxis_title="polynomial degree",
         yaxis_title="expected squared error",
-        template="plotly_white",
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
+        legend="horizontal",
     )
     return fig
 
@@ -248,12 +248,12 @@ def optimism_figure(
         line_dash="dot",
         fig=fig,
     )
-    fig.update_layout(
+    apply_layout(
+        fig,
         title=f"Training error optimism on `{feat}` (§7.4, bootstrap estimation)",
         xaxis_title="polynomial degree",
         yaxis_title="MSE (log₁p-space)",
-        template="plotly_white",
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
+        legend="horizontal",
     )
     return fig
 
@@ -315,15 +315,15 @@ def model_selection_criteria_figure(
     fig = line_chart(degrees, _norm(cp_list), name="Cₚ (normalised)", mode="lines+markers")
     line_chart(degrees, _norm(aic_list), name="AIC (normalised)", mode="lines+markers", fig=fig)
     line_chart(degrees, _norm(bic_list), name="BIC (normalised)", mode="lines+markers", fig=fig)
-    fig.add_vline(x=best_cp, line_dash="dot", line_color="steelblue", annotation_text=f"Cₚ: d={best_cp}")
-    fig.add_vline(x=best_aic, line_dash="dot", line_color="orange", annotation_text=f"AIC: d={best_aic}")
-    fig.add_vline(x=best_bic, line_dash="dot", line_color="green", annotation_text=f"BIC: d={best_bic}")
-    fig.update_layout(
+    add_vline(fig, x=best_cp, line_dash="dot", line_color="steelblue", annotation_text=f"Cₚ: d={best_cp}")
+    add_vline(fig, x=best_aic, line_dash="dot", line_color="orange", annotation_text=f"AIC: d={best_aic}")
+    add_vline(fig, x=best_bic, line_dash="dot", line_color="green", annotation_text=f"BIC: d={best_bic}")
+    apply_layout(
+        fig,
         title=f"Model selection criteria on `{feat}` (§7.5-7.7)",
         xaxis_title="polynomial degree",
         yaxis_title="criterion (min-max normalised)",
-        template="plotly_white",
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
+        legend="horizontal",
     )
     return fig, {"best_cp_d": best_cp, "best_aic_d": best_aic, "best_bic_d": best_bic}
 
@@ -389,12 +389,12 @@ def kfold_cv_figure(
         fig=fig,
     )
 
-    fig.update_layout(
+    apply_layout(
+        fig,
         title=f"K-fold cross-validation on `{feat}` (§7.10.1)",
         xaxis_title="polynomial degree",
         yaxis_title="MSE (log₁p-space)",
-        template="plotly_white",
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
+        legend="horizontal",
     )
     return fig, {"best_degrees": best_degrees}
 
@@ -456,12 +456,12 @@ def bootstrap_632_figure(
     fig = line_chart(degrees, train_mse_list, name="Train MSE", mode="lines+markers")
     line_chart(degrees, boot_oob_list, name="Bootstrap Err⁽¹⁾ (OOB)", mode="lines+markers", fig=fig)
     line_chart(degrees, boot_632_list, name=".632 Bootstrap", mode="lines+markers", fig=fig)
-    fig.add_vline(x=best_d, line_dash="dash", line_color="grey", annotation_text=f".632 best d={best_d}")
-    fig.update_layout(
+    add_vline(fig, x=best_d, line_dash="dash", line_color="grey", annotation_text=f".632 best d={best_d}")
+    apply_layout(
+        fig,
         title=f"Bootstrap .632 estimator on `{feat}` (§7.11, n_boot={n_boot})",
         xaxis_title="polynomial degree",
         yaxis_title="MSE (log₁p-space)",
-        template="plotly_white",
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
+        legend="horizontal",
     )
     return fig, {"best_632_d": best_d, "min_632": float(np.nanmin(boot_632_list))}

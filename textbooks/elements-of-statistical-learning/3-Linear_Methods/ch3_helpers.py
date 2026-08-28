@@ -16,7 +16,7 @@ from sklearn.metrics import mean_squared_error, r2_score
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
-from maths_self_study.viz.graphs import bar_chart, line_chart
+from maths_self_study.viz.graphs import add_vline, apply_layout, bar_chart, line_chart
 
 
 def find_project_root(max_up: int = 12) -> Path:
@@ -123,7 +123,7 @@ def subset_selection_figure(
         title="Forward stepwise selection: MSE vs number of features",
         xaxis_title="# features",
         yaxis_title="MSE",
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
+        legend="horizontal",
     )
     line_chart(n, test_mse, name="test MSE", mode="lines+markers", fig=fig)
     return fig, selected
@@ -160,10 +160,11 @@ def ridge_alpha_path_figure(
         xaxis_title="alpha (log scale)",
         yaxis_title="MSE",
         xaxis_type="log",
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
+        legend="horizontal",
     )
     line_chart(alphas, test_mse, name="test MSE", fig=fig)
-    fig.add_vline(
+    add_vline(
+        fig,
         x=float(alphas[best_idx]),
         line_dash="dash",
         line_color="grey",
@@ -185,12 +186,12 @@ def ridge_coef_figure(
     fig = line_chart(alphas, coefs[:, 0], mode="lines", name=feat_names[0])
     for i, name in enumerate(feat_names[1:], start=1):
         line_chart(alphas, coefs[:, i], mode="lines", name=name, fig=fig)
-    fig.update_layout(
+    apply_layout(
+        fig,
         title="Ridge: coefficient shrinkage paths",
         xaxis_title="alpha (log scale)",
         xaxis_type="log",
         yaxis_title="coefficient",
-        template="plotly_white",
     )
     return fig
 
@@ -210,11 +211,11 @@ def lasso_coef_path_figure(
     fig = line_chart(np.log10(alphas_path + 1e-10), coefs_path[0], mode="lines", name=feat_names[0])
     for i, name in enumerate(feat_names[1:], start=1):
         line_chart(np.log10(alphas_path + 1e-10), coefs_path[i], mode="lines", name=name, fig=fig)
-    fig.update_layout(
+    apply_layout(
+        fig,
         title="Lasso: coefficient paths (features entering as alpha decreases)",
         xaxis_title="log10(alpha)",
         yaxis_title="coefficient",
-        template="plotly_white",
     )
     return fig
 
@@ -240,19 +241,20 @@ def lasso_alpha_path_figure(
     best_idx = int(np.argmin(test_mse))
     fig = line_chart(alphas, train_mse, mode="lines", name="train MSE")
     line_chart(alphas, test_mse, mode="lines", name="test MSE", fig=fig)
-    fig.add_vline(
+    add_vline(
+        fig,
         x=float(alphas[best_idx]),
         line_dash="dash",
         line_color="grey",
         annotation_text=f"best alpha={alphas[best_idx]:.1f}",
     )
-    fig.update_layout(
+    apply_layout(
+        fig,
         title="Lasso: MSE vs regularisation strength (alpha)",
         xaxis_title="alpha (log scale)",
         xaxis_type="log",
         yaxis_title="MSE",
-        template="plotly_white",
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
+        legend="horizontal",
     )
     return fig, {
         "best_alpha": float(alphas[best_idx]),

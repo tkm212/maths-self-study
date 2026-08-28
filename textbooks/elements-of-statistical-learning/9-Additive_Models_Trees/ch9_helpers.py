@@ -16,7 +16,7 @@ from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import SplineTransformer
 from sklearn.tree import DecisionTreeClassifier, DecisionTreeRegressor
 
-from maths_self_study.viz.graphs import line_chart
+from maths_self_study.viz.graphs import add_vline, apply_layout, line_chart
 
 
 def find_project_root(max_up: int = 12) -> Path:
@@ -159,12 +159,12 @@ def gam_partial_plots_figure(
     pred = alpha + f_hats.sum(axis=1)
     test_mse = float(mean_squared_error(y_log, pred))
 
-    fig.update_layout(
+    apply_layout(
+        fig,
         title=f"GAM partial effects (backfitting, n_knots={n_knots}) — §9.1",
         xaxis_title="log₁p(feature)",
         yaxis_title="partial effect f_j(x_j)",
-        template="plotly_white",
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
+        legend="horizontal",
     )
     return fig, {
         "final_rss": rss_trace[-1] if rss_trace else float("nan"),
@@ -223,11 +223,11 @@ def gam_vs_linear_figure(
             marker_color=["grey", "steelblue", "tomato", "green"],
         )
     )
-    fig.update_layout(
+    apply_layout(
+        fig,
         title=f"5-fold CV MSE: linear vs additive spline models — §9.1 (features: {feats})",
         xaxis_title="model",
         yaxis_title="CV MSE (log₁p-space)",
-        template="plotly_white",
     )
     best = all_labels[int(np.argmin(all_mses))]
     return fig, {"best_model": best, "linear_mse": linear_mse, "best_mse": min(all_mses)}
@@ -275,13 +275,13 @@ def tree_depth_error_figure(
     best_d = depths[int(np.argmin(test_errs))]
     fig = line_chart(depths, train_errs, mode="lines+markers", name="Train MSE")
     line_chart(depths, test_errs, mode="lines+markers", name="Test MSE", fig=fig)
-    fig.add_vline(x=best_d, line_dash="dash", line_color="grey", annotation_text=f"best depth={best_d}")
-    fig.update_layout(
+    add_vline(fig, x=best_d, line_dash="dash", line_color="grey", annotation_text=f"best depth={best_d}")
+    apply_layout(
+        fig,
         title=f"CART tree depth vs train/test error — §9.2 (features: {feats[:3]}…)",
         xaxis_title="tree max_depth",
         yaxis_title="MSE (log₁p-space)",
-        template="plotly_white",
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
+        legend="horizontal",
     )
     return fig, {"best_depth": best_d, "best_test_mse": min(test_errs)}
 

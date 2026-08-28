@@ -15,6 +15,8 @@ from sklearn.model_selection import cross_val_score, train_test_split
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.preprocessing import StandardScaler
 
+from maths_self_study.viz.graphs import add_vline, apply_layout, line_chart, train_test_chart
+
 
 def find_project_root(max_up: int = 12) -> Path:
     p = Path.cwd().resolve()
@@ -117,28 +119,26 @@ def knn_k_selection_figure(
 
     best_idx = int(np.argmax(mean_accs))
 
-    fig = go.Figure()
-    fig.add_trace(
-        go.Scatter(
-            x=k_values,
-            y=mean_accs,
-            error_y={"type": "data", "array": std_accs, "visible": True},
-            mode="lines+markers",
-            name=f"{n_cv}-fold CV accuracy",
-            line={"color": "steelblue"},
-        )
+    fig = line_chart(
+        k_values,
+        mean_accs,
+        mode="lines+markers",
+        name=f"{n_cv}-fold CV accuracy",
+        color="steelblue",
+        error_y={"type": "data", "array": std_accs, "visible": True},
     )
-    fig.add_vline(
+    add_vline(
+        fig,
         x=k_values[best_idx],
         line_dash="dash",
         line_color="grey",
         annotation_text=f"best k={k_values[best_idx]}",
     )
-    fig.update_layout(
+    apply_layout(
+        fig,
         title=f"KNN: k vs {n_cv}-fold CV accuracy — §13.3",
         xaxis_title="k (number of neighbours)",
         yaxis_title="CV accuracy",
-        template="plotly_white",
     )
     return fig, {
         "best_k": k_values[best_idx],
@@ -202,12 +202,12 @@ def knn_metric_figure(
             name=f"k={k}, {n_cv}-fold CV accuracy",
         )
     )
-    fig.update_layout(
+    apply_layout(
+        fig,
         title=f"KNN metric comparison: {n_cv}-fold CV accuracy (k={k}) — §13.3",
         xaxis_title="distance metric",
         yaxis_title="CV accuracy",
         yaxis={"range": [max(0.0, min(mean_accs) - 0.05), 1.0]},
-        template="plotly_white",
     )
     return fig, {
         "best_metric": metrics[best_idx],
@@ -308,17 +308,18 @@ def kmeans_prototype_figure(
             line={"color": "steelblue"},
         )
     )
-    fig.add_vline(
+    add_vline(
+        fig,
         x=R_values[best_idx],
         line_dash="dash",
         line_color="grey",
         annotation_text=f"best R={R_values[best_idx]}",
     )
-    fig.update_layout(
+    apply_layout(
+        fig,
         title=f"K-means prototypes: R per class vs {n_cv}-fold CV accuracy — §13.2",
         xaxis_title="R (prototypes per class)",
         yaxis_title="CV accuracy",
-        template="plotly_white",
     )
     return fig, {
         "best_R": R_values[best_idx],
@@ -426,12 +427,12 @@ def lvq_vs_knn_figure(
             line={"color": "tomato", "dash": "dot"},
         )
     )
-    fig.update_layout(
+    apply_layout(
+        fig,
         title=f"Prototypes vs KNN: {n_cv}-fold CV accuracy — §13.2-13.3",
         xaxis_title="method / complexity",
         yaxis_title="CV accuracy",
-        template="plotly_white",
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
+        legend="horizontal",
     )
     return fig, {
         "best_knn": max(knn_accs),
@@ -485,31 +486,16 @@ def knn_train_test_figure(
 
     best_k = k_values[int(np.argmin(test_errors))]
 
-    fig = go.Figure()
-    fig.add_trace(
-        go.Scatter(
-            x=k_values,
-            y=train_errors,
-            mode="lines",
-            name="Train error",
-            line={"color": "steelblue"},
-        )
-    )
-    fig.add_trace(
-        go.Scatter(
-            x=k_values,
-            y=test_errors,
-            mode="lines",
-            name="Test error",
-            line={"color": "tomato"},
-        )
-    )
-    fig.add_vline(x=best_k, line_dash="dash", line_color="grey", annotation_text=f"best k={best_k}")
-    fig.update_layout(
+    fig = train_test_chart(
+        k_values,
+        train_errors,
+        test_errors,
+        train_name="Train error",
+        test_name="Test error",
+        mode="lines",
         title="KNN train vs test error — §13.3",
         xaxis_title="k (number of neighbours)",
         yaxis_title="error rate",
-        template="plotly_white",
-        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
     )
+    add_vline(fig, x=best_k, line_dash="dash", line_color="grey", annotation_text=f"best k={best_k}")
     return fig

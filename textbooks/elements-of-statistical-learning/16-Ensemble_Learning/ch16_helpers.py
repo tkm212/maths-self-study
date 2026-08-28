@@ -167,7 +167,6 @@ def ensemble_comparison_figure(
         xaxis_title="method",
         yaxis_title="accuracy",
         yaxis={"range": [max(0.0, min(mean_accs) - 0.05), 1.0]},
-        template="plotly_white",
     )
     return fig, {
         "best_method": names[best_idx],
@@ -247,7 +246,6 @@ def meta_learner_sweep_figure(
         xaxis_title="final estimator",
         yaxis_title="accuracy",
         yaxis={"range": [max(0.0, min(means) - 0.05), 1.0]},
-        template="plotly_white",
     )
     return fig, {
         "best_meta": labels[best_idx],
@@ -426,7 +424,6 @@ def regression_stacking_figure(
         title=f"Regression ensembles: voting vs stacking — §16.2 (TMDB log revenue, {n_cv}-fold CV R²)",
         xaxis_title="method",
         yaxis_title="R² (per-fold mean)",
-        template="plotly_white",
         yaxis={"range": [min(0.0, min(r2_vals) - 0.05), min(1.0, max(r2_vals) + 0.1)]},
     )
     return fig, {
@@ -516,7 +513,6 @@ def tree_bagging_rf_figure(
         xaxis_title="model",
         yaxis_title="accuracy",
         yaxis={"range": [max(0.0, min(means) - 0.08), 1.0]},
-        template="plotly_white",
     )
     return fig, {
         "best": names[best_idx],
@@ -568,7 +564,6 @@ def oob_error_vs_n_trees_figure(
         title="Random forest: OOB error vs number of trees (bagging/RF perspective) — §16.1",
         xaxis_title="number of trees (B)",
         yaxis_title="1 - OOB score (classification)",
-        template="plotly_white",
     )
     return fig, {"n_list": n_list, "final_oob_1minus": oob_err[-1] if oob_err else 0.0}
 
@@ -642,7 +637,6 @@ def stacking_meta_learned_weights_figure(
         title="Stacking: logistic meta-learner weights on P(Y=1 | base) — §16.2 (OOF meta-features)",
         xaxis_title="level-0 model (positive class prob. as feature)",
         yaxis_title="meta-coefficient (log-odds scale)",
-        template="plotly_white",
     )
     return fig, {
         "base_labels": base_labels,

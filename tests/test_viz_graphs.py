@@ -5,12 +5,17 @@ from __future__ import annotations
 import plotly.graph_objects as go
 
 from maths_self_study.viz.graphs import (
+    add_vline,
     bar_chart,
+    base_layout,
     contour_chart,
+    decision_boundary_chart,
     heatmap_chart,
     histogram_chart,
     line_chart,
+    scatter3d_chart,
     scatter_chart,
+    train_test_chart,
 )
 
 
@@ -64,3 +69,38 @@ def test_line_chart_adds_to_existing_figure() -> None:
     line_chart([1, 2], [2, 3], name="second", color="#dc2626", fig=fig)
     assert len(fig.data) == 2
     assert fig.data[1].name == "second"
+
+
+def test_base_layout_horizontal_legend() -> None:
+    layout = base_layout(title="Demo", legend="horizontal")
+    assert layout["legend"]["orientation"] == "h"
+    assert layout["template"] == "plotly_white"
+
+
+def test_train_test_chart_dual_series() -> None:
+    fig = train_test_chart([1, 2, 3], [0.1, 0.2, 0.3], [0.2, 0.15, 0.25], title="Curve")
+    assert len(fig.data) == 2
+    assert fig.layout.legend.orientation == "h"
+
+
+def test_add_vline_on_figure() -> None:
+    fig = line_chart([1, 2], [1, 2])
+    add_vline(fig, x=1.5, annotation_text="cut")
+    assert isinstance(fig, go.Figure)
+
+
+def test_decision_boundary_chart_contour_and_scatter() -> None:
+    fig = decision_boundary_chart(
+        [0, 1],
+        [0, 1],
+        [[0, 1], [1, 0]],
+        points_by_class=[([0.1], [0.2], "A", "#2563eb"), ([0.8], [0.7], "B", "#dc2626")],
+        title="Boundary",
+    )
+    assert fig.data[0].type == "contour"
+    assert len(fig.data) == 3
+
+
+def test_scatter3d_chart_returns_scatter3d_trace() -> None:
+    fig = scatter3d_chart([0, 1], [0, 1], [0, 1], name="pts")
+    assert fig.data[0].type == "scatter3d"
