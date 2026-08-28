@@ -399,14 +399,16 @@ def test_plot_sgd_paths_builds_figure():
 def test_configure_logging():
     import logging
 
-    from maths_self_study.dashboards.logging import configure, configure_for_run
+    from maths_self_study.dashboards.logging import LOGGER, configure, configure_for_run
 
     configure(level=logging.WARNING, force=True)
     assert logging.getLogger().level == logging.WARNING
     configure_for_run(debug=True)
-    assert logging.getLogger().level == logging.DEBUG
-    configure_for_run(debug=False)
     assert logging.getLogger().level == logging.INFO
+    assert LOGGER.level == logging.DEBUG
+    assert logging.getLogger("watchdog").level == logging.WARNING
+    configure_for_run(debug=False)
+    assert LOGGER.level == logging.INFO
 
 
 def test_coerce_float_and_vector():
