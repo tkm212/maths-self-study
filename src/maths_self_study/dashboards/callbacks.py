@@ -11,6 +11,9 @@ from maths_self_study.dashboards.utils import clamp_prob, complement_prob, redis
 
 log = logging.getLogger(__name__)
 
+# Re-render static pages when the user switches tabs (no filter controls).
+TAB_TRIGGER = Input("page-tabs", "value")
+
 
 def register_complement_pair(app: Dash, id0: str, id1: str) -> None:
     """Keep two dashboard probability inputs summing to 1."""

@@ -36,6 +36,8 @@ _CH2_DASHBOARD = _REPO_ROOT / "textbooks/deep-learning/2-Linear_Algebra/dashboar
 _CH3_DASHBOARD = _REPO_ROOT / "textbooks/deep-learning/3-Probability_Information_Theory/dashboard.py"
 _CH4_DASHBOARD = _REPO_ROOT / "textbooks/deep-learning/4-Numerical_Computation/dashboard.py"
 _CH5_DASHBOARD = _REPO_ROOT / "textbooks/deep-learning/5-Machine_Learning_Basics/dashboard.py"
+_ESL_CH2_DASHBOARD = _REPO_ROOT / "textbooks/elements-of-statistical-learning/2-Supervised_Learning/dashboard.py"
+_ESL_CH4_DASHBOARD = _REPO_ROOT / "textbooks/elements-of-statistical-learning/4-Linear_Methods_Classification/dashboard.py"
 
 
 def _load_dashboard_module(path: Path):
@@ -109,6 +111,35 @@ def test_ch5_dashboard_app_layout():
     app = ch5.create_app()
     assert app.layout is not None
     assert len(ch5.PAGES) == 6
+
+
+def test_esl_ch2_dashboard_app_layout():
+    ch2 = _load_dashboard_module(_ESL_CH2_DASHBOARD)
+    app = ch2.create_app()
+    assert app.layout is not None
+    assert len(ch2.PAGES) == 2
+
+
+def test_esl_ch4_dashboard_app_layout():
+    ch4 = _load_dashboard_module(_ESL_CH4_DASHBOARD)
+    app = ch4.create_app()
+    assert app.layout is not None
+    assert len(ch4.PAGES) == 3
+
+
+def test_create_esl_dashboard():
+    from maths_self_study.demos.elements_of_statistical_learning.dashboard import create_esl_dashboard
+
+    ch4 = _load_dashboard_module(_ESL_CH4_DASHBOARD)
+    app = create_esl_dashboard(
+        "test_esl_dashboard",
+        chapter_number=4,
+        chapter_title="Linear Methods for Classification",
+        pages=[ch4.PAGES[0]],
+        default_page=ch4.PAGES[0].value,
+    )
+    assert app.layout is not None
+    assert app.title == "ESL Ch. 4 — Linear Methods for Classification"
 
 
 def test_capacity_page_updates():
