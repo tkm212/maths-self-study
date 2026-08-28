@@ -8,13 +8,21 @@ All notebooks live under the `textbooks/` directory and are organised by textboo
 
 Implementations based on **López de Prado, M. (2018). Advances in Financial Machine Learning. Wiley.**
 
-| Chapter | Topic | Files |
-|---------|-------|-------|
-| 2 | Financial Data Structures | `information_bars.py`, `cusum_pca_weights.py` |
-| 3 | Labeling | `labeling.py` |
-| 4 | Sample Weights | `sample_weights.py` |
+| Chapter | Topic | Entry point |
+|---------|-------|-------------|
+| 2 | Financial Data Structures | `2-Financial_Data_Structures/dashboard.py` |
+| 3 | Labeling | `3-Labeling/dashboard.py` |
+| 4 | Sample Weights | `4-Sample_Weights/dashboard.py` |
 
 Source path: `textbooks/financial-machine-learning/`
+
+Run a chapter dashboard from the repo root:
+
+```bash
+uv run python textbooks/financial-machine-learning/2-Financial_Data_Structures/dashboard.py
+```
+
+Requires BTC tick data at `inputs/btc_bid_ask_data.csv`. Generate bar outputs with the **Bar types** page (save enabled) or `scripts/generate_all_bars.py`.
 
 ### Chapter 2 — Financial Data Structures
 

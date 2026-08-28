@@ -87,6 +87,9 @@ extra-paths = [
     "textbooks/deep-learning/3-Probability_Information_Theory",
     "textbooks/deep-learning/4-Numerical_Computation",
     "textbooks/deep-learning/5-Machine_Learning_Basics",
+    "textbooks/financial-machine-learning/2-Financial_Data_Structures",
+    "textbooks/financial-machine-learning/3-Labeling",
+    "textbooks/financial-machine-learning/4-Sample_Weights",
 ]
 
 [tool.pytest.ini_options]
@@ -158,6 +161,8 @@ ignore = [
 "textbooks/**" = ["RUF001"]
 "src/maths_self_study/viz/textbooks/deep_learning/**/definitions.py" = ["RUF001"]
 "src/maths_self_study/viz/textbooks/deep_learning/**/theorems.py" = ["RUF001"]
+"src/maths_self_study/viz/textbooks/financial_machine_learning/**/definitions.py" = ["RUF001"]
+"src/maths_self_study/viz/textbooks/financial_machine_learning/**/theorems.py" = ["RUF001"]
 [tool.ruff.format]
 preview = true
 

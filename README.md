@@ -85,7 +85,7 @@ labels = triple_barrier_labels(bars, events, pt=0.02, sl=0.02, num_bars=20)
 Interactive Marimo notebooks, runnable locally with `uv`. See [textbooks/README.md](textbooks/README.md) and [docs/curriculum.md](docs/curriculum.md) for the full map.
 
 ```bash
-uv run marimo run textbooks/financial-machine-learning/2-Financial_Data_Structures/information_bars.py
+uv run python textbooks/financial-machine-learning/2-Financial_Data_Structures/dashboard.py
 ```
 
 To edit a notebook interactively:
