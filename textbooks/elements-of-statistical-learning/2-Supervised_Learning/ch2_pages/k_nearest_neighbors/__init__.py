@@ -5,6 +5,12 @@ from __future__ import annotations
 from ch2_pages.k_nearest_neighbors.callbacks import register_callbacks
 from ch2_pages.k_nearest_neighbors.filters import build_filters
 from maths_self_study.dashboards.page_factory import define_page
+from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch2.definitions import (
+    K_NEAREST_NEIGHBORS as KNN_DEFINITIONS,
+)
+from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch2.theorems import (
+    K_NEAREST_NEIGHBORS as KNN_THEOREMS,
+)
 
 KNearestNeighborsPage = define_page(
     label="k-NN",
@@ -16,6 +22,8 @@ KNearestNeighborsPage = define_page(
         "Small k hugs the data (low bias, high variance); large k over-smooths.",
         "Linear regression is global; k-NN is local and falls back to the mean in sparse regions.",
     ],
+    definitions=KNN_DEFINITIONS,
+    theorems=KNN_THEOREMS,
     build_filters=build_filters,
     register_callbacks=register_callbacks,
 )

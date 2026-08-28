@@ -5,6 +5,12 @@ from __future__ import annotations
 from ch5_pages.smoothing_splines.callbacks import register_callbacks
 from ch5_pages.smoothing_splines.filters import build_filters
 from maths_self_study.dashboards.page_factory import define_page
+from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch5.definitions import (
+    SMOOTHING_SPLINES as SMOOTHING_SPLINES_DEFINITIONS,
+)
+from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch5.theorems import (
+    SMOOTHING_SPLINES as SMOOTHING_SPLINES_THEOREMS,
+)
 
 SmoothingSplinesPage = define_page(
     label="Smoothing splines",
@@ -15,6 +21,8 @@ SmoothingSplinesPage = define_page(
         "Effective df = tr(Sλ) controls flexibility.",
         "GCV selects λ without a held-out set.",
     ],
+    definitions=SMOOTHING_SPLINES_DEFINITIONS,
+    theorems=SMOOTHING_SPLINES_THEOREMS,
     build_filters=build_filters,
     register_callbacks=register_callbacks,
 )
