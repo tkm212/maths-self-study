@@ -10,7 +10,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
-from maths_self_study.data import load_tmdb_revenue_classification, load_tmdb_revenue_regression
+from maths_self_study.data.tmdb import load_tmdb_revenue_classification, load_tmdb_revenue_regression
 
 __all__ = [
     "ensure_package_on_path",

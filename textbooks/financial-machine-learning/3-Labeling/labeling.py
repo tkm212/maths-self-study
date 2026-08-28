@@ -95,22 +95,14 @@ def _(mo):
 
 @app.cell
 def _():
-    import sys
-    from pathlib import Path
-
     import pandas as pd
     import plotly.graph_objects as go
 
-    ROOT = Path.cwd().resolve()
-    for _ in range(5):
-        if (ROOT / "pyproject.toml").exists():
-            break
-        ROOT = ROOT.parent
-    if str(ROOT) not in sys.path:
-        sys.path.insert(0, str(ROOT))
+    from maths_self_study.data.notebooks import init_paths
+    from maths_self_study.viz.graphs import apply_layout
 
-    OUTPUTS = ROOT / "outputs"
-    return OUTPUTS, go, pd
+    _root, _inputs, OUTPUTS = init_paths()
+    return OUTPUTS, apply_layout, go, pd
 
 
 @app.cell
@@ -167,7 +159,7 @@ def _(mo):
 
 
 @app.cell
-def _(bars, go, labels, pd):
+def _(apply_layout, bars, go, labels, pd):
     # Sample a short window with a few labeled events
     sample = labels.head(50)
     start = sample["datetime"].min()
@@ -195,15 +187,19 @@ def _(bars, go, labels, pd):
                 showlegend=False,
             )
         )
-    _fig.update_layout(
-        title="Triple-Barrier Labels on BTC 1s Bars (sample)", xaxis_title="Time", yaxis_title="Price", height=450
+    apply_layout(
+        _fig,
+        title="Triple-Barrier Labels on BTC 1s Bars (sample)",
+        xaxis_title="Time",
+        yaxis_title="Price",
+        height=450,
     )
     _fig.show()
     return
 
 
 @app.cell
-def _(go, labels):
+def _(apply_layout, go, labels):
     # Label distribution (full run)
     _fig = go.Figure(
         data=[
@@ -215,7 +211,8 @@ def _(go, labels):
             )
         ]
     )
-    _fig.update_layout(
+    apply_layout(
+        _fig,
         title="Triple-Barrier Label Distribution",
         xaxis_title="Label",
         yaxis_title="Count",

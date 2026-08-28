@@ -22,8 +22,7 @@ from maths_self_study.math.optimization import (
     softmax_stable,
     solve_perturbed,
 )
-from maths_self_study.viz.graphs import base_layout as _base_layout
-from maths_self_study.viz.graphs import contour_chart, line_chart, scatter_chart
+from maths_self_study.viz.graphs import apply_layout, contour_chart, line_chart, scatter_chart
 
 # --- Demo fixtures ---
 
@@ -115,15 +114,14 @@ def plot_conditioning_demo(kappa: float, *, delta: float = 1e-4) -> go.Figure:
             row=1,
             col=col,
         )
-    fig.update_layout(
-        **_base_layout(
-            title=(
-                f"A = [[1,1],[1,1+eps]] with eps={demo['epsilon']:.1e}, "
-                f"kappa={kappa_val:.1e}, amplification={amplification:.1e}x"
-            ),
-            barmode="group",
-            height=440,
-        )
+    apply_layout(
+        fig,
+        title=(
+            f"A = [[1,1],[1,1+eps]] with eps={demo['epsilon']:.1e}, "
+            f"kappa={kappa_val:.1e}, amplification={amplification:.1e}x"
+        ),
+        barmode="group",
+        height=440,
     )
     return fig
 
@@ -170,11 +168,10 @@ def plot_softmax_comparison(logits: np.ndarray, *, labels: np.ndarray | None = N
             row=1,
             col=col,
         )
-    fig.update_layout(
-        **_base_layout(
-            title=f"Softmax — log-sum-exp = {summary['log_sum_exp']:.2f} nats",
-            height=400,
-        )
+    apply_layout(
+        fig,
+        title=f"Softmax — log-sum-exp = {summary['log_sum_exp']:.2f} nats",
+        height=400,
     )
     return fig
 
@@ -243,13 +240,12 @@ def plot_gradient_descent_path(
         symbol="circle",
         fig=fig,
     )
-    fig.update_layout(
-        **_base_layout(
-            title=f"Gradient descent — eta = {learning_rate:.3g}, {n_steps} steps",
-            xaxis_title="x1",
-            yaxis_title="x2",
-            height=480,
-        )
+    apply_layout(
+        fig,
+        title=f"Gradient descent — eta = {learning_rate:.3g}, {n_steps} steps",
+        xaxis_title="x1",
+        yaxis_title="x2",
+        height=480,
     )
     return fig
 
@@ -300,13 +296,12 @@ def plot_newton_vs_gd(
         fig=fig,
     )
     kappa = condition_number(h)
-    fig.update_layout(
-        **_base_layout(
-            title=f"GD vs Newton — kappa(H) = {kappa:.1f}",
-            xaxis_title="x1",
-            yaxis_title="x2",
-            height=480,
-        )
+    apply_layout(
+        fig,
+        title=f"GD vs Newton — kappa(H) = {kappa:.1f}",
+        xaxis_title="x1",
+        yaxis_title="x2",
+        height=480,
     )
     return fig
 
@@ -344,13 +339,12 @@ def plot_least_squares_fit(
         )
     )
     rmse = float(np.sqrt(np.mean(residuals**2)))
-    fig.update_layout(
-        **_base_layout(
-            title=f"Linear least squares — w = [{weights[0]:.3f}, {weights[1]:.3f}], RMSE = {rmse:.3f}",
-            xaxis_title="x",
-            yaxis_title="y",
-            height=420,
-        )
+    apply_layout(
+        fig,
+        title=f"Linear least squares — w = [{weights[0]:.3f}, {weights[1]:.3f}], RMSE = {rmse:.3f}",
+        xaxis_title="x",
+        yaxis_title="y",
+        height=420,
     )
     return fig
 
@@ -449,16 +443,15 @@ def plot_kkt_halfspace(
         fig=fig,
     )
     status = "active" if summary["active"] else "inactive (λ = 0)"
-    fig.update_layout(
-        **_base_layout(
-            title=(
-                f"min ½xᵀHx s.t. aᵀx ≥ {b:g} — "
-                f"x* = ({summary['x1']:.3f}, {summary['x2']:.3f}), "
-                f"λ* = {summary['lambda']:.3f} ({status})"
-            ),
-            xaxis_title="x₁",
-            yaxis_title="x₂",
-            height=480,
-        )
+    apply_layout(
+        fig,
+        title=(
+            f"min ½xᵀHx s.t. aᵀx ≥ {b:g} — "
+            f"x* = ({summary['x1']:.3f}, {summary['x2']:.3f}), "
+            f"λ* = {summary['lambda']:.3f} ({status})"
+        ),
+        xaxis_title="x₁",
+        yaxis_title="x₂",
+        height=480,
     )
     return fig

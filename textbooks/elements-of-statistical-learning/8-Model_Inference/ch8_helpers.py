@@ -16,27 +16,11 @@ from sklearn.preprocessing import PolynomialFeatures, StandardScaler
 from sklearn.tree import DecisionTreeRegressor
 
 from maths_self_study.data import notebooks as _notebooks
+from maths_self_study.data.tmdb_features import log_feature_xy as _log_feature
 from maths_self_study.viz.graphs import apply_layout, histogram_chart, line_chart
 
 init_paths = _notebooks.init_paths
 load_tmdb_xy = _notebooks.load_tmdb_xy
-
-
-def _log_feature(
-    X: pd.DataFrame,
-    y: pd.Series,
-    feat: str,
-    *,
-    max_rows: int = 3000,
-    random_state: int = 0,
-) -> tuple[np.ndarray, np.ndarray]:
-    if len(X) > max_rows:
-        rng = np.random.default_rng(random_state)
-        idx = rng.choice(len(X), size=max_rows, replace=False)
-        X, y = X.iloc[idx], y.iloc[idx]
-    x = np.log1p(X[feat].values.astype(float)).reshape(-1, 1)
-    y_log = np.log1p(np.asarray(y, dtype=float))
-    return x, y_log
 
 
 # ---------------------------------------------------------------------------

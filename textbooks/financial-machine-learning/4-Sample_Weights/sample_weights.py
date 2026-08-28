@@ -77,25 +77,15 @@ def _(mo):
 
 @app.cell
 def _():
-    import sys
-    from pathlib import Path
-
     import pandas as pd
     import plotly.graph_objects as go
     from plotly.subplots import make_subplots
 
-    from maths_self_study.viz.graphs import histogram_chart, line_chart
+    from maths_self_study.data.notebooks import init_paths
+    from maths_self_study.viz.graphs import apply_layout, histogram_chart, line_chart
 
-    ROOT = Path.cwd().resolve()
-    for _ in range(5):
-        if (ROOT / "pyproject.toml").exists():
-            break
-        ROOT = ROOT.parent
-    if str(ROOT) not in sys.path:
-        sys.path.insert(0, str(ROOT))
-
-    OUTPUTS = ROOT / "outputs"
-    return OUTPUTS, go, histogram_chart, line_chart, make_subplots, pd
+    _root, _inputs, OUTPUTS = init_paths()
+    return OUTPUTS, apply_layout, go, histogram_chart, line_chart, make_subplots, pd
 
 
 @app.cell
@@ -172,7 +162,7 @@ def _(bars, labels_1, pd, time_decay_weights):
 
 
 @app.cell
-def _(bars, conc, go, make_subplots):
+def _(apply_layout, bars, conc, go, make_subplots):
     # Concurrency through time (subset for readability)
     plot_conc = conc.iloc[: min(5000, len(conc))]
     _fig = make_subplots(rows=2, cols=1, shared_xaxes=True, row_heights=[0.55, 0.45], vertical_spacing=0.08)
@@ -185,7 +175,7 @@ def _(bars, conc, go, make_subplots):
         row=2,
         col=1,
     )
-    _fig.update_layout(height=520, title_text="BTC close and label concurrency (first segment)")
+    apply_layout(_fig, height=520, title_text="BTC close and label concurrency (first segment)")
     _fig.update_yaxes(title_text="Price", row=1, col=1)
     _fig.update_yaxes(title_text="Active labels", row=2, col=1)
     _fig.show()

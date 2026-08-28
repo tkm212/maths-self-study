@@ -19,8 +19,15 @@ from maths_self_study.math.probability import (
     monty_hall_posterior,
     shannon_entropy,
 )
-from maths_self_study.viz.graphs import bar_chart, contour_chart, equal_axes, heatmap_chart, line_chart
-from maths_self_study.viz.graphs import base_layout as _base_layout
+from maths_self_study.viz.graphs import (
+    add_vline,
+    apply_layout,
+    bar_chart,
+    contour_chart,
+    equal_axes,
+    heatmap_chart,
+    line_chart,
+)
 from maths_self_study.viz.marimo import show
 
 # --- Demo fixtures ---
@@ -54,7 +61,7 @@ def plot_binary_entropy_curve() -> go.Figure:
         height=420,
         hovertemplate="p=%{x:.3f}<br>H=%{y:.3f} nats<extra></extra>",
     )
-    fig.add_vline(x=0.5, line_dash="dot", line_color="#94a3b8", annotation_text="max at p=½")
+    add_vline(fig, 0.5, line_dash="dot", line_color="#94a3b8", annotation_text="max at p=½")
     return fig
 
 
@@ -133,7 +140,7 @@ def plot_joint_with_marginals(
         row=2,
         col=1,
     )
-    fig.update_layout(**_base_layout(title=title, height=480, showlegend=False))
+    apply_layout(fig, title=title, height=480, showlegend=False)
     fig.update_yaxes(title_text="P(B)", row=1, col=2)
     fig.update_xaxes(title_text="P(A)", row=2, col=1)
     return fig
@@ -162,7 +169,7 @@ def plot_gaussian_pdf(
         fillcolor="rgba(37, 99, 235, 0.12)",
         hovertemplate="x=%{x:.2f}<br>p(x)=%{y:.4f}<extra></extra>",
     )
-    fig.add_vline(x=mu, line_dash="dot", line_color="#64748b", annotation_text="μ")
+    add_vline(fig, mu, line_dash="dot", line_color="#64748b", annotation_text="μ")
     return fig
 
 
@@ -223,14 +230,13 @@ def plot_bayes_update(
         )
     )
     fig.add_trace(go.Bar(x=x + 0.25, y=posterior, width=0.22, name="posterior P(x|y)", marker={"color": "#2563eb"}))
-    fig.update_layout(
-        **_base_layout(
-            title=title,
-            xaxis={"tickmode": "array", "tickvals": list(x), "ticktext": list(states)},
-            yaxis_title="probability",
-            barmode="group",
-            height=420,
-        )
+    apply_layout(
+        fig,
+        title=title,
+        xaxis={"tickmode": "array", "tickvals": list(x), "ticktext": list(states)},
+        yaxis_title="probability",
+        barmode="group",
+        height=420,
     )
     return fig
 
@@ -260,7 +266,7 @@ def plot_monty_hall(
         showarrow=False,
         font={"color": "#64748b"},
     )
-    fig.update_layout(**_base_layout(title=title, yaxis={"range": [0, 1.05]}, height=400))
+    apply_layout(fig, title=title, yaxis={"range": [0, 1.05]}, height=400)
     return fig
 
 
@@ -293,7 +299,7 @@ def plot_kl_asymmetric(
             row=1,
             col=col,
         )
-    fig.update_layout(**_base_layout(height=420, title_text="KL divergence is not symmetric", showlegend=True))
+    apply_layout(fig, height=420, title_text="KL divergence is not symmetric", showlegend=True)
     return fig
 
 
@@ -411,12 +417,11 @@ def plot_markov_chain(
         font={"size": 12, "color": "#64748b"},
     )
 
-    fig.update_layout(
-        **_base_layout(
-            title=title,
-            height=400,
-            margin={"l": 30, "r": 30, "t": 60, "b": 40},
-        ),
+    apply_layout(
+        fig,
+        title=title,
+        height=400,
+        margin={"l": 30, "r": 30, "t": 60, "b": 40},
         xaxis={"visible": False, "range": [-0.4, 2.4], "fixedrange": True},
         yaxis={"visible": False, "range": [0, 1], "fixedrange": True},
         plot_bgcolor="#ffffff",

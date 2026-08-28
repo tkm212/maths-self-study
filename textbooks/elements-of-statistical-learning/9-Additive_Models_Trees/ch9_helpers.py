@@ -15,31 +15,12 @@ from sklearn.preprocessing import SplineTransformer
 from sklearn.tree import DecisionTreeClassifier, DecisionTreeRegressor
 
 from maths_self_study.data import notebooks as _notebooks
+from maths_self_study.data.tmdb_features import log_features_xy as _log_features
 from maths_self_study.viz.graphs import add_vline, apply_layout, line_chart
 
 init_paths = _notebooks.init_paths
 load_tmdb_classification_xy = _notebooks.load_tmdb_classification_xy
 load_tmdb_xy = _notebooks.load_tmdb_xy
-
-
-def _log_features(
-    X: pd.DataFrame,
-    y: pd.Series,
-    feats: list[str],
-    *,
-    max_rows: int = 3000,
-    random_state: int = 0,
-) -> tuple[np.ndarray, np.ndarray]:
-    if len(X) > max_rows:
-        rng = np.random.default_rng(random_state)
-        idx = rng.choice(len(X), size=max_rows, replace=False)
-        X, y = X.iloc[idx], y.iloc[idx]
-    cols = []
-    for f in feats:
-        cols.append(np.log1p(X[f].values.astype(float)))
-    x_arr = np.column_stack(cols)
-    y_log = np.log1p(np.asarray(y, dtype=float))
-    return x_arr, y_log
 
 
 # ---------------------------------------------------------------------------

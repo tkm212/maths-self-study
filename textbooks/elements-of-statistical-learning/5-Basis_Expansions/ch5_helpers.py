@@ -15,30 +15,13 @@ from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import SplineTransformer
 
 from maths_self_study.data import notebooks as _notebooks
+from maths_self_study.data.tmdb_features import single_feature_subsample as _single_feature_subsample
 from maths_self_study.viz.graphs import add_vline, apply_layout, line_chart, scatter_chart
 
 find_project_root = _notebooks.find_project_root
 init_paths = _notebooks.init_paths
 load_tmdb_xy = _notebooks.load_tmdb_xy
 scale_split = _notebooks.scale_split
-
-
-def _single_feature_subsample(
-    X: pd.DataFrame,
-    y: pd.Series,
-    feat: str,
-    *,
-    max_rows: int = 3000,
-    random_state: int = 0,
-) -> tuple[np.ndarray, np.ndarray]:
-    """Return sorted (x, y) arrays for a single feature, subsampled for speed."""
-    if len(X) > max_rows:
-        idx = np.random.default_rng(random_state).choice(len(X), size=max_rows, replace=False)
-        X = X.iloc[idx]
-        y = y.iloc[idx]
-    x = X[feat].values.astype(float)
-    order = np.argsort(x)
-    return x[order], np.asarray(y)[order]
 
 
 # ---------------------------------------------------------------------------
