@@ -12,6 +12,7 @@ from sklearn.covariance import GraphicalLasso, GraphicalLassoCV
 from sklearn.preprocessing import StandardScaler
 
 from maths_self_study.data import notebooks as _notebooks
+from maths_self_study.data.tmdb_features import prepare_tmdb_numeric_matrix
 from maths_self_study.viz.graphs import add_vline, apply_layout, heatmap_chart, line_chart
 
 init_paths = _notebooks.init_paths
@@ -31,17 +32,7 @@ def load_tmdb_numeric_features(
     from maths_self_study.data import load_tmdb_revenue_regression
 
     x_df, _y, _ = load_tmdb_revenue_regression(inputs_dir)
-    feats = ["budget", "popularity", "runtime", "vote_average", "vote_count"]
-    feats = [f for f in feats if f in x_df.columns]
-    x_df = x_df[feats].select_dtypes(include=[np.number]).fillna(0.0)
-
-    if len(x_df) > max_rows:
-        rng = np.random.default_rng(random_state)
-        idx = rng.choice(len(x_df), size=max_rows, replace=False)
-        x_df = x_df.iloc[idx]
-
-    x_raw = np.log1p(np.maximum(x_df.values.astype(float), 0.0))
-    return x_raw, feats
+    return prepare_tmdb_numeric_matrix(x_df, max_rows=max_rows, random_state=random_state)
 
 
 def sample_gaussian_precision(

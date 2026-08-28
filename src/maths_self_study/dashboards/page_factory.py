@@ -20,6 +20,7 @@ def define_page(
     methodology: list[str] | None = None,
     definitions: list[tuple[str, str]] | None = None,
     theorems: list[tuple[str, str]] | None = None,
+    observations: list[tuple[str, str]] | None = None,
 ) -> DashboardPage:
     """Wire chapter page modules into a tabbed DashboardPage."""
 
@@ -37,4 +38,5 @@ def define_page(
     _Page.methodology = methodology or []
     _Page.definitions = definitions or []
     _Page.theorems = theorems or []
+    _Page.observations = observations or []
     return _Page()

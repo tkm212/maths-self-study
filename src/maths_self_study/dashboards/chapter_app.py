@@ -23,6 +23,7 @@ class DashboardPage(ABC):
     methodology: list[str]
     definitions: list[tuple[str, str]]
     theorems: list[tuple[str, str]]
+    observations: list[tuple[str, str]]
 
     @property
     def body_id(self) -> str:
@@ -43,6 +44,7 @@ class DashboardPage(ABC):
             methodology=self.methodology or None,
             definitions=self.definitions or None,
             theorems=self.theorems or None,
+            observations=self.observations or None,
         )
 
 

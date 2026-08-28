@@ -509,6 +509,53 @@ def theorem_group(*items: tuple[str, str]) -> html.Div:
     )
 
 
+_OBSERVATION_GROUP_STYLE = {"marginBottom": "16px"}
+_OBSERVATION_BOX_STYLE = {
+    "padding": "12px 14px",
+    "background": "#f5f3ff",
+    "border": "1px solid #ddd6fe",
+    "borderLeft": "4px solid #7c3aed",
+    "borderRadius": "6px",
+    "marginBottom": "10px",
+}
+_OBSERVATION_LABEL_STYLE = {
+    "fontSize": "0.75rem",
+    "fontWeight": 700,
+    "letterSpacing": "0.06em",
+    "textTransform": "uppercase",
+    "color": "#5b21b6",
+    "marginBottom": "6px",
+}
+_OBSERVATION_NAME_STYLE = {
+    "fontWeight": 600,
+    "color": "#1e293b",
+    "marginBottom": "4px",
+    "fontSize": "0.95rem",
+}
+
+
+def observation_box(name: str, note: str) -> html.Div:
+    """Textbook-style observation panel for empirical or practical notes (not formal theorems)."""
+    return html.Div(
+        [
+            html.Div("Observation", style=_OBSERVATION_LABEL_STYLE),
+            html.Div(name, style=_OBSERVATION_NAME_STYLE),
+            math_text(note, style=_TEXT_BOX_BODY_STYLE),
+        ],
+        style=_OBSERVATION_BOX_STYLE,
+        className="observation-box",
+    )
+
+
+def observation_group(*items: tuple[str, str]) -> html.Div:
+    """Stack one or more observation boxes on a dashboard page."""
+    return html.Div(
+        [observation_box(name, note) for name, note in items],
+        style=_OBSERVATION_GROUP_STYLE,
+        className="observation-group",
+    )
+
+
 def table(
     columns: list[str],
     rows: list[list[str | float | int]],

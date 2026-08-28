@@ -19,9 +19,8 @@ from maths_self_study.math.linear_algebra import (
     pca_transform,
     symmetric_eigendecomposition,
 )
-from maths_self_study.viz.graphs import base_layout as _base_layout
+from maths_self_study.viz.graphs import apply_layout, heatmap_chart
 from maths_self_study.viz.graphs import equal_axes as _equal_axes
-from maths_self_study.viz.graphs import heatmap_chart
 from maths_self_study.viz.marimo import show, show_all
 
 # --- Demo fixtures (notebook cells stay declarative) ---
@@ -63,7 +62,7 @@ def plot_vectors_2d(
                 hovertemplate=f"{label}<br>x=%{{x:.2f}}, y=%{{y:.2f}}<extra></extra>",
             )
         )
-    fig.update_layout(**_base_layout(title=title, xaxis_title="x₁", yaxis_title="x₂", height=440))
+    apply_layout(fig, title=title, xaxis_title="x₁", yaxis_title="x₂", height=440)
     _equal_axes(fig)
     return fig
 
@@ -136,7 +135,7 @@ def plot_transformed_grid(
             )
         )
 
-    fig.update_layout(**_base_layout(title=title, height=480))
+    apply_layout(fig, title=title, height=480)
     _equal_axes(fig)
     return fig
 
@@ -180,13 +179,12 @@ def plot_tensor_slice(
         texttemplate="%{text}",
         hovertemplate=f"T[{slice_desc}]<br>%{{y}} , %{{x}} = %{{z:.3f}}<extra></extra>",
     )
-    fig.update_layout(
-        **_base_layout(
-            title=f"{title} ({slice_desc})",
-            xaxis_title=x_label,
-            yaxis_title=y_label,
-            height=420,
-        )
+    apply_layout(
+        fig,
+        title=f"{title} ({slice_desc})",
+        xaxis_title=x_label,
+        yaxis_title=y_label,
+        height=420,
     )
     return fig
 
@@ -312,8 +310,11 @@ def plot_tensor_3d(
         )
 
     ni, nj, nk = t.shape
-    fig.update_layout(
-        **_base_layout(title=title, height=520, showlegend=True),
+    apply_layout(
+        fig,
+        title=title,
+        height=520,
+        showlegend=True,
         scene={
             "xaxis": {"title": "i", "tickmode": "linear", "dtick": 1, "range": [-0.5, ni - 0.5]},
             "yaxis": {"title": "j", "tickmode": "linear", "dtick": 1, "range": [-0.5, nj - 0.5]},
@@ -385,12 +386,11 @@ def plot_lp_unit_balls(*, p_values: tuple[float, ...] = (1.0, 2.0, np.inf)) -> g
         )
         fig.update_yaxes(range=[-1.1, 1.1], row=1, col=col)
 
-    fig.update_layout(
-        **_base_layout(
-            title="Unit balls: {x : ‖x‖ₚ = 1} — boundary of points one unit from the origin",
-            height=400,
-            showlegend=False,
-        )
+    apply_layout(
+        fig,
+        title="Unit balls: {x : ‖x‖ₚ = 1} — boundary of points one unit from the origin",
+        height=400,
+        showlegend=False,
     )
     return fig
 
@@ -418,7 +418,7 @@ def plot_eigen_geometry(
                 name=f"λ={lam:.2f}, v{i + 1}",
                 line={"color": color, "width": 3},
                 marker={"size": [0, 8, 10]},
-            )
+            ),
         )
     return fig
 
@@ -470,7 +470,7 @@ def plot_svd_geometry(
             )
         )
 
-    fig.update_layout(**_base_layout(title=title, height=460))
+    apply_layout(fig, title=title, height=460)
     _equal_axes(fig)
     return fig
 
@@ -521,7 +521,7 @@ def plot_pca_scatter(
                 marker={"color": "#0f172a", "size": 8, "symbol": "x"},
             )
         )
-    fig.update_layout(**_base_layout(title=title, xaxis_title="feature 1", yaxis_title="feature 2", height=440))
+    apply_layout(fig, title=title, xaxis_title="feature 1", yaxis_title="feature 2", height=440)
     return fig
 
 
@@ -536,7 +536,7 @@ def plot_pca_codes(codes: np.ndarray, *, title: str) -> go.Figure:
             hovertemplate="c₁=%{x:.2f}<br>c₂=%{y:.2f}<extra></extra>",
         )
     )
-    fig.update_layout(**_base_layout(title=title, xaxis_title="PC 1", yaxis_title="PC 2", height=400))
+    apply_layout(fig, title=title, xaxis_title="PC 1", yaxis_title="PC 2", height=400)
     return fig
 
 
@@ -560,7 +560,7 @@ def plot_explained_variance(variances: np.ndarray) -> go.Figure:
         ),
         secondary_y=True,
     )
-    fig.update_layout(**_base_layout(title="Variance captured per component", xaxis_title="Component", height=420))
+    apply_layout(fig, title="Variance captured per component", xaxis_title="Component", height=420)
     fig.update_yaxes(title_text="Variance", secondary_y=False)
     fig.update_yaxes(title_text="Cumulative share", secondary_y=True, range=[0, 1.05])
     return fig
@@ -621,7 +621,7 @@ def plot_projection_loss(
             marker={"color": "#2563eb", "size": 4, "opacity": 0.7},
         )
     )
-    fig.update_layout(**_base_layout(title=title, height=440))
+    apply_layout(fig, title=title, height=440)
     return fig
 
 

@@ -13,37 +13,12 @@ from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
 
 from maths_self_study.data import notebooks as _notebooks
+from maths_self_study.data.tmdb_features import prepare_tmdb_features as _select_features
 from maths_self_study.viz.graphs import add_vline, apply_layout, histogram_chart, line_chart
 
 init_paths = _notebooks.init_paths
 load_tmdb_classification_xy = _notebooks.load_tmdb_classification_xy
 load_tmdb_xy = _notebooks.load_tmdb_xy
-
-
-def _select_features(
-    X: pd.DataFrame,
-    y: pd.Series,
-    feats: list[str] | None = None,
-    *,
-    max_rows: int = 3000,
-    random_state: int = 0,
-    log_transform: bool = True,
-) -> tuple[np.ndarray, np.ndarray]:
-    if feats is None:
-        feats = ["budget", "popularity", "runtime", "vote_average", "vote_count"]
-    feats = [f for f in feats if f in X.columns]
-
-    if len(X) > max_rows:
-        rng = np.random.default_rng(random_state)
-        idx = rng.choice(len(X), size=max_rows, replace=False)
-        X, y = X.iloc[idx], y.iloc[idx]
-
-    x_arr = X[feats].values.astype(float)
-    y_arr = np.asarray(y, dtype=float)
-    if log_transform:
-        x_arr = np.log1p(np.maximum(x_arr, 0))
-        y_arr = np.log1p(np.maximum(y_arr, 0))
-    return x_arr, y_arr
 
 
 # ---------------------------------------------------------------------------

@@ -15,32 +15,11 @@ from sklearn.metrics import silhouette_score
 from sklearn.preprocessing import StandardScaler
 
 from maths_self_study.data import notebooks as _notebooks
-from maths_self_study.viz.graphs import heatmap_chart, line_chart
+from maths_self_study.data.tmdb_features import prepare_tmdb_unsupervised as _prepare_arrays
+from maths_self_study.viz.graphs import add_vline, heatmap_chart, line_chart
 
 init_paths = _notebooks.init_paths
 load_tmdb_xy = _notebooks.load_tmdb_xy
-
-
-def _prepare_arrays(
-    X: pd.DataFrame,
-    feats: list[str] | None = None,
-    *,
-    max_rows: int = 2000,
-    random_state: int = 0,
-) -> np.ndarray:
-    if feats is None:
-        feats = ["budget", "popularity", "runtime", "vote_average", "vote_count"]
-    feats = [f for f in feats if f in X.columns]
-
-    if len(X) > max_rows:
-        rng = np.random.default_rng(random_state)
-        idx = rng.choice(len(X), size=max_rows, replace=False)
-        x_sub = X.iloc[idx][feats].values.astype(float)
-    else:
-        x_sub = X[feats].values.astype(float)
-
-    x_sub = np.log1p(np.maximum(x_sub, 0))
-    return x_sub
 
 
 def _safe_silhouette_score(
@@ -133,7 +112,7 @@ def kmeans_elbow_figure(
     fig = make_subplots(rows=1, cols=2, subplot_titles=["WCSS (elbow method)", "Silhouette score"])
     line_chart(k_values, inertias, mode="lines+markers", name="WCSS", color="steelblue", fig=fig, row=1, col=1)
     line_chart(k_values, silhouettes, mode="lines+markers", name="Silhouette", color="tomato", fig=fig, row=1, col=2)
-    fig.add_vline(x=best_k, line_dash="dash", line_color="grey", row=1, col=2, annotation_text=f"best K={best_k}")
+    add_vline(fig, best_k, line_dash="dash", line_color="grey", row=1, col=2, annotation_text=f"best K={best_k}")
     fig.update_layout(
         title="K-means: elbow and silhouette vs K — §14.3.6",
         showlegend=False,

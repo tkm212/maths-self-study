@@ -7,6 +7,8 @@ from dash import html
 from maths_self_study.dashboards.components import (
     definition_box,
     definition_group,
+    observation_box,
+    observation_group,
     theorem_box,
     theorem_group,
 )
@@ -84,6 +86,40 @@ def test_page_shell_includes_theorems():
     rendered = str(shell)
     assert "theorem-group" in rendered
     assert "Cauchy-Schwarz" in rendered
+
+
+def test_observation_box_renders_name_and_note():
+    box = observation_box(
+        "Precision-recall tradeoff",
+        "Abstaining on low-confidence signals improves precision at the cost of fewer trades.",
+    )
+    rendered = str(box)
+    assert "observation-box" in rendered
+    assert "Observation" in rendered
+    assert "Precision-recall tradeoff" in rendered
+
+
+def test_observation_group_stacks_items():
+    group = observation_group(
+        ("Tradeoff", "Fewer bets when filtering aggressively."),
+        ("Sizing", "Scale position with meta-model probability."),
+    )
+    assert "observation-group" in str(group)
+    assert group.children is not None
+    assert len(group.children) == 2
+
+
+def test_page_shell_includes_observations():
+    shell = page_shell(
+        "Title",
+        "Caption",
+        html.Div("filters"),
+        "body-id",
+        observations=[("Precision-recall tradeoff", "Abstaining improves precision.")],
+    )
+    rendered = str(shell)
+    assert "observation-group" in rendered
+    assert "Precision-recall tradeoff" in rendered
 
 
 def test_chapter_definition_modules_are_nonempty():

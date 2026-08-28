@@ -16,6 +16,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 
 from maths_self_study.data import notebooks as _notebooks
+from maths_self_study.data.tmdb_features import prepare_tmdb_all_numeric_log1p
 from maths_self_study.viz.graphs import apply_layout, line_chart, scatter_chart
 
 init_paths = _notebooks.init_paths
@@ -197,15 +198,7 @@ def tmdb_with_noise_features_figure(
     """
     x_df, y, _target = load_tmdb_revenue_xy(inputs_dir)
     rng = np.random.default_rng(random_state)
-
-    if len(x_df) > max_rows:
-        idx = rng.choice(len(x_df), size=max_rows, replace=False)
-        x_df = x_df.iloc[idx]
-        y = y.iloc[idx]
-
-    x_num = x_df.select_dtypes(include=[np.number]).fillna(0.0)
-    x_base = np.log1p(np.maximum(x_num.values.astype(float), 0.0))
-    y_log = np.log1p(np.maximum(np.asarray(y, dtype=float), 0.0))
+    x_base, y_log = prepare_tmdb_all_numeric_log1p(x_df, y, max_rows=max_rows, random_state=random_state)
 
     noise = rng.standard_normal((len(y_log), n_noise))
     x_aug = np.hstack([x_base, noise])

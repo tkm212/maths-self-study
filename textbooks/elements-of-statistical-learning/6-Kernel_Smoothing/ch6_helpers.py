@@ -10,6 +10,7 @@ import plotly.graph_objects as go
 from sklearn.neighbors import KernelDensity
 
 from maths_self_study.data import notebooks as _notebooks
+from maths_self_study.data.tmdb_features import subsample_log1p_xy as _subsample_log1p
 from maths_self_study.viz.graphs import add_vline, apply_layout, line_chart
 
 init_paths = _notebooks.init_paths
@@ -147,27 +148,6 @@ def _local_poly_predict(
 # ---------------------------------------------------------------------------
 # Data helpers
 # ---------------------------------------------------------------------------
-
-
-def _subsample_log1p(
-    X: pd.DataFrame,
-    y: pd.Series,
-    feat: str,
-    *,
-    max_rows: int = 2000,
-    random_state: int = 0,
-) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
-    """Subsample, sort, and log1p-transform (x, y) for a single feature."""
-    if len(X) > max_rows:
-        rng = np.random.default_rng(random_state)
-        idx = rng.choice(len(X), size=max_rows, replace=False)
-        X = X.iloc[idx]
-        y = y.iloc[idx]
-    x_raw = X[feat].values.astype(float)
-    y_raw = np.asarray(y, dtype=float)
-    order = np.argsort(x_raw)
-    x_raw, y_raw = x_raw[order], y_raw[order]
-    return x_raw, y_raw, np.log1p(x_raw), np.log1p(y_raw)
 
 
 # ---------------------------------------------------------------------------

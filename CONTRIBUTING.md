@@ -6,7 +6,7 @@ Contributions are welcome — bug reports, notebook fixes, new textbook chapters
 
 - Browse [open issues](https://github.com/tkm212/maths-self-study/issues)
 - Read the [notebooks overview](docs/notebooks.md) to see how chapters are organised
-- Each ESL chapter folder has a `ch{N}_helpers.py` module; AFML notebooks import from `maths_self_study`
+- Each ESL chapter folder has a `ch{N}_helpers.py` module; AFML chapters use Dash dashboards with helpers in `maths_self_study.demos.financial_machine_learning`
 
 ## Bug reports
 
@@ -61,11 +61,11 @@ make test
 
 ## Notebook conventions
 
-- ESL notebooks live under `textbooks/elements-of-statistical-learning/`
-- AFML notebooks live under `textbooks/financial-machine-learning/`
-- Use Marimo (`.py` files), not `.ipynb`
-- Run with `uv run marimo run path/to/notebook.py`; edit with `uv run marimo edit ...`
-- Shared plotting and data loading goes in `ch{N}_helpers.py` for that chapter
+- ESL notebooks live under `textbooks/elements-of-statistical-learning/` (Marimo `.py` files)
+- AFML chapters live under `textbooks/financial-machine-learning/` (Dash `dashboard.py` + `ch{N}_pages/`)
+- Deep Learning chapters also use Dash dashboards (same page layout as AFML)
+- ESL: run with `uv run marimo run path/to/notebook.py`; shared code in `ch{N}_helpers.py`
+- AFML / Deep Learning: run with `uv run python path/to/dashboard.py`; plot helpers in `maths_self_study.demos.*`
 
 ## Pull request checklist
 

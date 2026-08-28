@@ -14,6 +14,7 @@ from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import PolynomialFeatures, StandardScaler
 
 from maths_self_study.data import notebooks as _notebooks
+from maths_self_study.data.tmdb_features import log_feature_xy as _log_feature
 from maths_self_study.viz.graphs import add_vline, apply_layout, line_chart
 
 init_paths = _notebooks.init_paths
@@ -33,24 +34,6 @@ def _poly_pipe(degree: int) -> Any:
         StandardScaler(),
         LinearRegression(),
     )
-
-
-def _log_feature(
-    X: pd.DataFrame,
-    y: pd.Series,
-    feat: str,
-    *,
-    max_rows: int = 3000,
-    random_state: int = 0,
-) -> tuple[np.ndarray, np.ndarray]:
-    """Subsample and log1p-transform a single feature and the target."""
-    if len(X) > max_rows:
-        rng = np.random.default_rng(random_state)
-        idx = rng.choice(len(X), size=max_rows, replace=False)
-        X, y = X.iloc[idx], y.iloc[idx]
-    x = np.log1p(X[feat].values.astype(float)).reshape(-1, 1)
-    y_log = np.log1p(np.asarray(y, dtype=float))
-    return x, y_log
 
 
 # ---------------------------------------------------------------------------

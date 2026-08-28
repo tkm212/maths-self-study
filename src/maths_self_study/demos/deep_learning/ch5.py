@@ -19,8 +19,7 @@ from maths_self_study.math.ml import (
     swiss_roll,
     train_test_split,
 )
-from maths_self_study.viz.graphs import base_layout as _base_layout
-from maths_self_study.viz.graphs import histogram_chart, line_chart, scatter_chart
+from maths_self_study.viz.graphs import add_vline, apply_layout, histogram_chart, line_chart, scatter_chart
 
 # --- Demo fixtures ---
 
@@ -67,13 +66,12 @@ def plot_capacity_fit(degree: int, *, noise: float = CAPACITY_NOISE) -> go.Figur
         color="#16a34a",
         fig=fig,
     )
-    fig.update_layout(
-        **_base_layout(
-            title=f"Polynomial degree {degree} — train MSE={train_mse:.3f}, test MSE={test_mse:.3f}",
-            xaxis_title="x",
-            yaxis_title="y",
-            height=440,
-        )
+    apply_layout(
+        fig,
+        title=f"Polynomial degree {degree} — train MSE={train_mse:.3f}, test MSE={test_mse:.3f}",
+        xaxis_title="x",
+        yaxis_title="y",
+        height=440,
     )
     return fig
 
@@ -100,7 +98,7 @@ def plot_bias_variance(
         height=440,
     )
     line_chart(degrees, test_err, name="test error", color="#dc2626", mode="lines+markers", fig=fig)
-    fig.add_vline(x=selected, line_dash="dot", line_color="#64748b", annotation_text=f"degree={selected}")
+    add_vline(fig, selected, line_dash="dot", line_color="#64748b", annotation_text=f"degree={selected}")
     return fig
 
 
@@ -128,7 +126,7 @@ def plot_validation_curve(l2: float, *, noise: float = CAPACITY_NOISE) -> go.Fig
         height=440,
     )
     line_chart(lambdas, val_err, name="validation", color="#dc2626", fig=fig)
-    fig.add_vline(x=float(l2), line_dash="dot", line_color="#64748b", annotation_text=f"lambda={l2:g}")
+    add_vline(fig, float(l2), line_dash="dot", line_color="#64748b", annotation_text=f"lambda={l2:g}")
     return fig
 
 
@@ -143,12 +141,11 @@ def plot_gaussian_mle(samples: np.ndarray) -> go.Figure:
     fig = make_subplots(rows=1, cols=2, subplot_titles=("Samples", "MLE Gaussian"), horizontal_spacing=0.12)
     histogram_chart(data, nbinsx=8, name="data", fig=fig, row=1, col=1)
     line_chart(xs, pdf, name="N(mu, sigma^2)", color="#dc2626", fig=fig, row=1, col=2)
-    fig.update_layout(
-        **_base_layout(
-            title=f"Gaussian MLE — mu={mean:.3f}, sigma^2={variance:.3f}",
-            height=420,
-            showlegend=False,
-        )
+    apply_layout(
+        fig,
+        title=f"Gaussian MLE — mu={mean:.3f}, sigma^2={variance:.3f}",
+        height=420,
+        showlegend=False,
     )
     return fig
 
@@ -198,13 +195,12 @@ def plot_sgd_paths(
             line={"color": "#dc2626", "width": 2},
         )
     )
-    fig.update_layout(
-        **_base_layout(
-            title=f"SGD — eta={learning_rate:g}, batch size={batch_size}",
-            xaxis_title="step",
-            yaxis_title="train MSE",
-            height=420,
-        )
+    apply_layout(
+        fig,
+        title=f"SGD — eta={learning_rate:g}, batch size={batch_size}",
+        xaxis_title="step",
+        yaxis_title="train MSE",
+        height=420,
     )
     return fig
 
@@ -290,12 +286,11 @@ def plot_manifold_demo(*, noise: float = MANIFOLD_NOISE, n_samples: int = MANIFO
         row=1,
         col=2,
     )
-    fig.update_layout(
-        **_base_layout(
-            title=(f"Manifold hypothesis — k=2 intrinsic coords embedded in d=3 (noise sigma={noise:.2g})"),
-            height=480,
-            showlegend=False,
-        )
+    apply_layout(
+        fig,
+        title=(f"Manifold hypothesis — k=2 intrinsic coords embedded in d=3 (noise sigma={noise:.2g})"),
+        height=480,
+        showlegend=False,
     )
     fig.update_scenes(aspectmode="data")
     return fig
