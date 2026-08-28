@@ -48,27 +48,15 @@ def _(mo):
 
 @app.cell
 def _():
-    import sys
-    from pathlib import Path
-
     import pandas as pd
     import plotly.graph_objects as go
     from plotly.subplots import make_subplots
 
-    from maths_self_study.viz.graphs import histogram_chart
+    from maths_self_study.data.notebooks import init_paths
+    from maths_self_study.viz.graphs import add_vline, apply_layout, histogram_chart
 
-    # Project root (find directory containing pyproject.toml)
-    ROOT = Path.cwd().resolve()
-    for _ in range(5):
-        if (ROOT / "pyproject.toml").exists():
-            break
-        ROOT = ROOT.parent
-    if str(ROOT) not in sys.path:
-        sys.path.insert(0, str(ROOT))
-
-    INPUTS = ROOT / "inputs"
-    OUTPUTS = ROOT / "outputs"
-    return INPUTS, OUTPUTS, go, histogram_chart, make_subplots, pd
+    _root, INPUTS, OUTPUTS = init_paths()
+    return INPUTS, OUTPUTS, add_vline, apply_layout, go, histogram_chart, make_subplots, pd
 
 
 @app.cell
@@ -136,7 +124,7 @@ def _(mo):
 
 
 @app.cell
-def _(dollar_b, go, make_subplots, pd, tick_b, time_bars_df, vol_b):
+def _(apply_layout, dollar_b, go, make_subplots, pd, tick_b, time_bars_df, vol_b):
     _fig = make_subplots(
         rows=2,
         cols=2,
@@ -154,7 +142,7 @@ def _(dollar_b, go, make_subplots, pd, tick_b, time_bars_df, vol_b):
         t = pd.to_datetime(_bars["datetime"]) if _bars["datetime"].dtype != "datetime64[ns]" else _bars["datetime"]
         _r, _c = (_i // 2 + 1, _i % 2 + 1)
         _fig.add_trace(go.Scatter(x=t, y=_bars["close"], name=_name, mode="lines", line={"width": 1}), row=_r, col=_c)
-    _fig.update_layout(height=500, title_text="BTC/USDT Bar Types (López de Prado)", showlegend=False)
+    apply_layout(_fig, height=500, title_text="BTC/USDT Bar Types (López de Prado)", showlegend=False)
     _fig.update_xaxes(tickangle=-45)
     _fig.show()
     return
@@ -171,7 +159,7 @@ def _(mo):
 
 
 @app.cell
-def _(dollar_b, histogram_chart, make_subplots, pd, tick_b, time_bars_df, vol_b):
+def _(add_vline, apply_layout, dollar_b, histogram_chart, make_subplots, pd, tick_b, time_bars_df, vol_b):
     def returns(bars: pd.DataFrame) -> pd.Series:
         return bars["close"].pct_change().dropna()
 
@@ -208,8 +196,8 @@ def _(dollar_b, histogram_chart, make_subplots, pd, tick_b, time_bars_df, vol_b)
             row=_r,
             col=_c,
         )
-        _fig.add_vline(x=0, line_dash="dash", line_color="red", row=_r, col=_c)
-    _fig.update_layout(height=500, title_text="Log returns distribution by bar type")
+        add_vline(_fig, 0, line_dash="dash", line_color="red", row=_r, col=_c)
+    apply_layout(_fig, height=500, title_text="Log returns distribution by bar type")
     _fig.update_xaxes(title_text="Return")
     _fig.update_yaxes(title_text="Density")
     _fig.show()

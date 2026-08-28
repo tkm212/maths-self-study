@@ -14,35 +14,11 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.preprocessing import StandardScaler
 
 from maths_self_study.data import notebooks as _notebooks
+from maths_self_study.data.tmdb_features import prepare_tmdb_cls as _prepare_arrays
 from maths_self_study.viz.graphs import add_vline, apply_layout, line_chart, train_test_chart
 
 init_paths = _notebooks.init_paths
 load_tmdb_classification_xy = _notebooks.load_tmdb_classification_xy
-
-
-def _prepare_arrays(
-    X: pd.DataFrame,
-    y: pd.Series,
-    feats: list[str] | None = None,
-    *,
-    max_rows: int = 2000,
-    random_state: int = 0,
-) -> tuple[np.ndarray, np.ndarray]:
-    if feats is None:
-        feats = ["budget", "popularity", "runtime", "vote_average", "vote_count"]
-    feats = [f for f in feats if f in X.columns]
-
-    if len(X) > max_rows:
-        rng = np.random.default_rng(random_state)
-        idx = rng.choice(len(X), size=max_rows, replace=False)
-        x_sub = X.iloc[idx][feats].values.astype(float)
-        y_sub = np.asarray(y, dtype=int).ravel()[idx]
-    else:
-        x_sub = X[feats].values.astype(float)
-        y_sub = np.asarray(y, dtype=int).ravel()
-
-    x_sub = np.log1p(np.maximum(x_sub, 0))
-    return x_sub, y_sub
 
 
 # ---------------------------------------------------------------------------

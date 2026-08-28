@@ -53,24 +53,16 @@ def _(mo):
 
 @app.cell
 def _():
-    import sys
-    from pathlib import Path
-
     import numpy as np
     import pandas as pd
     import plotly.graph_objects as go
     from plotly.subplots import make_subplots
 
-    ROOT = Path.cwd().resolve()
-    for _ in range(5):
-        if (ROOT / "pyproject.toml").exists():
-            break
-        ROOT = ROOT.parent
-    if str(ROOT) not in sys.path:
-        sys.path.insert(0, str(ROOT))
+    from maths_self_study.data.notebooks import init_paths
+    from maths_self_study.viz.graphs import apply_layout
 
-    OUTPUTS = ROOT / "outputs"
-    return OUTPUTS, go, make_subplots, np, pd
+    _root, _inputs, OUTPUTS = init_paths()
+    return OUTPUTS, apply_layout, go, make_subplots, np, pd
 
 
 @app.cell
@@ -105,7 +97,7 @@ def _(close):
 
 
 @app.cell
-def _(close, events, go, make_subplots, np, threshold):
+def _(apply_layout, close, events, go, make_subplots, np, threshold):
     log_ret = np.log(close).diff().dropna()
     _fig = make_subplots(rows=2, cols=1, shared_xaxes=True, row_heights=[0.7, 0.3], vertical_spacing=0.05)
     _fig.add_trace(
@@ -129,7 +121,7 @@ def _(close, events, go, make_subplots, np, threshold):
     )
     _fig.add_hline(y=threshold, line_dash="dash", line_color="red", opacity=0.7, row=2, col=1)
     _fig.add_hline(y=-threshold, line_dash="dash", line_color="red", opacity=0.7, row=2, col=1)
-    _fig.update_layout(height=500, title_text="BTC Close with CUSUM Events (López de Prado, Snippet 2.4)")
+    apply_layout(_fig, height=500, title_text="BTC Close with CUSUM Events (López de Prado, Snippet 2.4)")
     _fig.update_yaxes(title_text="Price", row=1, col=1)
     _fig.update_yaxes(title_text="Log return", row=2, col=1)
     _fig.update_xaxes(title_text="Time", row=2, col=1)
@@ -186,7 +178,7 @@ def _(pd, rets):
 
 
 @app.cell
-def _(eigenvalues, go, make_subplots, weights):
+def _(apply_layout, eigenvalues, go, make_subplots, weights):
     _fig = make_subplots(
         rows=1, cols=2, subplot_titles=("PCA Weights (First Principal Component)", "Eigenvalues (explained variance)")
     )
@@ -195,7 +187,7 @@ def _(eigenvalues, go, make_subplots, weights):
         go.Bar(x=list(range(len(eigenvalues))), y=eigenvalues, name="Eigenvalues", showlegend=False), row=1, col=2
     )
     _fig.add_hline(y=0, line_color="black", row=1, col=1)
-    _fig.update_layout(height=400)
+    apply_layout(_fig, height=400)
     _fig.update_xaxes(title_text="Component", row=1, col=2)
     _fig.update_yaxes(title_text="Weight", row=1, col=1)
     _fig.update_yaxes(title_text="Eigenvalue", row=1, col=2)
