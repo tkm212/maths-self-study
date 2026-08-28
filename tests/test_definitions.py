@@ -31,6 +31,14 @@ from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch5 import 
 from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch5 import theorems as esl_th5
 from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch6 import definitions as esl6
 from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch6 import theorems as esl_th6
+from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch7 import definitions as esl7
+from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch7 import theorems as esl_th7
+from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch8 import definitions as esl8
+from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch8 import theorems as esl_th8
+from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch9 import definitions as esl9
+from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch9 import theorems as esl_th9
+from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch10 import definitions as esl10
+from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch10 import theorems as esl_th10
 
 
 def test_definition_box_renders_term_and_body():
@@ -143,6 +151,10 @@ def test_chapter_definition_modules_are_nonempty():
         (esl4, ["LOGISTIC_REGRESSION", "LDA", "SEPARATING_HYPERPLANES"]),
         (esl5, ["SPLINES", "SMOOTHING_SPLINES"]),
         (esl6, ["KERNEL_SMOOTHERS", "KERNEL_DENSITY"]),
+        (esl7, ["BIAS_VARIANCE", "CROSS_VALIDATION"]),
+        (esl8, ["EM_ALGORITHM", "BAGGING"]),
+        (esl9, ["ADDITIVE_MODELS", "DECISION_TREES"]),
+        (esl10, ["BOOSTING", "GRADIENT_BOOSTING"]),
     )
     for module, names in modules:
         for name in names:
@@ -164,6 +176,10 @@ def test_chapter_theorem_modules_are_nonempty():
         (esl_th4, ["LDA", "SEPARATING_HYPERPLANES"]),
         (esl_th5, ["SPLINES", "SMOOTHING_SPLINES"]),
         (esl_th6, ["KERNEL_SMOOTHERS", "KERNEL_DENSITY"]),
+        (esl_th7, ["BIAS_VARIANCE", "CROSS_VALIDATION"]),
+        (esl_th8, ["EM_ALGORITHM", "BAGGING"]),
+        (esl_th9, ["ADDITIVE_MODELS", "DECISION_TREES"]),
+        (esl_th10, ["BOOSTING", "GRADIENT_BOOSTING"]),
     )
     for module, names in modules:
         for name in names:

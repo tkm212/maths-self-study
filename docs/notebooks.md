@@ -60,7 +60,7 @@ Implementations based on **Hastie, T., Tibshirani, R., & Friedman, J. (2009). Th
 
 Source path: `textbooks/elements-of-statistical-learning/`
 
-Chapters 2–6 ship as multi-page **Dash** dashboards (one tab per topic). Each chapter’s `dashboard.py` wires the app; page code lives in `ch{N}_pages/<page>/` with separate `filters.py`, `content.py`, and `callbacks.py` modules. Plot helpers stay in each chapter’s `helpers.py` or `ch{N}_helpers.py`; shared UI is in `maths_self_study.dashboards`.
+Chapters 2–10 ship as multi-page **Dash** dashboards (one tab per topic). Each chapter’s `dashboard.py` wires the app; page code lives in `ch{N}_pages/<page>/` with separate `filters.py`, `content.py`, and `callbacks.py` modules. Plot helpers stay in each chapter’s `helpers.py` or `ch{N}_helpers.py`; shared UI is in `maths_self_study.dashboards`.
 
 | Chapter | Topic | App |
 |---------|-------|-----|
@@ -69,6 +69,10 @@ Chapters 2–6 ship as multi-page **Dash** dashboards (one tab per topic). Each 
 | 4 | Linear Methods for Classification | `4-Linear_Methods_Classification/dashboard.py` |
 | 5 | Basis Expansions | `5-Basis_Expansions/dashboard.py` |
 | 6 | Kernel Smoothing | `6-Kernel_Smoothing/dashboard.py` |
+| 7 | Model Assessment | `7-Model_Assessment/dashboard.py` |
+| 8 | Model Inference | `8-Model_Inference/dashboard.py` |
+| 9 | Additive Models & Trees | `9-Additive_Models_Trees/dashboard.py` |
+| 10 | Boosting | `10-Boosting/dashboard.py` |
 
 Run a chapter dashboard from the repo root:
 
@@ -76,14 +80,10 @@ Run a chapter dashboard from the repo root:
 uv run python textbooks/elements-of-statistical-learning/4-Linear_Methods_Classification/dashboard.py
 ```
 
-Chapters 7–18 still use Marimo notebooks:
+Chapters 11–18 still use Marimo notebooks:
 
 | Chapter | Topic | Files |
 |---------|-------|-------|
-| 7 | Model Assessment | `bias_variance.py`, `cross_validation.py` |
-| 8 | Model Inference | `em_algorithm.py`, `bagging.py` |
-| 9 | Additive Models & Trees | `additive_models.py`, `decision_trees.py` |
-| 10 | Boosting | `boosting.py`, `gradient_boosting.py` |
 | 11 | Neural Networks | `neural_networks.py`, `projection_pursuit.py` |
 | 12 | SVM & Flexible Discriminants | `svm.py`, `flexible_discriminants.py` |
 | 13 | Prototype Methods | `nearest_neighbors.py`, `prototype_methods.py` |
@@ -147,13 +147,13 @@ uv run python textbooks/deep-learning/5-Machine_Learning_Basics/dashboard.py
 Other tracks use Marimo and `uv` for dependency management. From the repo root:
 
 ```bash
-uv run marimo run textbooks/elements-of-statistical-learning/10-Boosting/boosting.py
+uv run marimo run textbooks/elements-of-statistical-learning/11-Neural_Networks/neural_networks.py
 ```
 
 To edit interactively:
 
 ```bash
-uv run marimo edit textbooks/elements-of-statistical-learning/10-Boosting/boosting.py
+uv run marimo edit textbooks/elements-of-statistical-learning/11-Neural_Networks/neural_networks.py
 ```
 
 External datasets (ATP/WTA tennis, TMDB movies) must be downloaded first:
