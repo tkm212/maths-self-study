@@ -38,7 +38,7 @@ def _():
 
 @app.cell
 def _(INPUTS, helpers):
-    X, y, target = helpers.load_tmdb_xy(INPUTS)
+    X, y, target = helpers.load_tmdb_cls(INPUTS)
     data = helpers.scale_split(X, y)
     print(
         f"Loaded {len(X):,} rows | features: {data['feat_names']} | target: {target!r} "

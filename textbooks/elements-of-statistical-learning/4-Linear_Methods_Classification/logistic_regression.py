@@ -42,7 +42,7 @@ def _():
 
 @app.cell
 def _(INPUTS, helpers):
-    X, y, target = helpers.load_tmdb_xy(INPUTS)
+    X, y, target = helpers.load_tmdb_cls(INPUTS)
     data = helpers.scale_split(X, y)
     print(f"Train: {len(data['X_train']):,} | Test: {len(data['X_test']):,} | features: {data['feat_names']}")
     return data, target
