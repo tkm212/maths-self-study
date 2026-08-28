@@ -20,15 +20,13 @@ from maths_self_study.data.tmdb_features import (
 
 def _sample_frame(n: int = 100) -> tuple[pd.DataFrame, pd.Series]:
     rng = np.random.default_rng(0)
-    X = pd.DataFrame(
-        {
-            "budget": rng.integers(1, 1000, size=n),
-            "popularity": rng.random(n),
-            "runtime": rng.integers(60, 180, size=n),
-            "vote_average": rng.random(n) * 10,
-            "vote_count": rng.integers(1, 5000, size=n),
-        }
-    )
+    X = pd.DataFrame({
+        "budget": rng.integers(1, 1000, size=n),
+        "popularity": rng.random(n),
+        "runtime": rng.integers(60, 180, size=n),
+        "vote_average": rng.random(n) * 10,
+        "vote_count": rng.integers(1, 5000, size=n),
+    })
     y_reg = pd.Series(rng.integers(1, 5000, size=n))
     return X, y_reg
 
@@ -52,7 +50,7 @@ def test_prepare_tmdb_reg_log_y() -> None:
 
 def test_prepare_tmdb_features_toggle_log() -> None:
     X, y = _sample_frame()
-    x_raw, y_raw = prepare_tmdb_features(X, y, max_rows=30, log_transform=False)
+    x_raw, _y_raw = prepare_tmdb_features(X, y, max_rows=30, log_transform=False)
     assert x_raw.shape == (30, 5)
     assert np.any(x_raw > 10)
 
