@@ -8,6 +8,9 @@ from maths_self_study.dashboards.page_factory import define_page
 from maths_self_study.viz.textbooks.financial_machine_learning.ch3.definitions import (
     TRIPLE_BARRIER as TRIPLE_BARRIER_DEFINITIONS,
 )
+from maths_self_study.viz.textbooks.financial_machine_learning.ch3.observations import (
+    TRIPLE_BARRIER as TRIPLE_BARRIER_OBSERVATIONS,
+)
 from maths_self_study.viz.textbooks.financial_machine_learning.ch3.theorems import (
     TRIPLE_BARRIER as TRIPLE_BARRIER_THEOREMS,
 )
@@ -25,6 +28,7 @@ TripleBarrierPage = define_page(
     ],
     definitions=TRIPLE_BARRIER_DEFINITIONS,
     theorems=TRIPLE_BARRIER_THEOREMS,
+    observations=TRIPLE_BARRIER_OBSERVATIONS,
     build_filters=build_filters,
     register_callbacks=register_callbacks,
 )

@@ -8,6 +8,9 @@ from maths_self_study.dashboards.page_factory import define_page
 from maths_self_study.viz.textbooks.financial_machine_learning.ch4.definitions import (
     CONCURRENCY as CONCURRENCY_DEFINITIONS,
 )
+from maths_self_study.viz.textbooks.financial_machine_learning.ch4.observations import (
+    CONCURRENCY as CONCURRENCY_OBSERVATIONS,
+)
 from maths_self_study.viz.textbooks.financial_machine_learning.ch4.theorems import (
     CONCURRENCY as CONCURRENCY_THEOREMS,
 )
@@ -25,6 +28,7 @@ ConcurrencyPage = define_page(
     ],
     definitions=CONCURRENCY_DEFINITIONS,
     theorems=CONCURRENCY_THEOREMS,
+    observations=CONCURRENCY_OBSERVATIONS,
     build_filters=build_filters,
     register_callbacks=register_callbacks,
 )

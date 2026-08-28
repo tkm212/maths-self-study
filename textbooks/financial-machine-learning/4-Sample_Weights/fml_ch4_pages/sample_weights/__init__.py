@@ -8,8 +8,8 @@ from maths_self_study.dashboards.page_factory import define_page
 from maths_self_study.viz.textbooks.financial_machine_learning.ch4.definitions import (
     SAMPLE_WEIGHTS as WEIGHT_DEFINITIONS,
 )
-from maths_self_study.viz.textbooks.financial_machine_learning.ch4.theorems import (
-    SAMPLE_WEIGHTS as WEIGHT_THEOREMS,
+from maths_self_study.viz.textbooks.financial_machine_learning.ch4.observations import (
+    SAMPLE_WEIGHTS as WEIGHT_OBSERVATIONS,
 )
 
 SampleWeightsPage = define_page(
@@ -24,7 +24,7 @@ SampleWeightsPage = define_page(
         "Sequential bootstrap builds ensembles preferring unique draws.",
     ],
     definitions=WEIGHT_DEFINITIONS,
-    theorems=WEIGHT_THEOREMS,
+    observations=WEIGHT_OBSERVATIONS,
     build_filters=build_filters,
     register_callbacks=register_callbacks,
 )

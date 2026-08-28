@@ -110,7 +110,7 @@ def plot_sample_weight_histogram(labels: pd.DataFrame) -> go.Figure:
         labels["sample_weight"],
         nbinsx=50,
         name="Combined weight",
-        title="Combined sample weights (uniqueness × time decay, mean-normalized)",
+        title="Combined sample weights (uniqueness x time decay, mean-normalized)",
         xaxis_title="Weight",
         yaxis_title="Count",
         height=400,

@@ -9,7 +9,6 @@ from maths_self_study.quant.filters import cusum_filter
 from maths_self_study.quant.labeling import triple_barrier_labels
 from maths_self_study.viz.graphs import apply_layout
 
-
 LABEL_NAMES = {-1: "Stop loss", 0: "Time out", 1: "Profit take"}
 LABEL_COLORS = {1: "green", -1: "red", 0: "gray"}
 

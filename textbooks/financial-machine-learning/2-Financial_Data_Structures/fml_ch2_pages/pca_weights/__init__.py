@@ -8,8 +8,8 @@ from maths_self_study.dashboards.page_factory import define_page
 from maths_self_study.viz.textbooks.financial_machine_learning.ch2.definitions import (
     PCA_WEIGHTS as PCA_DEFINITIONS,
 )
-from maths_self_study.viz.textbooks.financial_machine_learning.ch2.theorems import (
-    PCA_WEIGHTS as PCA_THEOREMS,
+from maths_self_study.viz.textbooks.financial_machine_learning.ch2.observations import (
+    PCA_WEIGHTS as PCA_OBSERVATIONS,
 )
 
 PcaWeightsPage = define_page(
@@ -24,7 +24,7 @@ PcaWeightsPage = define_page(
         "Production pipelines may apply Marchenko–Pastur denoising before selecting components.",
     ],
     definitions=PCA_DEFINITIONS,
-    theorems=PCA_THEOREMS,
+    observations=PCA_OBSERVATIONS,
     build_filters=build_filters,
     register_callbacks=register_callbacks,
 )

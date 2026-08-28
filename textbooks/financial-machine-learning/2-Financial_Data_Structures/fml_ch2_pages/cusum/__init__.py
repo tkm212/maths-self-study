@@ -6,7 +6,7 @@ from fml_ch2_pages.cusum.callbacks import register_callbacks
 from fml_ch2_pages.cusum.filters import build_filters
 from maths_self_study.dashboards.page_factory import define_page
 from maths_self_study.viz.textbooks.financial_machine_learning.ch2.definitions import CUSUM as CUSUM_DEFINITIONS
-from maths_self_study.viz.textbooks.financial_machine_learning.ch2.theorems import CUSUM as CUSUM_THEOREMS
+from maths_self_study.viz.textbooks.financial_machine_learning.ch2.observations import CUSUM as CUSUM_OBSERVATIONS
 
 CusumPage = define_page(
     label="CUSUM",
@@ -20,7 +20,7 @@ CusumPage = define_page(
         "Threshold h trades sensitivity vs number of events.",
     ],
     definitions=CUSUM_DEFINITIONS,
-    theorems=CUSUM_THEOREMS,
+    observations=CUSUM_OBSERVATIONS,
     build_filters=build_filters,
     register_callbacks=register_callbacks,
 )

@@ -8,8 +8,8 @@ from maths_self_study.dashboards.page_factory import define_page
 from maths_self_study.viz.textbooks.financial_machine_learning.ch3.definitions import (
     META_LABELING as META_DEFINITIONS,
 )
-from maths_self_study.viz.textbooks.financial_machine_learning.ch3.theorems import (
-    META_LABELING as META_THEOREMS,
+from maths_self_study.viz.textbooks.financial_machine_learning.ch3.observations import (
+    META_LABELING as META_OBSERVATIONS,
 )
 
 MetaLabelingPage = define_page(
@@ -24,7 +24,7 @@ MetaLabelingPage = define_page(
         "Reduces false positives from a noisy primary signal.",
     ],
     definitions=META_DEFINITIONS,
-    theorems=META_THEOREMS,
+    observations=META_OBSERVATIONS,
     build_filters=build_filters,
     register_callbacks=register_callbacks,
 )
