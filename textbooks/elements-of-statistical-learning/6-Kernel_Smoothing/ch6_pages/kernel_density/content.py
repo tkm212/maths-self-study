@@ -15,7 +15,7 @@ def render_body(feat, bw) -> html.Div:
     bw = float(bw or 0.3)
     try:
         X_reg, _, _ = load_xy()
-        X_cls, y_cls = load_cls()
+        X_cls, y_cls, _ = load_cls()
         fig_kde = helpers.kde_figure(X_reg, feat=feat)
         fig_nb, nb = helpers.naive_bayes_figure(X_cls, y_cls, feat=feat, bw=bw)
     except FileNotFoundError as exc:
