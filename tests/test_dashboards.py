@@ -40,6 +40,7 @@ _ESL_CH2_DASHBOARD = _REPO_ROOT / "textbooks/elements-of-statistical-learning/2-
 _ESL_CH4_DASHBOARD = (
     _REPO_ROOT / "textbooks/elements-of-statistical-learning/4-Linear_Methods_Classification/dashboard.py"
 )
+_ESL_CH7_DASHBOARD = _REPO_ROOT / "textbooks/elements-of-statistical-learning/7-Model_Assessment/dashboard.py"
 
 _CHAPTER_MODULE_ROOTS = tuple(f"ch{n}_{suffix}" for n in range(2, 19) for suffix in ("pages", "helpers", "data"))
 
@@ -155,6 +156,13 @@ def test_esl_ch4_dashboard_app_layout():
     app = ch4.create_app()
     assert app.layout is not None
     assert len(ch4.PAGES) == 3
+
+
+def test_esl_ch7_dashboard_app_layout():
+    ch7 = _load_dashboard_module(_ESL_CH7_DASHBOARD)
+    app = ch7.create_app()
+    assert app.layout is not None
+    assert len(ch7.PAGES) == 2
 
 
 def test_create_esl_dashboard():
