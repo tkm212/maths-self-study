@@ -13,15 +13,15 @@ def render_body() -> html.Div:
     X, y, _ = load_xy()
     try:
         fig_proto, proto_summary = helpers.kmeans_prototype_figure(X, y, R_values=[1, 2, 3, 5, 8, 10])
-        fig_cmp, cmp_summary = helpers.lvq_vs_knn_figure(
-            X, y, k_values=[1, 3, 5, 10, 20], R_values=[1, 2, 3, 5, 8]
-        )
+        fig_cmp, cmp_summary = helpers.lvq_vs_knn_figure(X, y, k_values=[1, 3, 5, 10, 20], R_values=[1, 2, 3, 5, 8])
     except FileNotFoundError as exc:
         return text_box(steps=[str(exc)], title="Data required")
 
     return html.Div([
         text_box(
-            steps=["K-means prototypes per class compress training data for nearest-prototype classification (§13.2.1)."],
+            steps=[
+                "K-means prototypes per class compress training data for nearest-prototype classification (§13.2.1)."
+            ],
             title="K-means prototypes",
         ),
         html.Div(

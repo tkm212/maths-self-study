@@ -15,9 +15,7 @@ def render_body(metric_k, max_k) -> html.Div:
     max_k = int(max_k or 50)
     k_values = list(range(1, max_k + 1))
     try:
-        fig_k, k_summary = helpers.knn_k_selection_figure(
-            X, y, k_values=[1, 3, 5, 7, 10, 15, 20, 30, 50]
-        )
+        fig_k, k_summary = helpers.knn_k_selection_figure(X, y, k_values=[1, 3, 5, 7, 10, 15, 20, 30, 50])
         fig_metric, metric_summary = helpers.knn_metric_figure(
             X, y, k=metric_k, metrics=["euclidean", "manhattan", "chebyshev", "cosine"]
         )

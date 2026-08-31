@@ -38,7 +38,9 @@ def render_body(n_estimators) -> html.Div:
 
     return html.Div([
         text_box(
-            steps=["OOB error decreases monotonically with B and stabilises - forests do not overfit with more trees (§15.3.1)."],
+            steps=[
+                "OOB error decreases monotonically with B and stabilises - forests do not overfit with more trees (§15.3.1)."
+            ],
             title="OOB error vs number of trees",
         ),
         graph(fig_oob),
