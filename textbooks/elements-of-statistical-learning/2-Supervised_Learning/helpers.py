@@ -15,7 +15,7 @@ from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 
 from maths_self_study.data import notebooks as _notebooks
-from maths_self_study.viz.graphs import apply_layout, line_chart, scatter_chart
+from maths_self_study.viz.graphs import apply_layout, line_chart, scatter_chart, train_test_chart
 
 ensure_package_on_path = _notebooks.ensure_package_on_path
 find_project_root = _notebooks.find_project_root
@@ -89,10 +89,13 @@ def knn_train_test_mse_figure(
         train_mse.append(mean_squared_error(y_train, knn.predict(X_train_s)))
         test_mse.append(mean_squared_error(y_test, knn.predict(X_test_s)))
 
-    fig = line_chart(ks, train_mse, name="train MSE", mode="lines+markers")
-    line_chart(ks, test_mse, name="test MSE", mode="lines+markers", fig=fig)
-    apply_layout(
-        fig,
+    fig = train_test_chart(
+        ks,
+        train_mse,
+        test_mse,
+        train_name="train MSE",
+        test_name="test MSE",
+        mode="lines+markers",
         title="$k$-NN: train vs test MSE",
         xaxis_title="k (neighbors)",
         yaxis_title="MSE",

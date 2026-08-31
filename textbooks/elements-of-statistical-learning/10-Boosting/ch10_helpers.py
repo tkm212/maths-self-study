@@ -14,7 +14,7 @@ from sklearn.tree import DecisionTreeClassifier
 
 from maths_self_study.data import notebooks as _notebooks
 from maths_self_study.data.tmdb_features import prepare_tmdb_features as _select_features
-from maths_self_study.viz.graphs import add_vline, apply_layout, histogram_chart, line_chart
+from maths_self_study.viz.graphs import add_vline, apply_layout, histogram_chart, line_chart, train_test_chart
 
 init_paths = _notebooks.init_paths
 load_tmdb_classification_xy = _notebooks.load_tmdb_classification_xy
@@ -74,16 +74,19 @@ def adaboost_training_curve_figure(
     rounds = list(range(1, len(train_errors) + 1))
     best_round = rounds[int(np.argmin(test_errors))]
 
-    fig = line_chart(rounds, train_errors, mode="lines", name="Train error rate", color="steelblue")
-    line_chart(rounds, test_errors, mode="lines", name="Test error rate", color="tomato", fig=fig)
-    add_vline(fig, x=best_round, line_dash="dash", line_color="grey", annotation_text=f"best round={best_round}")
-    apply_layout(
-        fig,
+    fig = train_test_chart(
+        rounds,
+        train_errors,
+        test_errors,
+        train_name="Train error rate",
+        test_name="Test error rate",
+        mode="lines",
         title=f"AdaBoost training curve (stumps, {n_estimators} rounds) — §10.1",
         xaxis_title="boosting round M",
         yaxis_title="misclassification rate",
         legend="horizontal",
     )
+    add_vline(fig, x=best_round, line_dash="dash", line_color="grey", annotation_text=f"best round={best_round}")
     return fig, {
         "best_round": best_round,
         "best_test_error": min(test_errors),
@@ -210,16 +213,17 @@ def gbm_n_estimators_figure(
     rounds = list(range(1, len(train_mse) + 1))
     best_round = rounds[int(np.argmin(test_mse))]
 
-    fig = line_chart(rounds, train_mse, mode="lines", name="Train MSE", color="steelblue")
-    line_chart(rounds, test_mse, mode="lines", name="Test MSE", color="tomato", fig=fig)
-    add_vline(fig, x=best_round, line_dash="dash", line_color="grey", annotation_text=f"best M={best_round}")
-    apply_layout(
-        fig,
+    fig = train_test_chart(
+        rounds,
+        train_mse,
+        test_mse,
+        mode="lines",
         title=f"GBM MSE vs rounds (nu={learning_rate}, depth={max_depth}) — §10.9",
         xaxis_title="number of trees M",
         yaxis_title="MSE (log₁p-space)",
         legend="horizontal",
     )
+    add_vline(fig, x=best_round, line_dash="dash", line_color="grey", annotation_text=f"best M={best_round}")
     return fig, {"best_round": best_round, "best_test_mse": min(test_mse)}
 
 

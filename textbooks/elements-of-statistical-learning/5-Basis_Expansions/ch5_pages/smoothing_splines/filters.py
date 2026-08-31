@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from dash import html
 
-from maths_self_study.dashboards.components import dropdown, filter_bar, num_input
+from maths_self_study.dashboards.components import dropdown, filter_bar
 
 FEAT_OPTIONS = [
     {"label": "Budget", "value": "budget"},

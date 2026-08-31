@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
+import ch4_helpers as helpers
 from dash import html
 
-import ch4_helpers as helpers
 from maths_self_study.dashboards.components import graph, text_box
 
 

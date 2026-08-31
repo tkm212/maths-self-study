@@ -12,6 +12,8 @@ from maths_self_study.dashboards.callbacks import (
 )
 from maths_self_study.dashboards.chapter_app import DashboardPage, create_chapter_dashboard
 from maths_self_study.dashboards.components import (
+    algorithm_box,
+    algorithm_group,
     checklist,
     definition_box,
     definition_group,
@@ -29,6 +31,8 @@ from maths_self_study.dashboards.components import (
     prob_pair,
     prob_simplex,
     prob_simplex_ids,
+    proof_box,
+    proof_group,
     section,
     slider,
     table,
@@ -46,6 +50,8 @@ from maths_self_study.dashboards.runner import main_dashboard, run_dashboard, se
 
 __all__ = [
     "DashboardPage",
+    "algorithm_box",
+    "algorithm_group",
     "chapter_layout",
     "checklist",
     "complement_pair_callback_inputs",
@@ -74,6 +80,8 @@ __all__ = [
     "prob_pair",
     "prob_simplex",
     "prob_simplex_ids",
+    "proof_box",
+    "proof_group",
     "register_body_callback",
     "register_complement_pair",
     "register_complement_pairs",

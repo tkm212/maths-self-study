@@ -28,4 +28,9 @@ KERNEL_DENSITY = [
         r"$\hat{P}(Y=k \mid x) \propto \hat{\pi}_k \prod_j \hat{f}_{k,j}(x_j)$. "
         r"Here each $\hat{f}_{k,j}$ is a class-conditional KDE.",
     ),
+    (
+        "Bayes optimal classifier",
+        r"Assign $x$ to $\arg\max_k \pi_k f_k(x)$ — the rule minimising misclassification error when class priors and "
+        r"densities are known (ESL §6.6.3).",
+    ),
 ]

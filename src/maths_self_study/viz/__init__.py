@@ -1,6 +1,8 @@
 """Shared visualization helpers."""
 
 from maths_self_study.viz.graphs import (
+    TRAIN_SERIES_COLOR,
+    TEST_SERIES_COLOR,
     add_vline,
     apply_layout,
     bar_chart,
@@ -41,5 +43,7 @@ __all__ = [
     "series_xy",
     "show",
     "show_all",
+    "TEST_SERIES_COLOR",
+    "TRAIN_SERIES_COLOR",
     "train_test_chart",
 ]

@@ -15,6 +15,10 @@ BIAS_VARIANCE = [
 
 CROSS_VALIDATION = [
     (
+        "K-fold CV",
+        r"$\text{CV}(K) = \frac{1}{K}\sum_{k=1}^K \text{Err}_k$ — average held-out fold error.",
+    ),
+    (
         "Mallows' Cp",
         r"$C_p = \overline{\text{err}} + 2d\hat{\sigma}^2/N$ — linear penalty in the number of parameters $d$.",
     ),

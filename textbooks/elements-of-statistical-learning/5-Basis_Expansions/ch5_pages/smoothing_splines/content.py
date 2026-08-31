@@ -2,12 +2,11 @@
 
 from __future__ import annotations
 
+import ch5_helpers as helpers
+from ch5_data import load_xy
 from dash import html
 
-import ch5_helpers as helpers
 from maths_self_study.dashboards.components import graph, metric, text_box
-
-from ch5_data import load_xy
 
 
 def render_body(feat) -> html.Div:

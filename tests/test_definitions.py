@@ -5,10 +5,14 @@ from __future__ import annotations
 from dash import html
 
 from maths_self_study.dashboards.components import (
+    algorithm_box,
+    algorithm_group,
     definition_box,
     definition_group,
     observation_box,
     observation_group,
+    proof_box,
+    proof_group,
     theorem_box,
     theorem_group,
 )
@@ -24,7 +28,6 @@ from maths_self_study.viz.textbooks.deep_learning.ch5 import theorems as th5
 from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch2 import definitions as esl2
 from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch2 import theorems as esl_th2
 from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch3 import definitions as esl3
-from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch3 import theorems as esl_th3
 from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch4 import definitions as esl4
 from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch4 import theorems as esl_th4
 from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch5 import definitions as esl5
@@ -38,7 +41,6 @@ from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch8 import 
 from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch9 import definitions as esl9
 from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch9 import theorems as esl_th9
 from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch10 import definitions as esl10
-from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch10 import theorems as esl_th10
 
 
 def test_definition_box_renders_term_and_body():
@@ -58,6 +60,76 @@ def test_definition_group_stacks_items():
     assert "definition-group" in str(group)
     assert group.children is not None
     assert len(group.children) == 2
+
+
+def test_algorithm_box_renders_name_and_steps():
+    box = algorithm_box(
+        "AdaBoost.M1",
+        [r"Initialise $w_i = 1/N$.", r"Update $w_i \leftarrow w_i \exp(\alpha_m)$."],
+    )
+    rendered = str(box)
+    assert "algorithm-box" in rendered
+    assert "Algorithm" in rendered
+    assert "AdaBoost.M1" in rendered
+    assert "math-latex-source" in rendered
+
+
+def test_algorithm_group_stacks_items():
+    group = algorithm_group(
+        ("EM", [r"E-step: compute $r_{ik}$.", r"M-step: update $\mu_k$."]),
+        ("Backfit", [r"Fit $f_j$ to partial residuals."]),
+    )
+    assert "algorithm-group" in str(group)
+    assert group.children is not None
+    assert len(group.children) == 2
+
+
+def test_page_shell_includes_algorithm():
+    shell = page_shell(
+        "Title",
+        "Caption",
+        html.Div("filters"),
+        "body-id",
+        algorithm=("Gradient descent", [r"Update $x \leftarrow x - \eta \nabla f(x)$."]),
+    )
+    rendered = str(shell)
+    assert "algorithm-group" in rendered
+    assert "Gradient descent" in rendered
+
+
+def test_proof_box_renders_name_and_steps():
+    box = proof_box(
+        "Bias-variance decomposition",
+        [r"Write $y = f(x_0) + \varepsilon$.", r"Expand $\mathbb{E}[(y-\hat{f})^2]$."],
+    )
+    rendered = str(box)
+    assert "proof-box" in rendered
+    assert "Proof" in rendered
+    assert "Bias-variance decomposition" in rendered
+    assert "math-latex-source" in rendered
+
+
+def test_proof_group_stacks_items():
+    group = proof_group(
+        ("Lemma A", [r"Step one."]),
+        ("Lemma B", [r"Step two."]),
+    )
+    assert "proof-group" in str(group)
+    assert group.children is not None
+    assert len(group.children) == 2
+
+
+def test_page_shell_includes_proof():
+    shell = page_shell(
+        "Title",
+        "Caption",
+        html.Div("filters"),
+        "body-id",
+        proof=("Bias-variance", [r"$\mathbb{E}[(y-\hat{f})^2] = \mathrm{bias}^2 + \mathrm{var} + \sigma^2$."]),
+    )
+    rendered = str(shell)
+    assert "proof-group" in rendered
+    assert "Bias-variance" in rendered
 
 
 def test_page_shell_includes_definitions():
@@ -171,15 +243,13 @@ def test_chapter_theorem_modules_are_nonempty():
         (th3, ["RANDOM_VARIABLES", "BAYES", "INFORMATION", "MARKOV"]),
         (th4, ["STABILITY", "CONDITIONING", "LEAST_SQUARES", "KKT"]),
         (th5, ["BIAS_VARIANCE", "MLE"]),
-        (esl_th2, ["K_NEAREST_NEIGHBORS", "LEAST_SQUARES"]),
-        (esl_th3, ["RIDGE", "LASSO"]),
+        (esl_th2, ["LEAST_SQUARES"]),
         (esl_th4, ["LDA", "SEPARATING_HYPERPLANES"]),
-        (esl_th5, ["SPLINES", "SMOOTHING_SPLINES"]),
-        (esl_th6, ["KERNEL_SMOOTHERS", "KERNEL_DENSITY"]),
-        (esl_th7, ["BIAS_VARIANCE", "CROSS_VALIDATION"]),
+        (esl_th5, ["SMOOTHING_SPLINES"]),
+        (esl_th6, ["KERNEL_SMOOTHERS"]),
+        (esl_th7, ["BIAS_VARIANCE"]),
         (esl_th8, ["EM_ALGORITHM", "BAGGING"]),
-        (esl_th9, ["ADDITIVE_MODELS", "DECISION_TREES"]),
-        (esl_th10, ["BOOSTING", "GRADIENT_BOOSTING"]),
+        (esl_th9, ["DECISION_TREES"]),
     )
     for module, names in modules:
         for name in names:

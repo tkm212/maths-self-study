@@ -6,6 +6,7 @@ from ch5_pages.bias_variance.callbacks import register_callbacks
 from ch5_pages.bias_variance.filters import build_filters
 from maths_self_study.dashboards.page_factory import define_page
 from maths_self_study.viz.textbooks.deep_learning.ch5.definitions import BIAS_VARIANCE as BIAS_VARIANCE_DEFINITIONS
+from maths_self_study.viz.textbooks.deep_learning.ch5.proofs import BIAS_VARIANCE as BIAS_VARIANCE_PROOF
 from maths_self_study.viz.textbooks.deep_learning.ch5.theorems import BIAS_VARIANCE as BIAS_VARIANCE_THEOREMS
 
 BiasVariancePage = define_page(
@@ -20,6 +21,7 @@ BiasVariancePage = define_page(
     ],
     definitions=BIAS_VARIANCE_DEFINITIONS,
     theorems=BIAS_VARIANCE_THEOREMS,
+    proof=BIAS_VARIANCE_PROOF,
     build_filters=build_filters,
     register_callbacks=register_callbacks,
 )

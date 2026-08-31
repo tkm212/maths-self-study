@@ -5,6 +5,8 @@ from __future__ import annotations
 import plotly.graph_objects as go
 
 from maths_self_study.viz.graphs import (
+    TEST_SERIES_COLOR,
+    TRAIN_SERIES_COLOR,
     add_vline,
     bar_chart,
     base_layout,
@@ -81,6 +83,8 @@ def test_train_test_chart_dual_series() -> None:
     fig = train_test_chart([1, 2, 3], [0.1, 0.2, 0.3], [0.2, 0.15, 0.25], title="Curve")
     assert len(fig.data) == 2
     assert fig.layout.legend.orientation == "h"
+    assert fig.data[0].line.color == TRAIN_SERIES_COLOR
+    assert fig.data[1].line.color == TEST_SERIES_COLOR
 
 
 def test_add_vline_on_figure() -> None:

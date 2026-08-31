@@ -6,7 +6,14 @@ from typing import Any
 
 from dash import dcc, html
 
-from maths_self_study.dashboards.components import definition_group, observation_group, text_box, theorem_group
+from maths_self_study.dashboards.components import (
+    algorithm_group,
+    definition_group,
+    observation_group,
+    proof_group,
+    text_box,
+    theorem_group,
+)
 
 TAB_WRAP_STYLE = """
 #page-tabs .tab-container {
@@ -39,6 +46,8 @@ def page_shell(
     body_id: str,
     *,
     methodology: list[str] | None = None,
+    algorithm: tuple[str, list[str]] | None = None,
+    proof: tuple[str, list[str]] | None = None,
     definitions: list[tuple[str, str]] | None = None,
     theorems: list[tuple[str, str]] | None = None,
     observations: list[tuple[str, str]] | None = None,
@@ -59,8 +68,12 @@ def page_shell(
         children.append(definition_group(*definitions))
     if theorems:
         children.append(theorem_group(*theorems))
+    if proof:
+        children.append(proof_group(proof))
     if observations:
         children.append(observation_group(*observations))
+    if algorithm:
+        children.append(algorithm_group(algorithm))
     if methodology:
         children.append(text_box(steps=methodology, title="How it works"))
     children.extend([filters, html.Div(id=body_id)])

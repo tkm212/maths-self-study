@@ -16,7 +16,7 @@ from sklearn.tree import DecisionTreeClassifier, DecisionTreeRegressor
 
 from maths_self_study.data import notebooks as _notebooks
 from maths_self_study.data.tmdb_features import log_features_xy as _log_features
-from maths_self_study.viz.graphs import add_vline, apply_layout, line_chart
+from maths_self_study.viz.graphs import add_vline, apply_layout, train_test_chart
 
 init_paths = _notebooks.init_paths
 load_tmdb_classification_xy = _notebooks.load_tmdb_classification_xy
@@ -225,16 +225,17 @@ def tree_depth_error_figure(
         test_errs.append(float(mean_squared_error(y_te, tree.predict(X_te))))
 
     best_d = depths[int(np.argmin(test_errs))]
-    fig = line_chart(depths, train_errs, mode="lines+markers", name="Train MSE")
-    line_chart(depths, test_errs, mode="lines+markers", name="Test MSE", fig=fig)
-    add_vline(fig, x=best_d, line_dash="dash", line_color="grey", annotation_text=f"best depth={best_d}")
-    apply_layout(
-        fig,
+    fig = train_test_chart(
+        depths,
+        train_errs,
+        test_errs,
+        mode="lines+markers",
         title=f"CART tree depth vs train/test error — §9.2 (features: {feats[:3]}…)",
         xaxis_title="tree max_depth",
         yaxis_title="MSE (log₁p-space)",
         legend="horizontal",
     )
+    add_vline(fig, x=best_d, line_dash="dash", line_color="grey", annotation_text=f"best depth={best_d}")
     return fig, {"best_depth": best_d, "best_test_mse": min(test_errs)}
 
 
@@ -276,16 +277,16 @@ def cost_complexity_pruning_figure(
         n_leaves.append(int(tree.get_n_leaves()))
 
     best_alpha = float(ccp_alphas[int(np.argmin(test_errs))])
-    fig = line_chart(
+    fig = train_test_chart(
         n_leaves,
         train_errs,
-        name="Train MSE",
+        test_errs,
         mode="lines+markers",
         title="Cost-complexity pruning: test MSE vs number of leaves — §9.2",
         xaxis_title="number of terminal nodes |T̃|",
         yaxis_title="MSE (log₁p-space)",
+        legend="horizontal",
     )
-    line_chart(n_leaves, test_errs, name="Test MSE", mode="lines+markers", fig=fig)
     return fig, {
         "best_alpha": best_alpha,
         "best_n_leaves": n_leaves[int(np.argmin(test_errs))],

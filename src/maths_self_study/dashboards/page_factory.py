@@ -18,6 +18,8 @@ def define_page(
     build_filters: Callable[[], html.Div],
     register_callbacks: Callable[[Dash, str], None],
     methodology: list[str] | None = None,
+    algorithm: tuple[str, list[str]] | None = None,
+    proof: tuple[str, list[str]] | None = None,
     definitions: list[tuple[str, str]] | None = None,
     theorems: list[tuple[str, str]] | None = None,
     observations: list[tuple[str, str]] | None = None,
@@ -36,6 +38,8 @@ def define_page(
     _Page.title = title
     _Page.caption = caption
     _Page.methodology = methodology or []
+    _Page.algorithm = algorithm
+    _Page.proof = proof
     _Page.definitions = definitions or []
     _Page.theorems = theorems or []
     _Page.observations = observations or []
