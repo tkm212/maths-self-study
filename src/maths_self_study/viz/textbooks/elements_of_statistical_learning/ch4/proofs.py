@@ -25,7 +25,7 @@ PERCEPTRON = (
         r"After an update, $(w + y_i x_i)^\top w^* \ge w^\top w^* + \gamma$; summing over $T$ mistakes gives "
         r"$w^\top w^* \ge T \gamma$.",
         r"Also $\|w\|^2$ increases by at most $R^2$ per mistake, so $\|w\|^2 \le T R^2$.",
-        r"Cauchy–Schwarz: $T \gamma \le w^\top w^* \le \|w\| \|w^*\| \le R\sqrt{T}$, hence $T \le R^2/\gamma^2$ — "
+        r"Cauchy-Schwarz: $T \gamma \le w^\top w^* \le \|w\| \|w^*\| \le R\sqrt{T}$, hence $T \le R^2/\gamma^2$ — "
         r"finite mistakes and convergence to some separating hyperplane (ESL §4.5.1).",
     ],
 )

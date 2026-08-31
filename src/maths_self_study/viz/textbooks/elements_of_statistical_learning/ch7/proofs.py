@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 BIAS_VARIANCE = (
-    "Bias–variance decomposition (squared error)",
+    "Bias-variance decomposition (squared error)",
     [
         r"At a fixed $x_0$, write $y = f(x_0) + \varepsilon$ with $\mathbb{E}[\varepsilon]=0$, "
         r"$\mathrm{Var}(\varepsilon)=\sigma^2$, and $\varepsilon$ independent of $\hat{f}(x_0)$.",

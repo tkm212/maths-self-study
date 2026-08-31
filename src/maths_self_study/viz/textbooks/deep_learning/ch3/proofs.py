@@ -15,7 +15,7 @@ BAYES = (
 )
 
 GIBBS = (
-    "Gibbs' inequality ($D_{\mathrm{KL}} \ge 0$)",
+    r"Gibbs' inequality ($D_{\mathrm{KL}} \ge 0$)",
     [
         r"For discrete $P, Q$ on the same support, expand "
         r"$D_{\mathrm{KL}}(P \| Q) = \sum_x P(x) \log \frac{P(x)}{Q(x)}$.",
@@ -23,7 +23,7 @@ GIBBS = (
         r"$\log \frac{P(x)}{Q(x)} \le \frac{P(x)}{Q(x)} - 1$.",
         r"Multiply by $P(x)$ and sum: "
         r"$\sum_x P(x) \log \frac{P(x)}{Q(x)} \le \sum_x P(x) - \sum_x \frac{P(x)^2}{Q(x)}$.",
-        r"Since $\sum_x P(x) = 1$ and $\frac{P(x)^2}{Q(x)} \ge P(x)$ by AM–GM (or Jensen on $-\log$), "
+        r"Since $\sum_x P(x) = 1$ and $\frac{P(x)^2}{Q(x)} \ge P(x)$ by AM-GM (or Jensen on $-\log$), "
         r"the right-hand side is $\le 0$, with equality iff $P(x) = Q(x)$ everywhere.",
         r"Hence $D_{\mathrm{KL}}(P \| Q) \ge 0$, and cross-entropy $H(P,Q) = H(P) + D_{\mathrm{KL}}(P \| Q) \ge H(P)$ "
         r"(Goodfellow et al. §3.13).",
