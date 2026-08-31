@@ -2,12 +2,11 @@
 
 from __future__ import annotations
 
+import ch3_helpers as helpers
+from ch3_data import load_scaled
 from dash import html
 
-import ch3_helpers as helpers
 from maths_self_study.dashboards.components import graph, metric, text_box
-
-from ch3_data import load_scaled
 
 
 def render_body(_tab) -> html.Div:
