@@ -2,12 +2,11 @@
 
 from __future__ import annotations
 
+import helpers
+from ch2_data import load_xy
 from dash import html
 
-import helpers
 from maths_self_study.dashboards.components import graph, metric, text_box
-
-from ch2_data import load_xy
 
 
 def render_body(max_rows, k_neighbors) -> html.Div:

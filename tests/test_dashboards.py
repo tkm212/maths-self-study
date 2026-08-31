@@ -42,9 +42,37 @@ _ESL_CH4_DASHBOARD = (
 )
 _ESL_CH7_DASHBOARD = _REPO_ROOT / "textbooks/elements-of-statistical-learning/7-Model_Assessment/dashboard.py"
 
+_CHAPTER_MODULE_ROOTS = tuple(f"ch{n}_{suffix}" for n in range(2, 19) for suffix in ("pages", "helpers", "data"))
+
+
+def _clear_chapter_modules() -> None:
+    import sys
+
+    for name in list(sys.modules):
+        if any(name == root or name.startswith(f"{root}.") for root in _CHAPTER_MODULE_ROOTS):
+            del sys.modules[name]
+
+
+def _prepare_chapter_import(chapter_dir: Path) -> None:
+    import sys
+
+    _clear_chapter_modules()
+    chapter_dir_str = str(chapter_dir.resolve())
+    sys.path[:] = [path for path in sys.path if path != chapter_dir_str]
+    sys.path.insert(0, chapter_dir_str)
+
 
 def _load_dashboard_module(path: Path):
-    spec = importlib.util.spec_from_file_location(path.stem, path)
+    import sys
+
+    _clear_chapter_modules()
+    chapter_dir = str(path.parent.resolve())
+    if chapter_dir in sys.path:
+        sys.path.remove(chapter_dir)
+    sys.path.insert(0, chapter_dir)
+
+    module_name = "dashboard_" + path.parent.as_posix().replace("/", "_").replace("-", "_")
+    spec = importlib.util.spec_from_file_location(module_name, path)
     assert spec and spec.loader
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
@@ -153,10 +181,7 @@ def test_create_esl_dashboard():
 
 
 def test_capacity_page_updates():
-    import sys
-
-    ch5_dir = _CH5_DASHBOARD.parent
-    sys.path.insert(0, str(ch5_dir))
+    _prepare_chapter_import(_CH5_DASHBOARD.parent)
     from ch5_pages.capacity.content import render_body
 
     low = render_body(2, 0.05)
@@ -166,10 +191,7 @@ def test_capacity_page_updates():
 
 
 def test_stability_softmax_updates():
-    import sys
-
-    ch4_dir = _CH4_DASHBOARD.parent
-    sys.path.insert(0, str(ch4_dir))
+    _prepare_chapter_import(_CH4_DASHBOARD.parent)
     from ch4_pages.stability.content import render_body
 
     small = render_body(0.0, 1.0, 2.0)
@@ -179,10 +201,7 @@ def test_stability_softmax_updates():
 
 
 def test_random_variables_moments_update():
-    import sys
-
-    ch3_dir = _CH3_DASHBOARD.parent
-    sys.path.insert(0, str(ch3_dir))
+    _prepare_chapter_import(_CH3_DASHBOARD.parent)
     from ch3_pages.random_variables.content import render_body
 
     low = render_body(0.1, 0.15, 0.25, 0.5, 0.1, 0.2, 0.3, 0.4)
