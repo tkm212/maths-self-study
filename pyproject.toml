@@ -93,7 +93,7 @@ extra-paths = [
 ]
 
 [[tool.ty.overrides]]
-include = ["textbooks/deep-learning/**", "tests/test_dashboards.py"]
+include = ["textbooks/deep-learning/**", "tests/dashboards/**"]
 [tool.ty.overrides.rules]
 unresolved-import = "ignore"
 
