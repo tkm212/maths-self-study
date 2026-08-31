@@ -41,6 +41,12 @@ from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch14 import
 from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch14 import theorems as esl_ch14_th
 from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch15 import definitions as esl_ch15_defs
 from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch15 import theorems as esl_ch15_th
+from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch16 import definitions as esl_ch16_defs
+from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch16 import theorems as esl_ch16_th
+from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch17 import definitions as esl_ch17_defs
+from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch17 import theorems as esl_ch17_th
+from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch18 import definitions as esl_ch18_defs
+from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch18 import theorems as esl_ch18_th
 
 
 def _entries(module: ModuleType, names: list[str]) -> list[tuple[ModuleType, str]]:
@@ -65,6 +71,9 @@ DEFINITION_MODULES = (
     + _entries(esl_ch13_defs, ["PROTOTYPE_METHODS", "NEAREST_NEIGHBORS"])
     + _entries(esl_ch14_defs, ["CLUSTERING", "PRINCIPAL_COMPONENTS"])
     + _entries(esl_ch15_defs, ["RANDOM_FORESTS"])
+    + _entries(esl_ch16_defs, ["ENSEMBLE_LEARNING"])
+    + _entries(esl_ch17_defs, ["GRAPHICAL_MODELS"])
+    + _entries(esl_ch18_defs, ["HIGH_DIMENSIONAL"])
 )
 
 THEOREM_MODULES = (
@@ -82,6 +91,9 @@ THEOREM_MODULES = (
     + _entries(esl_ch13_th, ["NEAREST_NEIGHBORS"])
     + _entries(esl_ch14_th, ["PRINCIPAL_COMPONENTS"])
     + _entries(esl_ch15_th, ["RANDOM_FORESTS"])
+    + _entries(esl_ch16_th, ["ENSEMBLE_LEARNING"])
+    + _entries(esl_ch17_th, ["GRAPHICAL_MODELS"])
+    + _entries(esl_ch18_th, ["HIGH_DIMENSIONAL"])
 )
 
 PROOF_MODULES = (

@@ -20,6 +20,11 @@ ESL_CH12_DASHBOARD = REPO_ROOT / "textbooks/elements-of-statistical-learning/12-
 ESL_CH13_DASHBOARD = REPO_ROOT / "textbooks/elements-of-statistical-learning/13-Prototype_Methods/dashboard.py"
 ESL_CH14_DASHBOARD = REPO_ROOT / "textbooks/elements-of-statistical-learning/14-Unsupervised_Learning/dashboard.py"
 ESL_CH15_DASHBOARD = REPO_ROOT / "textbooks/elements-of-statistical-learning/15-Random_Forests/dashboard.py"
+ESL_CH16_DASHBOARD = REPO_ROOT / "textbooks/elements-of-statistical-learning/16-Ensemble_Learning/dashboard.py"
+ESL_CH17_DASHBOARD = (
+    REPO_ROOT / "textbooks/elements-of-statistical-learning/17-Undirected_Graphical_Models/dashboard.py"
+)
+ESL_CH18_DASHBOARD = REPO_ROOT / "textbooks/elements-of-statistical-learning/18-High_Dimensional_Problems/dashboard.py"
 
 CHAPTER_MODULE_ROOTS = tuple(f"ch{n}_{suffix}" for n in range(2, 19) for suffix in ("pages", "helpers", "data"))
 

@@ -12,6 +12,9 @@ from tests.dashboards.support import (
     ESL_CH13_DASHBOARD,
     ESL_CH14_DASHBOARD,
     ESL_CH15_DASHBOARD,
+    ESL_CH16_DASHBOARD,
+    ESL_CH17_DASHBOARD,
+    ESL_CH18_DASHBOARD,
     load_dashboard_module,
 )
 
@@ -23,6 +26,9 @@ ESL_DASHBOARDS = [
     pytest.param(ESL_CH13_DASHBOARD, 2, id="ch13"),
     pytest.param(ESL_CH14_DASHBOARD, 2, id="ch14"),
     pytest.param(ESL_CH15_DASHBOARD, 1, id="ch15"),
+    pytest.param(ESL_CH16_DASHBOARD, 1, id="ch16"),
+    pytest.param(ESL_CH17_DASHBOARD, 1, id="ch17"),
+    pytest.param(ESL_CH18_DASHBOARD, 1, id="ch18"),
 ]
 
 
