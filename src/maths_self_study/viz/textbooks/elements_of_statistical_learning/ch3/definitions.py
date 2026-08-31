@@ -16,6 +16,11 @@ RIDGE = [
         r"Penalised least squares: $\hat{\beta}^{\text{ridge}} = \arg\min_\beta \|y - X\beta\|^2 + \alpha\|\beta\|_2^2$. "
         r"All coefficients shrink toward zero but none become exactly zero.",
     ),
+    (
+        "Ridge as Bayesian MAP estimate",
+        r"Ridge regression equals the posterior mode for $\beta$ under a Gaussian prior and Gaussian likelihood — "
+        r"shrinkage reflects prior belief that coefficients are small (ESL §3.4.3).",
+    ),
 ]
 
 LASSO = [
@@ -24,6 +29,11 @@ LASSO = [
         r"Penalised least squares with an L1 penalty: "
         r"$\hat{\beta}^{\text{lasso}} = \arg\min_\beta \|y - X\beta\|^2 + \alpha\|\beta\|_1$. "
         r"The L1 constraint can set some $\beta_j$ exactly to zero, performing variable selection.",
+    ),
+    (
+        "L1 geometry and sparsity",
+        r"The L1 unit ball has corners on the coordinate axes. When the OLS solution meets the constraint at a corner, "
+        r"some $\beta_j$ are exactly zero — the geometric reason Lasso selects variables (ESL §3.4.4).",
     ),
 ]
 

@@ -21,6 +21,8 @@ class DashboardPage(ABC):
     title: str
     caption: str
     methodology: list[str]
+    algorithm: tuple[str, list[str]] | None
+    proof: tuple[str, list[str]] | None
     definitions: list[tuple[str, str]]
     theorems: list[tuple[str, str]]
     observations: list[tuple[str, str]]
@@ -42,6 +44,8 @@ class DashboardPage(ABC):
             self.build_filters(),
             self.body_id,
             methodology=self.methodology or None,
+            algorithm=self.algorithm,
+            proof=self.proof,
             definitions=self.definitions or None,
             theorems=self.theorems or None,
             observations=self.observations or None,

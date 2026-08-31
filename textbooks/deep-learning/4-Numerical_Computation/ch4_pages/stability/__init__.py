@@ -6,6 +6,7 @@ from ch4_pages.stability.callbacks import register_callbacks
 from ch4_pages.stability.filters import build_filters
 from maths_self_study.dashboards.page_factory import define_page
 from maths_self_study.viz.textbooks.deep_learning.ch4.definitions import STABILITY as STABILITY_DEFINITIONS
+from maths_self_study.viz.textbooks.deep_learning.ch4.proofs import LOG_SUM_EXP as LOG_SUM_EXP_PROOF
 from maths_self_study.viz.textbooks.deep_learning.ch4.theorems import STABILITY as STABILITY_THEOREMS
 
 StabilityPage = define_page(
@@ -21,6 +22,7 @@ StabilityPage = define_page(
     ],
     definitions=STABILITY_DEFINITIONS,
     theorems=STABILITY_THEOREMS,
+    proof=LOG_SUM_EXP_PROOF,
     build_filters=build_filters,
     register_callbacks=register_callbacks,
 )

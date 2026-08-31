@@ -8,9 +8,6 @@ from maths_self_study.dashboards.page_factory import define_page
 from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch2.definitions import (
     K_NEAREST_NEIGHBORS as KNN_DEFINITIONS,
 )
-from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch2.theorems import (
-    K_NEAREST_NEIGHBORS as KNN_THEOREMS,
-)
 
 KNearestNeighborsPage = define_page(
     label="k-NN",
@@ -23,7 +20,6 @@ KNearestNeighborsPage = define_page(
         "Linear regression is global; k-NN is local and falls back to the mean in sparse regions.",
     ],
     definitions=KNN_DEFINITIONS,
-    theorems=KNN_THEOREMS,
     build_filters=build_filters,
     register_callbacks=register_callbacks,
 )

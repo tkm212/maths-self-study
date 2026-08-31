@@ -19,7 +19,14 @@ from maths_self_study.math.ml import (
     swiss_roll,
     train_test_split,
 )
-from maths_self_study.viz.graphs import add_vline, apply_layout, histogram_chart, line_chart, scatter_chart
+from maths_self_study.viz.graphs import (
+    add_vline,
+    apply_layout,
+    histogram_chart,
+    line_chart,
+    scatter_chart,
+    train_test_chart,
+)
 
 # --- Demo fixtures ---
 
@@ -87,17 +94,18 @@ def plot_bias_variance(
     degrees, train_err, test_err = complexity_errors(x_train, y_train, x_test, y_test)
     selected = int(max(1, min(complexity, len(degrees))))
 
-    fig = line_chart(
+    fig = train_test_chart(
         degrees,
         train_err,
-        name="train error",
+        test_err,
+        train_name="train error",
+        test_name="test error",
         mode="lines+markers",
         title=title or "Bias-variance tradeoff — test error rises when capacity exceeds data",
         xaxis_title="Polynomial degree (capacity)",
         yaxis_title="MSE",
         height=440,
     )
-    line_chart(degrees, test_err, name="test error", color="#dc2626", mode="lines+markers", fig=fig)
     add_vline(fig, selected, line_dash="dot", line_color="#64748b", annotation_text=f"degree={selected}")
     return fig
 
@@ -115,17 +123,18 @@ def plot_validation_curve(l2: float, *, noise: float = CAPACITY_NOISE) -> go.Fig
         train_err[i] = mean_squared_error(predict_linear(xtr, weights), y_train)
         val_err[i] = mean_squared_error(predict_linear(xva, weights), y_test)
 
-    fig = line_chart(
+    fig = train_test_chart(
         lambdas,
         train_err,
-        name="train",
+        val_err,
+        train_name="train",
+        test_name="validation",
         xaxis_type="log",
         title="Ridge penalty lambda — validation set picks generalization",
         xaxis_title="L2 penalty lambda",
         yaxis_title="MSE",
         height=440,
     )
-    line_chart(lambdas, val_err, name="validation", color="#dc2626", fig=fig)
     add_vline(fig, float(l2), line_dash="dot", line_color="#64748b", annotation_text=f"lambda={l2:g}")
     return fig
 

@@ -13,7 +13,7 @@ from sklearn.linear_model import Lasso, LinearRegression, Ridge, lasso_path
 from sklearn.metrics import mean_squared_error, r2_score
 
 from maths_self_study.data import notebooks as _notebooks
-from maths_self_study.viz.graphs import add_vline, apply_layout, bar_chart, line_chart
+from maths_self_study.viz.graphs import add_vline, apply_layout, bar_chart, line_chart, train_test_chart
 
 find_project_root = _notebooks.find_project_root
 init_paths = _notebooks.init_paths
@@ -66,17 +66,18 @@ def subset_selection_figure(
 ) -> tuple[go.Figure, list[str]]:
     selected, train_mse, test_mse = forward_stepwise(X_train, X_test, y_train, y_test)
     n = list(range(1, len(selected) + 1))
-    fig = line_chart(
+    fig = train_test_chart(
         n,
         train_mse,
-        name="train MSE",
+        test_mse,
+        train_name="train MSE",
+        test_name="test MSE",
         mode="lines+markers",
         title="Forward stepwise selection: MSE vs number of features",
         xaxis_title="# features",
         yaxis_title="MSE",
         legend="horizontal",
     )
-    line_chart(n, test_mse, name="test MSE", mode="lines+markers", fig=fig)
     return fig, selected
 
 
@@ -103,17 +104,18 @@ def ridge_alpha_path_figure(
         test_mse.append(float(mean_squared_error(y_test, ridge.predict(X_test_s))))
 
     best_idx = int(np.argmin(test_mse))
-    fig = line_chart(
+    fig = train_test_chart(
         alphas,
         train_mse,
-        name="train MSE",
+        test_mse,
+        train_name="train MSE",
+        test_name="test MSE",
         title="Ridge: MSE vs regularisation strength (alpha)",
         xaxis_title="alpha (log scale)",
         yaxis_title="MSE",
         xaxis_type="log",
         legend="horizontal",
     )
-    line_chart(alphas, test_mse, name="test MSE", fig=fig)
     add_vline(
         fig,
         x=float(alphas[best_idx]),
@@ -190,8 +192,14 @@ def lasso_alpha_path_figure(
         n_nonzero.append(int(np.sum(np.abs(lasso.coef_) > 1e-8)))
 
     best_idx = int(np.argmin(test_mse))
-    fig = line_chart(alphas, train_mse, mode="lines", name="train MSE")
-    line_chart(alphas, test_mse, mode="lines", name="test MSE", fig=fig)
+    fig = train_test_chart(
+        alphas,
+        train_mse,
+        test_mse,
+        train_name="train MSE",
+        test_name="test MSE",
+        mode="lines",
+    )
     add_vline(
         fig,
         x=float(alphas[best_idx]),

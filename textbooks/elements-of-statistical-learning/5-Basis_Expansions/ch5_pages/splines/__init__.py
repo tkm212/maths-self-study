@@ -8,9 +8,6 @@ from maths_self_study.dashboards.page_factory import define_page
 from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch5.definitions import (
     SPLINES as SPLINES_DEFINITIONS,
 )
-from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch5.theorems import (
-    SPLINES as SPLINES_THEOREMS,
-)
 
 SplinesPage = define_page(
     label="Splines",
@@ -22,7 +19,6 @@ SplinesPage = define_page(
         "Natural cubic splines add boundary constraints.",
     ],
     definitions=SPLINES_DEFINITIONS,
-    theorems=SPLINES_THEOREMS,
     build_filters=build_filters,
     register_callbacks=register_callbacks,
 )

@@ -556,6 +556,106 @@ def observation_group(*items: tuple[str, str]) -> html.Div:
     )
 
 
+_ALGORITHM_GROUP_STYLE = {"marginBottom": "16px"}
+_ALGORITHM_BOX_STYLE = {
+    "padding": "12px 14px",
+    "background": "#ecfdf5",
+    "border": "1px solid #a7f3d0",
+    "borderLeft": "4px solid #059669",
+    "borderRadius": "6px",
+    "marginBottom": "10px",
+}
+_ALGORITHM_LABEL_STYLE = {
+    "fontSize": "0.75rem",
+    "fontWeight": 700,
+    "letterSpacing": "0.06em",
+    "textTransform": "uppercase",
+    "color": "#047857",
+    "marginBottom": "6px",
+}
+_ALGORITHM_NAME_STYLE = {
+    "fontWeight": 600,
+    "color": "#1e293b",
+    "marginBottom": "6px",
+    "fontSize": "0.95rem",
+}
+
+
+def algorithm_box(name: str, steps: list[str]) -> html.Div:
+    """Textbook-style algorithm panel with a labelled name and numbered KaTeX steps."""
+    return html.Div(
+        [
+            html.Div("Algorithm", style=_ALGORITHM_LABEL_STYLE),
+            html.Div(name, style=_ALGORITHM_NAME_STYLE),
+            html.Ol(
+                [html.Li(math_text(step, style=_TEXT_BOX_BODY_STYLE), style={"marginBottom": "6px"}) for step in steps],
+                style={**_TEXT_BOX_BODY_STYLE, "paddingLeft": "20px", "marginTop": 0, "marginBottom": 0},
+            ),
+        ],
+        style=_ALGORITHM_BOX_STYLE,
+        className="algorithm-box",
+    )
+
+
+def algorithm_group(*items: tuple[str, list[str]]) -> html.Div:
+    """Stack one or more algorithm boxes on a dashboard page."""
+    return html.Div(
+        [algorithm_box(name, steps) for name, steps in items],
+        style=_ALGORITHM_GROUP_STYLE,
+        className="algorithm-group",
+    )
+
+
+_PROOF_GROUP_STYLE = {"marginBottom": "16px"}
+_PROOF_BOX_STYLE = {
+    "padding": "12px 14px",
+    "background": "#f8fafc",
+    "border": "1px solid #cbd5e1",
+    "borderLeft": "4px solid #475569",
+    "borderRadius": "6px",
+    "marginBottom": "10px",
+}
+_PROOF_LABEL_STYLE = {
+    "fontSize": "0.75rem",
+    "fontWeight": 700,
+    "letterSpacing": "0.06em",
+    "textTransform": "uppercase",
+    "color": "#334155",
+    "marginBottom": "6px",
+}
+_PROOF_NAME_STYLE = {
+    "fontWeight": 600,
+    "color": "#1e293b",
+    "marginBottom": "6px",
+    "fontSize": "0.95rem",
+}
+
+
+def proof_box(name: str, steps: list[str]) -> html.Div:
+    """Textbook-style proof panel with a labelled title and numbered KaTeX steps."""
+    return html.Div(
+        [
+            html.Div("Proof", style=_PROOF_LABEL_STYLE),
+            html.Div(name, style=_PROOF_NAME_STYLE),
+            html.Ol(
+                [html.Li(math_text(step, style=_TEXT_BOX_BODY_STYLE), style={"marginBottom": "6px"}) for step in steps],
+                style={**_TEXT_BOX_BODY_STYLE, "paddingLeft": "20px", "marginTop": 0, "marginBottom": 0},
+            ),
+        ],
+        style=_PROOF_BOX_STYLE,
+        className="proof-box",
+    )
+
+
+def proof_group(*items: tuple[str, list[str]]) -> html.Div:
+    """Stack one or more proof boxes on a dashboard page."""
+    return html.Div(
+        [proof_box(name, steps) for name, steps in items],
+        style=_PROOF_GROUP_STYLE,
+        className="proof-group",
+    )
+
+
 def table(
     columns: list[str],
     rows: list[list[str | float | int]],

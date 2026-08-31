@@ -16,7 +16,7 @@ from sklearn.preprocessing import SplineTransformer
 
 from maths_self_study.data import notebooks as _notebooks
 from maths_self_study.data.tmdb_features import single_feature_subsample as _single_feature_subsample
-from maths_self_study.viz.graphs import add_vline, apply_layout, line_chart, scatter_chart
+from maths_self_study.viz.graphs import add_vline, apply_layout, line_chart, scatter_chart, train_test_chart
 
 find_project_root = _notebooks.find_project_root
 init_paths = _notebooks.init_paths
@@ -152,16 +152,19 @@ def spline_knot_bias_variance_figure(
         test_mse.append(float(mean_squared_error(y_te, pipe.predict(X_te))))
 
     best_k = ks[int(np.argmin(test_mse))]
-    fig = line_chart(ks, train_mse, mode="lines+markers", name="train MSE")
-    line_chart(ks, test_mse, mode="lines+markers", name="test MSE", fig=fig)
-    add_vline(fig, x=best_k, line_dash="dash", line_color="grey", annotation_text=f"best k={best_k}")
-    apply_layout(
-        fig,
+    fig = train_test_chart(
+        ks,
+        train_mse,
+        test_mse,
+        train_name="train MSE",
+        test_name="test MSE",
+        mode="lines+markers",
         title=f"Spline bias-variance tradeoff on `{feat}` (§5.2)",
         xaxis_title="number of knots",
         yaxis_title="MSE",
         legend="horizontal",
     )
+    add_vline(fig, x=best_k, line_dash="dash", line_color="grey", annotation_text=f"best k={best_k}")
     return fig
 
 
@@ -325,21 +328,24 @@ def smoothing_spline_bias_variance_figure(
         test_mse.append(float(mean_squared_error(y_te, ridge.predict(X_te_b))))
 
     best_idx = int(np.argmin(test_mse))
-    fig = line_chart(np.log10(alphas), train_mse, mode="lines", name="train MSE")
-    line_chart(np.log10(alphas), test_mse, mode="lines", name="test MSE", fig=fig)
+    fig = train_test_chart(
+        np.log10(alphas),
+        train_mse,
+        test_mse,
+        train_name="train MSE",
+        test_name="test MSE",
+        mode="lines",
+        title=f"Smoothing spline bias-variance tradeoff on `{feat}` (§5.5.2)",
+        xaxis_title="log10(lambda)  [lambda = smoothness penalty]",
+        yaxis_title="MSE",
+        legend="horizontal",
+    )
     add_vline(
         fig,
         x=float(np.log10(alphas[best_idx])),
         line_dash="dash",
         line_color="grey",
         annotation_text=f"best λ=10^{np.log10(alphas[best_idx]):.1f}",
-    )
-    apply_layout(
-        fig,
-        title=f"Smoothing spline bias-variance tradeoff on `{feat}` (§5.5.2)",
-        xaxis_title="log10(lambda)  [lambda = smoothness penalty]",
-        yaxis_title="MSE",
-        legend="horizontal",
     )
     return fig, {
         "best_alpha": float(alphas[best_idx]),

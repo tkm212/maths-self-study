@@ -8,6 +8,9 @@ from maths_self_study.dashboards.page_factory import define_page
 from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch4.definitions import (
     SEPARATING_HYPERPLANES as HYPERPLANE_DEFINITIONS,
 )
+from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch4.proofs import (
+    PERCEPTRON as PERCEPTRON_PROOF,
+)
 from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch4.theorems import (
     SEPARATING_HYPERPLANES as HYPERPLANE_THEOREMS,
 )
@@ -23,6 +26,7 @@ SeparatingHyperplanesPage = define_page(
     ],
     definitions=HYPERPLANE_DEFINITIONS,
     theorems=HYPERPLANE_THEOREMS,
+    proof=PERCEPTRON_PROOF,
     build_filters=build_filters,
     register_callbacks=register_callbacks,
 )

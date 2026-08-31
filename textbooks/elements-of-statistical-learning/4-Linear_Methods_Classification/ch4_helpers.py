@@ -14,7 +14,14 @@ from sklearn.metrics import accuracy_score
 from sklearn.svm import LinearSVC
 
 from maths_self_study.data import notebooks as _notebooks
-from maths_self_study.viz.graphs import add_vline, apply_layout, contour_chart, line_chart, scatter_chart
+from maths_self_study.viz.graphs import (
+    add_vline,
+    apply_layout,
+    contour_chart,
+    line_chart,
+    scatter_chart,
+    train_test_chart,
+)
 
 find_project_root = _notebooks.find_project_root
 init_paths = _notebooks.init_paths
@@ -139,21 +146,24 @@ def rda_shrinkage_figure(
         test_acc.append(float(accuracy_score(y_test, lda.predict(X_test_s))))
 
     best_idx = int(np.argmax(test_acc))
-    fig = line_chart(shrinkages, train_acc, mode="lines", name="train accuracy")
-    line_chart(shrinkages, test_acc, mode="lines", name="test accuracy", fig=fig)
+    fig = train_test_chart(
+        shrinkages,
+        train_acc,
+        test_acc,
+        train_name="train accuracy",
+        test_name="test accuracy",
+        mode="lines",
+        title="Regularized LDA: accuracy vs shrinkage (?4.3.1)",
+        xaxis_title="shrinkage (0 = full LDA, 1 = diagonal)",
+        yaxis_title="accuracy",
+        legend="horizontal",
+    )
     add_vline(
         fig,
         x=float(shrinkages[best_idx]),
         line_dash="dash",
         line_color="grey",
         annotation_text=f"best={shrinkages[best_idx]:.2f}",
-    )
-    apply_layout(
-        fig,
-        title="Regularized LDA: accuracy vs shrinkage (?4.3.1)",
-        xaxis_title="shrinkage (0 = full LDA, 1 = diagonal)",
-        yaxis_title="accuracy",
-        legend="horizontal",
     )
     return fig, {
         "best_shrinkage": float(shrinkages[best_idx]),

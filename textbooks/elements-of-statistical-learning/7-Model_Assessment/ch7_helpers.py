@@ -15,7 +15,7 @@ from sklearn.preprocessing import PolynomialFeatures, StandardScaler
 
 from maths_self_study.data import notebooks as _notebooks
 from maths_self_study.data.tmdb_features import log_feature_xy as _log_feature
-from maths_self_study.viz.graphs import add_vline, apply_layout, line_chart
+from maths_self_study.viz.graphs import add_vline, apply_layout, line_chart, train_test_chart
 
 init_paths = _notebooks.init_paths
 load_tmdb_xy = _notebooks.load_tmdb_xy
@@ -62,21 +62,17 @@ def train_test_error_figure(
         test_mse.append(float(mean_squared_error(y_te, pipe.predict(X_te))))
 
     best_d = degrees[int(np.argmin(test_mse))]
-    fig = line_chart(
+    fig = train_test_chart(
         degrees,
         train_mse,
-        name="Train MSE",
+        test_mse,
         mode="lines+markers",
-    )
-    line_chart(degrees, test_mse, name="Test MSE", mode="lines+markers", fig=fig)
-    add_vline(fig, x=best_d, line_dash="dash", line_color="grey", annotation_text=f"best d={best_d}")
-    apply_layout(
-        fig,
         title=f"Train vs test error on `{feat}` (§7.2)",
         xaxis_title="polynomial degree (model complexity)",
         yaxis_title="MSE (log₁p-space)",
         legend="horizontal",
     )
+    add_vline(fig, x=best_d, line_dash="dash", line_color="grey", annotation_text=f"best d={best_d}")
     return fig
 
 

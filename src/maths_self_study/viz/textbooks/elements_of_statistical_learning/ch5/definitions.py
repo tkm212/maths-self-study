@@ -18,6 +18,11 @@ SPLINES = [
         r"A cubic spline that is **linear beyond the outermost knots** ($f'' = 0$ for $x < \xi_1$ and $x > \xi_K$). "
         r"Reduces extrapolation wildness and lowers effective degrees of freedom (ESL §5.2.1).",
     ),
+    (
+        "Spline degrees of freedom",
+        r"A natural cubic spline with $K$ interior knots has $K + 4$ free parameters — $K$ cubic pieces subject to "
+        r"$3(K-1)$ continuity constraints plus two natural boundary conditions (ESL §5.2).",
+    ),
 ]
 
 SMOOTHING_SPLINES = [

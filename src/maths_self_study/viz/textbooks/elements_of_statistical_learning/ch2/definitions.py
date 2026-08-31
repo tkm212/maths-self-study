@@ -13,6 +13,11 @@ K_NEAREST_NEIGHBORS = [
         r"A model that adapts to the neighbourhood of each query point rather than fitting one global function. "
         r"k-NN is the simplest local method; kernel smoothers (Ch. 6) generalise it with weighted averages.",
     ),
+    (
+        "Bias-variance trade-off in k",
+        r"As $k \downarrow$, variance rises and bias falls; as $k \uparrow$, bias rises and variance falls. "
+        r"Test error is U-shaped in $k$ with a minimum between the two extremes (ESL §2.4).",
+    ),
 ]
 
 LEAST_SQUARES = [

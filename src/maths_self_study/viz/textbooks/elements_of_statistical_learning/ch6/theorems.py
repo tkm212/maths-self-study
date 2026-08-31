@@ -10,11 +10,3 @@ KERNEL_SMOOTHERS = [
         r"without refitting $n$ times (ESL §6.2).",
     ),
 ]
-
-KERNEL_DENSITY = [
-    (
-        "Bayes rule for classification",
-        r"The optimal classifier assigns $x$ to $\arg\max_k \pi_k f_k(x)$. Naive Bayes plugs in KDE estimates "
-        r"for each class-conditional density $f_k$ (ESL §6.6.3).",
-    ),
-]

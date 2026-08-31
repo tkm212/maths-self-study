@@ -6,6 +6,7 @@ from ch3_pages.information.callbacks import register_callbacks
 from ch3_pages.information.filters import build_filters
 from maths_self_study.dashboards.page_factory import define_page
 from maths_self_study.viz.textbooks.deep_learning.ch3.definitions import INFORMATION as INFORMATION_DEFINITIONS
+from maths_self_study.viz.textbooks.deep_learning.ch3.proofs import GIBBS as GIBBS_PROOF
 from maths_self_study.viz.textbooks.deep_learning.ch3.theorems import INFORMATION as INFORMATION_THEOREMS
 
 InformationPage = define_page(
@@ -21,6 +22,7 @@ InformationPage = define_page(
     ],
     definitions=INFORMATION_DEFINITIONS,
     theorems=INFORMATION_THEOREMS,
+    proof=GIBBS_PROOF,
     build_filters=build_filters,
     register_callbacks=register_callbacks,
 )

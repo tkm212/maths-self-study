@@ -17,6 +17,9 @@ HORIZONTAL_LEGEND: dict[str, Any] = {
     "x": 1,
 }
 
+TRAIN_SERIES_COLOR = "#2563eb"
+TEST_SERIES_COLOR = "#dc2626"
+
 
 def base_layout(**overrides: Any) -> dict[str, Any]:
     """Default white template and margins. Pass ``legend=\"horizontal\"`` for top legend row."""
@@ -456,8 +459,8 @@ def train_test_chart(
     *,
     train_name: str = "Train MSE",
     test_name: str = "Test MSE",
-    train_color: str = "steelblue",
-    test_color: str = "tomato",
+    train_color: str = TRAIN_SERIES_COLOR,
+    test_color: str = TEST_SERIES_COLOR,
     mode: str = "lines+markers",
     title: str | None = None,
     xaxis_title: str | None = None,

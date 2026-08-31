@@ -2,14 +2,6 @@
 
 from __future__ import annotations
 
-SPLINES = [
-    (
-        "Spline representation (ESL §5.2)",
-        r"A natural cubic spline with $K$ interior knots has $K + 4$ free parameters — equivalent to $K$ cubic pieces "
-        r"subject to $3(K-1)$ continuity constraints plus two natural boundary conditions.",
-    ),
-]
-
 SMOOTHING_SPLINES = [
     (
         "Representer theorem for smoothing splines",

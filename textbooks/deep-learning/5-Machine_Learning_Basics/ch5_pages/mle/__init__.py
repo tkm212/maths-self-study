@@ -6,6 +6,7 @@ from ch5_pages.mle.callbacks import register_callbacks
 from ch5_pages.mle.filters import build_filters
 from maths_self_study.dashboards.page_factory import define_page
 from maths_self_study.viz.textbooks.deep_learning.ch5.definitions import MLE as MLE_DEFINITIONS
+from maths_self_study.viz.textbooks.deep_learning.ch5.proofs import MLE as MLE_PROOF
 from maths_self_study.viz.textbooks.deep_learning.ch5.theorems import MLE as MLE_THEOREMS
 
 MlePage = define_page(
@@ -20,6 +21,7 @@ MlePage = define_page(
     ],
     definitions=MLE_DEFINITIONS,
     theorems=MLE_THEOREMS,
+    proof=MLE_PROOF,
     build_filters=build_filters,
     register_callbacks=register_callbacks,
 )

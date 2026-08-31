@@ -1,6 +1,8 @@
 """Shared visualization helpers."""
 
 from maths_self_study.viz.graphs import (
+    TEST_SERIES_COLOR,
+    TRAIN_SERIES_COLOR,
     add_vline,
     apply_layout,
     bar_chart,
@@ -20,6 +22,8 @@ from maths_self_study.viz.latex import formula, formula_group, katex_boot_script
 from maths_self_study.viz.marimo import display, show, show_all
 
 __all__ = [
+    "TEST_SERIES_COLOR",
+    "TRAIN_SERIES_COLOR",
     "add_vline",
     "apply_layout",
     "bar_chart",
