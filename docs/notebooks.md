@@ -60,7 +60,7 @@ Implementations based on **Hastie, T., Tibshirani, R., & Friedman, J. (2009). Th
 
 Source path: `textbooks/elements-of-statistical-learning/`
 
-Chapters 2–10 ship as multi-page **Dash** dashboards (one tab per topic). Each chapter’s `dashboard.py` wires the app; page code lives in `ch{N}_pages/<page>/` with separate `filters.py`, `content.py`, and `callbacks.py` modules. Plot helpers stay in each chapter’s `helpers.py` or `ch{N}_helpers.py`; shared UI is in `maths_self_study.dashboards`.
+Chapters 2-15 ship as multi-page **Dash** dashboards (one tab per topic). Each chapter's `dashboard.py` wires the app; page code lives in `ch{N}_pages/<page>/` with separate `filters.py`, `content.py`, and `callbacks.py` modules. Plot helpers stay in each chapter's `helpers.py` or `ch{N}_helpers.py`; shared UI is in `maths_self_study.dashboards`.
 
 | Chapter | Topic | App |
 |---------|-------|-----|
@@ -73,6 +73,10 @@ Chapters 2–10 ship as multi-page **Dash** dashboards (one tab per topic). Each
 | 8 | Model Inference | `8-Model_Inference/dashboard.py` |
 | 9 | Additive Models & Trees | `9-Additive_Models_Trees/dashboard.py` |
 | 10 | Boosting | `10-Boosting/dashboard.py` |
+| 12 | SVM & Flexible Discriminants | `12-SVM_Flexible_Discriminants/dashboard.py` |
+| 13 | Prototype Methods | `13-Prototype_Methods/dashboard.py` |
+| 14 | Unsupervised Learning | `14-Unsupervised_Learning/dashboard.py` |
+| 15 | Random Forests | `15-Random_Forests/dashboard.py` |
 
 Run a chapter dashboard from the repo root:
 
@@ -80,15 +84,11 @@ Run a chapter dashboard from the repo root:
 uv run python textbooks/elements-of-statistical-learning/4-Linear_Methods_Classification/dashboard.py
 ```
 
-Chapters 11–18 still use Marimo notebooks:
+Chapters 11 and 16-18 still use Marimo notebooks:
 
 | Chapter | Topic | Files |
 |---------|-------|-------|
 | 11 | Neural Networks | `neural_networks.py`, `projection_pursuit.py` |
-| 12 | SVM & Flexible Discriminants | `svm.py`, `flexible_discriminants.py` |
-| 13 | Prototype Methods | `nearest_neighbors.py`, `prototype_methods.py` |
-| 14 | Unsupervised Learning | `principal_components.py`, `clustering.py` |
-| 15 | Random Forests | `random_forests.py` |
 | 16 | Ensemble Learning | `ensemble_learning.py` |
 | 17 | Undirected Graphical Models | `graphical_models.py` |
 | 18 | High-Dimensional Problems | `high_dimensional.py` |

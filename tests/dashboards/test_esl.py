@@ -4,12 +4,25 @@ from __future__ import annotations
 
 import pytest
 
-from tests.dashboards.support import ESL_CH2_DASHBOARD, ESL_CH4_DASHBOARD, ESL_CH7_DASHBOARD, load_dashboard_module
+from tests.dashboards.support import (
+    ESL_CH2_DASHBOARD,
+    ESL_CH4_DASHBOARD,
+    ESL_CH7_DASHBOARD,
+    ESL_CH12_DASHBOARD,
+    ESL_CH13_DASHBOARD,
+    ESL_CH14_DASHBOARD,
+    ESL_CH15_DASHBOARD,
+    load_dashboard_module,
+)
 
 ESL_DASHBOARDS = [
     pytest.param(ESL_CH2_DASHBOARD, 2, id="ch2"),
     pytest.param(ESL_CH4_DASHBOARD, 3, id="ch4"),
     pytest.param(ESL_CH7_DASHBOARD, 2, id="ch7"),
+    pytest.param(ESL_CH12_DASHBOARD, 2, id="ch12"),
+    pytest.param(ESL_CH13_DASHBOARD, 2, id="ch13"),
+    pytest.param(ESL_CH14_DASHBOARD, 2, id="ch14"),
+    pytest.param(ESL_CH15_DASHBOARD, 1, id="ch15"),
 ]
 
 

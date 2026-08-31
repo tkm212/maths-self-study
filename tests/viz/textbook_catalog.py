@@ -34,6 +34,13 @@ from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch8 import 
 from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch9 import definitions as esl_ch9_defs
 from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch9 import theorems as esl_ch9_th
 from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch10 import definitions as esl_ch10_defs
+from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch12 import definitions as esl_ch12_defs
+from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch13 import definitions as esl_ch13_defs
+from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch13 import theorems as esl_ch13_th
+from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch14 import definitions as esl_ch14_defs
+from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch14 import theorems as esl_ch14_th
+from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch15 import definitions as esl_ch15_defs
+from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch15 import theorems as esl_ch15_th
 
 
 def _entries(module: ModuleType, names: list[str]) -> list[tuple[ModuleType, str]]:
@@ -54,6 +61,10 @@ DEFINITION_MODULES = (
     + _entries(esl_ch8_defs, ["EM_ALGORITHM", "BAGGING"])
     + _entries(esl_ch9_defs, ["ADDITIVE_MODELS", "DECISION_TREES"])
     + _entries(esl_ch10_defs, ["BOOSTING", "GRADIENT_BOOSTING"])
+    + _entries(esl_ch12_defs, ["SVM", "FLEXIBLE_DISCRIMINANTS"])
+    + _entries(esl_ch13_defs, ["PROTOTYPE_METHODS", "NEAREST_NEIGHBORS"])
+    + _entries(esl_ch14_defs, ["CLUSTERING", "PRINCIPAL_COMPONENTS"])
+    + _entries(esl_ch15_defs, ["RANDOM_FORESTS"])
 )
 
 THEOREM_MODULES = (
@@ -68,6 +79,9 @@ THEOREM_MODULES = (
     + _entries(esl_ch7_th, ["BIAS_VARIANCE"])
     + _entries(esl_ch8_th, ["EM_ALGORITHM", "BAGGING"])
     + _entries(esl_ch9_th, ["DECISION_TREES"])
+    + _entries(esl_ch13_th, ["NEAREST_NEIGHBORS"])
+    + _entries(esl_ch14_th, ["PRINCIPAL_COMPONENTS"])
+    + _entries(esl_ch15_th, ["RANDOM_FORESTS"])
 )
 
 PROOF_MODULES = (
