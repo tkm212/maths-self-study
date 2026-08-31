@@ -11,6 +11,7 @@ from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch8.algorit
 from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch8.definitions import (
     BAGGING as BAGGING_DEFINITIONS,
 )
+from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch8.proofs import BAGGING as BAGGING_PROOF
 from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch8.theorems import (
     BAGGING as BAGGING_THEOREMS,
 )
@@ -27,6 +28,7 @@ BaggingPage = define_page(
     algorithm=BAGGING_ALGORITHM,
     definitions=BAGGING_DEFINITIONS,
     theorems=BAGGING_THEOREMS,
+    proof=BAGGING_PROOF,
     build_filters=build_filters,
     register_callbacks=register_callbacks,
 )

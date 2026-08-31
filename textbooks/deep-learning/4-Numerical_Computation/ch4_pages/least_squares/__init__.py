@@ -6,6 +6,7 @@ from ch4_pages.least_squares.callbacks import register_callbacks
 from ch4_pages.least_squares.filters import build_filters
 from maths_self_study.dashboards.page_factory import define_page
 from maths_self_study.viz.textbooks.deep_learning.ch4.definitions import LEAST_SQUARES as LEAST_SQUARES_DEFINITIONS
+from maths_self_study.viz.textbooks.deep_learning.ch4.proofs import LEAST_SQUARES as LEAST_SQUARES_PROOF
 from maths_self_study.viz.textbooks.deep_learning.ch4.theorems import LEAST_SQUARES as LEAST_SQUARES_THEOREMS
 
 LeastSquaresPage = define_page(
@@ -21,6 +22,7 @@ LeastSquaresPage = define_page(
     ],
     definitions=LEAST_SQUARES_DEFINITIONS,
     theorems=LEAST_SQUARES_THEOREMS,
+    proof=LEAST_SQUARES_PROOF,
     build_filters=build_filters,
     register_callbacks=register_callbacks,
 )

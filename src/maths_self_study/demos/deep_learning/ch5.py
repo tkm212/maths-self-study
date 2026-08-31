@@ -19,7 +19,14 @@ from maths_self_study.math.ml import (
     swiss_roll,
     train_test_split,
 )
-from maths_self_study.viz.graphs import add_vline, apply_layout, histogram_chart, line_chart, scatter_chart, train_test_chart
+from maths_self_study.viz.graphs import (
+    add_vline,
+    apply_layout,
+    histogram_chart,
+    line_chart,
+    scatter_chart,
+    train_test_chart,
+)
 
 # --- Demo fixtures ---
 

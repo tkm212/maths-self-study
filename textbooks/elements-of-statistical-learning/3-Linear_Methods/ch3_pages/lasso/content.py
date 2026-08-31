@@ -30,7 +30,9 @@ def render_body(_tab) -> html.Div:
     except FileNotFoundError as exc:
         return text_box(steps=[str(exc)], title="Data required")
 
-    cmp_rows = [[name, f"{row['test_MSE']:.4f}", f"{row['test_R2']:.4f}"] for name, row in cmp_df.iterrows()]
+    cmp_rows: list[list[str | float | int]] = [
+        [str(name), f"{row['test_MSE']:.4f}", f"{row['test_R2']:.4f}"] for name, row in cmp_df.iterrows()
+    ]
 
     return html.Div([
         text_box(

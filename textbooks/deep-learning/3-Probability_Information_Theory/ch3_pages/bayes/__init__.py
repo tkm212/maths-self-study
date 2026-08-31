@@ -6,6 +6,7 @@ from ch3_pages.bayes.callbacks import register_callbacks
 from ch3_pages.bayes.filters import build_filters
 from maths_self_study.dashboards.page_factory import define_page
 from maths_self_study.viz.textbooks.deep_learning.ch3.definitions import BAYES as BAYES_DEFINITIONS
+from maths_self_study.viz.textbooks.deep_learning.ch3.proofs import BAYES as BAYES_PROOF
 from maths_self_study.viz.textbooks.deep_learning.ch3.theorems import BAYES as BAYES_THEOREMS
 
 BayesPage = define_page(
@@ -21,6 +22,7 @@ BayesPage = define_page(
     ],
     definitions=BAYES_DEFINITIONS,
     theorems=BAYES_THEOREMS,
+    proof=BAYES_PROOF,
     build_filters=build_filters,
     register_callbacks=register_callbacks,
 )

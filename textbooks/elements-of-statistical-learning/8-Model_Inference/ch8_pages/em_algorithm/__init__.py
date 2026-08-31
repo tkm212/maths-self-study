@@ -11,6 +11,9 @@ from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch8.algorit
 from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch8.definitions import (
     EM_ALGORITHM as EM_ALGORITHM_DEFINITIONS,
 )
+from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch8.proofs import (
+    EM_ALGORITHM as EM_ALGORITHM_PROOF,
+)
 from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch8.theorems import (
     EM_ALGORITHM as EM_ALGORITHM_THEOREMS,
 )
@@ -23,6 +26,7 @@ EmAlgorithmPage = define_page(
     algorithm=EM_ALGORITHM_STEPS,
     definitions=EM_ALGORITHM_DEFINITIONS,
     theorems=EM_ALGORITHM_THEOREMS,
+    proof=EM_ALGORITHM_PROOF,
     build_filters=build_filters,
     register_callbacks=register_callbacks,
 )

@@ -8,6 +8,7 @@ from maths_self_study.dashboards.page_factory import define_page
 from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch4.definitions import (
     LDA as LDA_DEFINITIONS,
 )
+from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch4.proofs import LDA as LDA_PROOF
 from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch4.theorems import (
     LDA as LDA_THEOREMS,
 )
@@ -23,6 +24,7 @@ LdaPage = define_page(
     ],
     definitions=LDA_DEFINITIONS,
     theorems=LDA_THEOREMS,
+    proof=LDA_PROOF,
     build_filters=build_filters,
     register_callbacks=register_callbacks,
 )

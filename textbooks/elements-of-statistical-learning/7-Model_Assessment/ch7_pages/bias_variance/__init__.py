@@ -8,6 +8,9 @@ from maths_self_study.dashboards.page_factory import define_page
 from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch7.definitions import (
     BIAS_VARIANCE as BIAS_VARIANCE_DEFINITIONS,
 )
+from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch7.proofs import (
+    BIAS_VARIANCE as BIAS_VARIANCE_PROOF,
+)
 from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch7.theorems import (
     BIAS_VARIANCE as BIAS_VARIANCE_THEOREMS,
 )
@@ -25,6 +28,7 @@ BiasVariancePage = define_page(
     ],
     definitions=BIAS_VARIANCE_DEFINITIONS,
     theorems=BIAS_VARIANCE_THEOREMS,
+    proof=BIAS_VARIANCE_PROOF,
     build_filters=build_filters,
     register_callbacks=register_callbacks,
 )

@@ -20,23 +20,29 @@ from maths_self_study.dashboards.layout import page_shell
 from maths_self_study.viz.textbooks.deep_learning.ch2 import definitions as ch2
 from maths_self_study.viz.textbooks.deep_learning.ch2 import theorems as th2
 from maths_self_study.viz.textbooks.deep_learning.ch3 import definitions as ch3
+from maths_self_study.viz.textbooks.deep_learning.ch3 import proofs as pr3
 from maths_self_study.viz.textbooks.deep_learning.ch3 import theorems as th3
 from maths_self_study.viz.textbooks.deep_learning.ch4 import definitions as ch4
+from maths_self_study.viz.textbooks.deep_learning.ch4 import proofs as pr4
 from maths_self_study.viz.textbooks.deep_learning.ch4 import theorems as th4
 from maths_self_study.viz.textbooks.deep_learning.ch5 import definitions as ch5
+from maths_self_study.viz.textbooks.deep_learning.ch5 import proofs as pr5
 from maths_self_study.viz.textbooks.deep_learning.ch5 import theorems as th5
 from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch2 import definitions as esl2
 from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch2 import theorems as esl_th2
 from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch3 import definitions as esl3
 from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch4 import definitions as esl4
+from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch4 import proofs as esl_pr4
 from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch4 import theorems as esl_th4
 from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch5 import definitions as esl5
 from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch5 import theorems as esl_th5
 from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch6 import definitions as esl6
 from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch6 import theorems as esl_th6
 from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch7 import definitions as esl7
+from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch7 import proofs as esl_pr7
 from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch7 import theorems as esl_th7
 from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch8 import definitions as esl8
+from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch8 import proofs as esl_pr8
 from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch8 import theorems as esl_th8
 from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch9 import definitions as esl9
 from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch9 import theorems as esl_th9
@@ -258,3 +264,21 @@ def test_chapter_theorem_modules_are_nonempty():
             for title, statement in items:
                 assert title.strip()
                 assert len(statement.strip()) > 10
+
+
+def test_chapter_proof_modules_are_nonempty():
+    modules = (
+        (pr3, ["BAYES", "GIBBS"]),
+        (pr4, ["LEAST_SQUARES", "LOG_SUM_EXP"]),
+        (pr5, ["BIAS_VARIANCE", "MLE"]),
+        (esl_pr4, ["LDA", "PERCEPTRON"]),
+        (esl_pr7, ["BIAS_VARIANCE"]),
+        (esl_pr8, ["EM_ALGORITHM", "BAGGING"]),
+    )
+    for module, names in modules:
+        for name in names:
+            title, steps = getattr(module, name)
+            assert title.strip()
+            assert len(steps) >= 3
+            for step in steps:
+                assert len(step.strip()) > 10
