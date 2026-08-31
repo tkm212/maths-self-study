@@ -92,6 +92,11 @@ extra-paths = [
     "textbooks/financial-machine-learning/4-Sample_Weights",
 ]
 
+[[tool.ty.overrides]]
+include = ["textbooks/deep-learning/**", "tests/test_dashboards.py"]
+[tool.ty.overrides.rules]
+unresolved-import = "ignore"
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = ["--cov", "--cov-report=term-missing", "--cov-report=xml"]

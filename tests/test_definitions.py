@@ -21,6 +21,16 @@ from maths_self_study.viz.textbooks.deep_learning.ch4 import definitions as ch4
 from maths_self_study.viz.textbooks.deep_learning.ch4 import theorems as th4
 from maths_self_study.viz.textbooks.deep_learning.ch5 import definitions as ch5
 from maths_self_study.viz.textbooks.deep_learning.ch5 import theorems as th5
+from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch2 import definitions as esl2
+from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch2 import theorems as esl_th2
+from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch3 import definitions as esl3
+from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch3 import theorems as esl_th3
+from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch4 import definitions as esl4
+from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch4 import theorems as esl_th4
+from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch5 import definitions as esl5
+from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch5 import theorems as esl_th5
+from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch6 import definitions as esl6
+from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch6 import theorems as esl_th6
 
 
 def test_definition_box_renders_term_and_body():
@@ -128,6 +138,11 @@ def test_chapter_definition_modules_are_nonempty():
         (ch3, ["RANDOM_VARIABLES", "DISTRIBUTIONS", "BAYES", "INFORMATION", "MARKOV"]),
         (ch4, ["STABILITY", "CONDITIONING", "GRADIENT_DESCENT", "NEWTON", "LEAST_SQUARES", "KKT"]),
         (ch5, ["CAPACITY", "VALIDATION", "BIAS_VARIANCE", "MLE", "MANIFOLD", "SGD"]),
+        (esl2, ["K_NEAREST_NEIGHBORS", "LEAST_SQUARES"]),
+        (esl3, ["SUBSET_SELECTION", "RIDGE", "LASSO", "PCR_PLS"]),
+        (esl4, ["LOGISTIC_REGRESSION", "LDA", "SEPARATING_HYPERPLANES"]),
+        (esl5, ["SPLINES", "SMOOTHING_SPLINES"]),
+        (esl6, ["KERNEL_SMOOTHERS", "KERNEL_DENSITY"]),
     )
     for module, names in modules:
         for name in names:
@@ -144,6 +159,11 @@ def test_chapter_theorem_modules_are_nonempty():
         (th3, ["RANDOM_VARIABLES", "BAYES", "INFORMATION", "MARKOV"]),
         (th4, ["STABILITY", "CONDITIONING", "LEAST_SQUARES", "KKT"]),
         (th5, ["BIAS_VARIANCE", "MLE"]),
+        (esl_th2, ["K_NEAREST_NEIGHBORS", "LEAST_SQUARES"]),
+        (esl_th3, ["RIDGE", "LASSO"]),
+        (esl_th4, ["LDA", "SEPARATING_HYPERPLANES"]),
+        (esl_th5, ["SPLINES", "SMOOTHING_SPLINES"]),
+        (esl_th6, ["KERNEL_SMOOTHERS", "KERNEL_DENSITY"]),
     )
     for module, names in modules:
         for name in names:

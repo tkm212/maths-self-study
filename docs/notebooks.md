@@ -60,13 +60,26 @@ Implementations based on **Hastie, T., Tibshirani, R., & Friedman, J. (2009). Th
 
 Source path: `textbooks/elements-of-statistical-learning/`
 
+Chapters 2–6 ship as multi-page **Dash** dashboards (one tab per topic). Each chapter’s `dashboard.py` wires the app; page code lives in `ch{N}_pages/<page>/` with separate `filters.py`, `content.py`, and `callbacks.py` modules. Plot helpers stay in each chapter’s `helpers.py` or `ch{N}_helpers.py`; shared UI is in `maths_self_study.dashboards`.
+
+| Chapter | Topic | App |
+|---------|-------|-----|
+| 2 | Supervised Learning | `2-Supervised_Learning/dashboard.py` |
+| 3 | Linear Methods for Regression | `3-Linear_Methods/dashboard.py` |
+| 4 | Linear Methods for Classification | `4-Linear_Methods_Classification/dashboard.py` |
+| 5 | Basis Expansions | `5-Basis_Expansions/dashboard.py` |
+| 6 | Kernel Smoothing | `6-Kernel_Smoothing/dashboard.py` |
+
+Run a chapter dashboard from the repo root:
+
+```bash
+uv run python textbooks/elements-of-statistical-learning/4-Linear_Methods_Classification/dashboard.py
+```
+
+Chapters 7–18 still use Marimo notebooks:
+
 | Chapter | Topic | Files |
 |---------|-------|-------|
-| 2 | Supervised Learning | `least_squares_regression.py`, `k_nearest_neighbors.py` |
-| 3 | Linear Methods | `subset_selection.py`, `ridge_regression.py`, `lasso.py`, `pcr_pls.py` |
-| 4 | Linear Methods for Classification | `lda.py`, `logistic_regression.py`, `separating_hyperplanes.py` |
-| 5 | Basis Expansions | `splines.py`, `smoothing_splines.py` |
-| 6 | Kernel Smoothing | `kernel_smoothers.py`, `kernel_density.py` |
 | 7 | Model Assessment | `bias_variance.py`, `cross_validation.py` |
 | 8 | Model Inference | `em_algorithm.py`, `bagging.py` |
 | 9 | Additive Models & Trees | `additive_models.py`, `decision_trees.py` |

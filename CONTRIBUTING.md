@@ -61,11 +61,13 @@ make test
 
 ## Notebook conventions
 
-- ESL notebooks live under `textbooks/elements-of-statistical-learning/` (Marimo `.py` files)
-- AFML chapters live under `textbooks/financial-machine-learning/` (Dash `dashboard.py` + `ch{N}_pages/`)
-- Deep Learning chapters also use Dash dashboards (same page layout as AFML)
-- ESL: run with `uv run marimo run path/to/notebook.py`; shared code in `ch{N}_helpers.py`
-- AFML / Deep Learning: run with `uv run python path/to/dashboard.py`; plot helpers in `maths_self_study.demos.*`
+- ESL Ch. 2–6: Dash dashboards under `textbooks/elements-of-statistical-learning/` (`dashboard.py` + `ch{N}_pages/`); plot/data helpers in `helpers.py` or `ch{N}_helpers.py`
+- ESL Ch. 7–18: Marimo `.py` notebooks under `textbooks/elements-of-statistical-learning/`; shared code in `ch{N}_helpers.py`
+- AFML chapters: Dash dashboards under `textbooks/financial-machine-learning/` (`dashboard.py` + `fml_ch{N}_pages/`)
+- Deep Learning chapters: Dash dashboards under `textbooks/deep-learning/` (same page layout as AFML)
+- Run Dash: `uv run python path/to/dashboard.py`
+- Run Marimo: `uv run marimo run path/to/notebook.py`
+- Plot helpers for Dash chapters live in `maths_self_study.demos.*`
 
 ## Pull request checklist
 

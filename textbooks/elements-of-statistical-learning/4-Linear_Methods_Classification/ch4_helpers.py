@@ -19,10 +19,11 @@ from maths_self_study.viz.graphs import add_vline, apply_layout, contour_chart, 
 find_project_root = _notebooks.find_project_root
 init_paths = _notebooks.init_paths
 load_tmdb_xy = _notebooks.load_tmdb_xy
+load_tmdb_cls = _notebooks.load_tmdb_cls
 scale_split = _notebooks.scale_split
 
 # ---------------------------------------------------------------------------
-# LDA / QDA (§4.3)
+# LDA / QDA (?4.3)
 # ---------------------------------------------------------------------------
 
 
@@ -75,7 +76,7 @@ def lda_2d_boundary_figure(
         )
     apply_layout(
         fig,
-        title="LDA decision boundary (PCA 2D projection, §4.3)",
+        title="LDA decision boundary (PCA 2D projection, ?4.3)",
         xaxis_title="PC1",
         yaxis_title="PC2",
         legend="horizontal",
@@ -111,7 +112,7 @@ def lda_vs_qda_logistic_figure(
     fig.add_trace(go.Bar(x=df["model"], y=df["test_accuracy"], name="test accuracy"))
     apply_layout(
         fig,
-        title="LDA vs QDA vs Logistic: accuracy comparison (§4.3 / §4.4)",
+        title="LDA vs QDA vs Logistic: accuracy comparison (?4.3 / ?4.4)",
         yaxis_title="accuracy",
         barmode="group",
         legend="horizontal",
@@ -149,7 +150,7 @@ def rda_shrinkage_figure(
     )
     apply_layout(
         fig,
-        title="Regularized LDA: accuracy vs shrinkage (§4.3.1)",
+        title="Regularized LDA: accuracy vs shrinkage (?4.3.1)",
         xaxis_title="shrinkage (0 = full LDA, 1 = diagonal)",
         yaxis_title="accuracy",
         legend="horizontal",
@@ -161,7 +162,7 @@ def rda_shrinkage_figure(
 
 
 # ---------------------------------------------------------------------------
-# Logistic Regression (§4.4)
+# Logistic Regression (?4.4)
 # ---------------------------------------------------------------------------
 
 
@@ -186,7 +187,7 @@ def logistic_l1_coef_path_figure(
         line_chart(np.log10(Cs), coefs_arr[:, i], mode="lines", name=name, fig=fig)
     apply_layout(
         fig,
-        title="L1 Logistic Regression: coefficient paths as penalty relaxes (§4.4.4)",
+        title="L1 Logistic Regression: coefficient paths as penalty relaxes (?4.4.4)",
         xaxis_title="log10(C)  [C = 1/lambda; left = heavy penalty]",
         yaxis_title="coefficient",
     )
@@ -219,7 +220,7 @@ def logistic_l1_vs_l2_accuracy_figure(
         np.log10(Cs),
         l1_acc,
         name="L1 (lasso-logistic)",
-        title="Logistic Regression: L1 vs L2 test accuracy (§4.4.4)",
+        title="Logistic Regression: L1 vs L2 test accuracy (?4.4.4)",
         xaxis_title="log10(C)  [C = 1/lambda]",
         yaxis_title="test accuracy",
     )
@@ -233,7 +234,7 @@ def logistic_l1_vs_l2_accuracy_figure(
 
 
 # ---------------------------------------------------------------------------
-# Separating Hyperplanes (§4.5)
+# Separating Hyperplanes (?4.5)
 # ---------------------------------------------------------------------------
 
 
@@ -297,10 +298,10 @@ def perceptron_convergence_figure(X: np.ndarray, y: np.ndarray) -> tuple[go.Figu
         go.Scatter(x=list(range(1, len(tracer.misclassified) + 1)), y=tracer.misclassified, mode="lines+markers")
     )
     fig_conv.update_layout(
-        title="Perceptron: misclassifications per epoch (§4.5.1)", xaxis_title="epoch", yaxis_title="# misclassified"
+        title="Perceptron: misclassifications per epoch (?4.5.1)", xaxis_title="epoch", yaxis_title="# misclassified"
     )
 
-    fig_boundary = _scatter_with_boundary(X, y, tracer.w_, tracer.b_, "Perceptron final boundary (§4.5.1)")
+    fig_boundary = _scatter_with_boundary(X, y, tracer.w_, tracer.b_, "Perceptron final boundary (?4.5.1)")
     return fig_conv, fig_boundary, tracer
 
 
@@ -384,7 +385,7 @@ def svm_margin_figure(X: np.ndarray, y: np.ndarray) -> go.Figure:
 
     apply_layout(
         fig,
-        title=f"Optimal separating hyperplane (§4.5.2) — margin = {margin:.3f}",
+        title=f"Optimal separating hyperplane (?4.5.2) ? margin = {margin:.3f}",
         xaxis_title="x1",
         yaxis_title="x2",
         legend="horizontal",

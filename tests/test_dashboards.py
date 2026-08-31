@@ -36,10 +36,42 @@ _CH2_DASHBOARD = _REPO_ROOT / "textbooks/deep-learning/2-Linear_Algebra/dashboar
 _CH3_DASHBOARD = _REPO_ROOT / "textbooks/deep-learning/3-Probability_Information_Theory/dashboard.py"
 _CH4_DASHBOARD = _REPO_ROOT / "textbooks/deep-learning/4-Numerical_Computation/dashboard.py"
 _CH5_DASHBOARD = _REPO_ROOT / "textbooks/deep-learning/5-Machine_Learning_Basics/dashboard.py"
+_ESL_CH2_DASHBOARD = _REPO_ROOT / "textbooks/elements-of-statistical-learning/2-Supervised_Learning/dashboard.py"
+_ESL_CH4_DASHBOARD = (
+    _REPO_ROOT / "textbooks/elements-of-statistical-learning/4-Linear_Methods_Classification/dashboard.py"
+)
+
+_CHAPTER_MODULE_ROOTS = tuple(f"ch{n}_{suffix}" for n in range(2, 19) for suffix in ("pages", "helpers", "data"))
+
+
+def _clear_chapter_modules() -> None:
+    import sys
+
+    for name in list(sys.modules):
+        if any(name == root or name.startswith(f"{root}.") for root in _CHAPTER_MODULE_ROOTS):
+            del sys.modules[name]
+
+
+def _prepare_chapter_import(chapter_dir: Path) -> None:
+    import sys
+
+    _clear_chapter_modules()
+    chapter_dir_str = str(chapter_dir.resolve())
+    sys.path[:] = [path for path in sys.path if path != chapter_dir_str]
+    sys.path.insert(0, chapter_dir_str)
 
 
 def _load_dashboard_module(path: Path):
-    spec = importlib.util.spec_from_file_location(path.stem, path)
+    import sys
+
+    _clear_chapter_modules()
+    chapter_dir = str(path.parent.resolve())
+    if chapter_dir in sys.path:
+        sys.path.remove(chapter_dir)
+    sys.path.insert(0, chapter_dir)
+
+    module_name = "dashboard_" + path.parent.as_posix().replace("/", "_").replace("-", "_")
+    spec = importlib.util.spec_from_file_location(module_name, path)
     assert spec and spec.loader
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
@@ -111,11 +143,37 @@ def test_ch5_dashboard_app_layout():
     assert len(ch5.PAGES) == 6
 
 
-def test_capacity_page_updates():
-    import sys
+def test_esl_ch2_dashboard_app_layout():
+    ch2 = _load_dashboard_module(_ESL_CH2_DASHBOARD)
+    app = ch2.create_app()
+    assert app.layout is not None
+    assert len(ch2.PAGES) == 2
 
-    ch5_dir = _CH5_DASHBOARD.parent
-    sys.path.insert(0, str(ch5_dir))
+
+def test_esl_ch4_dashboard_app_layout():
+    ch4 = _load_dashboard_module(_ESL_CH4_DASHBOARD)
+    app = ch4.create_app()
+    assert app.layout is not None
+    assert len(ch4.PAGES) == 3
+
+
+def test_create_esl_dashboard():
+    from maths_self_study.demos.elements_of_statistical_learning.dashboard import create_esl_dashboard
+
+    ch4 = _load_dashboard_module(_ESL_CH4_DASHBOARD)
+    app = create_esl_dashboard(
+        "test_esl_dashboard",
+        chapter_number=4,
+        chapter_title="Linear Methods for Classification",
+        pages=[ch4.PAGES[0]],
+        default_page=ch4.PAGES[0].value,
+    )
+    assert app.layout is not None
+    assert app.title == "ESL Ch. 4 — Linear Methods for Classification"
+
+
+def test_capacity_page_updates():
+    _prepare_chapter_import(_CH5_DASHBOARD.parent)
     from ch5_pages.capacity.content import render_body
 
     low = render_body(2, 0.05)
@@ -125,10 +183,7 @@ def test_capacity_page_updates():
 
 
 def test_stability_softmax_updates():
-    import sys
-
-    ch4_dir = _CH4_DASHBOARD.parent
-    sys.path.insert(0, str(ch4_dir))
+    _prepare_chapter_import(_CH4_DASHBOARD.parent)
     from ch4_pages.stability.content import render_body
 
     small = render_body(0.0, 1.0, 2.0)
@@ -138,10 +193,7 @@ def test_stability_softmax_updates():
 
 
 def test_random_variables_moments_update():
-    import sys
-
-    ch3_dir = _CH3_DASHBOARD.parent
-    sys.path.insert(0, str(ch3_dir))
+    _prepare_chapter_import(_CH3_DASHBOARD.parent)
     from ch3_pages.random_variables.content import render_body
 
     low = render_body(0.1, 0.15, 0.25, 0.5, 0.1, 0.2, 0.3, 0.4)
@@ -368,14 +420,16 @@ def test_plot_sgd_paths_builds_figure():
 def test_configure_logging():
     import logging
 
-    from maths_self_study.dashboards.logging import configure, configure_for_run
+    from maths_self_study.dashboards.logging import LOGGER, configure, configure_for_run
 
     configure(level=logging.WARNING, force=True)
     assert logging.getLogger().level == logging.WARNING
     configure_for_run(debug=True)
-    assert logging.getLogger().level == logging.DEBUG
-    configure_for_run(debug=False)
     assert logging.getLogger().level == logging.INFO
+    assert LOGGER.level == logging.DEBUG
+    assert logging.getLogger("watchdog").level == logging.WARNING
+    configure_for_run(debug=False)
+    assert LOGGER.level == logging.INFO
 
 
 def test_coerce_float_and_vector():
