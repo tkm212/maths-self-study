@@ -115,11 +115,12 @@ def test_page_shell_includes_definitions():
         html.Div("filters"),
         "body-id",
         definitions=[("Norm", "A function assigning vector length.")],
-        methodology=["Step one"],
+        methodology=[r"Step with inline $x^2$ math."],
     )
     rendered = str(shell)
     assert "definition-group" in rendered
     assert "How it works" in rendered
+    assert "math-latex-source" in rendered
 
 
 def test_theorem_box_renders_name_and_statement():

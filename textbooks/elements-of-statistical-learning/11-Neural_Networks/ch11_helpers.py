@@ -32,6 +32,13 @@ load_tmdb_xy = _notebooks.load_tmdb_xy
 # intentionally for warm-start epoch-by-epoch training curve tracking.
 warnings.filterwarnings("ignore", category=ConvergenceWarning)
 
+# Interactive defaults — smaller than the Marimo notebooks for snappier Dash reloads.
+DEFAULT_MAX_ROWS = 1000
+DEFAULT_HIDDEN = (20,)
+DEFAULT_MAX_EPOCHS = 80
+DEFAULT_MLP_ITER = 200
+DEFAULT_N_CV = 3
+
 
 # ---------------------------------------------------------------------------
 # Neural network training curve (§11.4)
@@ -43,9 +50,9 @@ def nn_training_curve_figure(
     y: pd.Series,
     feats: list[str] | None = None,
     *,
-    hidden_layer_sizes: tuple[int, ...] = (50,),
-    max_epochs: int = 150,
-    max_rows: int = 2000,
+    hidden_layer_sizes: tuple[int, ...] = DEFAULT_HIDDEN,
+    max_epochs: int = DEFAULT_MAX_EPOCHS,
+    max_rows: int = DEFAULT_MAX_ROWS,
 ) -> tuple[go.Figure, dict[str, Any]]:
     """
     Track cross-entropy loss and test error over training epochs for an MLP (§11.4).
@@ -114,9 +121,9 @@ def nn_weight_decay_figure(
     feats: list[str] | None = None,
     *,
     alphas: list[float] | None = None,
-    hidden_layer_sizes: tuple[int, ...] = (50,),
-    max_epochs: int = 150,
-    max_rows: int = 2000,
+    hidden_layer_sizes: tuple[int, ...] = DEFAULT_HIDDEN,
+    max_epochs: int = DEFAULT_MAX_EPOCHS,
+    max_rows: int = DEFAULT_MAX_ROWS,
 ) -> go.Figure:
     """
     Effect of L2 weight decay (alpha) on neural network generalisation (§11.5.2).
@@ -132,7 +139,7 @@ def nn_weight_decay_figure(
     small enough not to underfit.  In practice alpha is chosen by cross-validation.
     """
     if alphas is None:
-        alphas = [0.0, 0.001, 0.01, 0.1]
+        alphas = [0.0, 0.001, 0.01]
     x_arr, y_cls = _prepare_cls_arrays(X, y, feats, max_rows=max_rows)
     scaler = StandardScaler()
     x_arr = scaler.fit_transform(x_arr)
@@ -190,8 +197,9 @@ def nn_architecture_figure(
     feats: list[str] | None = None,
     *,
     architectures: list[tuple[int, ...]] | None = None,
-    max_rows: int = 2000,
-    n_cv: int = 5,
+    max_rows: int = DEFAULT_MAX_ROWS,
+    n_cv: int = DEFAULT_N_CV,
+    max_iter: int = DEFAULT_MLP_ITER,
 ) -> tuple[go.Figure, dict[str, Any]]:
     """
     Compare neural network architectures via cross-validated accuracy (§11.5.4).
@@ -207,7 +215,7 @@ def nn_architecture_figure(
     practice.  CV accuracy is used to select M without a held-out test set.
     """
     if architectures is None:
-        architectures = [(5,), (20,), (50,), (100,), (200,), (50, 20), (100, 50)]
+        architectures = [(5,), (10,), (20,), (50,), (20, 10)]
     x_arr, y_cls = _prepare_cls_arrays(X, y, feats, max_rows=max_rows)
     scaler = StandardScaler()
     x_arr = scaler.fit_transform(x_arr)
@@ -220,7 +228,7 @@ def nn_architecture_figure(
         clf = MLPClassifier(
             hidden_layer_sizes=arch,
             activation="logistic",
-            max_iter=500,
+            max_iter=max_iter,
             alpha=0.01,
             random_state=0,
         )
@@ -264,8 +272,9 @@ def ppr_vs_linear_figure(
     feats: list[str] | None = None,
     *,
     M_values: list[int] | None = None,
-    max_rows: int = 2000,
-    n_cv: int = 5,
+    max_rows: int = DEFAULT_MAX_ROWS,
+    n_cv: int = DEFAULT_N_CV,
+    max_iter: int = DEFAULT_MLP_ITER,
 ) -> tuple[go.Figure, dict[str, Any]]:
     """
     Approximate PPR via 1-hidden-layer MLPs and compare to OLS (§11.2).
@@ -282,7 +291,7 @@ def ppr_vs_linear_figure(
     stops improving relative to OLS?
     """
     if M_values is None:
-        M_values = [1, 2, 5, 10, 20, 50]
+        M_values = [1, 2, 5, 10, 20]
     x_arr, y_arr = _prepare_reg_arrays(X, y, feats, max_rows=max_rows)
     scaler = StandardScaler()
     x_arr = scaler.fit_transform(x_arr)
@@ -299,7 +308,7 @@ def ppr_vs_linear_figure(
         mlp = MLPRegressor(
             hidden_layer_sizes=(m,),
             activation="tanh",
-            max_iter=500,
+            max_iter=max_iter,
             alpha=0.01,
             random_state=0,
         )
@@ -339,7 +348,8 @@ def ppr_ridge_functions_figure(
     feats: list[str] | None = None,
     *,
     M: int = 3,
-    max_rows: int = 2000,
+    max_rows: int = DEFAULT_MAX_ROWS,
+    max_iter: int = DEFAULT_MLP_ITER,
 ) -> go.Figure:
     """
     Visualise the M ridge functions learned by a 1-hidden-layer MLP (§11.2).
@@ -364,7 +374,7 @@ def ppr_ridge_functions_figure(
     mlp = MLPRegressor(
         hidden_layer_sizes=(M,),
         activation="tanh",
-        max_iter=500,
+        max_iter=max_iter,
         alpha=0.01,
         random_state=0,
     )

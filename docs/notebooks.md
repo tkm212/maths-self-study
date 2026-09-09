@@ -60,7 +60,7 @@ Implementations based on **Hastie, T., Tibshirani, R., & Friedman, J. (2009). Th
 
 Source path: `textbooks/elements-of-statistical-learning/`
 
-Chapters 2-10 and 12-18 ship as multi-page **Dash** dashboards (one tab per topic). Each chapter's `dashboard.py` wires the app; page code lives in `ch{N}_pages/<page>/` with separate `filters.py`, `content.py`, and `callbacks.py` modules. Plot helpers stay in each chapter's `helpers.py` or `ch{N}_helpers.py`; shared UI is in `maths_self_study.dashboards`.
+Chapters 2-18 ship as multi-page **Dash** dashboards (one tab per topic). Each chapter's `dashboard.py` wires the app; page code lives in `ch{N}_pages/<page>/` with separate `filters.py`, `content.py`, and `callbacks.py` modules. Plot helpers stay in each chapter's `helpers.py` or `ch{N}_helpers.py`; shared UI is in `maths_self_study.dashboards`.
 
 | Chapter | Topic | App |
 |---------|-------|-----|
@@ -73,6 +73,7 @@ Chapters 2-10 and 12-18 ship as multi-page **Dash** dashboards (one tab per topi
 | 8 | Model Inference | `8-Model_Inference/dashboard.py` |
 | 9 | Additive Models & Trees | `9-Additive_Models_Trees/dashboard.py` |
 | 10 | Boosting | `10-Boosting/dashboard.py` |
+| 11 | Neural Networks | `11-Neural_Networks/dashboard.py` |
 | 12 | SVM & Flexible Discriminants | `12-SVM_Flexible_Discriminants/dashboard.py` |
 | 13 | Prototype Methods | `13-Prototype_Methods/dashboard.py` |
 | 14 | Unsupervised Learning | `14-Unsupervised_Learning/dashboard.py` |
@@ -87,11 +88,12 @@ Run a chapter dashboard from the repo root:
 uv run python textbooks/elements-of-statistical-learning/4-Linear_Methods_Classification/dashboard.py
 ```
 
-Chapter 11 still uses Marimo notebooks:
+Some ESL chapters use external datasets (ATP/WTA tennis, TMDB movies). Download first:
 
-| Chapter | Topic | Files |
-|---------|-------|-------|
-| 11 | Neural Networks | `neural_networks.py`, `projection_pursuit.py` |
+```bash
+uv run python scripts/download_atpwta_tennis_data.py
+uv run python scripts/download_tmdb_movie_metadata.py
+```
 
 ---
 
@@ -140,25 +142,4 @@ Interactive walkthrough of [Chapter 5](https://www.deeplearningbook.org/contents
 
 ```bash
 uv run python textbooks/deep-learning/5-Machine_Learning_Basics/dashboard.py
-```
-
-### Running a Marimo notebook
-
-Other tracks use Marimo and `uv` for dependency management. From the repo root:
-
-```bash
-uv run marimo run textbooks/elements-of-statistical-learning/11-Neural_Networks/neural_networks.py
-```
-
-To edit interactively:
-
-```bash
-uv run marimo edit textbooks/elements-of-statistical-learning/11-Neural_Networks/neural_networks.py
-```
-
-External datasets (ATP/WTA tennis, TMDB movies) must be downloaded first:
-
-```bash
-uv run python scripts/download_atpwta_tennis_data.py
-uv run python scripts/download_tmdb_movie_metadata.py
 ```

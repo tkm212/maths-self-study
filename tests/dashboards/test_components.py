@@ -62,6 +62,19 @@ def test_text_box_renders_steps():
     assert block is not None
 
 
+def test_text_box_renders_inline_math_in_steps():
+    block = text_box(steps=[r"Hidden units $M$ control capacity."], title="How it works")
+    rendered = str(block)
+    assert "math-latex-source" in rendered
+    assert "Hidden units" in rendered
+
+
+def test_text_box_renders_inline_math_in_content():
+    block = text_box(content=r"Weight decay uses $L^2$ penalty.")
+    rendered = str(block)
+    assert "math-latex-source" in rendered
+
+
 def test_prob_simplex_ids():
     assert prob_simplex_ids("info-p", [0, 1, 2, 3]) == ["info-p0", "info-p1", "info-p2", "info-p3"]
 
