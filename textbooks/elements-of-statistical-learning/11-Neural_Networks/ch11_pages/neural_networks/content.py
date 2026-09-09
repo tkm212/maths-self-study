@@ -11,8 +11,8 @@ from maths_self_study.dashboards.components import graph, metric, text_box
 
 def render_body(max_epochs, hidden_units) -> html.Div:
     X, y, _ = load_cls()
-    max_epochs = int(max_epochs or 150)
-    hidden_units = int(hidden_units or 50)
+    max_epochs = int(max_epochs or 80)
+    hidden_units = int(hidden_units or 20)
     hidden_layer_sizes = (hidden_units,)
     try:
         fig_curve, curve_summary = helpers.nn_training_curve_figure(
@@ -48,7 +48,7 @@ def render_body(max_epochs, hidden_units) -> html.Div:
         graph(fig_wd),
         text_box(
             steps=[
-                "Compare architectures by 5-fold CV accuracy — single-tuple `(50,)` is one layer with 50 units; `(100, 50)` is two layers (§11.5.4).",
+                "Compare architectures by 3-fold CV accuracy — `(20,)` is one layer with 20 units; `(20, 10)` is two layers (§11.5.4).",
             ],
             title="Architecture: number of hidden units and layers",
         ),

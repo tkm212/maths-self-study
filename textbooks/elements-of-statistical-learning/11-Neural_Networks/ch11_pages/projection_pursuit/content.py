@@ -21,7 +21,7 @@ def render_body(ridge_m) -> html.Div:
     return html.Div([
         text_box(
             steps=[
-                "Compare OLS ($M = 0$) against 1-hidden-layer MLPs with increasing width $M$; 5-fold CV MSE in log₁p-space (§11.2).",
+                "Compare OLS ($M = 0$) against 1-hidden-layer MLPs with increasing width $M$; 3-fold CV MSE in log₁p-space (§11.2).",
             ],
             title="PPR vs OLS: cross-validated MSE as M increases",
         ),
