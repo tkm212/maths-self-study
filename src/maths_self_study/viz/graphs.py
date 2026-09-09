@@ -471,14 +471,15 @@ def train_test_chart(
     """Dual train/test line chart (common ESL learning-curve pattern)."""
     fig = line_chart(x, train_y, name=train_name, mode=mode, color=train_color)
     line_chart(x, test_y, name=test_name, mode=mode, color=test_color, fig=fig)
+    layout_kwargs = dict(layout)
+    layout_kwargs.setdefault("legend", "horizontal")
     apply_layout(
         fig,
         title=title,
         xaxis_title=xaxis_title,
         yaxis_title=yaxis_title,
         height=height,
-        legend="horizontal",
-        **layout,
+        **layout_kwargs,
     )
     return fig
 
@@ -519,14 +520,15 @@ def decision_boundary_chart(
             marker_opacity=marker_opacity,
             fig=fig,
         )
+    layout_kwargs = dict(layout)
+    layout_kwargs.setdefault("legend", "horizontal")
     apply_layout(
         fig,
         title=title,
         xaxis_title=xaxis_title,
         yaxis_title=yaxis_title,
         height=height,
-        legend="horizontal",
-        **layout,
+        **layout_kwargs,
     )
     return fig
 
