@@ -401,12 +401,12 @@ def text_box(
     if steps:
         children.append(
             html.Ol(
-                [html.Li(step, style={"marginBottom": "4px"}) for step in steps],
+                [html.Li(math_text(step, style=_TEXT_BOX_BODY_STYLE), style={"marginBottom": "4px"}) for step in steps],
                 style={**_TEXT_BOX_BODY_STYLE, "paddingLeft": "20px"},
             )
         )
     elif content is not None:
-        children.append(html.Div(content, style={**_TEXT_BOX_BODY_STYLE, "whiteSpace": "pre-wrap"}))
+        children.append(math_text(content, style={**_TEXT_BOX_BODY_STYLE, "whiteSpace": "pre-wrap"}))
     return html.Div(children, style=_TEXT_BOX_STYLE)
 
 

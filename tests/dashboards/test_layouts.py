@@ -14,6 +14,19 @@ def test_page_shell_includes_methodology():
     assert shell is not None
 
 
+def test_page_shell_renders_methodology_math():
+    shell = page_shell(
+        "Title",
+        "Caption",
+        html.Div("filters"),
+        "body-id",
+        methodology=[r"Margin $y \cdot f(x)$ measures confidence."],
+    )
+    rendered = str(shell)
+    assert "How it works" in rendered
+    assert "math-latex-source" in rendered
+
+
 def test_create_chapter_dashboard_minimal():
     ch2 = load_dashboard_module(CH2_DASHBOARD)
     page = ch2.PAGES[0]
