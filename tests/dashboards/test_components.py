@@ -13,6 +13,7 @@ from maths_self_study.dashboards.components import (
     matrix_input,
     num_input,
     prob_simplex_ids,
+    summary_box,
     table,
     tensor_callback_inputs,
     tensor_cell_id,
@@ -55,6 +56,13 @@ def test_filter_bar_wraps_controls():
 def test_table_component():
     block = table(["A", "B"], [["x", "1"], ["y", "2"]], caption="Demo")
     assert block is not None
+
+
+def test_summary_box_renders_overview():
+    block = summary_box("Ridge shrinks coefficients with an $L^2$ penalty.")
+    rendered = str(block)
+    assert "Overview" in rendered
+    assert "math-latex-source" in rendered
 
 
 def test_text_box_renders_steps():

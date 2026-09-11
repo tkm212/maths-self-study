@@ -11,6 +11,7 @@ from maths_self_study.dashboards.components import (
     definition_group,
     observation_group,
     proof_group,
+    summary_box,
     text_box,
     theorem_group,
 )
@@ -45,6 +46,7 @@ def page_shell(
     filters: html.Div,
     body_id: str,
     *,
+    summary: str | None = None,
     methodology: list[str] | None = None,
     algorithm: tuple[str, list[str]] | None = None,
     proof: tuple[str, list[str]] | None = None,
@@ -64,6 +66,8 @@ def page_shell(
         ),
         html.P(caption, style={"color": "#64748b", "marginTop": 0}),
     ]
+    if summary:
+        children.append(summary_box(summary))
     if definitions:
         children.append(definition_group(*definitions))
     if theorems:

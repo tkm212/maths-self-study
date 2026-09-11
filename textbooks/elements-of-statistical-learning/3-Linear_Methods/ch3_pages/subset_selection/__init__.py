@@ -14,6 +14,12 @@ SubsetSelectionPage = define_page(
     value="subset_selection",
     title="Forward stepwise selection",
     caption="§3.3 — Greedy feature selection on TMDB revenue.",
+    summary=(
+        "Subset selection builds a sparse model by choosing which predictors to include "
+        "and which to leave out. Forward stepwise adds one feature at a time, keeping "
+        "only those that improve out-of-sample prediction. We use it when many "
+        "candidate features exist but a small, interpretable model is preferred."
+    ),
     methodology=[
         "At each step add the feature that most reduces held-out MSE.",
         "Entry order reveals marginal predictive power.",

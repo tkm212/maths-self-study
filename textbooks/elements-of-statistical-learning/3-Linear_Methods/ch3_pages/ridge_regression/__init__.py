@@ -14,6 +14,12 @@ RidgeRegressionPage = define_page(
     value="ridge_regression",
     title="L2 shrinkage paths",
     caption="§3.4 — Ridge regression on scaled TMDB features.",
+    summary=(
+        "Ridge regression shrinks all coefficients toward zero without removing any "
+        "predictor from the model. The penalty stabilises estimates when predictors "
+        "are correlated or outnumber observations. We use it to reduce overfitting "
+        "while keeping every feature in play for interpretation."
+    ),
     methodology=[
         "Small α ≈ OLS; large α → heavy shrinkage and high bias.",
         "No coefficient reaches exactly zero.",

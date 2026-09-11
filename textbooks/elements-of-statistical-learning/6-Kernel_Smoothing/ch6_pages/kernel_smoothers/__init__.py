@@ -17,6 +17,13 @@ KernelSmoothersPage = define_page(
     value="kernel_smoothers",
     title="NW and local polynomials",
     caption="§6.1–6.2 — Kernel smoothers in log₁p space.",
+    summary=(
+        "Kernel smoothers estimate the regression function at each point by averaging "
+        "nearby observations, weighting closer points more heavily. They make no "
+        "global parametric assumption - the fit adapts locally. We use them to "
+        "visualise and model nonlinear trends without committing to a fixed functional "
+        "form."
+    ),
     methodology=[
         "Degree 0 (NW) has boundary bias; local linear corrects it.",
         "LOO-CV exploits the linear smoother hat matrix.",

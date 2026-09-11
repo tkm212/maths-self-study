@@ -388,6 +388,41 @@ _TEXT_BOX_BODY_STYLE = {
 }
 
 
+_SUMMARY_BOX_STYLE = {
+    "padding": "12px 14px",
+    "background": "#eff6ff",
+    "border": "1px solid #bfdbfe",
+    "borderLeft": "4px solid #2563eb",
+    "borderRadius": "6px",
+    "marginBottom": "16px",
+}
+_SUMMARY_LABEL_STYLE = {
+    "fontSize": "0.75rem",
+    "fontWeight": 700,
+    "letterSpacing": "0.06em",
+    "textTransform": "uppercase",
+    "color": "#1d4ed8",
+    "marginBottom": "6px",
+}
+_SUMMARY_BODY_STYLE = {
+    "margin": 0,
+    "fontSize": "0.9rem",
+    "lineHeight": "1.55",
+    "color": "#334155",
+}
+
+
+def summary_box(content: str) -> html.Div:
+    """Short method overview panel shown at the top of a dashboard page."""
+    return html.Div(
+        [
+            html.Div("Overview", style=_SUMMARY_LABEL_STYLE),
+            math_text(content, style=_SUMMARY_BODY_STYLE),
+        ],
+        style=_SUMMARY_BOX_STYLE,
+    )
+
+
 def text_box(
     content: str | None = None,
     *,

@@ -20,6 +20,13 @@ SeparatingHyperplanesPage = define_page(
     value="separating_hyperplanes",
     title="Perceptron vs max-margin SVM",
     caption="§4.5 — Synthetic 2D separable data.",
+    summary=(
+        "A separating hyperplane splits the input space with a flat boundary - points "
+        "on one side belong to one class, the other side to another. The perceptron "
+        "finds any such boundary; the support vector machine picks the one with the "
+        "widest margin for better generalisation. We use these as the foundation of "
+        "linear classification."
+    ),
     methodology=[
         "Perceptron finds a separator; SVM finds the unique max-margin one.",
         "Better generalisation from margin maximisation.",
