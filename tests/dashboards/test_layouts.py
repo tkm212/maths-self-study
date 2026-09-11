@@ -6,7 +6,20 @@ from dash import html
 
 from maths_self_study.dashboards.chapter_app import create_chapter_dashboard
 from maths_self_study.dashboards.layout import page_shell
-from tests.dashboards.support import CH2_DASHBOARD, load_dashboard_module
+from tests.dashboards.support import CH2_DASHBOARD, ESL_CH2_DASHBOARD, load_dashboard_module
+
+
+def test_page_shell_includes_summary():
+    shell = page_shell(
+        "Title",
+        "Caption",
+        html.Div("filters"),
+        "body-id",
+        summary="Nonparametric method that averages nearby training responses.",
+    )
+    rendered = str(shell)
+    assert "Overview" in rendered
+    assert "Nonparametric method" in rendered
 
 
 def test_page_shell_includes_methodology():
@@ -47,3 +60,9 @@ def test_vectors_page_has_methodology():
     ch2 = load_dashboard_module(CH2_DASHBOARD)
     page = ch2.PAGES[0]
     assert len(page.methodology) >= 3
+
+
+def test_esl_ch2_pages_have_summary():
+    ch2 = load_dashboard_module(ESL_CH2_DASHBOARD)
+    for page in ch2.PAGES:
+        assert page.summary

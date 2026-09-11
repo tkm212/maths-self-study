@@ -18,6 +18,13 @@ LdaPage = define_page(
     value="lda",
     title="Linear and quadratic discriminants",
     caption="§4.3 — Generative classifiers on TMDB revenue class.",
+    summary=(
+        "Linear discriminant analysis models each class as a bell-shaped cloud of "
+        "points and draws the boundary where two class densities are equal. Sharing "
+        "one covariance shape across classes gives a straight decision boundary. We "
+        "use it when classes are roughly normal and a simple, fast classifier is "
+        "enough."
+    ),
     methodology=[
         "LDA: shared covariance → linear boundary.",
         "RDA interpolates QDA (α=0) and LDA (α=1).",

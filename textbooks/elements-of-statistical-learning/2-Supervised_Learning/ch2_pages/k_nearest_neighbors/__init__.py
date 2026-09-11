@@ -14,6 +14,12 @@ KNearestNeighborsPage = define_page(
     value="k_nearest_neighbors",
     title="Bias-variance trade-off in k",
     caption="§2.3 — k-NN averages nearby training responses; test MSE has a sweet spot.",
+    summary=(
+        "k-nearest neighbors predicts by looking at the k most similar past examples and "
+        "averaging their outcomes. It makes no assumption about the shape of the "
+        "relationship - the model adapts locally wherever you query. We use it when "
+        "patterns may be nonlinear and the data density varies across the input space."
+    ),
     methodology=[
         "Prediction at x₀ is the average of the k nearest training y values.",
         "Small k hugs the data (low bias, high variance); large k over-smooths.",

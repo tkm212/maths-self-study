@@ -17,6 +17,12 @@ SmoothingSplinesPage = define_page(
     value="smoothing_splines",
     title="Penalised roughness",
     caption="§5.4 — Smoothing splines and GCV on TMDB budget → revenue.",
+    summary=(
+        "Smoothing splines fit a flexible curve by trading closeness to the data "
+        "against a penalty on wiggliness (curvature). One smoothing parameter controls "
+        "how much the curve is allowed to bend. We use them when we want a smooth "
+        "nonlinear fit without manually choosing where to place knots."
+    ),
     methodology=[
         "Effective df = tr(Sλ) controls flexibility.",
         "GCV selects λ without a held-out set.",

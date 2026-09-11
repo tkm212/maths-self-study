@@ -14,6 +14,12 @@ PcrPlsPage = define_page(
     value="pcr_pls",
     title="Dimension reduction regression",
     caption="§3.5 — PCR and PLS on TMDB revenue.",
+    summary=(
+        "PCR and PLS first compress many correlated predictors into a few summary "
+        "directions, then fit a linear model in that reduced space. PCR finds "
+        "directions of maximum variance; PLS also steers them toward the response. "
+        "We use them when predictors are highly collinear or outnumber observations."
+    ),
     methodology=[
         "Both project p features into M ≪ p directions then fit OLS.",
         "Beyond optimal M, test MSE rises from noise fitting.",

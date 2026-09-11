@@ -14,6 +14,12 @@ LogisticRegressionPage = define_page(
     value="logistic_regression",
     title="L1 / L2 regularisation paths",
     caption="§4.4 — Logistic regression on TMDB revenue class.",
+    summary=(
+        "Logistic regression models the probability of class membership as a smooth "
+        "S-shaped function of a linear score in the predictors. It outputs calibrated "
+        "probabilities, not just hard labels. We use it as the standard linear "
+        "classifier - especially when interpretability and probability estimates matter."
+    ),
     methodology=[
         "Log-odds modelled as linear in x; IRLS maximises concave log-likelihood.",
         "L1 zeros coefficients; L2 shrinks all features toward zero.",

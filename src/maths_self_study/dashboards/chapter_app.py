@@ -20,6 +20,7 @@ class DashboardPage(ABC):
     value: str
     title: str
     caption: str
+    summary: str
     methodology: list[str]
     algorithm: tuple[str, list[str]] | None
     proof: tuple[str, list[str]] | None
@@ -43,6 +44,7 @@ class DashboardPage(ABC):
             self.caption,
             self.build_filters(),
             self.body_id,
+            summary=self.summary or None,
             methodology=self.methodology or None,
             algorithm=self.algorithm,
             proof=self.proof,

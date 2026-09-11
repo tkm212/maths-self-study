@@ -14,6 +14,12 @@ SplinesPage = define_page(
     value="splines",
     title="Basis expansions and splines",
     caption="§5.2 — Splines on a single TMDB feature.",
+    summary=(
+        "Splines model curved relationships by stitching together simple polynomials "
+        "between knot points. Each piece is low-degree, so the overall curve can bend "
+        "flexibly without wild oscillations. We use them when a straight line is too "
+        "rigid but we still want smooth, locally controlled flexibility."
+    ),
     methodology=[
         "More knots reduce bias but increase variance.",
         "Natural cubic splines add boundary constraints.",
