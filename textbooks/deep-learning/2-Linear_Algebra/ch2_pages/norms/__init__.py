@@ -13,6 +13,13 @@ NormsPage = define_page(
     value="norms",
     title="Norms as geometry",
     caption="§2.5 — ‖x‖ₚ unit balls: L² circle, L¹ diamond, L∞ square.",
+    summary=(
+        "Norms measure the size of vectors and quantify how far apart points "
+        "are. Different norms induce different geometries and promote "
+        "different kinds of regularisation. We use them to define loss "
+        "functions, constraints, and distance-based methods throughout "
+        "machine learning."
+    ),
     methodology=[
         "The Lᵖ norm is ‖x‖ₚ = (Σᵢ |xᵢ|ᵖ)^(1/p). Common cases: L¹ (Manhattan), L² (Euclidean), L∞ (max absolute entry).",
         "L²: ‖x‖₂ = √(xᵀx). The unit ball {x : ‖x‖₂ = 1} is a circle; L¹ gives a diamond, L∞ a square.",

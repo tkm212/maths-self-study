@@ -13,6 +13,13 @@ EigendecompositionPage = define_page(
     value="eigen",
     title="Eigendecomposition — invariant directions",
     caption="§2.7 — Av = λv. Symmetric A: A = QΛQᵀ.",
+    summary=(
+        "Eigendecomposition finds directions a linear transformation stretches "
+        "without rotating - the eigenvectors - and by how much - the "
+        "eigenvalues. Symmetric matrices have real eigenpairs that reveal "
+        "principal axes of variation. We use them to understand and simplify "
+        "linear systems."
+    ),
     methodology=[
         "An eigenpair (λ, v) satisfies Av = λv with v ≠ 0. v is an invariant direction; λ is the stretch factor along it.",
         "For symmetric A, all eigenvalues are real and eigenvectors are orthogonal (spectral theorem).",

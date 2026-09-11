@@ -20,6 +20,13 @@ SvmPage = define_page(
     value="svm",
     title="Support vector machines",
     caption="§12.2-12.3 - Soft margin, support vectors and kernels.",
+    summary=(
+        "Support vector machines find the decision boundary that maximises "
+        "the margin between classes. Only points near the boundary - the "
+        "support vectors - determine the final classifier. We use them when "
+        "a strong linear or kernelised separator with good generalisation "
+        "is needed."
+    ),
     methodology=[
         r"Soft-margin SVM trades margin width against slack violations via cost $C$ - small $C$ tolerates errors (high bias), large $C$ fits tightly (high variance) (§12.2).",
         r"Only support vectors ($\hat{\alpha}_i > 0$) determine the boundary; the dual depends on inner products, enabling the kernel trick (§12.2.1).",

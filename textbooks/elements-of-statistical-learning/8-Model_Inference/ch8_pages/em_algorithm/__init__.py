@@ -23,6 +23,13 @@ EmAlgorithmPage = define_page(
     value="em_algorithm",
     title="Expectation-Maximisation",
     caption="§8.5 — Gaussian mixture models via EM.",
+    summary=(
+        "The EM algorithm fits models with hidden or incomplete data by "
+        "alternating between estimating missing quantities (E-step) and "
+        "updating parameters (M-step). Each iteration improves the "
+        "likelihood. We use it for mixture models where cluster membership "
+        "is unknown."
+    ),
     algorithm=EM_ALGORITHM_STEPS,
     definitions=EM_ALGORITHM_DEFINITIONS,
     theorems=EM_ALGORITHM_THEOREMS,

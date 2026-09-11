@@ -21,6 +21,13 @@ BaggingPage = define_page(
     value="bagging",
     title="Bootstrap and bagging",
     caption="§8.2, §8.7 — Bootstrap confidence bands and bagged trees.",
+    summary=(
+        "Bootstrap aggregating trains many models on random resamples of the "
+        "data and averages their predictions. It reduces variance without "
+        "raising bias much - especially for unstable learners like trees. "
+        "We use it to stabilise high-variance predictors and quantify "
+        "uncertainty."
+    ),
     methodology=[
         r"Each bootstrap resample retains about $63.2\%$ of unique training points (§8.2).",
         r"Pointwise bands quantify sampling uncertainty; bagged test MSE typically flattens as $B$ grows.",

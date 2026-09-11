@@ -20,6 +20,13 @@ BiasVariancePage = define_page(
     value="bias_variance",
     title="Bias, variance and optimism",
     caption="§7.2–7.4 — Train/test error and the bias-variance tradeoff.",
+    summary=(
+        "Every model's error splits into bias (systematic wrongness), variance "
+        "(sensitivity to the training sample), and irreducible noise. Training "
+        "error is optimistically low; test error reveals true generalisation. "
+        "We study this decomposition to see why simpler models sometimes beat "
+        "complex ones."
+    ),
     methodology=[
         "Squared-error decomposition at x₀: Err(x₀) = σ² + Bias²[ƒ̂(x₀)] + Var[ƒ̂(x₀)] — irreducible noise plus approximation and estimation error (§7.3).",
         "Train MSE falls as polynomial degree grows; test MSE is U-shaped — flexible models reduce bias but variance explodes when d is too large.",

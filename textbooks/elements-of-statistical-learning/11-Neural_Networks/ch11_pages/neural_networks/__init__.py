@@ -23,6 +23,13 @@ NeuralNetworksPage = define_page(
     value="neural_networks",
     title="Neural networks",
     caption="§11.3-11.5 — Architecture, backpropagation, weight decay, and early stopping.",
+    summary=(
+        "Neural networks stack layers of nonlinear transformations to learn "
+        "complex input-output mappings. Backpropagation efficiently computes "
+        "gradients through the composed functions. We use them when the "
+        "relationship is too intricate for hand-designed features or linear "
+        "models alone."
+    ),
     methodology=[
         r"A single hidden layer with $M$ sigmoid units is a two-stage regression: nonlinear features $Z_m$ then a GLM output (§11.3).",
         r"Backpropagation computes $\nabla_\theta R$ efficiently via the chain rule; SGD updates $\theta \leftarrow \theta - \eta \nabla_\theta R$ (§11.4).",

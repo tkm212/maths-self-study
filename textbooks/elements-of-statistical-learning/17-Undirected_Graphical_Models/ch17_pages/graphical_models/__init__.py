@@ -20,6 +20,12 @@ GraphicalModelsPage = define_page(
     value="graphical_models",
     title="Undirected graphical models",
     caption="§17.1-17.3 - Gaussian MRFs, graphical lasso, partial correlation.",
+    summary=(
+        "Undirected graphical models encode conditional independence between "
+        "variables as edges in a graph. The structure shows which variables "
+        "interact directly and which are separated given others. We use them "
+        "to visualise and estimate dependencies in multivariate data."
+    ),
     methodology=[
         r"For $X \sim \mathcal{N}(0, \Sigma)$, zeros in $\Theta = \Sigma^{-1}$ encode conditional independences (§17.3).",
         r"Graphical lasso estimates sparse $\Theta$ via $\ell_1$ penalty; CV selects the sparsity level (§17.3.1).",

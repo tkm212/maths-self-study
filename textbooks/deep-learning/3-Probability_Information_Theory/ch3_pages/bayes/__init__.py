@@ -14,6 +14,13 @@ BayesPage = define_page(
     value="bayes",
     title="Bayes' rule — invert conditioning",
     caption="§3.11 — Prior x likelihood → posterior. Base rates dominate rare-disease tests.",
+    summary=(
+        "Bayes' rule inverts conditional probability - updating beliefs about "
+        "causes given observed evidence. The prior, likelihood, and posterior "
+        "combine prior knowledge with data. We use it whenever we need "
+        "principled uncertainty quantification rather than point estimates "
+        "alone."
+    ),
     methodology=[
         "Bayes' rule: P(H | E) = P(E | H) P(H) / P(E). The denominator P(E) = Σ_H P(E | H) P(H) normalises.",
         "Posterior ∝ prior × likelihood — update beliefs about H after observing evidence E.",

@@ -12,6 +12,13 @@ VectorsPage = define_page(
     value="vectors",
     title="Linear maps as geometry",
     caption="§2.1-2.2 — A matrix A is a linear map x ↦ Ax. Columns of A are where the basis goes.",
+    summary=(
+        "Vectors and matrices represent data and linear transformations "
+        "geometrically. A matrix maps input directions to output directions; "
+        "composition chains transformations together. We use linear algebra "
+        "as the language for everything from least squares to neural network "
+        "layers."
+    ),
     methodology=[
         "A matrix A ∈ ℝᵐˣⁿ is a linear map x ↦ Ax. Column j is Aeⱼ — where the j-th basis vector lands.",
         "Composition applies maps right-to-left: (BA)x = B(Ax). Matrix multiply is associative but not commutative.",

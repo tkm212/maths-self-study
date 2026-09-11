@@ -13,6 +13,13 @@ MarkovPage = define_page(
     value="markov",
     title="Structured models — factor the joint",
     caption="§3.14 — Each edge is a conditional. RNNs / HMMs / autoregressive LMs are this with neural conditionals.",
+    summary=(
+        "Structured probabilistic models factor a high-dimensional joint "
+        "distribution into a chain or graph of local conditionals. Each "
+        "factor depends only on a small neighbourhood. We use this to "
+        "tractably model sequences, images, and language without specifying "
+        "every joint interaction separately."
+    ),
     methodology=[
         "A joint over many variables factorises: P(x₁, …, xₙ) = P(x₁) Πᵢ P(xᵢ | x₁, …, xᵢ₋₁) (chain rule).",
         "Markov chain: P(xᵢ | x₁, …, xᵢ₋₁) = P(xᵢ | xᵢ₋₁) — only the previous state matters.",

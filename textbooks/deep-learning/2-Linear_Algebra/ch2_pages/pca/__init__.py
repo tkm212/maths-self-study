@@ -13,6 +13,12 @@ PcaPage = define_page(
     value="pca",
     title="PCA — best low-dimensional view",
     caption="§2.12 — Orthogonal directions of maximal variance = eigenvectors of the covariance.",
+    summary=(
+        "Principal component analysis projects data onto the directions of "
+        "maximum variance. The first few components capture most of the "
+        "structure in a lower-dimensional view. We use it to visualise "
+        "high-dimensional data and reduce dimensionality before modelling."
+    ),
     methodology=[
         "Centre X to X_c = X − μ. Sample covariance Σ = X_cᵀX_c / (n − 1) is symmetric and captures spread.",
         "PCA directions are eigenvectors of Σ: λ, Q = np.linalg.eigh(Σ), sorted so λ₁ ≥ λ₂ ≥ …",

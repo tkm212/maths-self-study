@@ -20,6 +20,12 @@ NearestNeighborsPage = define_page(
     value="nearest_neighbors",
     title="k-NN classification",
     caption="§13.3 - k selection, metrics and bias-variance.",
+    summary=(
+        "k-nearest neighbor classification assigns the majority label among "
+        "the k closest training points. It makes no distributional "
+        "assumptions and adapts to local decision boundaries. We use it as "
+        "a simple, strong baseline when class regions have irregular shape."
+    ),
     methodology=[
         r"k-NN assigns the majority class among the $k$ nearest training points under a chosen metric (§13.3).",
         r"Effective complexity is roughly $N/k$: $k=1$ memorises (zero train error), $k=N$ is the global majority vote.",

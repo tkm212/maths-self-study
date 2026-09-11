@@ -12,6 +12,13 @@ CapacityPage = define_page(
     value="capacity",
     title="Model capacity and overfitting",
     caption="§5.2 — Polynomial degree controls how flexibly the model fits noisy training data.",
+    summary=(
+        "Model capacity is its ability to fit diverse functions - a high-"
+        "capacity model can match complex patterns but also memorise noise. "
+        "The training-validation gap reveals overfitting when capacity exceeds "
+        "what the data support. We use capacity control to target the sweet "
+        "spot between under- and over-fitting."
+    ),
     methodology=[
         "Capacity is the model's ability to fit varied functions — higher-degree polynomials have more capacity.",
         "Underfitting: capacity too low; high training and test error.",

@@ -20,6 +20,13 @@ FlexibleDiscriminantsPage = define_page(
     value="flexible_discriminants",
     title="FDA and PDA",
     caption="§12.4-12.6 - Flexible and penalised discriminant analysis.",
+    summary=(
+        "Flexible discriminant analysis extends LDA by projecting data into a "
+        "low-dimensional space via basis expansions before classification. "
+        "Penalised DA shrinks class covariances toward a common estimate. "
+        "We use them when normality holds roughly but the boundary needs "
+        "more flexibility than plain LDA."
+    ),
     methodology=[
         r"LDA assumes Gaussian classes with common covariance; FDA generalises by replacing linear scoring with flexible regression on expanded features (§12.5).",
         r"Polynomial expansion (degree 2-3) lets LDA find curved boundaries while retaining optimal-scoring interpretation.",

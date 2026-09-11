@@ -20,6 +20,13 @@ DecisionTreesPage = define_page(
     value="decision_trees",
     title="CART and pruning",
     caption="§9.2 — Tree depth and cost-complexity pruning.",
+    summary=(
+        "Decision trees recursively split the input space into regions, "
+        "assigning a constant prediction in each leaf. They are easy to read "
+        "and capture interactions automatically. We use them when a simple "
+        "rule-based structure is preferred over a single global parametric "
+        "form."
+    ),
     algorithm=DECISION_TREES_ALGORITHM,
     definitions=DECISION_TREES_DEFINITIONS,
     theorems=DECISION_TREES_THEOREMS,

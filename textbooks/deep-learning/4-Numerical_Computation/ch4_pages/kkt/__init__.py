@@ -13,6 +13,13 @@ KktPage = define_page(
     value="kkt",
     title="Constrained optimization — KKT",
     caption="§4.4 — min f(x) s.t. g(x) ≤ 0. Multipliers λ encode how tight each constraint is.",
+    summary=(
+        "The Karush-Kuhn-Tucker conditions characterise optima of constrained "
+        "problems - where improving the objective would violate a constraint. "
+        "Lagrange multipliers measure how tightly each constraint binds. We "
+        "use them to solve constrained learning problems like SVMs and "
+        "penalised estimation."
+    ),
     methodology=[
         "Form the Lagrangian L(x, λ) = f(x) + λ g(x) with λ ≥ 0 for inequality g(x) ≤ 0.",
         "Stationarity: ∇f(x*) + λ*∇g(x*) = 0 — the objective gradient balances the constraint normal.",

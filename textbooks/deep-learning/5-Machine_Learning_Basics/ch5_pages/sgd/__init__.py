@@ -13,6 +13,13 @@ SgdPage = define_page(
     value="sgd",
     title="Stochastic gradient descent",
     caption="§5.9 — Each step averages the loss over a random mini-batch B instead of the full dataset.",
+    summary=(
+        "Stochastic gradient descent approximates the full gradient using a "
+        "random mini-batch each step, making large-scale training feasible. "
+        "Noise in the gradient can even help escape poor local minima. We use "
+        "it as the standard optimiser for neural networks and large "
+        "datasets."
+    ),
     algorithm=SGD_ALGORITHM,
     definitions=SGD_DEFINITIONS,
     build_filters=build_filters,
