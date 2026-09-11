@@ -159,14 +159,16 @@ def linear_vs_knn_single_feature_figure(
     order = np.argsort(x1)
     grid = np.linspace(float(np.min(x1)), float(np.max(x1)), grid_points).reshape(-1, 1)
 
-    lin1 = LinearRegression().fit(X_train[[col]], y_train)
+    x_train_col = X_train[[col]]
+    lin1 = LinearRegression().fit(x_train_col, y_train)
     knn1 = make_pipeline(
         StandardScaler(),
         KNeighborsRegressor(n_neighbors=k_neighbors, n_jobs=-1),
-    ).fit(X_train[[col]], y_train)
+    ).fit(x_train_col, y_train)
+    grid_df = pd.DataFrame(grid, columns=[col])
 
     fig = scatter_chart(x1[order], y_train.iloc[order], name="train", marker_size=4, marker_opacity=0.35)
-    line_chart(grid.ravel(), lin1.predict(grid), mode="lines", name="linear", fig=fig)
-    line_chart(grid.ravel(), knn1.predict(grid), mode="lines", name=f"k-NN (k={k_neighbors})", fig=fig)
+    line_chart(grid.ravel(), lin1.predict(grid_df), mode="lines", name="linear", fig=fig)
+    line_chart(grid.ravel(), knn1.predict(grid_df), mode="lines", name=f"k-NN (k={k_neighbors})", fig=fig)
     apply_layout(fig, title=f"Response vs {col}", xaxis_title=col, yaxis_title=target_name)
     return fig, col

@@ -12,6 +12,7 @@ CH3_DASHBOARD = REPO_ROOT / "textbooks/deep-learning/3-Probability_Information_T
 CH4_DASHBOARD = REPO_ROOT / "textbooks/deep-learning/4-Numerical_Computation/dashboard.py"
 CH5_DASHBOARD = REPO_ROOT / "textbooks/deep-learning/5-Machine_Learning_Basics/dashboard.py"
 ESL_CH2_DASHBOARD = REPO_ROOT / "textbooks/elements-of-statistical-learning/2-Supervised_Learning/dashboard.py"
+ESL_CH3_DASHBOARD = REPO_ROOT / "textbooks/elements-of-statistical-learning/3-Linear_Methods/dashboard.py"
 ESL_CH4_DASHBOARD = (
     REPO_ROOT / "textbooks/elements-of-statistical-learning/4-Linear_Methods_Classification/dashboard.py"
 )
@@ -45,6 +46,13 @@ def prepare_chapter_import(chapter_dir: Path) -> None:
     chapter_dir_str = str(chapter_dir.resolve())
     sys.path[:] = [path for path in sys.path if path != chapter_dir_str]
     sys.path.insert(0, chapter_dir_str)
+
+
+def tmdb_data_available() -> bool:
+    from maths_self_study.data.tmdb import TMDB_SUBDIR
+
+    inputs = REPO_ROOT / "inputs" / TMDB_SUBDIR
+    return inputs.is_dir() and any(inputs.rglob("*.csv"))
 
 
 def load_dashboard_module(path: Path):
