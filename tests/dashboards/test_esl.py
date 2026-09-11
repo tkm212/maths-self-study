@@ -6,6 +6,7 @@ import pytest
 
 from tests.dashboards.support import (
     ESL_CH2_DASHBOARD,
+    ESL_CH3_DASHBOARD,
     ESL_CH4_DASHBOARD,
     ESL_CH7_DASHBOARD,
     ESL_CH11_DASHBOARD,
@@ -17,10 +18,13 @@ from tests.dashboards.support import (
     ESL_CH17_DASHBOARD,
     ESL_CH18_DASHBOARD,
     load_dashboard_module,
+    prepare_chapter_import,
+    tmdb_data_available,
 )
 
 ESL_DASHBOARDS = [
     pytest.param(ESL_CH2_DASHBOARD, 2, id="ch2"),
+    pytest.param(ESL_CH3_DASHBOARD, 4, id="ch3"),
     pytest.param(ESL_CH4_DASHBOARD, 3, id="ch4"),
     pytest.param(ESL_CH7_DASHBOARD, 2, id="ch7"),
     pytest.param(ESL_CH11_DASHBOARD, 2, id="ch11"),
@@ -40,6 +44,36 @@ def test_dashboard_app_layout(dashboard_path, page_count):
     app = module.create_app()
     assert app.layout is not None
     assert len(module.PAGES) == page_count
+
+
+pytestmark_tmdb = pytest.mark.skipif(not tmdb_data_available(), reason="TMDB inputs not downloaded")
+
+
+@pytestmark_tmdb
+def test_esl_ch2_pages_render():
+    prepare_chapter_import(ESL_CH2_DASHBOARD.parent)
+    from ch2_pages.k_nearest_neighbors.content import render_body as render_knn
+    from ch2_pages.least_squares_regression.content import render_body as render_ols
+
+    knn = render_knn(40_000, 15)
+    ols = render_ols("k_nearest_neighbors")
+    assert knn is not None and ols is not None
+    assert "Data required" not in str(knn)
+    assert "Data required" not in str(ols)
+
+
+@pytestmark_tmdb
+def test_esl_ch3_pages_render():
+    prepare_chapter_import(ESL_CH3_DASHBOARD.parent)
+    from ch3_pages.lasso.content import render_body as render_lasso
+    from ch3_pages.pcr_pls.content import render_body as render_pcr_pls
+    from ch3_pages.ridge_regression.content import render_body as render_ridge
+    from ch3_pages.subset_selection.content import render_body as render_subset
+
+    tab = "ridge_regression"
+    for body in (render_subset(tab), render_ridge(tab), render_lasso(tab), render_pcr_pls(tab)):
+        assert body is not None
+        assert "Data required" not in str(body)
 
 
 def test_create_esl_dashboard():
