@@ -87,6 +87,17 @@ def test_train_test_chart_dual_series() -> None:
     assert fig.data[1].line.color == TEST_SERIES_COLOR
 
 
+def test_train_test_chart_accepts_legend_in_layout_kwargs() -> None:
+    fig = train_test_chart(
+        [1, 2, 3],
+        [0.1, 0.2, 0.3],
+        [0.2, 0.15, 0.25],
+        title="Curve",
+        legend="horizontal",
+    )
+    assert fig.layout.legend.orientation == "h"
+
+
 def test_add_vline_on_figure() -> None:
     fig = line_chart([1, 2], [1, 2])
     add_vline(fig, x=1.5, annotation_text="cut")
@@ -103,6 +114,17 @@ def test_decision_boundary_chart_contour_and_scatter() -> None:
     )
     assert fig.data[0].type == "contour"
     assert len(fig.data) == 3
+
+
+def test_decision_boundary_chart_accepts_legend_in_layout_kwargs() -> None:
+    fig = decision_boundary_chart(
+        [0, 1],
+        [0, 1],
+        [[0, 1], [1, 0]],
+        title="Boundary",
+        legend="horizontal",
+    )
+    assert fig.layout.legend.orientation == "h"
 
 
 def test_scatter3d_chart_returns_scatter3d_trace() -> None:
