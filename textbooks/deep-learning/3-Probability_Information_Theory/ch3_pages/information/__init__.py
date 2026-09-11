@@ -14,6 +14,13 @@ InformationPage = define_page(
     value="info",
     title="Information and surprise",
     caption="§3.13 — I(x) = -log P(x). H(P) averages surprise; H(P,Q) is classification loss; KL is asymmetric.",
+    summary=(
+        "Information theory quantifies surprise: rare events carry more "
+        "information than expected ones. Entropy averages surprise; cross-"
+        "entropy measures prediction quality; KL divergence compares "
+        "distributions. We use these quantities as natural training "
+        "objectives and diagnostics."
+    ),
     methodology=[
         "Self-information: I(x) = −log P(x) — surprise of outcome x (nats with ln, bits with log₂).",
         "Shannon entropy H(P) = E[−log P(X)] = −Σ P(x) log P(x) — average surprise over P.",

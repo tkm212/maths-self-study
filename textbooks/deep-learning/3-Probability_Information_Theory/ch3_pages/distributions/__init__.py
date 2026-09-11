@@ -12,6 +12,12 @@ DistributionsPage = define_page(
     value="dist",
     title="The distributions deep learning lives on",
     caption="§3.9 — Bernoulli (one bit), Categorical (k classes), Gaussian (continuous workhorse).",
+    summary=(
+        "A handful of distributions - Bernoulli, categorical, Gaussian - "
+        "cover most of what deep learning builds on. They specify how "
+        "outputs, labels, and noise are generated. We use them as the "
+        "building blocks for loss functions and generative models."
+    ),
     methodology=[
         "Bernoulli: P(X = 1) = p, one binary outcome. Entropy H(p) = −p log p − (1−p) log(1−p) peaks at p = ½.",
         "Categorical: P(X = k) = pₖ with Σ pₖ = 1 over K classes — the target of a softmax output layer.",

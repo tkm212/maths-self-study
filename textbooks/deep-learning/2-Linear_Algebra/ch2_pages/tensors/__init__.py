@@ -12,6 +12,12 @@ TensorsPage = define_page(
     value="tensors",
     title="Tensors — rank and indexing",
     caption="§2.3 — Scalars (0D), vectors (1D), matrices (2D). Outer products and slices build higher rank.",
+    summary=(
+        "Tensors generalise scalars, vectors, and matrices to higher-"
+        "dimensional arrays indexed along multiple modes. Each axis carries a "
+        "distinct role - time, channel, spatial position. We use them because "
+        "deep learning data and parameters are naturally multi-way arrays."
+    ),
     methodology=[
         "A tensor is an n-dimensional array: scalar (0D), vector (1D), matrix (2D), then higher orders.",
         "Indexing T[i, j, k, …] picks one element along each mode; slicing fixes indices to get a lower-rank view.",

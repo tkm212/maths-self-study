@@ -14,6 +14,13 @@ StabilityPage = define_page(
     value="stability",
     title="Stable softmax",
     caption="§4.1 — Large logits overflow exp(z); subtract max(z) before exponentiating.",
+    summary=(
+        "Floating-point arithmetic can overflow or underflow when exponentials "
+        "or products grow too large or small. Stable reformulations - like "
+        "subtracting the maximum before softmax - keep computations in a safe "
+        "range. We use them to prevent silent numerical failures during "
+        "training."
+    ),
     methodology=[
         "Softmax: P(y=i) = exp(z_i) / Σ_j exp(z_j) — turns logits z into a probability vector.",
         "Naive exp(z) overflows when max(z) is large; exp(z) underflows to 0 for z ≪ max(z).",

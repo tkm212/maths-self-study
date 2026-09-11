@@ -17,6 +17,13 @@ AdditiveModelsPage = define_page(
     value="additive_models",
     title="GAMs and backfitting",
     caption="§9.1 — Partial effects and spline smoothers.",
+    summary=(
+        "Generalised additive models express the response as a sum of smooth "
+        "functions of individual predictors. Each partial effect shows how "
+        "one variable relates to the outcome while holding others fixed. "
+        "We use them when relationships may be nonlinear but we still want "
+        "interpretable, one-feature-at-a-time structure."
+    ),
     algorithm=ADDITIVE_MODELS_ALGORITHM,
     definitions=ADDITIVE_MODELS_DEFINITIONS,
     build_filters=build_filters,

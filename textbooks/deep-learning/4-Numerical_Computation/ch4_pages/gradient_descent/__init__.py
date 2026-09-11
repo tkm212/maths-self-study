@@ -17,6 +17,12 @@ GradientDescentPage = define_page(
     value="gd",
     title="First-order optimization",
     caption="§4.3 — x ← x - η∇f(x) on a quadratic bowl; step size η controls convergence.",
+    summary=(
+        "Gradient descent iteratively steps downhill along the steepest "
+        "descent direction of a loss surface. The learning rate controls step "
+        "size - too large overshoots, too small crawls. We use it as the "
+        "basic engine for training virtually all learnable models."
+    ),
     algorithm=GRADIENT_DESCENT_ALGORITHM,
     definitions=GRADIENT_DESCENT_DEFINITIONS,
     build_filters=build_filters,

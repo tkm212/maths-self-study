@@ -20,6 +20,13 @@ PrincipalComponentsPage = define_page(
     value="principal_components",
     title="PCA and NMF",
     caption="§14.5-14.6 - Variance, biplot and non-negative factorisation.",
+    summary=(
+        "Principal component analysis finds orthogonal directions of greatest "
+        "variance and projects data onto them. It compresses high-dimensional "
+        "data while preserving as much structure as possible. We use it for "
+        "visualisation, denoising, and as a preprocessing step before "
+        "modelling."
+    ),
     methodology=[
         r"PCA finds orthogonal directions of maximum variance via the sample covariance eigendecomposition (§14.5).",
         r"The scree plot elbow and cumulative PVE guide how many components to retain.",

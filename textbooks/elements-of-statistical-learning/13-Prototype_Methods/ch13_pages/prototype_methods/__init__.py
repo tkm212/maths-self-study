@@ -17,6 +17,13 @@ PrototypeMethodsPage = define_page(
     value="prototype_methods",
     title="Prototypes and LVQ",
     caption="§13.2 - K-means prototypes and compression vs KNN.",
+    summary=(
+        "Prototype methods compress each class into a small set of "
+        "representative points and classify by nearest prototype. This "
+        "reduces storage and computation compared to keeping all training "
+        "data. We use them when memory or speed matters but local structure "
+        "still drives classification."
+    ),
     methodology=[
         r"Nearest-centroid ($R=1$) is the simplest prototype rule - one mean per class (§13.2).",
         r"K-means with $R>1$ per class captures multimodal structure within each class (§13.2.1).",

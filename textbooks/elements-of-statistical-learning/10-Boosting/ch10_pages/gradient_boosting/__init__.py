@@ -17,6 +17,13 @@ GradientBoostingPage = define_page(
     value="gradient_boosting",
     title="GBM and shrinkage",
     caption="§10.9–10.13 — Trees, learning rate and variable importance.",
+    summary=(
+        "Gradient boosting fits models stage by stage, each one correcting "
+        "the residual errors of the ensemble via gradient descent in function "
+        "space. A learning rate controls how much each new tree contributes. "
+        "We use it as one of the most effective methods for structured "
+        "tabular prediction."
+    ),
     algorithm=GRADIENT_BOOSTING_ALGORITHM,
     definitions=GRADIENT_BOOSTING_DEFINITIONS,
     build_filters=build_filters,

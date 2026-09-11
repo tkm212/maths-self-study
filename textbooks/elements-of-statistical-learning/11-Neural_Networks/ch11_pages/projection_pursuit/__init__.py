@@ -23,6 +23,13 @@ ProjectionPursuitPage = define_page(
     value="projection_pursuit",
     title="Projection pursuit regression",
     caption="§11.2 — Ridge functions, backfitting, and comparison to OLS.",
+    summary=(
+        "Projection pursuit regression builds the response as a sum of "
+        "nonlinear functions of one-dimensional projections. Each ridge "
+        "function captures variation along a single direction in feature "
+        "space. We use it as a bridge between linear models and full neural "
+        "networks."
+    ),
     methodology=[
         r"PPR models $f(X) = \sum_{m=1}^{M} g_m(\omega_m^\top X)$ — each term is a ridge function along a learned direction (§11.2).",
         r"The algorithm iteratively pursues projections that best reduce residuals, analogous to PCR but with nonlinear $g_m$ (§11.2).",

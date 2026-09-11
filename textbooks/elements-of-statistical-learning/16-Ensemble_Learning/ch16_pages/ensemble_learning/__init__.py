@@ -20,6 +20,12 @@ EnsembleLearningPage = define_page(
     value="ensemble_learning",
     title="Ensemble learning",
     caption="§16.1-16.2 - bagging, stacking, voting, and diversity.",
+    summary=(
+        "Ensemble methods combine multiple models to perform better than any "
+        "single member. Bagging reduces variance by averaging; stacking and "
+        "voting blend diverse predictors. We use ensembles when individual "
+        "models make different errors that cancel out in combination."
+    ),
     methodology=[
         r"Bagging and random forests reduce variance by averaging unstable learners; boosting reduces bias sequentially (Ch. 8, 10, 15).",
         r"Stacking learns a level-1 model on out-of-fold base predictions - more flexible than fixed voting weights (§16.2).",

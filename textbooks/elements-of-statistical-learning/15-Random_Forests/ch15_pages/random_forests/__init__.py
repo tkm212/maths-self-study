@@ -20,6 +20,13 @@ RandomForestsPage = define_page(
     value="random_forests",
     title="Random forests",
     caption="§15.1-15.4 - OOB error, importance, m and depth.",
+    summary=(
+        "Random forests grow many decorrelated decision trees on bootstrapped "
+        "samples and random feature subsets, then aggregate their votes. "
+        "Randomisation reduces overfitting while averaging lowers variance. "
+        "We use them for strong off-the-shelf prediction with built-in "
+        "variable importance."
+    ),
     methodology=[
         r"Each tree grows on a bootstrap sample; random feature subsampling at splits decorrelates trees (§15.2).",
         r"OOB error approximates leave-one-out CV for free - error stabilises as B grows without overfitting (§15.3.1).",

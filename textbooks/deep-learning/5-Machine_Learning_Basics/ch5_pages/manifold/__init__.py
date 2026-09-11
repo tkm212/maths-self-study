@@ -12,6 +12,13 @@ ManifoldPage = define_page(
     value="manifold",
     title="The manifold hypothesis",
     caption="§5.11.4 — High-dimensional data often lies on or near a low-dimensional manifold.",
+    summary=(
+        "The manifold hypothesis says high-dimensional data often lies on or "
+        "near a low-dimensional curved surface embedded in the ambient space. "
+        "Learning the manifold structure can simplify representation and "
+        "generation. We use it to motivate dimensionality reduction and "
+        "generative modelling techniques."
+    ),
     methodology=[
         "Many datasets have ambient dimension d (pixel count, word vocabulary) far larger than intrinsic dimension k.",
         "The manifold hypothesis: examples x = g(z) for latent z in R^k with k << d, and g a smooth embedding.",

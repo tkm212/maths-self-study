@@ -20,6 +20,13 @@ HighDimensionalPage = define_page(
     value="high_dimensional",
     title="High-dimensional problems",
     caption="§18.1-18.4 - curse of dimensionality, lasso, screening, FDR.",
+    summary=(
+        "When the number of features rivals or exceeds the number of "
+        "observations, ordinary methods break down. Regularisation, screening, "
+        "and false-discovery control address the curse of dimensionality. "
+        "We use these tools to extract signal from wide problems without "
+        "fitting noise."
+    ),
     methodology=[
         r"When $p \gg N$, least squares is not identifiable; regularisation is required for stable estimates (§18.1).",
         r"Ridge shrinks all coefficients; lasso performs subset selection via $\ell_1$ penalty (§18.2-18.3).",

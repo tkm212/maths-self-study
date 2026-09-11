@@ -17,6 +17,13 @@ BoostingPage = define_page(
     value="boosting",
     title="AdaBoost",
     caption="§10.1–10.4 — Stumps, training curves and margins.",
+    summary=(
+        "Boosting builds a strong classifier by sequentially training weak "
+        "learners on reweighted data, focusing each new model on previous "
+        "mistakes. The final vote combines many simple rules into one "
+        "accurate predictor. We use it when no single weak model suffices "
+        "but many can cooperate."
+    ),
     methodology=[
         r"Margin $y \cdot f(x)$ measures classification confidence — its distribution shifts right as rounds increase (§10.4).",
     ],

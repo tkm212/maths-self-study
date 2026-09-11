@@ -17,6 +17,13 @@ ClusteringPage = define_page(
     value="clustering",
     title="K-means and hierarchical clustering",
     caption="§14.3 - Elbow, silhouette, centroids and dendrograms.",
+    summary=(
+        "Clustering groups observations so members of the same cluster are "
+        "more similar than members of different clusters. K-means finds "
+        "compact groups; hierarchical clustering builds a tree of nested "
+        "partitions. We use it to discover and summarise structure in "
+        "unlabelled data."
+    ),
     methodology=[
         r"K-means alternates assignment to nearest centroids and centroid updates to minimise WCSS (§14.3.6).",
         r"The elbow in WCSS vs K and the silhouette score provide complementary signals for cluster count.",

@@ -17,6 +17,12 @@ CrossValidationPage = define_page(
     value="cross_validation",
     title="Cp, AIC, BIC, CV and bootstrap",
     caption="§7.5–7.11 — In-sample criteria and resampling estimates.",
+    summary=(
+        "Choosing and evaluating models requires data the learner never saw "
+        "during fitting. Cross-validation and related resampling schemes "
+        "estimate out-of-sample error without wasting observations. We use "
+        "them to pick tuning parameters and compare models on equal footing."
+    ),
     methodology=[
         r"In-sample criteria penalise complexity without refitting: $C_p$, AIC, and BIC (§7.5–7.7).",
         r"BIC adds the strongest penalty ($\log N$ vs $2$); bootstrap .632 blends train and OOB error (§7.11).",

@@ -13,6 +13,12 @@ SvdPage = define_page(
     value="svd",
     title="SVD — every matrix has a geometry",
     caption="§2.8-2.9 — A = UΣVᵀ. Singular values are axis lengths of the unit ball's image.",
+    summary=(
+        "The singular value decomposition factors any matrix into rotation-"
+        "scaling-rotation form. Singular values measure how much energy each "
+        "direction carries through the map. We use SVD for compression, "
+        "denoising, and as the backbone of PCA."
+    ),
     methodology=[
         "Every A ∈ ℝᵐˣⁿ has A = UΣVᵀ with U, V orthogonal and Σ diagonal with σ₁ ≥ σ₂ ≥ … ≥ 0.",
         "NumPy: U, s, Vh = np.linalg.svd(A); reconstruct with U @ np.diag(s) @ Vh. Use pinv(A) for the Moore–Penrose inverse.",

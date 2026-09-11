@@ -15,6 +15,13 @@ RandomVariablesPage = define_page(
     value="rv",
     title="Probability as bookkeeping",
     caption="§3.2-3.8 — Joint → marginals (sum out) → conditionals (slice and renormalise).",
+    summary=(
+        "Random variables formalise uncertainty with probability "
+        "distributions over outcomes. Joint distributions encode "
+        "dependencies; marginals and conditionals let us query what we know "
+        "and what remains uncertain. We use this framework to reason "
+        "precisely about learning from noisy data."
+    ),
     methodology=[
         "A joint distribution P(X, Y) assigns probabilities to pairs; entries must be non-negative and sum to 1.",
         "Marginal: P(X = x) = Σ_y P(X = x, Y = y) — sum out the variable you don't care about.",

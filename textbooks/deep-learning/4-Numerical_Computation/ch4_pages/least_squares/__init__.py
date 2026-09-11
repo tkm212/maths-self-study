@@ -14,6 +14,12 @@ LeastSquaresPage = define_page(
     value="least_squares",
     title="Linear least squares",
     caption="§4.5 — w* = (AᵀA)⁻¹Aᵀb minimizes ||Aw - b||₂; connects to Ch. 2 linear algebra.",
+    summary=(
+        "Linear least squares finds the weight vector that minimises the sum "
+        "of squared residuals. When the design matrix is well-conditioned it "
+        "has a closed-form solution via normal equations. We use it as the "
+        "canonical example connecting linear algebra to optimisation."
+    ),
     methodology=[
         "Overdetermined system Aw ≈ b (more rows than columns) — no exact solution in general.",
         "Least squares: minimize ||Aw - b||₂² — normal equations AᵀAw* = Aᵀb.",

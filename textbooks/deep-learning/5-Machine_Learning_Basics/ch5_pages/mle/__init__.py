@@ -14,6 +14,13 @@ MlePage = define_page(
     value="mle",
     title="Maximum likelihood estimation",
     caption="§5.5 — MLE picks parameters that make the observed data most probable.",
+    summary=(
+        "Maximum likelihood estimation chooses parameters that make the "
+        "observed data most probable under a specified model. It connects "
+        "probability theory directly to parameter fitting. We use MLE as the "
+        "default principle for training many statistical and deep learning "
+        "models."
+    ),
     methodology=[
         "For a Gaussian, MLE sets mu to the sample mean and sigma^2 to the average squared deviation.",
         "Likelihood is the probability of the data given parameters; we maximize it over mu and sigma.",

@@ -6,7 +6,15 @@ from dash import html
 
 from maths_self_study.dashboards.chapter_app import create_chapter_dashboard
 from maths_self_study.dashboards.layout import page_shell
-from tests.dashboards.support import CH2_DASHBOARD, ESL_CH2_DASHBOARD, load_dashboard_module
+from tests.dashboards.support import (
+    CH2_DASHBOARD,
+    CH3_DASHBOARD,
+    CH4_DASHBOARD,
+    CH5_DASHBOARD,
+    ESL_CH2_DASHBOARD,
+    esl_dashboard_paths,
+    load_dashboard_module,
+)
 
 
 def test_page_shell_includes_summary():
@@ -66,3 +74,17 @@ def test_esl_ch2_pages_have_summary():
     ch2 = load_dashboard_module(ESL_CH2_DASHBOARD)
     for page in ch2.PAGES:
         assert page.summary
+
+
+def test_all_esl_pages_have_summary():
+    for dashboard_path in esl_dashboard_paths():
+        module = load_dashboard_module(dashboard_path)
+        for page in module.PAGES:
+            assert page.summary, f"{dashboard_path.name} page {page.value} missing summary"
+
+
+def test_all_deep_learning_pages_have_summary():
+    for dashboard_path in (CH2_DASHBOARD, CH3_DASHBOARD, CH4_DASHBOARD, CH5_DASHBOARD):
+        module = load_dashboard_module(dashboard_path)
+        for page in module.PAGES:
+            assert page.summary, f"{dashboard_path.name} page {page.value} missing summary"

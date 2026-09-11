@@ -12,6 +12,13 @@ ValidationPage = define_page(
     value="validation",
     title="Train vs validation error",
     caption="§5.3 — A held-out validation set estimates generalization while tuning hyperparameters.",
+    summary=(
+        "A validation set estimates how well a model generalises to unseen "
+        "data while tuning hyperparameters. Training error alone is misleading "
+        "because it reflects fit to noise as well as signal. We use "
+        "validation to choose model complexity without cheating on the final "
+        "test set."
+    ),
     methodology=[
         "Training error alone is optimistic — models can memorize noise.",
         "Validation error tracks performance on unseen data during hyperparameter search.",

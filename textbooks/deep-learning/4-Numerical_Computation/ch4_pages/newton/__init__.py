@@ -13,6 +13,12 @@ NewtonPage = define_page(
     value="newton",
     title="Second-order optimization",
     caption="§4.3.1 — Newton uses H⁻¹∇f; one step on a quadratic, but costly per step.",
+    summary=(
+        "Newton's method uses second-order curvature information to take "
+        "smarter steps toward a minimum. It can converge in far fewer "
+        "iterations on smooth problems. We use it when the cost of computing "
+        "the Hessian is worth the faster convergence."
+    ),
     algorithm=NEWTON_ALGORITHM,
     definitions=NEWTON_DEFINITIONS,
     build_filters=build_filters,
