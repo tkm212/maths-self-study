@@ -64,8 +64,9 @@ def test_coerce_matrix_2x2_uses_fallback_for_none():
 
 
 def test_coerce_tensor_3d():
-    from maths_self_study.demos.deep_learning import ch2 as helpers
+    from tests.dashboards.support import load_dl_helpers
 
+    helpers = load_dl_helpers(2)
     ni, nj, nk = helpers.TENSOR_SHAPE
     ordered: list[int | float | None] = []
     for k in range(nk):

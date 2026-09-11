@@ -2,11 +2,11 @@
 
 from __future__ import annotations
 
+import ch2_helpers as helpers
 import numpy as np
 from dash import html
 
 from maths_self_study.dashboards.components import graph, graph_row, table, text_box
-from maths_self_study.demos.deep_learning import ch2 as helpers
 from maths_self_study.math.linear_algebra import (
     pca_fit,
     pca_inverse_transform,

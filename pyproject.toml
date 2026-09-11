@@ -96,6 +96,7 @@ extra-paths = [
 include = ["textbooks/deep-learning/**", "tests/dashboards/**"]
 [tool.ty.overrides.rules]
 unresolved-import = "ignore"
+unresolved-attribute = "ignore"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

@@ -103,7 +103,7 @@ Implementations based on **Goodfellow, I., Bengio, Y., & Courville, A. (2016). [
 
 Source path: `textbooks/deep-learning/`
 
-Chapters 2–5 ship as multi-page **Dash** dashboards (filters for chapter constants on each page). Each chapter’s `dashboard.py` wires the app; page code lives in `ch{N}_pages/<page>/` with separate `filters.py`, `content.py`, and `callbacks.py` modules. Shared UI and app shell code is in `maths_self_study.dashboards`; plotting helpers are in `maths_self_study.demos.deep_learning`; core math is in `maths_self_study.math`.
+Chapters 2–5 ship as multi-page **Dash** dashboards (filters for chapter constants on each page). Each chapter’s `dashboard.py` wires the app; page code lives in `ch{N}_pages/<page>/` with separate `filters.py`, `content.py`, and `callbacks.py` modules. Shared UI and app shell code is in `maths_self_study.dashboards`; plotting helpers are in each chapter’s `ch{N}_helpers.py`; core math is in `maths_self_study.math`.
 
 | Chapter | Topic | App |
 |---------|-------|-----|
