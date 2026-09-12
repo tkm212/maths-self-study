@@ -13,6 +13,13 @@ BarTypesPage = define_page(
     value="bar_types",
     title="Information-driven bars",
     caption="Ch. 2 — Compare time, tick, volume, and dollar bars on BTC tick data.",
+    summary=(
+        "Information-driven bars close when a fixed amount of market activity "
+        "arrives - by tick count, volume, or dollar value - rather than on a "
+        "fixed clock. Returns from such bars tend to be more homogenous and "
+        "closer to IID than calendar-time sampling. We use them as the standard "
+        "input structure before labeling and feature engineering."
+    ),
     methodology=[
         "Time bars sample at fixed clock intervals — familiar but activity-varying.",
         "Tick bars normalize by transaction count; volume and dollar bars normalize by size and information flow.",

@@ -17,6 +17,14 @@ SampleWeightsPage = define_page(
     value="sample_weights",
     title="Uniqueness and time-decay weights",
     caption="Ch. 4 — Down-weight redundant and stale overlapping labels.",
+    summary=(
+        "Sample weights correct for dependence among overlapping financial "
+        "labels by down-weighting events that share information with many "
+        "concurrent trades and discounting stale observations over time. "
+        "Combined weights feed into training and sequential bootstrap schemes. "
+        "We use them so learning and validation respect label overlap in "
+        "event-driven datasets."
+    ),
     methodology=[
         "Average uniqueness penalizes events that overlap many concurrent labels.",
         "Time decay discounts older events relative to a reference time (e.g. end of sample).",

@@ -26,6 +26,10 @@ ESL_CH15_DASHBOARD = ESL_DASHBOARD_ROOT / "15-Random_Forests/dashboard.py"
 ESL_CH16_DASHBOARD = ESL_DASHBOARD_ROOT / "16-Ensemble_Learning/dashboard.py"
 ESL_CH17_DASHBOARD = ESL_DASHBOARD_ROOT / "17-Undirected_Graphical_Models/dashboard.py"
 ESL_CH18_DASHBOARD = ESL_DASHBOARD_ROOT / "18-High_Dimensional_Problems/dashboard.py"
+FML_DASHBOARD_ROOT = REPO_ROOT / "textbooks/financial-machine-learning"
+FML_CH2_DASHBOARD = FML_DASHBOARD_ROOT / "2-Financial_Data_Structures/dashboard.py"
+FML_CH3_DASHBOARD = FML_DASHBOARD_ROOT / "3-Labeling/dashboard.py"
+FML_CH4_DASHBOARD = FML_DASHBOARD_ROOT / "4-Sample_Weights/dashboard.py"
 
 CHAPTER_MODULE_ROOTS = tuple(f"ch{n}_{suffix}" for n in range(2, 19) for suffix in ("pages", "helpers", "data"))
 
@@ -53,6 +57,10 @@ ESL_CHAPTER_PAGES: dict[int, list[str]] = {
 
 def esl_dashboard_paths() -> list[Path]:
     return sorted(ESL_DASHBOARD_ROOT.glob("*/dashboard.py"), key=lambda path: int(path.parent.name.split("-")[0]))
+
+
+def fml_dashboard_paths() -> list[Path]:
+    return sorted(FML_DASHBOARD_ROOT.glob("*/dashboard.py"), key=lambda path: int(path.parent.name.split("-")[0]))
 
 
 def iter_esl_page_cases() -> Iterator[tuple[Path, str]]:
