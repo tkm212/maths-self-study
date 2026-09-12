@@ -2,11 +2,11 @@
 
 from __future__ import annotations
 
+import fml_ch2_helpers as helpers
 from dash import html
+from fml_data import load_ticks, project_paths
 
 from maths_self_study.dashboards.components import graph, graph_row, table, text_box
-from maths_self_study.demos.financial_machine_learning import ch2 as helpers
-from maths_self_study.demos.financial_machine_learning.data import load_ticks, project_paths
 
 
 def render_body(tick_threshold, target_bars, save_flag) -> html.Div:

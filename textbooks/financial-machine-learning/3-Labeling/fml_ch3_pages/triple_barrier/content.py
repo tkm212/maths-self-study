@@ -2,11 +2,11 @@
 
 from __future__ import annotations
 
+import fml_ch3_helpers as helpers
 from dash import html
+from fml_data import load_time_bars
 
 from maths_self_study.dashboards.components import graph, table, text_box
-from maths_self_study.demos.financial_machine_learning import ch3 as helpers
-from maths_self_study.demos.financial_machine_learning.data import load_time_bars
 
 
 def render_body(cusum_threshold, pt, sl, num_bars, sample_n) -> html.Div:

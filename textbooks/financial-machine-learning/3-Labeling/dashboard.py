@@ -11,7 +11,9 @@ from pathlib import Path
 from maths_self_study.dashboards.runner import main_dashboard, setup_chapter_path
 from maths_self_study.demos.financial_machine_learning.dashboard import create_afml_dashboard
 
-setup_chapter_path(Path(__file__).resolve().parent)
+_chapter_dir = Path(__file__).resolve().parent
+setup_chapter_path(_chapter_dir.parent)
+setup_chapter_path(_chapter_dir)
 
 from fml_ch3_pages import (  # noqa: E402
     MetaLabelingPage,
