@@ -1,4 +1,4 @@
-"""Structured models dashboard page."""
+"""Markov chains dashboard page."""
 
 from __future__ import annotations
 
@@ -9,22 +9,19 @@ from maths_self_study.viz.textbooks.deep_learning.ch3.definitions import MARKOV 
 from maths_self_study.viz.textbooks.deep_learning.ch3.theorems import MARKOV as MARKOV_THEOREMS
 
 MarkovPage = define_page(
-    label="Structured models",
+    label="Markov chains",
     value="markov",
-    title="Structured models — factor the joint",
-    caption="§3.14 — Each edge is a conditional. RNNs / HMMs / autoregressive LMs are this with neural conditionals.",
+    title="Structured probability — factorisation",
+    caption="§3.10 — Chain rule factorises joints; Markov property drops distant history.",
     summary=(
-        "Structured probabilistic models factor a high-dimensional joint "
-        "distribution into a chain or graph of local conditionals. Each "
-        "factor depends only on a small neighbourhood. We use this to "
-        "tractably model sequences, images, and language without specifying "
-        "every joint interaction separately."
+        "Markov chains model sequences where each state depends only on the "
+        "previous one. The chain rule factorises any joint distribution into "
+        "conditional pieces. We use this structure in language models, "
+        "time-series, and autoregressive generation."
     ),
     methodology=[
-        "A joint over many variables factorises: P(x₁, …, xₙ) = P(x₁) Πᵢ P(xᵢ | x₁, …, xᵢ₋₁) (chain rule).",
-        "Markov chain: P(xᵢ | x₁, …, xᵢ₋₁) = P(xᵢ | xᵢ₋₁) — only the previous state matters.",
-        "Each edge in the graph is one conditional factor; the product builds the full joint.",
-        "RNNs and autoregressive language models use the same factorisation with neural nets as conditionals.",
+        "Adjust transition probabilities and inspect how the joint factorises along the chain graph.",
+        "Each edge is one conditional factor; RNNs and autoregressive models use the same pattern with neural nets as conditionals.",
     ],
     definitions=MARKOV_DEFINITIONS,
     theorems=MARKOV_THEOREMS,

@@ -21,10 +21,9 @@ NormsPage = define_page(
         "machine learning."
     ),
     methodology=[
-        "The Lᵖ norm is ‖x‖ₚ = (Σᵢ |xᵢ|ᵖ)^(1/p). Common cases: L¹ (Manhattan), L² (Euclidean), L∞ (max absolute entry).",
-        "L²: ‖x‖₂ = √(xᵀx). The unit ball {x : ‖x‖₂ = 1} is a circle; L¹ gives a diamond, L∞ a square.",
-        "All norms measure 'size' but weight coordinates differently — optimisation and regularisation depend on this choice.",
-        "Cosine similarity cos θ = xᵀy / (‖x‖₂ ‖y‖₂) depends only on direction, not magnitude.",
+        "Compare L1, L2, and L infinity unit balls — each norm weights coordinates differently.",
+        "L2 gives a circle; L1 a diamond; L infinity a square in two dimensions.",
+        "Cosine similarity depends only on direction, not vector magnitude.",
     ],
     definitions=NORMS_DEFINITIONS,
     theorems=NORMS_THEOREMS,

@@ -9,6 +9,13 @@ from dash import html
 from maths_self_study.dashboards.components import graph, table
 from maths_self_study.dashboards.utils import coerce_probs
 from maths_self_study.math.probability import align_model_to_support
+from maths_self_study.viz.latex import formula_group
+from maths_self_study.viz.textbooks.deep_learning.ch3.formulas import (
+    CROSS_ENTROPY,
+    KL_DIVERGENCE,
+    SELF_INFORMATION,
+    SHANNON_ENTROPY,
+)
 
 
 def render_body(p0, p1, p2, p3, q0, q1, q2, q3) -> html.Div:
@@ -26,6 +33,13 @@ def render_body(p0, p1, p2, p3, q0, q1, q2, q3) -> html.Div:
     fig_kl = helpers.plot_kl_asymmetric(np.arange(len(p)), p, q)
     rows = [[name, f"{value:.4f} nats"] for name, value in measures.items()]
     return html.Div([
+        formula_group(
+            ("Self-information", SELF_INFORMATION),
+            ("Shannon entropy", SHANNON_ENTROPY),
+            ("Cross-entropy", CROSS_ENTROPY),
+            ("KL divergence", KL_DIVERGENCE),
+            title="Key formulas (§3.13)",
+        ),
         html.H3("Self-information: -log P(x)"),
         graph(fig_self),
         html.H3("Cross-entropy and KL — direction matters"),

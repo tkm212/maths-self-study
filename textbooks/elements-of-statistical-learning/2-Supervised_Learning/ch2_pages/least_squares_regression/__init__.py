@@ -24,7 +24,7 @@ LeastSquaresRegressionPage = define_page(
         "regression baseline - and as a reference point for more flexible methods."
     ),
     methodology=[
-        "β̂ = argmin ||y − Xβ||² = (XᵀX)⁻¹Xᵀy — all features included, no shrinkage.",
+        "All features are included with no shrinkage — compare train and test MSE in the panels.",
         "Train MSE is optimistically biased; test MSE estimates generalisation error.",
     ],
     definitions=LEAST_SQUARES_DEFINITIONS,

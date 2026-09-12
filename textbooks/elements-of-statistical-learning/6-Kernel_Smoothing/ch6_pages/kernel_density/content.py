@@ -7,6 +7,8 @@ from ch6_data import load_cls, load_xy
 from dash import html
 
 from maths_self_study.dashboards.components import graph, text_box
+from maths_self_study.viz.latex import formula_group
+from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch6.formulas import BAYES_CLASSIFIER_POSTERIOR
 
 
 def render_body(feat, bw) -> html.Div:
@@ -22,9 +24,9 @@ def render_body(feat, bw) -> html.Div:
 
     priors = ", ".join(f"{c}: {p:.3f}" for c, p in nb["priors"].items())
     return html.Div([
-        text_box(
-            steps=["KDE: f̂(x) = (1/nλ) Σ K((x−xᵢ)/λ); small λ is spiky, large λ over-smooths."],
-            title="Kernel density estimation",
+        formula_group(
+            ("Naive Bayes posterior", BAYES_CLASSIFIER_POSTERIOR),
+            title="Key formulas (§6.6)",
         ),
         graph(fig_kde),
         html.H3(

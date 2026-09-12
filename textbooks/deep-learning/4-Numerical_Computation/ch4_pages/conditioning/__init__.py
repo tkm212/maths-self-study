@@ -21,9 +21,8 @@ ConditioningPage = define_page(
         "practice."
     ),
     methodology=[
-        "Condition number κ(A) = σ_max / σ_min — ratio of largest to smallest singular value.",
-        "Relative error in x can be up to κ(A) times the relative error in b when solving Ax = b.",
-        "Near-singular matrices (κ → ∞) make inversion numerically unstable even with exact arithmetic.",
+        "Slide the condition number and perturbation size to see how nearly parallel rows amplify tiny changes in the right-hand side.",
+        "Near-singular matrices remain unstable even with exact arithmetic.",
     ],
     definitions=CONDITIONING_DEFINITIONS,
     theorems=CONDITIONING_THEOREMS,

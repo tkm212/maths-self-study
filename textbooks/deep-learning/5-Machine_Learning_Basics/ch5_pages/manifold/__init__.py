@@ -20,9 +20,8 @@ ManifoldPage = define_page(
         "generative modelling techniques."
     ),
     methodology=[
-        "Many datasets have ambient dimension d (pixel count, word vocabulary) far larger than intrinsic dimension k.",
-        "The manifold hypothesis: examples x = g(z) for latent z in R^k with k << d, and g a smooth embedding.",
-        "Swiss roll: k = 2 coordinates (angle t, height h) map smoothly into R^3 — the cloud is curved but not volume-filling.",
+        "Many datasets have ambient dimension far larger than intrinsic dimension — see the formula panel in the demo below.",
+        "Swiss roll: two latent coordinates map smoothly into three dimensions — the cloud is curved but not volume-filling.",
         "Linear PCA finds orthogonal directions of maximal variance; it unfolds some structure but cannot flatten a curved sheet perfectly.",
         "Deep models and nonlinear dimensionality reduction exploit manifold structure instead of treating every direction as equally likely.",
     ],

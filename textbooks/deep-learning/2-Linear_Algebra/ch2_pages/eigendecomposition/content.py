@@ -8,9 +8,11 @@ import ch2_helpers as helpers
 import numpy as np
 from dash import html
 
-from maths_self_study.dashboards.components import graph, table, text_box
+from maths_self_study.dashboards.components import graph, table
 from maths_self_study.dashboards.utils import coerce_matrix_2x2
 from maths_self_study.math.linear_algebra import symmetric_eigendecomposition
+from maths_self_study.viz.latex import formula_group
+from maths_self_study.viz.textbooks.deep_learning.ch2.formulas import EIGENPAIR, SPECTRAL_DECOMPOSITION
 
 log = logging.getLogger(__name__)
 
@@ -31,17 +33,12 @@ def render_body(a11, a12, a21, a22) -> html.Div:
         rows.append([f"v{i + 1}", f"[{v[0]:.4f}, {v[1]:.4f}]"])
     rows.append(["‖A - QΛQᵀ‖", f"{err:.2e}"])
     return html.Div([
+        formula_group(
+            ("Eigenpair", EIGENPAIR),
+            ("Spectral decomposition", SPECTRAL_DECOMPOSITION),
+            title="Key formulas (§2.7)",
+        ),
         note,
         graph(fig),
-        text_box(
-            steps=[
-                "Symmetrise A ← (A + Aᵀ)/2 — required so eigenvalues are real and np.linalg.eigh applies.",
-                "Call λ, Q = np.linalg.eigh(A) — use eigh (symmetric), not eig (general); columns of Q are eigenvectors.",
-                "LAPACK (same backend as NumPy/SciPy) tridiagonalises A with Householder reflectors, then runs a symmetric QR / divide-and-conquer eigensolver.",
-                "Check A Q = Q Λ: each column qᵢ satisfies A qᵢ = λᵢ qᵢ; with exact arithmetic A = Q Λ Qᵀ.",
-                "This demo sorts λ in descending order; ‖A − QΛQᵀ‖ in the table measures floating-point reconstruction error.",
-            ],
-            title="How NumPy computes eigenvalues and eigenvectors",
-        ),
         table(["Quantity", "Value"], rows, caption="Spectral decomposition"),
     ])

@@ -8,6 +8,13 @@ from dash import html
 
 from maths_self_study.dashboards.components import graph, metric, table
 from maths_self_study.dashboards.utils import coerce_probs, renorm
+from maths_self_study.viz.latex import formula_group
+from maths_self_study.viz.textbooks.deep_learning.ch3.formulas import (
+    CONDITIONAL,
+    EXPECTATION,
+    MARGINAL,
+    VARIANCE,
+)
 
 
 def render_body(j00, j01, j10, j11, p0, p1, p2, p3) -> html.Div:
@@ -31,6 +38,13 @@ def render_body(j00, j01, j10, j11, p0, p1, p2, p3) -> html.Div:
     )
 
     return html.Div([
+        formula_group(
+            ("Marginal", MARGINAL),
+            ("Conditional", CONDITIONAL),
+            ("Expectation", EXPECTATION),
+            ("Variance", VARIANCE),
+            title="Key formulas (§3.3-3.8)",
+        ),
         graph(fig_joint),
         table(
             ["Quantity", "Value"],

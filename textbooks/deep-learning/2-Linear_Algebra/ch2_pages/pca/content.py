@@ -6,13 +6,15 @@ import ch2_helpers as helpers
 import numpy as np
 from dash import html
 
-from maths_self_study.dashboards.components import graph, graph_row, table, text_box
+from maths_self_study.dashboards.components import graph, graph_row, table
 from maths_self_study.math.linear_algebra import (
     pca_fit,
     pca_inverse_transform,
     pca_transform,
     symmetric_eigendecomposition,
 )
+from maths_self_study.viz.latex import formula_group
+from maths_self_study.viz.textbooks.deep_learning.ch2.formulas import PCA_PROJECTION, SAMPLE_COVARIANCE
 
 
 def render_body(seed, n_samples, sx, sy) -> html.Div:
@@ -38,16 +40,10 @@ def render_body(seed, n_samples, sx, sy) -> html.Div:
     var_rows.append(["Reconstruction error ‖X̂ − X‖", f"{error:.4f}"])
 
     return html.Div([
-        text_box(
-            steps=[
-                "Start with data matrix X ∈ ℝⁿˣᵈ (n samples, d features). Centre: X_c = X − μ with μ = X.mean(axis=0).",
-                "Sample covariance Σ = X_cᵀ X_c / (n − 1) — a symmetric d × d matrix encoding spread and correlation.",
-                "Eigendecompose: λ, Q = np.linalg.eigh(Σ); columns of Q are principal directions, λᵢ is variance along PCᵢ.",
-                "Keep top k eigenvectors as rows of W (shape k × d). Project: Z = X_c @ Wᵀ (codes). Reconstruct: X̂ = Z @ W + μ.",
-                "Equivalent SVD route: U, s, Vh = np.linalg.svd(X_c, full_matrices=False); rows of Vh are the same PCs (up to sign); s²/(n−1) give λᵢ.",
-                "Truncating to k PCs minimises ‖X − X̂‖ among rank-k linear reconstructions; lost variance = Σᵢ₌ₖ₊₁ λᵢ.",
-            ],
-            title="How to compute PCA in NumPy",
+        formula_group(
+            ("Sample covariance", SAMPLE_COVARIANCE),
+            ("PCA projection", PCA_PROJECTION),
+            title="Key formulas (§2.12)",
         ),
         graph_row(graph(figs[0], style={"flex": "1"}), graph(figs[1], style={"flex": "1"})),
         graph(figs[2]),
