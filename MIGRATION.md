@@ -92,6 +92,6 @@ from maths_self_study.viz.definitions.ch2 import VECTORS
 from maths_self_study.quant.bars import dollar_bars
 from maths_self_study.math.linear_algebra import pca_fit
 from maths_self_study.data import load_tmdb_revenue_regression
-from maths_self_study.demos.deep_learning import ch2
+import ch2_helpers  # from textbooks/deep-learning/2-Linear_Algebra/
 from maths_self_study.viz.textbooks.deep_learning.ch2.definitions import VECTORS
 ```

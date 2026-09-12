@@ -2,12 +2,12 @@
 
 from __future__ import annotations
 
+import ch2_helpers as helpers
 import numpy as np
 from dash import html
 
 from maths_self_study.dashboards.components import graph, graph_row, table
 from maths_self_study.dashboards.utils import coerce_matrix_2x2
-from maths_self_study.demos.deep_learning import ch2 as helpers
 
 
 def render_body(a11, a12, a21, a22, rot, shear) -> html.Div:

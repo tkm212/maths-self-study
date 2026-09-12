@@ -2,12 +2,12 @@
 
 from __future__ import annotations
 
+import ch2_helpers as helpers
 import numpy as np
 from dash import html
 
 from maths_self_study.dashboards.components import graph, table, text_box
 from maths_self_study.dashboards.utils import coerce_matrix_2x2
-from maths_self_study.demos.deep_learning import ch2 as helpers
 from maths_self_study.math.linear_algebra import moore_penrose_pseudoinverse
 
 _LS_A = helpers.OVERDETERMINED_A

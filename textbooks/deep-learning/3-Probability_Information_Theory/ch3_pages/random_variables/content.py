@@ -2,12 +2,12 @@
 
 from __future__ import annotations
 
+import ch3_helpers as helpers
 import numpy as np
 from dash import html
 
 from maths_self_study.dashboards.components import graph, metric, table
 from maths_self_study.dashboards.utils import coerce_probs, renorm
-from maths_self_study.demos.deep_learning import ch3 as helpers
 
 
 def render_body(j00, j01, j10, j11, p0, p1, p2, p3) -> html.Div:

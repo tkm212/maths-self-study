@@ -2,12 +2,12 @@
 
 from __future__ import annotations
 
+import ch2_helpers as helpers
 import numpy as np
 from dash import html
 
 from maths_self_study.dashboards.components import graph, table
 from maths_self_study.dashboards.utils import coerce_float
-from maths_self_study.demos.deep_learning import ch2 as helpers
 from maths_self_study.math.linear_algebra import cosine_similarity, lp_norm
 
 

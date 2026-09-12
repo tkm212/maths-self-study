@@ -1,4 +1,4 @@
-"""Shared helpers for Deep Learning Ch. 2 (Linear Algebra) notebooks."""
+"""Shared plotting helpers for Deep Learning Ch. 2 (Linear Algebra) dashboard."""
 
 from __future__ import annotations
 

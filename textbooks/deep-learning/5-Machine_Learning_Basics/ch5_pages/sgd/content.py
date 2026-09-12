@@ -2,11 +2,11 @@
 
 from __future__ import annotations
 
+import ch5_helpers as helpers
 from dash import html
 
 from maths_self_study.dashboards.components import graph, table, text_box
 from maths_self_study.dashboards.utils import coerce_float
-from maths_self_study.demos.deep_learning import ch5 as helpers
 from maths_self_study.viz.latex import formula_group
 from maths_self_study.viz.textbooks.deep_learning.ch5.formulas import GD_UPDATE, MINIBATCH_UPDATE
 
