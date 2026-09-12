@@ -23,10 +23,8 @@ RandomVariablesPage = define_page(
         "precisely about learning from noisy data."
     ),
     methodology=[
-        "A joint distribution P(X, Y) assigns probabilities to pairs; entries must be non-negative and sum to 1.",
-        "Marginal: P(X = x) = Σ_y P(X = x, Y = y) — sum out the variable you don't care about.",
-        "Conditional: P(X | Y = y) = P(X, Y = y) / P(Y = y) — restrict to one row/column and renormalise.",
-        "Expectation E[X] = Σ x P(x); variance Var(X) = E[(X − E[X])²] = E[X²] − E[X]².",
+        "Adjust the joint table and inspect marginals, conditionals, and moments in the panels below.",
+        "Marginals sum out one variable; conditionals renormalise a slice of the joint table.",
     ],
     definitions=RANDOM_VARIABLES_DEFINITIONS,
     theorems=RANDOM_VARIABLES_THEOREMS,

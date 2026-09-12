@@ -7,6 +7,12 @@ from dash import html
 from maths_self_study.dashboards.components import graph, table
 from maths_self_study.dashboards.utils import coerce_floats
 from maths_self_study.demos.deep_learning import ch4 as helpers
+from maths_self_study.viz.latex import formula_group
+from maths_self_study.viz.textbooks.deep_learning.ch4.formulas import (
+    LEAST_SQUARES_OBJECTIVE,
+    NORMAL_EQUATIONS,
+    OLS_SOLUTION,
+)
 
 
 def render_body(y0, y1, y2, y3) -> html.Div:
@@ -20,6 +26,12 @@ def render_body(y0, y1, y2, y3) -> html.Div:
         ["RMSE", f"{summary['rmse']:.4f}"],
     ]
     return html.Div([
+        formula_group(
+            ("Objective", LEAST_SQUARES_OBJECTIVE),
+            ("Normal equations", NORMAL_EQUATIONS),
+            ("Closed-form solution", OLS_SOLUTION),
+            title="Key formulas (§4.5)",
+        ),
         html.H3("Normal-equation fit"),
         graph(fig),
         table(["Parameter", "Value"], rows, caption="Least squares solution"),

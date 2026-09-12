@@ -28,10 +28,10 @@ BiasVariancePage = define_page(
         "complex ones."
     ),
     methodology=[
-        "Squared-error decomposition at x₀: Err(x₀) = σ² + Bias²[ƒ̂(x₀)] + Var[ƒ̂(x₀)] — irreducible noise plus approximation and estimation error (§7.3).",
+        "The squared-error decomposition splits error into irreducible noise, bias, and variance (§7.3) — see the theorem panel above.",
         "Train MSE falls as polynomial degree grows; test MSE is U-shaped — flexible models reduce bias but variance explodes when d is too large.",
-        "Optimism = train error − test error; it grows with effective degrees of freedom because the same data are used to fit and evaluate (§7.4).",
-        "The train/test gap on a TMDB feature mirrors the synthetic panels: compare the U-curve to the bias² + variance tradeoff.",
+        "Optimism grows with effective degrees of freedom because the same data are used to fit and evaluate (§7.4).",
+        "Compare the train/test gap on the feature panel to the synthetic bias-variance tradeoff curves.",
     ],
     definitions=BIAS_VARIANCE_DEFINITIONS,
     theorems=BIAS_VARIANCE_THEOREMS,

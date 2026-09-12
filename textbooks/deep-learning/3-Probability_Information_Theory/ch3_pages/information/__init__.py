@@ -22,10 +22,8 @@ InformationPage = define_page(
         "objectives and diagnostics."
     ),
     methodology=[
-        "Self-information: I(x) = −log P(x) — surprise of outcome x (nats with ln, bits with log₂).",
-        "Shannon entropy H(P) = E[−log P(X)] = −Σ P(x) log P(x) — average surprise over P.",
-        "Cross-entropy H(P, Q) = E_P[−log Q(X)] — expected code length using Q on P-generated data; softmax + log loss.",
-        "KL divergence KL(P ‖ Q) = E_P[log(P/Q)] = H(P, Q) − H(P) ≥ 0, zero iff P = Q; asymmetric, not a metric.",
+        "Adjust the probability tables and compare self-information, entropy, cross-entropy, and KL in the summary table.",
+        "KL is asymmetric — swapping P and Q changes the value.",
     ],
     definitions=INFORMATION_DEFINITIONS,
     theorems=INFORMATION_THEOREMS,

@@ -5,6 +5,7 @@ from __future__ import annotations
 from ch2_pages.svd.callbacks import register_callbacks
 from ch2_pages.svd.filters import build_filters
 from maths_self_study.dashboards.page_factory import define_page
+from maths_self_study.viz.textbooks.deep_learning.ch2.algorithms import SVD_LEAST_SQUARES as SVD_ALGORITHM
 from maths_self_study.viz.textbooks.deep_learning.ch2.definitions import SVD as SVD_DEFINITIONS
 from maths_self_study.viz.textbooks.deep_learning.ch2.theorems import SVD as SVD_THEOREMS
 
@@ -20,11 +21,9 @@ SvdPage = define_page(
         "denoising, and as the backbone of PCA."
     ),
     methodology=[
-        "Every A ∈ ℝᵐˣⁿ has A = UΣVᵀ with U, V orthogonal and Σ diagonal with σ₁ ≥ σ₂ ≥ … ≥ 0.",
-        "NumPy: U, s, Vh = np.linalg.svd(A); reconstruct with U @ np.diag(s) @ Vh. Use pinv(A) for the Moore–Penrose inverse.",
-        "σᵢ = √λᵢ(AᵀA). Geometrically, σᵢ are ellipse axis lengths for {Ax : ‖x‖₂ = 1}.",
-        "Least squares: x = np.linalg.pinv(A) @ b minimises ‖Ax − b‖₂ when the system is overdetermined.",
+        "Adjust the matrix entries and inspect singular values, the unit-circle image, and the least-squares fit.",
     ],
+    algorithm=SVD_ALGORITHM,
     definitions=SVD_DEFINITIONS,
     theorems=SVD_THEOREMS,
     build_filters=build_filters,

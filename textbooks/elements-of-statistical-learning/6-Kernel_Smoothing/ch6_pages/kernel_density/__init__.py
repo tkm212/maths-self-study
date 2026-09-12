@@ -21,8 +21,8 @@ KernelDensityPage = define_page(
         "nonparametrically and as the building block for generative classifiers."
     ),
     methodology=[
-        "KDE in log₁p-space with back-transformed x-axis.",
-        "Posterior ∝ πₖ f̂ₖ(x) from class-conditional densities.",
+        "KDE is computed in log1p-space with a back-transformed x-axis for readability.",
+        "Adjust bandwidth to trade bias against variance in the density estimate.",
     ],
     definitions=KERNEL_DENSITY_DEFINITIONS,
     build_filters=build_filters,

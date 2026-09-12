@@ -9,6 +9,8 @@ from maths_self_study.dashboards.components import graph, table
 from maths_self_study.dashboards.utils import coerce_float
 from maths_self_study.demos.deep_learning import ch2 as helpers
 from maths_self_study.math.linear_algebra import cosine_similarity, lp_norm
+from maths_self_study.viz.latex import formula_group
+from maths_self_study.viz.textbooks.deep_learning.ch2.formulas import COSINE_SIMILARITY, LP_NORM
 
 
 def _norm_label(p: float) -> str:
@@ -31,9 +33,13 @@ def render_body(x1, x2, inf_opts) -> html.Div:
     norm_rows.append(["cos(e₁, (1,1))", f"{cos_ab:.4f}"])
 
     return html.Div([
+        formula_group(
+            ("Lᵖ norm", LP_NORM),
+            ("Cosine similarity", COSINE_SIMILARITY),
+            title="Key formulas (§2.5)",
+        ),
         html.P(
-            "The Lᵖ unit ball is {x : ‖x‖ₚ = 1}: all points exactly one unit from the origin in that norm. "
-            "Each panel shows its boundary in ℝ².",
+            "Each panel shows the unit-ball boundary in two dimensions for a different norm.",
             style={"color": "#64748b", "fontSize": "0.9rem", "marginBottom": "8px"},
         ),
         graph(fig),

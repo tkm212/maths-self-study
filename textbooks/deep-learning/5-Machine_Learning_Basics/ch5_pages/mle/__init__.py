@@ -22,8 +22,7 @@ MlePage = define_page(
         "models."
     ),
     methodology=[
-        "For a Gaussian, MLE sets mu to the sample mean and sigma^2 to the average squared deviation.",
-        "Likelihood is the probability of the data given parameters; we maximize it over mu and sigma.",
+        "Slide to shift every sample and watch the MLE mean and fitted bell curve move together.",
         "MLE is consistent — with enough data, estimates converge to true parameters.",
     ],
     definitions=MLE_DEFINITIONS,

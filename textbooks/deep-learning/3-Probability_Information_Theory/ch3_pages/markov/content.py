@@ -8,6 +8,8 @@ from dash import html
 from maths_self_study.dashboards.components import graph, table
 from maths_self_study.dashboards.utils import clamp_prob
 from maths_self_study.demos.deep_learning import ch3 as helpers
+from maths_self_study.viz.latex import formula_group
+from maths_self_study.viz.textbooks.deep_learning.ch3.formulas import CHAIN_RULE, MARKOV_FACTORISATION
 
 
 def render_body(
@@ -49,6 +51,11 @@ def render_body(
         ["P(X₃=1)", f"{float(joint[:, :, 1].sum()):.4f}"],
     ]
     return html.Div([
+        formula_group(
+            ("Chain rule", CHAIN_RULE),
+            ("Markov factorisation", MARKOV_FACTORISATION),
+            title="Key formulas (§3.10)",
+        ),
         graph(fig),
         table(["Quantity", "Value"], rows, caption="Three-node chain joint"),
     ])

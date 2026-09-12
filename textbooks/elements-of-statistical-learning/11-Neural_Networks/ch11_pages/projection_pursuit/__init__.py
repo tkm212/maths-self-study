@@ -31,8 +31,7 @@ ProjectionPursuitPage = define_page(
         "networks."
     ),
     methodology=[
-        r"PPR models $f(X) = \sum_{m=1}^{M} g_m(\omega_m^\top X)$ — each term is a ridge function along a learned direction (§11.2).",
-        r"The algorithm iteratively pursues projections that best reduce residuals, analogous to PCR but with nonlinear $g_m$ (§11.2).",
+        r"The algorithm iteratively pursues projections that best reduce residuals, analogous to PCR but with nonlinear ridge functions (§11.2).",
         r"A 1-hidden-layer MLP with sigmoid activations is a restricted PPR; PPR is more flexible but harder to fit (§11.3).",
         r"We approximate PPR with 1-hidden-layer `MLPRegressor` (tanh) since scikit-learn has no native PPR implementation.",
     ],

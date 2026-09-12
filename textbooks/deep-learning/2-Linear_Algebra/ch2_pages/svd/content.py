@@ -5,10 +5,12 @@ from __future__ import annotations
 import numpy as np
 from dash import html
 
-from maths_self_study.dashboards.components import graph, table, text_box
+from maths_self_study.dashboards.components import graph, table
 from maths_self_study.dashboards.utils import coerce_matrix_2x2
 from maths_self_study.demos.deep_learning import ch2 as helpers
 from maths_self_study.math.linear_algebra import moore_penrose_pseudoinverse
+from maths_self_study.viz.latex import formula_group
+from maths_self_study.viz.textbooks.deep_learning.ch2.formulas import PSEUDOINVERSE_LS, SINGULAR_VALUES, SVD
 
 _LS_A = helpers.OVERDETERMINED_A
 
@@ -32,17 +34,12 @@ def render_body(a11, a12, a21, a22, b0, b1, b2) -> html.Div:
         ["Residual ‖Ax − b‖₂", f"{residual:.4f}"],
     ]
     return html.Div([
-        graph(fig),
-        text_box(
-            steps=[
-                "Every A ∈ ℝᵐˣⁿ has A = U Σ Vᵀ with U ∈ ℝᵐˣᵐ, V ∈ ℝⁿˣⁿ orthogonal and Σ ∈ ℝᵐˣⁿ diagonal (σᵢ ≥ 0).",
-                "NumPy: U, s, Vh = np.linalg.svd(A) — singular values in s, and A ≈ U @ np.diag(s) @ Vh (Vh is Vᵀ).",
-                "For the 2×2 map, σ₁, σ₂ are the ellipse axis lengths; columns of U are output directions, rows of Vh are input directions.",
-                "σᵢ = √λᵢ(AᵀA): singular values are square roots of eigenvalues of AᵀA (or AAᵀ).",
-                "LAPACK runs bidiagonalisation (Golub–Kahan) then an iterative bidiagonal SVD — same family of routines backs pinv and lstsq.",
-                "Least squares min ‖Ax − b‖₂: x = A⁺b with A⁺ = V Σ⁺ Uᵀ. In NumPy, A⁺ = np.linalg.pinv(A) (SVD-based); small σᵢ are damped by rcond.",
-            ],
-            title="How to compute SVD in NumPy",
+        formula_group(
+            ("SVD", SVD),
+            ("Singular values", SINGULAR_VALUES),
+            ("Least squares", PSEUDOINVERSE_LS),
+            title="Key formulas (§2.8–2.9)",
         ),
+        graph(fig),
         table(["Quantity", "Value"], rows, caption="SVD factors and least squares"),
     ])
