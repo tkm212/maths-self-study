@@ -6,20 +6,15 @@ Run from repo root:
 
 from __future__ import annotations
 
-from pathlib import Path
-
-from maths_self_study.dashboards.runner import main_dashboard, setup_chapter_path
+from maths_self_study.dashboards.runner import load_chapter_pages, main_dashboard
 from maths_self_study.demos.financial_machine_learning.dashboard import create_afml_dashboard
 
-_chapter_dir = Path(__file__).resolve().parent
-setup_chapter_path(_chapter_dir)
-
-from fml_ch4_pages import (  # noqa: E402
-    ConcurrencyPage,
-    SampleWeightsPage,
+PAGES = load_chapter_pages(
+    __file__,
+    "fml_ch4_pages",
+    "ConcurrencyPage",
+    "SampleWeightsPage",
 )
-
-PAGES = [ConcurrencyPage, SampleWeightsPage]
 
 
 def create_app():

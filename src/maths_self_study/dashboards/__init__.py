@@ -47,7 +47,7 @@ from maths_self_study.dashboards.components import (
 from maths_self_study.dashboards.layout import chapter_layout, page_shell
 from maths_self_study.dashboards.logging import configure, configure_for_run, log_dashboard_start
 from maths_self_study.dashboards.page_factory import define_page
-from maths_self_study.dashboards.runner import main_dashboard, run_dashboard, setup_chapter_path
+from maths_self_study.dashboards.runner import load_chapter_pages, main_dashboard, run_dashboard, setup_chapter_path
 
 __all__ = [
     "DashboardPage",
@@ -68,6 +68,7 @@ __all__ = [
     "filter_bar",
     "graph",
     "graph_row",
+    "load_chapter_pages",
     "log_dashboard_start",
     "main_dashboard",
     "matrix_input",

@@ -7,6 +7,7 @@ Contributions are welcome — bug reports, notebook fixes, new textbook chapters
 - Browse [open issues](https://github.com/tkm212/maths-self-study/issues)
 - Read the [notebooks overview](docs/notebooks.md) to see how chapters are organised
 - Each ESL chapter folder has a `ch{N}_helpers.py` module; AFML chapters use `fml_ch{N}_helpers.py` for plot helpers, `maths_self_study.data` for shared BTC data loaders, and `maths_self_study.quant` for bars → labels → sample-weight pipelines
+- Chapter dashboards import local page modules via `load_chapter_pages(__file__, "ch{N}_pages", ...)` — this adds the chapter folder to `sys.path` because names like `ch3_pages` repeat across books and cannot all be installed as one global package without renaming
 
 ## Bug reports
 

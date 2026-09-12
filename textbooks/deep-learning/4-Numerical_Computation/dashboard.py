@@ -6,30 +6,19 @@ Run from repo root:
 
 from __future__ import annotations
 
-from pathlib import Path
-
-from maths_self_study.dashboards.runner import main_dashboard, setup_chapter_path
+from maths_self_study.dashboards.runner import load_chapter_pages, main_dashboard
 from maths_self_study.demos.deep_learning.dashboard import create_deep_learning_dashboard
 
-setup_chapter_path(Path(__file__).resolve().parent)
-
-from ch4_pages import (  # noqa: E402
-    ConditioningPage,
-    GradientDescentPage,
-    KktPage,
-    LeastSquaresPage,
-    NewtonPage,
-    StabilityPage,
+PAGES = load_chapter_pages(
+    __file__,
+    "ch4_pages",
+    "StabilityPage",
+    "ConditioningPage",
+    "GradientDescentPage",
+    "NewtonPage",
+    "LeastSquaresPage",
+    "KktPage",
 )
-
-PAGES = [
-    StabilityPage,
-    ConditioningPage,
-    GradientDescentPage,
-    NewtonPage,
-    LeastSquaresPage,
-    KktPage,
-]
 
 
 def create_app():
