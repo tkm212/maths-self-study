@@ -10,6 +10,8 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
+from maths_self_study.quant.labeling import cusum_triple_barrier_labels
+
 
 def concurrent_labels_per_bar(
     events: pd.DataFrame,
@@ -78,3 +80,44 @@ def time_decay_weights(
     age_s = (ref - t).dt.total_seconds().clip(lower=0.0)
     span_s = max(decay_span.total_seconds(), 1e-12)
     return pd.Series(np.exp(-age_s / span_s), index=idx, dtype=float)
+
+
+def sample_weights_from_bars(
+    bars: pd.DataFrame,
+    *,
+    cusum_threshold: float = 0.0002,
+    pt: float = 0.001,
+    sl: float = 0.001,
+    num_bars: int = 30,
+    decay_hours: float = 1.0,
+    datetime_col: str = "datetime",
+) -> tuple[pd.DataFrame, pd.Series]:
+    """Label bars with CUSUM + triple barrier, then compute concurrency and sample weights."""
+    labels = cusum_triple_barrier_labels(
+        bars,
+        cusum_threshold=cusum_threshold,
+        pt=pt,
+        sl=sl,
+        num_bars=num_bars,
+        datetime_col=datetime_col,
+    )
+    if labels.empty:
+        return labels, pd.Series(dtype=np.int64)
+
+    t0 = labels["datetime"].min()
+    t1 = labels["exit_time"].max()
+    bar_index = pd.DatetimeIndex(
+        bars.loc[(bars[datetime_col] >= t0) & (bars[datetime_col] <= t1), datetime_col].unique()
+    ).sort_values()
+
+    conc = concurrent_labels_per_bar(labels, bar_index, start_col="datetime", end_col="exit_time")
+    uniq = average_uniqueness(labels, bar_index, start_col="datetime", end_col="exit_time")
+    labels_1 = labels.assign(avg_uniqueness=uniq.values)
+
+    ref = bars[datetime_col].max()
+    decay_span = pd.Timedelta(hours=float(decay_hours))
+    td = time_decay_weights(labels_1["datetime"], ref_time=ref, decay_span=decay_span)
+    labels_2 = labels_1.assign(time_decay=td.values)
+    raw = labels_2["avg_uniqueness"] * labels_2["time_decay"]
+    labels_2["sample_weight"] = raw / raw.mean()
+    return labels_2, conc

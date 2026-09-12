@@ -4,9 +4,9 @@ from __future__ import annotations
 
 import fml_ch4_helpers as helpers
 from dash import html
-from fml_data import load_time_bars
 
 from maths_self_study.dashboards.components import graph, graph_row, table, text_box
+from maths_self_study.data import load_time_bars
 
 
 def render_body(cusum_threshold, pt, sl, num_bars, decay_hours) -> html.Div:
