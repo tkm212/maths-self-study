@@ -1,4 +1,4 @@
-"""Shared helpers for AFML Ch. 2 (Financial Data Structures) dashboards."""
+"""Shared plotting helpers for AFML Ch. 2 (Financial Data Structures) dashboard."""
 
 from __future__ import annotations
 

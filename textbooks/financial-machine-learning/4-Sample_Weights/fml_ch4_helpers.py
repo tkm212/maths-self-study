@@ -1,12 +1,12 @@
-"""Shared helpers for AFML Ch. 4 (Sample Weights) dashboards."""
+"""Shared plotting helpers for AFML Ch. 4 (Sample Weights) dashboard."""
 
 from __future__ import annotations
 
+import fml_ch3_helpers as ch3_helpers
 import pandas as pd
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
-from maths_self_study.demos.financial_machine_learning import ch3 as ch3_helpers
 from maths_self_study.quant.weights import (
     average_uniqueness,
     concurrent_labels_per_bar,

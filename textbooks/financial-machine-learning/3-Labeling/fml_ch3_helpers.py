@@ -1,4 +1,4 @@
-"""Shared helpers for AFML Ch. 3 (Labeling) dashboards."""
+"""Shared plotting helpers for AFML Ch. 3 (Labeling) dashboard."""
 
 from __future__ import annotations
 

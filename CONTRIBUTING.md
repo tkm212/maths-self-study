@@ -6,7 +6,7 @@ Contributions are welcome — bug reports, notebook fixes, new textbook chapters
 
 - Browse [open issues](https://github.com/tkm212/maths-self-study/issues)
 - Read the [notebooks overview](docs/notebooks.md) to see how chapters are organised
-- Each ESL chapter folder has a `ch{N}_helpers.py` module; AFML chapters use Dash dashboards with helpers in `maths_self_study.demos.financial_machine_learning`
+- Each ESL chapter folder has a `ch{N}_helpers.py` module; AFML chapters use `fml_ch{N}_helpers.py` and shared `fml_data.py` under `textbooks/financial-machine-learning/`
 
 ## Bug reports
 
