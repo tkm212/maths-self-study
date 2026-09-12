@@ -2,16 +2,11 @@
 
 from __future__ import annotations
 
-import fml_ch3_helpers as ch3_helpers
 import pandas as pd
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
-from maths_self_study.quant.weights import (
-    average_uniqueness,
-    concurrent_labels_per_bar,
-    time_decay_weights,
-)
+from maths_self_study.quant.weights import sample_weights_from_bars
 from maths_self_study.viz.graphs import apply_layout, histogram_chart
 
 
@@ -24,30 +19,14 @@ def compute_weighted_labels(
     num_bars: int = 30,
     decay_hours: float = 1.0,
 ) -> tuple[pd.DataFrame, pd.Series]:
-    labels = ch3_helpers.compute_labels(
+    return sample_weights_from_bars(
         bars,
         cusum_threshold=cusum_threshold,
         pt=pt,
         sl=sl,
         num_bars=num_bars,
+        decay_hours=decay_hours,
     )
-    t0 = labels["datetime"].min()
-    t1 = labels["exit_time"].max()
-    bar_index = pd.DatetimeIndex(
-        bars.loc[(bars["datetime"] >= t0) & (bars["datetime"] <= t1), "datetime"].unique()
-    ).sort_values()
-
-    conc = concurrent_labels_per_bar(labels, bar_index)
-    uniq = average_uniqueness(labels, bar_index)
-    labels_1 = labels.assign(avg_uniqueness=uniq.values)
-
-    ref = bars["datetime"].max()
-    decay_span = pd.Timedelta(hours=float(decay_hours))
-    td = time_decay_weights(labels_1["datetime"], ref_time=ref, decay_span=decay_span)
-    labels_2 = labels_1.assign(time_decay=td.values)
-    raw = labels_2["avg_uniqueness"] * labels_2["time_decay"]
-    labels_2["sample_weight"] = raw / raw.mean()
-    return labels_2, conc
 
 
 def summarize_weights(labels: pd.DataFrame, *, max_concurrency: int | None = None) -> list[list[str | float | int]]:

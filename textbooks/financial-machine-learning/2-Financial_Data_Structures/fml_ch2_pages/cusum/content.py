@@ -6,7 +6,7 @@ import fml_ch2_helpers as helpers
 from dash import html
 
 from maths_self_study.dashboards.components import graph, table, text_box
-from maths_self_study.data.fml import load_time_bars
+from maths_self_study.data import load_time_bars
 
 
 def render_body(threshold) -> html.Div:
