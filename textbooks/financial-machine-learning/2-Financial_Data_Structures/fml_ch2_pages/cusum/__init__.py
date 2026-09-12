@@ -13,6 +13,13 @@ CusumPage = define_page(
     value="cusum",
     title="CUSUM event filter",
     caption="Snippet 2.4 — Detect cumulative log-return divergences without redundant triggers.",
+    summary=(
+        "A CUSUM filter accumulates signed price drift and fires an event when "
+        "the cumulative move exceeds a threshold, then resets. That focuses "
+        "labeling on structurally meaningful shifts instead of every bar or "
+        "repeated triggers near the same level. We use it to choose when to "
+        "label before building supervised datasets."
+    ),
     methodology=[
         "Track cumulative signed log-return S_t from a reset level of zero.",
         "Sample bar t when |S_t| ≥ h; reset S_t to 0 after each event.",

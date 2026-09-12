@@ -17,6 +17,13 @@ MetaLabelingPage = define_page(
     value="meta_labeling",
     title="Meta-labeling",
     caption="p. 50 — Separate direction (primary) from bet sizing and filtering (meta).",
+    summary=(
+        "Meta-labeling splits the trading problem in two: a primary model "
+        "chooses side and timing, while a secondary model decides whether to "
+        "act and how strongly. The meta label is whether the primary bet would "
+        "have won, training a filter on top of direction. We use it to reduce "
+        "false positives and map model confidence to position size."
+    ),
     methodology=[
         "Primary model emits side and event times; triple-barrier labels realized outcomes.",
         "Meta-label: 1 if primary side would have won, 0 otherwise (pass).",

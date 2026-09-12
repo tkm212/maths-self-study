@@ -17,6 +17,13 @@ PcaWeightsPage = define_page(
     value="pca_weights",
     title="PCA on multi-horizon returns",
     caption="Ch. 2 — First principal component loadings across return horizons.",
+    summary=(
+        "PCA on multi-horizon returns extracts the dominant shared pattern "
+        "across lookback windows as a single composite signal. Loading weights "
+        "show which horizons drive that pattern and eigenvalues rank how much "
+        "variance each direction explains. We use this to compress correlated "
+        "return features into orthogonal inputs for modeling."
+    ),
     methodology=[
         "Use multiple lookback returns on one asset as a feature matrix.",
         "PCA on the correlation matrix yields orthogonal directions of shared variation.",

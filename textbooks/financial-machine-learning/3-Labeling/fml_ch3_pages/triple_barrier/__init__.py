@@ -23,6 +23,13 @@ TripleBarrierPage = define_page(
     value="triple_barrier",
     title="Triple-barrier labels",
     caption="Snippet 3.2 — Path-dependent targets from profit, stop, and time barriers.",
+    summary=(
+        "Triple-barrier labeling assigns an outcome according to which of "
+        "profit-take, stop-loss, or a time limit is hit first along the price "
+        "path after entry. The target reflects how a trade would actually "
+        "close, not a single fixed-horizon return. We use it as the default "
+        "supervised target for event-driven financial models."
+    ),
     methodology=[
         r"Barriers can be volatility-scaled (ATR) in production; here they are fixed fractions.",
     ],

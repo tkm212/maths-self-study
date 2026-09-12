@@ -20,6 +20,13 @@ ConcurrencyPage = define_page(
     value="concurrency",
     title="Label concurrency",
     caption="Ch. 4 — Overlapping triple-barrier events break the IID assumption.",
+    summary=(
+        "Label concurrency counts how many triple-barrier events are still "
+        "open at each bar - started but not yet closed. High concurrency means "
+        "many labels share the same price path, violating IID assumptions in "
+        "standard cross-validation. We use it to diagnose crowded labeling "
+        "regimes before fitting and weighting samples."
+    ),
     methodology=[
         "For each bar, count active labels c(t) between event start and exit.",
         "Peaks in c(t) mark periods where many events share information.",
