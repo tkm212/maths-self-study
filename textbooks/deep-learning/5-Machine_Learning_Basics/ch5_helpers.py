@@ -1,4 +1,4 @@
-"""Shared helpers for Deep Learning Ch. 5 (Machine Learning Basics) dashboards."""
+"""Shared plotting helpers for Deep Learning Ch. 5 (Machine Learning Basics) dashboard."""
 
 from __future__ import annotations
 

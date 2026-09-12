@@ -2,11 +2,11 @@
 
 from __future__ import annotations
 
+import ch4_helpers as helpers
 from dash import html
 
 from maths_self_study.dashboards.components import graph, table
 from maths_self_study.dashboards.utils import coerce_floats
-from maths_self_study.demos.deep_learning import ch4 as helpers
 from maths_self_study.viz.latex import formula_group
 from maths_self_study.viz.textbooks.deep_learning.ch4.formulas import (
     LEAST_SQUARES_OBJECTIVE,

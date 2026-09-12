@@ -2,12 +2,12 @@
 
 from __future__ import annotations
 
+import ch2_helpers as helpers
 import numpy as np
 from dash import html
 
 from maths_self_study.dashboards.components import graph, graph_row, table
 from maths_self_study.dashboards.utils import coerce_matrix_2x2
-from maths_self_study.demos.deep_learning import ch2 as helpers
 from maths_self_study.viz.latex import formula_group
 from maths_self_study.viz.textbooks.deep_learning.ch2.formulas import INNER_PRODUCT, MATRIX_MAP
 
@@ -26,7 +26,7 @@ def render_body(a11, a12, a21, a22, rot, shear) -> html.Div:
         formula_group(
             ("Linear map", MATRIX_MAP),
             ("Inner product", INNER_PRODUCT),
-            title="Key formulas (§2.1–2.2)",
+            title="Key formulas (§2.1-2.2)",
         ),
         graph_row(graph(fig_a, style={"flex": "1"}), graph(fig_b, style={"flex": "1"})),
         table(

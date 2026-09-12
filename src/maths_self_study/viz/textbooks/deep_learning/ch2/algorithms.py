@@ -17,7 +17,7 @@ SVD_LEAST_SQUARES = (
     [
         r"Factor $A = U \Sigma V^\top$ with \texttt{np.linalg.svd}($A$).",
         r"Singular values $\sigma_i$ are axis lengths of the image of the unit ball under $A$.",
-        r"Moore–Penrose inverse $A^+$ solves overdetermined least squares: $x = A^+ b$ minimises $\|Ax - b\|_2$.",
+        r"Moore-Penrose inverse $A^+$ solves overdetermined least squares: $x = A^+ b$ minimises $\|Ax - b\|_2$.",
     ],
 )
 

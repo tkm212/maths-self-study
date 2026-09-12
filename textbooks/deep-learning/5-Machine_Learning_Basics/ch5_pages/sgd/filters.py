@@ -2,10 +2,10 @@
 
 from __future__ import annotations
 
+import ch5_helpers as helpers
 from dash import html
 
 from maths_self_study.dashboards.components import filter_bar, slider
-from maths_self_study.demos.deep_learning import ch5 as helpers
 
 
 def build_filters() -> html.Div:

@@ -4,12 +4,12 @@ from __future__ import annotations
 
 import logging
 
+import ch2_helpers as helpers
 import numpy as np
 from dash import html
 
 from maths_self_study.dashboards.components import graph, table
 from maths_self_study.dashboards.utils import coerce_matrix_2x2
-from maths_self_study.demos.deep_learning import ch2 as helpers
 from maths_self_study.math.linear_algebra import symmetric_eigendecomposition
 from maths_self_study.viz.latex import formula_group
 from maths_self_study.viz.textbooks.deep_learning.ch2.formulas import EIGENPAIR, SPECTRAL_DECOMPOSITION

@@ -100,16 +100,18 @@ def test_random_variables_moments_update():
 
 
 def test_suggest_grid_range_scales_with_stretch():
-    from maths_self_study.demos.deep_learning import ch2 as helpers
+    from tests.dashboards.support import load_dl_helpers
 
+    helpers = load_dl_helpers(2)
     small = helpers.suggest_grid_range(np.array([[0.5, 0.0], [0.0, 0.5]]))
     large = helpers.suggest_grid_range(np.array([[3.0, 0.0], [0.0, 3.0]]))
     assert small > large
 
 
 def test_plot_tensor_3d_builds_figure():
-    from maths_self_study.demos.deep_learning import ch2 as helpers
+    from tests.dashboards.support import load_dl_helpers
 
+    helpers = load_dl_helpers(2)
     tensor = helpers.TENSOR_DEFAULT
     fig = helpers.plot_tensor_3d(tensor, axis=2, index=0)
     assert fig is not None
@@ -118,8 +120,9 @@ def test_plot_tensor_3d_builds_figure():
 
 
 def test_plot_lp_unit_ball_l1_is_diamond():
-    from maths_self_study.demos.deep_learning import ch2 as helpers
+    from tests.dashboards.support import load_dl_helpers
 
+    helpers = load_dl_helpers(2)
     xs, ys = helpers._lp_unit_ball_boundary(1.0)
     assert (xs[0], ys[0]) == (1.0, 0.0)
     assert (xs[1], ys[1]) == (0.0, 1.0)
@@ -127,8 +130,9 @@ def test_plot_lp_unit_ball_l1_is_diamond():
 
 
 def test_plot_markov_chain_builds_figure():
-    from maths_self_study.demos.deep_learning import ch3 as helpers
+    from tests.dashboards.support import load_dl_helpers
 
+    helpers = load_dl_helpers(3)
     demo = helpers.markov_chain_demo()
     fig = helpers.plot_markov_chain(demo.p_x1, demo.p_x2_given_x1, demo.p_x3_given_x2)
     assert fig is not None
@@ -136,16 +140,18 @@ def test_plot_markov_chain_builds_figure():
 
 
 def test_plot_softmax_comparison_builds_figure():
-    from maths_self_study.demos.deep_learning import ch4 as helpers
+    from tests.dashboards.support import load_dl_helpers
 
+    helpers = load_dl_helpers(4)
     fig = helpers.plot_softmax_comparison(helpers.SOFTMAX_LOGITS, labels=helpers.SOFTMAX_LABELS)
     assert fig is not None
     assert len(fig.data) >= 2
 
 
 def test_plot_gradient_descent_path_builds_figure():
-    from maths_self_study.demos.deep_learning import ch4 as helpers
+    from tests.dashboards.support import load_dl_helpers
 
+    helpers = load_dl_helpers(4)
     fig = helpers.plot_gradient_descent_path(
         helpers.GD_HESSIAN,
         helpers.GD_LINEAR,
@@ -157,16 +163,18 @@ def test_plot_gradient_descent_path_builds_figure():
 
 
 def test_plot_capacity_fit_builds_figure():
-    from maths_self_study.demos.deep_learning import ch5 as helpers
+    from tests.dashboards.support import load_dl_helpers
 
+    helpers = load_dl_helpers(5)
     fig = helpers.plot_capacity_fit(helpers.CAPACITY_DEGREE)
     assert fig is not None
     assert len(fig.data) >= 3
 
 
 def test_plot_sgd_paths_builds_figure():
-    from maths_self_study.demos.deep_learning import ch5 as helpers
+    from tests.dashboards.support import load_dl_helpers
 
+    helpers = load_dl_helpers(5)
     fig = helpers.plot_sgd_paths(helpers.SGD_LEARNING_RATE, helpers.SGD_BATCH_SIZE)
     assert fig is not None
     assert len(fig.data) >= 2

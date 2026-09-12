@@ -2,12 +2,12 @@
 
 from __future__ import annotations
 
+import ch3_helpers as helpers
 import numpy as np
 from dash import html
 
 from maths_self_study.dashboards.components import graph, metric, table
 from maths_self_study.dashboards.utils import coerce_probs, renorm
-from maths_self_study.demos.deep_learning import ch3 as helpers
 from maths_self_study.viz.latex import formula_group
 from maths_self_study.viz.textbooks.deep_learning.ch3.formulas import (
     CONDITIONAL,
@@ -43,7 +43,7 @@ def render_body(j00, j01, j10, j11, p0, p1, p2, p3) -> html.Div:
             ("Conditional", CONDITIONAL),
             ("Expectation", EXPECTATION),
             ("Variance", VARIANCE),
-            title="Key formulas (§3.3–3.8)",
+            title="Key formulas (§3.3-3.8)",
         ),
         graph(fig_joint),
         table(

@@ -1,4 +1,4 @@
-"""Shared helpers for Deep Learning Ch. 3 (Probability and Information Theory) notebooks."""
+"""Shared plotting helpers for Deep Learning Ch. 3 (Probability and Information Theory) dashboard."""
 
 from __future__ import annotations
 

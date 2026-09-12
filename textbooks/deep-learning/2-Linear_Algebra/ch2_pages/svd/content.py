@@ -2,12 +2,12 @@
 
 from __future__ import annotations
 
+import ch2_helpers as helpers
 import numpy as np
 from dash import html
 
 from maths_self_study.dashboards.components import graph, table
 from maths_self_study.dashboards.utils import coerce_matrix_2x2
-from maths_self_study.demos.deep_learning import ch2 as helpers
 from maths_self_study.math.linear_algebra import moore_penrose_pseudoinverse
 from maths_self_study.viz.latex import formula_group
 from maths_self_study.viz.textbooks.deep_learning.ch2.formulas import PSEUDOINVERSE_LS, SINGULAR_VALUES, SVD
@@ -38,7 +38,7 @@ def render_body(a11, a12, a21, a22, b0, b1, b2) -> html.Div:
             ("SVD", SVD),
             ("Singular values", SINGULAR_VALUES),
             ("Least squares", PSEUDOINVERSE_LS),
-            title="Key formulas (§2.8–2.9)",
+            title="Key formulas (§2.8-2.9)",
         ),
         graph(fig),
         table(["Quantity", "Value"], rows, caption="SVD factors and least squares"),

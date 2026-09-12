@@ -70,6 +70,18 @@ def clear_chapter_modules() -> None:
             del sys.modules[name]
 
 
+def load_dl_helpers(chapter: int):
+    """Import chapter plotting helpers from the Deep Learning textbook folder."""
+    chapter_dirs = {
+        2: CH2_DASHBOARD.parent,
+        3: CH3_DASHBOARD.parent,
+        4: CH4_DASHBOARD.parent,
+        5: CH5_DASHBOARD.parent,
+    }
+    prepare_chapter_import(chapter_dirs[chapter])
+    return importlib.import_module(f"ch{chapter}_helpers")
+
+
 def prepare_chapter_import(chapter_dir: Path) -> None:
     import sys
 

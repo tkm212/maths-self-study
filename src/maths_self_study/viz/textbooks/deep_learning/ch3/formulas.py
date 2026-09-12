@@ -15,7 +15,9 @@ GAUSSIAN_PDF = (
     r"\mathcal{N}(\mu, \sigma^2): \quad p(x) \propto"
     r"\exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)"
 )
-MULTIVARIATE_GAUSSIAN = r"\mathcal{N}(\mu, \Sigma) \text{ has elliptical level sets; eigenvalues of } \Sigma \text{ are axis variances}"
+MULTIVARIATE_GAUSSIAN = (
+    r"\mathcal{N}(\mu, \Sigma) \text{ has elliptical level sets; eigenvalues of } \Sigma \text{ are axis variances}"
+)
 
 # §3.11 — Bayes
 BAYES_RULE = r"P(H \mid E) = \frac{P(E \mid H)\,P(H)}{P(E)}"

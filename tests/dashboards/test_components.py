@@ -36,8 +36,9 @@ def test_matrix_input_component():
 
 
 def test_tensor_grid_input_component():
-    from maths_self_study.demos.deep_learning import ch2 as helpers
+    from tests.dashboards.support import load_dl_helpers
 
+    helpers = load_dl_helpers(2)
     block = tensor_grid_input("tensor", "T", helpers.TENSOR_DEFAULT, shape=helpers.TENSOR_SHAPE)
     assert block is not None
 

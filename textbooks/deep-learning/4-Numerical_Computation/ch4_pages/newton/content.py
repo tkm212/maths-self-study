@@ -2,11 +2,11 @@
 
 from __future__ import annotations
 
+import ch4_helpers as helpers
 from dash import html
 
 from maths_self_study.dashboards.components import graph
 from maths_self_study.dashboards.utils import coerce_float, coerce_vector2
-from maths_self_study.demos.deep_learning import ch4 as helpers
 
 
 def render_body(eta, x0, x1) -> html.Div:
