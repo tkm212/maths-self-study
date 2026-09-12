@@ -27,7 +27,7 @@ STABLE_SOFTMAX = (
     [
         r"Given logits $z$, set $m = \max_i z_i$.",
         r"Compute $P(y=i) = \exp(z_i - m) / \sum_j \exp(z_j - m)$ — turns logits into a probability vector.",
-        r"Naive $\exp(z_i)$ overflows when $m$ is large and underflows when $z_i \ll m$; max-subtraction keeps exponents in $(-\infty, 0]$.",
+        r"Naive $\exp(z_i)$ overflows when $m$ is large and underflows when $z_i \ll m$; max-subtraction keeps exponents in $(-1, 0]$.",
         r"Log-sum-exp: $\log\sum_i \exp(z_i) = m + \log\sum_i \exp(z_i - m)$ (§4.1).",
     ],
 )
