@@ -24,7 +24,7 @@ DL_DASHBOARDS = [
     pytest.param(CH4_DASHBOARD, 6, id="ch4"),
     pytest.param(CH5_DASHBOARD, 6, id="ch5"),
     pytest.param(CH6_DASHBOARD, 4, id="ch6"),
-    pytest.param(CH7_DASHBOARD, 4, id="ch7"),
+    pytest.param(CH7_DASHBOARD, 9, id="ch7"),
 ]
 
 
@@ -242,3 +242,49 @@ def test_plot_early_stopping_builds_figure():
     assert fig is not None
     assert len(fig.data) >= 2
     assert "best_epoch" in stats
+
+
+def test_semi_supervised_multitask_page_updates():
+    prepare_chapter_import(CH7_DASHBOARD.parent)
+    from dl_ch07_pages.semi_supervised_multitask.content import render_body
+
+    few = render_body(10)
+    many = render_body(60)
+    assert few is not None and many is not None
+    assert str(few.to_plotly_json()) != str(many.to_plotly_json())
+
+
+def test_plot_parameter_sharing_builds_figure():
+    from tests.dashboards.support import load_dl_helpers
+
+    helpers = load_dl_helpers(7)
+    fig, stats = helpers.plot_parameter_sharing(3)
+    assert fig is not None
+    assert stats["conv_params"] < stats["fc_params"]
+
+
+def test_plot_bagging_builds_figure():
+    from tests.dashboards.support import load_dl_helpers
+
+    helpers = load_dl_helpers(7)
+    fig, stats = helpers.plot_bagging(3)
+    assert fig is not None
+    assert "bagged_val_mse" in stats
+
+
+def test_plot_adversarial_builds_figure():
+    from tests.dashboards.support import load_dl_helpers
+
+    helpers = load_dl_helpers(7)
+    fig, stats = helpers.plot_adversarial(0.2)
+    assert fig is not None
+    assert stats["mse_adv"] >= stats["mse_clean"]
+
+
+def test_plot_tangent_distance_builds_figure():
+    from tests.dashboards.support import load_dl_helpers
+
+    helpers = load_dl_helpers(7)
+    fig, stats = helpers.plot_tangent_distance(0.3)
+    assert fig is not None
+    assert stats["tangent"] <= stats["euclidean"]

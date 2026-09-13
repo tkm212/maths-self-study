@@ -12,3 +12,13 @@ EARLY_STOPPING = (
         "Stop when validation error has not improved for $k$ consecutive epochs.",
     ],
 )
+
+BAGGING = (
+    "Bagging for neural networks",
+    [
+        "Draw $M$ bootstrap samples from the training set.",
+        "Train one model per sample (same architecture).",
+        "At inference, average model outputs (regression) or vote (classification).",
+        "Variance drops when base models make partially independent errors.",
+    ],
+)

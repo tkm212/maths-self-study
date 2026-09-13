@@ -16,6 +16,11 @@ PAGES = load_chapter_pages(
     "EarlyStoppingPage",
     "DropoutPage",
     "InputNoisePage",
+    "SemiSupervisedMultitaskPage",
+    "ParameterSharingPage",
+    "BaggingPage",
+    "AdversarialPage",
+    "TangentDistancePage",
 )
 
 

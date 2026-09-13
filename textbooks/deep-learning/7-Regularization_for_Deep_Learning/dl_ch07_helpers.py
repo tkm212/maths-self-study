@@ -6,18 +6,36 @@ import numpy as np
 import plotly.graph_objects as go
 
 from maths_self_study.math.regularization import (
+    adversarial_regression_example,
+    bagging_comparison,
     early_stop_mse,
+    multitask_comparison,
+    parameter_sharing_comparison,
     predict_mlp_reg,
     regression_dataset,
+    semi_supervised_comparison,
+    tangent_distance_translation,
     train_mlp_reg,
 )
-from maths_self_study.viz.graphs import add_vline, apply_layout, line_chart, scatter_chart, train_test_chart
+from maths_self_study.viz.graphs import (
+    add_vline,
+    apply_layout,
+    bar_chart,
+    line_chart,
+    scatter_chart,
+    train_test_chart,
+)
 
 L2_DEFAULT = 0.01
 DROPOUT_DEFAULT = 0.3
 INPUT_NOISE_DEFAULT = 0.05
 STOP_EPOCH_DEFAULT = 120
 DATA_NOISE = 0.12
+N_LABELED_DEFAULT = 25
+KERNEL_SIZE_DEFAULT = 3
+N_ESTIMATORS_DEFAULT = 5
+ADV_EPSILON_DEFAULT = 0.15
+TANGENT_SHIFT_DEFAULT = 0.25
 
 
 def _dataset() -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
@@ -101,10 +119,7 @@ def plot_dropout(dropout: float) -> tuple[go.Figure, dict[str, float]]:
     }
     apply_layout(
         fig,
-        title=(
-            f"Dropout p={rate:.2f} — train MSE={stats['train_mse']:.4f}, "
-            f"val MSE={stats['val_mse']:.4f}"
-        ),
+        title=(f"Dropout p={rate:.2f} — train MSE={stats['train_mse']:.4f}, val MSE={stats['val_mse']:.4f}"),
         xaxis_title="x",
         yaxis_title="y",
         height=440,
@@ -128,12 +143,154 @@ def plot_input_noise(input_noise: float) -> tuple[go.Figure, dict[str, float]]:
     }
     apply_layout(
         fig,
-        title=(
-            f"Input noise sigma={sigma:.2f} — train MSE={stats['train_mse']:.4f}, "
-            f"val MSE={stats['val_mse']:.4f}"
-        ),
+        title=(f"Input noise sigma={sigma:.2f} — train MSE={stats['train_mse']:.4f}, val MSE={stats['val_mse']:.4f}"),
         xaxis_title="x",
         yaxis_title="y",
         height=440,
     )
+    return fig, stats
+
+
+def plot_semi_supervised_multitask(n_labeled: int) -> tuple[go.Figure, dict[str, float]]:
+    """Semi-supervised vs labeled-only validation error, plus multitask summary (§7.6-7.7)."""
+    semi = semi_supervised_comparison(n_labeled=int(n_labeled))
+    multi = multitask_comparison()
+    fig = bar_chart(
+        ["labeled only", "semi-supervised"],
+        [semi["labeled_only_val_mse"], semi["semi_supervised_val_mse"]],
+        name="validation MSE",
+        color="#2563eb",
+        title=(f"Semi-supervised learning — {semi['n_labeled']} labeled, {semi['n_unlabeled']} unlabeled"),
+        yaxis_title="validation MSE",
+        height=440,
+    )
+    stats = {
+        "labeled_only_val_mse": semi["labeled_only_val_mse"],
+        "semi_supervised_val_mse": semi["semi_supervised_val_mse"],
+        "shared_val_mse": multi["shared_val_mse"],
+        "separate_val_mse": multi["separate_val_mse"],
+        "task1_shared": multi["task1_shared"],
+        "task2_shared": multi["task2_shared"],
+    }
+    return fig, stats
+
+
+def plot_parameter_sharing(kernel_size: int) -> tuple[go.Figure, dict[str, float]]:
+    """FC vs 1D conv on shifted spike localization (section 7.9)."""
+    result = parameter_sharing_comparison(kernel_size=int(kernel_size))
+    fig = bar_chart(
+        ["FC (shifted test)", "Conv (shifted test)"],
+        [result["fc_shift_mse"], result["conv_shift_mse"]],
+        name="test MSE",
+        color="#16a34a",
+        title=(f"Parameter sharing — FC params={result['fc_params']}, conv params={result['conv_params']}"),
+        yaxis_title="MSE on shifted spikes",
+        height=440,
+    )
+    stats = {
+        "fc_params": float(result["fc_params"]),
+        "conv_params": float(result["conv_params"]),
+        "fc_shift_mse": result["fc_shift_mse"],
+        "conv_shift_mse": result["conv_shift_mse"],
+    }
+    return fig, stats
+
+
+def plot_bagging(n_estimators: int) -> tuple[go.Figure, dict[str, float]]:
+    """Single model vs bagged ensemble validation MSE (section 7.11)."""
+    result = bagging_comparison(n_estimators=int(n_estimators))
+    fig = bar_chart(
+        ["single model", f"bagging (M={result['n_estimators']})"],
+        [result["single_val_mse"], result["bagged_val_mse"]],
+        name="validation MSE",
+        color="#9333ea",
+        title="Bagging reduces variance on the validation set",
+        yaxis_title="validation MSE",
+        height=440,
+    )
+    stats = {
+        "single_val_mse": result["single_val_mse"],
+        "bagged_val_mse": result["bagged_val_mse"],
+        "n_estimators": float(result["n_estimators"]),
+    }
+    return fig, stats
+
+
+def plot_adversarial(epsilon: float) -> tuple[go.Figure, dict[str, float]]:
+    """FGSM-style perturbation on a 1D regression point (section 7.13)."""
+    x_tr, y_tr, x_va, y_va = _dataset()
+    model = train_mlp_reg(x_tr, y_tr, x_va, y_va, seed=1)
+    adv = adversarial_regression_example(epsilon=float(epsilon), seed=1)
+    x_line = np.linspace(-2.0, 2.0, 300)
+    y_hat = predict_mlp_reg(model, x_line)
+    fig = scatter_chart(x_tr, y_tr, name="train", color="#2563eb")
+    scatter_chart(x_va, y_va, name="validation", color="#dc2626", symbol="diamond", fig=fig)
+    line_chart(x_line, y_hat, name="MLP fit", color="#16a34a", fig=fig)
+    scatter_chart(
+        np.array([adv["x"]]),
+        np.array([adv["y"]]),
+        name="clean point",
+        color="#0f766e",
+        symbol="circle",
+        marker_size=12,
+        fig=fig,
+    )
+    scatter_chart(
+        np.array([adv["x_adv"]]),
+        np.array([adv["y"]]),
+        name=f"adversarial (eps={float(epsilon):g})",
+        color="#ea580c",
+        symbol="x",
+        marker_size=12,
+        fig=fig,
+    )
+    apply_layout(
+        fig,
+        title=(f"Adversarial perturbation — clean MSE={adv['mse_clean']:.4f}, adv MSE={adv['mse_adv']:.4f}"),
+        xaxis_title="x",
+        yaxis_title="y",
+        height=440,
+    )
+    stats = {
+        "x": adv["x"],
+        "x_adv": adv["x_adv"],
+        "y": adv["y"],
+        "pred": adv["pred"],
+        "pred_adv": adv["pred_adv"],
+        "mse_clean": adv["mse_clean"],
+        "mse_adv": adv["mse_adv"],
+    }
+    return fig, stats
+
+
+def plot_tangent_distance(shift: float) -> tuple[go.Figure, dict[str, float]]:
+    """Euclidean vs tangent distance under translation on y=sin(2x) (section 7.14)."""
+    result = tangent_distance_translation(shift=float(shift))
+    x0 = result["x0"]
+    x1 = result["x1"]
+    xs = np.linspace(-1.0, 2.0, 300)
+    ys = np.sin(2.0 * xs)
+    fig = line_chart(xs, ys, name="y = sin(2x)", color="#2563eb")
+    scatter_chart(
+        np.array([x0, x1]),
+        np.array([np.sin(2.0 * x0), np.sin(2.0 * x1)]),
+        name="on-manifold points",
+        color="#16a34a",
+        symbol="circle",
+        marker_size=10,
+        fig=fig,
+    )
+    apply_layout(
+        fig,
+        title=(f"Tangent distance — Euclidean={result['euclidean']:.4f}, tangent={result['tangent']:.4f}"),
+        xaxis_title="x",
+        yaxis_title="y",
+        height=440,
+    )
+    stats = {
+        "euclidean": result["euclidean"],
+        "tangent": result["tangent"],
+        "x0": result["x0"],
+        "x1": result["x1"],
+    }
     return fig, stats
