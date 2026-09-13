@@ -12,3 +12,14 @@ XOR_BACKPROP = (
         "Update all parameters with gradient descent until XOR is classified correctly.",
     ],
 )
+
+BACKPROP = (
+    "General back-propagation (Algorithm 6.5)",
+    [
+        "Run a forward pass and store intermediate values for each node in the graph.",
+        "Compute the loss gradient at the output nodes.",
+        "Traverse the graph in reverse topological order.",
+        "At each node, apply the chain rule to route gradients to parent nodes.",
+        "Accumulate gradients for shared inputs; use them in a parameter update rule.",
+    ],
+)

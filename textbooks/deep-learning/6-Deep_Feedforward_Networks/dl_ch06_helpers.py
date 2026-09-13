@@ -11,11 +11,13 @@ from maths_self_study.math.feedforward import (
     XOR_TARGETS,
     activation_deriv,
     activation_fn,
+    backprop_gradient_check,
     predict_mlp_1d,
     predict_mlp_grid,
     softmax,
     train_mlp_1d,
     train_xor_mlp,
+    xor_forward_pass,
 )
 from maths_self_study.viz.graphs import apply_layout, bar_chart, line_chart, scatter_chart
 
@@ -25,6 +27,8 @@ XOR_EPOCHS = 5000
 APPROX_HIDDEN = 8
 APPROX_NOISE = 0.08
 SOFTMAX_LOGITS = np.array([1.0, 0.0, -0.5])
+BACKPROP_HIDDEN = 4
+BACKPROP_EPSILON = 1e-5
 
 
 def plot_xor_decision(
@@ -178,3 +182,65 @@ def plot_universal_approximation(
         height=440,
     )
     return fig, {"mse": mse}
+
+
+def plot_backprop_gradient_check(
+    *,
+    n_hidden: int = BACKPROP_HIDDEN,
+    epsilon: float = BACKPROP_EPSILON,
+    sample_index: int = 0,
+    activation: str = "tanh",
+) -> tuple[go.Figure, dict[str, float | list[list[str]]]]:
+    """Compare reverse-mode backprop to finite differences on the XOR MLP (§6.5)."""
+    act = activation if activation in {"relu", "sigmoid", "tanh"} else "tanh"
+    check = backprop_gradient_check(
+        n_hidden=int(n_hidden),
+        activation=act,  # type: ignore[arg-type]
+        epsilon=float(epsilon),
+    )
+    w1: np.ndarray = check["W1"]
+    b1: np.ndarray = check["b1"]
+    w2: np.ndarray = check["W2"]
+    b2: np.ndarray = check["b2"]
+    idx = int(np.clip(sample_index, 0, len(XOR_INPUTS) - 1))
+    forward = xor_forward_pass(
+        w1,
+        b1,
+        w2,
+        b2,
+        XOR_INPUTS[idx],
+        activation=act,  # type: ignore[arg-type]
+    )
+    rel_errors = check["rel_errors"]
+    labels = ["W1", "b1", "W2", "b2"]
+    fig = bar_chart(
+        labels,
+        [rel_errors[name] for name in labels],
+        name="max relative error",
+        title="Gradient check — backprop vs finite differences",
+        yaxis_title="max |g_bp - g_num| / |g_num|",
+        color="#2563eb",
+    )
+    apply_layout(
+        fig,
+        height=420,
+        title=(
+            f"Gradient check (h={int(n_hidden)}, eps={float(epsilon):g}) — "
+            f"max rel error={float(check['max_rel_error']):.2e}"
+        ),
+    )
+    forward_rows = [
+        ["Input x", f"({XOR_INPUTS[idx, 0]:.0f}, {XOR_INPUTS[idx, 1]:.0f})"],
+        ["Target y", f"{XOR_TARGETS[idx]:.0f}"],
+        ["Hidden pre-activation z1", ", ".join(f"{v:.3f}" for v in forward["z1"])],
+        ["Hidden activation h", ", ".join(f"{v:.3f}" for v in forward["h"])],
+        ["Output logit z2", f"{forward['z2']:.3f}"],
+        ["Output pred", f"{forward['pred']:.3f}"],
+    ]
+    stats: dict[str, float | list[list[str]]] = {
+        "max_rel_error": float(check["max_rel_error"]),
+        "forward_rows": forward_rows,
+    }
+    for name in labels:
+        stats[f"rel_error_{name}"] = float(rel_errors[name])
+    return fig, stats

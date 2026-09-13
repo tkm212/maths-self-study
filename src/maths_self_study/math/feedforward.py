@@ -7,11 +7,34 @@ training a one-hidden-layer MLP on XOR or a 1D regression curve.
 
 from __future__ import annotations
 
-from typing import Literal
+from typing import Literal, TypedDict
 
 import numpy as np
 
 ActivationName = Literal["relu", "sigmoid", "tanh"]
+
+
+class XorMlpInit(TypedDict):
+    W1: np.ndarray
+    b1: np.ndarray
+    W2: np.ndarray
+    b2: np.ndarray
+    activation: ActivationName
+
+
+class XorForwardState(TypedDict):
+    z1: np.ndarray
+    h: np.ndarray
+    z2: float
+    pred: float
+
+
+class BackpropCheckResult(XorMlpInit):
+    analytic: dict[str, np.ndarray]
+    numeric: dict[str, np.ndarray]
+    rel_errors: dict[str, float]
+    max_rel_error: float
+
 
 XOR_INPUTS = np.array([[0.0, 0.0], [0.0, 1.0], [1.0, 0.0], [1.0, 1.0]], dtype=float)
 XOR_TARGETS = np.array([0.0, 1.0, 1.0, 0.0], dtype=float)
@@ -103,6 +126,172 @@ def train_xor_mlp(
         "mse": mse,
         "activation": activation,
     }
+
+
+def init_xor_mlp(
+    *,
+    n_hidden: int = 4,
+    activation: ActivationName = "tanh",
+    seed: int = 1,
+) -> XorMlpInit:
+    """Random initial weights for the XOR MLP (used in backprop demos)."""
+    rng = np.random.default_rng(seed)
+    n_hidden = max(2, int(n_hidden))
+    return {
+        "W1": rng.normal(0.0, 1.0, size=(2, n_hidden)),
+        "b1": np.zeros(n_hidden),
+        "W2": rng.normal(0.0, 1.0, size=(n_hidden, 1)),
+        "b2": np.zeros(1),
+        "activation": activation,
+    }
+
+
+def xor_forward_pass(
+    w1: np.ndarray,
+    b1: np.ndarray,
+    w2: np.ndarray,
+    b2: np.ndarray,
+    x: np.ndarray,
+    *,
+    activation: ActivationName,
+) -> XorForwardState:
+    """Forward pass for one XOR input vector (section 6.5.4)."""
+    act = activation_fn(activation)
+    x_row = np.asarray(x, dtype=float).reshape(1, -1)
+    z1 = x_row @ w1 + b1
+    h = act(z1)
+    z2 = h @ w2 + b2
+    pred = sigmoid(z2)
+    return {
+        "z1": z1.ravel(),
+        "h": h.ravel(),
+        "z2": float(z2.ravel()[0]),
+        "pred": float(pred.ravel()[0]),
+    }
+
+
+def xor_mlp_backprop(
+    w1: np.ndarray,
+    b1: np.ndarray,
+    w2: np.ndarray,
+    b2: np.ndarray,
+    *,
+    activation: ActivationName,
+) -> dict[str, np.ndarray]:
+    """Analytical gradients for the XOR MLP on the full batch (matches ``train_xor_mlp``)."""
+    x = XOR_INPUTS
+    y = XOR_TARGETS.reshape(-1, 1)
+    act = activation_fn(activation)
+    d_act = lambda z: activation_deriv(activation, z)
+    z1 = x @ w1 + b1
+    h = act(z1)
+    pred = sigmoid(h @ w2 + b2)
+    error = pred - y
+    # Mean MSE: d/dpred = (2/n) * (pred - y)
+    dz2 = (2.0 / x.shape[0]) * error * pred * (1.0 - pred)
+    dw2 = h.T @ dz2
+    db2 = dz2.sum(axis=0)
+    dh = dz2 @ w2.T
+    dz1 = dh * d_act(z1)
+    dw1 = x.T @ dz1
+    db1 = dz1.sum(axis=0)
+    return {"W1": dw1, "b1": db1, "W2": dw2, "b2": db2}
+
+
+def _xor_mlp_loss(
+    w1: np.ndarray,
+    b1: np.ndarray,
+    w2: np.ndarray,
+    b2: np.ndarray,
+    *,
+    activation: ActivationName,
+) -> float:
+    x = XOR_INPUTS
+    y = XOR_TARGETS.reshape(-1, 1)
+    act = activation_fn(activation)
+    h = act(x @ w1 + b1)
+    pred = sigmoid(h @ w2 + b2)
+    return float(np.mean((pred - y) ** 2))
+
+
+def xor_mlp_numerical_gradients(
+    w1: np.ndarray,
+    b1: np.ndarray,
+    w2: np.ndarray,
+    b2: np.ndarray,
+    *,
+    activation: ActivationName,
+    epsilon: float = 1e-5,
+) -> dict[str, np.ndarray]:
+    """Finite-difference gradients for gradient-checking backprop (section 6.5)."""
+
+    def perturb(param: np.ndarray, index: tuple[int, ...], delta: float) -> np.ndarray:
+        out = param.copy()
+        out[index] += delta
+        return out
+
+    eps = float(epsilon)
+    num_grads: dict[str, np.ndarray] = {}
+    for name, param in (("W1", w1), ("b1", b1), ("W2", w2), ("b2", b2)):
+        grad = np.zeros_like(param, dtype=float)
+        for index in np.ndindex(param.shape):
+            loss_plus = _xor_mlp_loss(
+                w1 if name != "W1" else perturb(w1, index, eps),
+                b1 if name != "b1" else perturb(b1, index, eps),
+                w2 if name != "W2" else perturb(w2, index, eps),
+                b2 if name != "b2" else perturb(b2, index, eps),
+                activation=activation,
+            )
+            loss_minus = _xor_mlp_loss(
+                w1 if name != "W1" else perturb(w1, index, -eps),
+                b1 if name != "b1" else perturb(b1, index, -eps),
+                w2 if name != "W2" else perturb(w2, index, -eps),
+                b2 if name != "b2" else perturb(b2, index, -eps),
+                activation=activation,
+            )
+            grad[index] = (loss_plus - loss_minus) / (2.0 * eps)
+        num_grads[name] = grad
+    return num_grads
+
+
+def backprop_gradient_check(
+    *,
+    n_hidden: int = 4,
+    activation: ActivationName = "tanh",
+    epsilon: float = 1e-5,
+    seed: int = 1,
+) -> BackpropCheckResult:
+    """Compare reverse-mode backprop gradients to finite differences."""
+    init = init_xor_mlp(n_hidden=n_hidden, activation=activation, seed=seed)
+    w1: np.ndarray = init["W1"]
+    b1: np.ndarray = init["b1"]
+    w2: np.ndarray = init["W2"]
+    b2: np.ndarray = init["b2"]
+    analytic = xor_mlp_backprop(w1, b1, w2, b2, activation=activation)
+    numeric = xor_mlp_numerical_gradients(
+        w1,
+        b1,
+        w2,
+        b2,
+        activation=activation,
+        epsilon=epsilon,
+    )
+    rel_errors: dict[str, float] = {}
+    for key in ("W1", "b1", "W2", "b2"):
+        diff = analytic[key] - numeric[key]
+        denom = np.maximum(np.abs(numeric[key]), 1e-8)
+        rel_errors[key] = float(np.max(np.abs(diff) / denom))
+    return BackpropCheckResult(
+        W1=w1,
+        b1=b1,
+        W2=w2,
+        b2=b2,
+        activation=activation,
+        analytic=analytic,
+        numeric=numeric,
+        rel_errors=rel_errors,
+        max_rel_error=float(max(rel_errors.values())),
+    )
 
 
 def predict_mlp_grid(

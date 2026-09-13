@@ -9,6 +9,7 @@ from maths_self_study.math.feedforward import (
     XOR_TARGETS,
     activation_deriv,
     activation_fn,
+    backprop_gradient_check,
     predict_mlp_1d,
     softmax,
     train_mlp_1d,
@@ -53,3 +54,8 @@ def test_activation_fn_names():
     assert activation_fn("relu")(z)[0] == pytest.approx(0.0)
     assert activation_fn("sigmoid")(z)[0] == pytest.approx(0.5)
     assert activation_fn("tanh")(z)[0] == pytest.approx(0.0)
+
+
+def test_backprop_gradient_check_matches_finite_differences():
+    check = backprop_gradient_check(n_hidden=4, activation="tanh", epsilon=1e-5)
+    assert float(check["max_rel_error"]) < 1e-4
