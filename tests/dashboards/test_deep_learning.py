@@ -12,6 +12,7 @@ from tests.dashboards.support import (
     CH3_DASHBOARD,
     CH4_DASHBOARD,
     CH5_DASHBOARD,
+    CH6_DASHBOARD,
     load_dashboard_module,
     prepare_chapter_import,
 )
@@ -21,6 +22,7 @@ DL_DASHBOARDS = [
     pytest.param(CH3_DASHBOARD, 5, id="ch3"),
     pytest.param(CH4_DASHBOARD, 6, id="ch4"),
     pytest.param(CH5_DASHBOARD, 6, id="ch5"),
+    pytest.param(CH6_DASHBOARD, 4, id="ch6"),
 ]
 
 
@@ -178,3 +180,33 @@ def test_plot_sgd_paths_builds_figure():
     fig = helpers.plot_sgd_paths(helpers.SGD_LEARNING_RATE, helpers.SGD_BATCH_SIZE)
     assert fig is not None
     assert len(fig.data) >= 2
+
+
+def test_xor_page_updates():
+    prepare_chapter_import(CH6_DASHBOARD.parent)
+    from dl_ch06_pages.xor.content import render_body
+
+    shallow = render_body(2, 0.5, 500, "tanh")
+    deep = render_body(12, 0.5, 8000, "relu")
+    assert shallow is not None and deep is not None
+    assert str(shallow.to_plotly_json()) != str(deep.to_plotly_json())
+
+
+def test_plot_xor_decision_builds_figure():
+    from tests.dashboards.support import load_dl_helpers
+
+    helpers = load_dl_helpers(6)
+    fig, stats = helpers.plot_xor_decision(n_hidden=4, n_epochs=500)
+    assert fig is not None
+    assert len(fig.data) >= 2
+    assert "mse" in stats
+
+
+def test_plot_universal_approximation_builds_figure():
+    from tests.dashboards.support import load_dl_helpers
+
+    helpers = load_dl_helpers(6)
+    fig, stats = helpers.plot_universal_approximation(n_hidden=8)
+    assert fig is not None
+    assert len(fig.data) >= 2
+    assert "mse" in stats
