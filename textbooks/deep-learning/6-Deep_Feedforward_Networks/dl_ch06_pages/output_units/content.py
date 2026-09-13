@@ -2,9 +2,8 @@
 
 from __future__ import annotations
 
-import numpy as np
-
 import dl_ch06_helpers as helpers
+import numpy as np
 from dash import html
 
 from maths_self_study.dashboards.components import graph, graph_row

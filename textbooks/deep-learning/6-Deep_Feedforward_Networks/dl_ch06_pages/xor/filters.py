@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import dl_ch06_helpers as helpers
-from dash import dcc, html
+from dash import html
 
 from maths_self_study.dashboards.components import dropdown, filter_bar, slider
 

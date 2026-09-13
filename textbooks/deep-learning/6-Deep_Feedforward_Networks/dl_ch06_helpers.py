@@ -65,7 +65,7 @@ def plot_xor_decision(
         (0.0, "#2563eb", "circle"),
         (1.0, "#dc2626", "diamond"),
     ):
-        mask = XOR_TARGETS == target
+        mask = target == XOR_TARGETS
         scatter_chart(
             XOR_INPUTS[mask, 0],
             XOR_INPUTS[mask, 1],
