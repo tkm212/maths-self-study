@@ -143,3 +143,11 @@ Interactive walkthrough of [Chapter 5](https://www.deeplearningbook.org/contents
 ```bash
 uv run python textbooks/deep-learning/5-Machine_Learning_Basics/dashboard.py
 ```
+
+### Chapter 6 — Deep Feedforward Networks
+
+Interactive walkthrough of [Chapter 6](https://www.deeplearningbook.org/contents/mlp.html): learning XOR with a hidden layer, Bernoulli and Multinoulli output units, ReLU/sigmoid/tanh activations, and a one-hidden-layer universal approximation demo.
+
+```bash
+uv run python textbooks/deep-learning/6-Deep_Feedforward_Networks/dashboard.py
+```
