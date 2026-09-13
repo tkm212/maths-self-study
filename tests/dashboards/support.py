@@ -7,6 +7,8 @@ import importlib.util
 from collections.abc import Iterator
 from pathlib import Path
 
+from maths_self_study.dashboards.runner import ensure_textbook_chapter_paths
+
 REPO_ROOT = Path(__file__).resolve().parents[2]
 ESL_DASHBOARD_ROOT = REPO_ROOT / "textbooks/elements-of-statistical-learning"
 
@@ -31,7 +33,7 @@ FML_CH2_DASHBOARD = FML_DASHBOARD_ROOT / "2-Financial_Data_Structures/dashboard.
 FML_CH3_DASHBOARD = FML_DASHBOARD_ROOT / "3-Labeling/dashboard.py"
 FML_CH4_DASHBOARD = FML_DASHBOARD_ROOT / "4-Sample_Weights/dashboard.py"
 
-CHAPTER_MODULE_ROOTS = tuple(f"ch{n}_{suffix}" for n in range(2, 19) for suffix in ("pages", "helpers", "data"))
+CHAPTER_MODULE_PREFIXES = ("esl_ch", "dl_ch", "fml_ch")
 
 # Static manifest — avoids importing every dashboard at pytest collection time.
 ESL_CHAPTER_PAGES: dict[int, list[str]] = {
@@ -74,39 +76,25 @@ def clear_chapter_modules() -> None:
     import sys
 
     for name in list(sys.modules):
-        if any(name == root or name.startswith(f"{root}.") for root in CHAPTER_MODULE_ROOTS):
+        if any(name.startswith(prefix) for prefix in CHAPTER_MODULE_PREFIXES):
             del sys.modules[name]
 
 
 def load_dl_helpers(chapter: int):
     """Import chapter plotting helpers from the Deep Learning textbook folder."""
-    chapter_dirs = {
-        2: CH2_DASHBOARD.parent,
-        3: CH3_DASHBOARD.parent,
-        4: CH4_DASHBOARD.parent,
-        5: CH5_DASHBOARD.parent,
-    }
-    prepare_chapter_import(chapter_dirs[chapter])
-    return importlib.import_module(f"ch{chapter}_helpers")
+    ensure_textbook_chapter_paths()
+    clear_chapter_modules()
+    return importlib.import_module(f"dl_ch{chapter:02d}_helpers")
 
 
 def prepare_chapter_import(chapter_dir: Path) -> None:
-    import sys
-
+    ensure_textbook_chapter_paths()
     clear_chapter_modules()
-    chapter_dir_str = str(chapter_dir.resolve())
-    sys.path[:] = [path for path in sys.path if path != chapter_dir_str]
-    sys.path.insert(0, chapter_dir_str)
 
 
 def load_dashboard_module(path: Path):
-    import sys
-
     clear_chapter_modules()
-    chapter_dir = str(path.parent.resolve())
-    if chapter_dir in sys.path:
-        sys.path.remove(chapter_dir)
-    sys.path.insert(0, chapter_dir)
+    ensure_textbook_chapter_paths()
 
     module_name = "dashboard_" + path.parent.as_posix().replace("/", "_").replace("-", "_")
     spec = importlib.util.spec_from_file_location(module_name, path)
@@ -119,7 +107,8 @@ def load_dashboard_module(path: Path):
 def verify_esl_page_wiring(dashboard_path: Path, page_value: str) -> None:
     """Fast smoke: filters, shell, callbacks, and content import — no ML or TMDB."""
     chapter_dir = dashboard_path.parent
-    ch_num = chapter_dir.name.split("-")[0]
+    ch_num = int(chapter_dir.name.split("-")[0])
+    pages_mod = f"esl_ch{ch_num:02d}_pages"
     module = load_dashboard_module(dashboard_path)
     page = next(p for p in module.PAGES if p.value == page_value)
 
@@ -129,8 +118,8 @@ def verify_esl_page_wiring(dashboard_path: Path, page_value: str) -> None:
     assert page.body_id in str(shell)
 
     prepare_chapter_import(chapter_dir)
-    callbacks_mod = importlib.import_module(f"ch{ch_num}_pages.{page_value}.callbacks")
-    content_mod = importlib.import_module(f"ch{ch_num}_pages.{page_value}.content")
+    callbacks_mod = importlib.import_module(f"{pages_mod}.{page_value}.callbacks")
+    content_mod = importlib.import_module(f"{pages_mod}.{page_value}.content")
     assert hasattr(callbacks_mod, "INPUTS")
     assert callable(content_mod.render_body)
     assert callable(callbacks_mod.register_callbacks)

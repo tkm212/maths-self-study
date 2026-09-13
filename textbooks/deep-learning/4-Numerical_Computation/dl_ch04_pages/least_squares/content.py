@@ -1,0 +1,38 @@
+"""Body content for the least squares page."""
+
+from __future__ import annotations
+
+import dl_ch04_helpers as helpers
+from dash import html
+
+from maths_self_study.dashboards.components import graph, table
+from maths_self_study.dashboards.utils import coerce_floats
+from maths_self_study.viz.latex import formula_group
+from maths_self_study.viz.textbooks.deep_learning.ch4.formulas import (
+    LEAST_SQUARES_OBJECTIVE,
+    NORMAL_EQUATIONS,
+    OLS_SOLUTION,
+)
+
+
+def render_body(y0, y1, y2, y3) -> html.Div:
+    targets = coerce_floats([y0, y1, y2, y3], fallback=helpers.LS_TARGETS)
+    design = helpers.LS_DESIGN
+    fig = helpers.plot_least_squares_fit(design, targets)
+    summary = helpers.summarize_least_squares(design, targets)
+    rows = [
+        ["w₀ (intercept)", f"{summary['w0']:.4f}"],
+        ["w₁ (slope)", f"{summary['w1']:.4f}"],
+        ["RMSE", f"{summary['rmse']:.4f}"],
+    ]
+    return html.Div([
+        formula_group(
+            ("Objective", LEAST_SQUARES_OBJECTIVE),
+            ("Normal equations", NORMAL_EQUATIONS),
+            ("Closed-form solution", OLS_SOLUTION),
+            title="Key formulas (§4.5)",
+        ),
+        html.H3("Normal-equation fit"),
+        graph(fig),
+        table(["Parameter", "Value"], rows, caption="Least squares solution"),
+    ])
