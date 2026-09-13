@@ -151,3 +151,11 @@ Interactive walkthrough of [Chapter 6](https://www.deeplearningbook.org/contents
 ```bash
 uv run python textbooks/deep-learning/6-Deep_Feedforward_Networks/dashboard.py
 ```
+
+### Chapter 7 — Regularization for Deep Learning
+
+Interactive walkthrough of [Chapter 7](https://www.deeplearningbook.org/contents/regularization.html): L2 weight decay, early stopping, dropout, and input noise robustness on a high-capacity MLP.
+
+```bash
+uv run python textbooks/deep-learning/7-Regularization_for_Deep_Learning/dashboard.py
+```

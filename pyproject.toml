@@ -88,6 +88,7 @@ extra-paths = [
     "textbooks/deep-learning/4-Numerical_Computation",
     "textbooks/deep-learning/5-Machine_Learning_Basics",
     "textbooks/deep-learning/6-Deep_Feedforward_Networks",
+    "textbooks/deep-learning/7-Regularization_for_Deep_Learning",
     "textbooks/financial-machine-learning/2-Financial_Data_Structures",
     "textbooks/financial-machine-learning/3-Labeling",
     "textbooks/financial-machine-learning/4-Sample_Weights",

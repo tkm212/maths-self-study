@@ -13,6 +13,7 @@ from tests.dashboards.support import (
     CH4_DASHBOARD,
     CH5_DASHBOARD,
     CH6_DASHBOARD,
+    CH7_DASHBOARD,
     load_dashboard_module,
     prepare_chapter_import,
 )
@@ -23,6 +24,7 @@ DL_DASHBOARDS = [
     pytest.param(CH4_DASHBOARD, 6, id="ch4"),
     pytest.param(CH5_DASHBOARD, 6, id="ch5"),
     pytest.param(CH6_DASHBOARD, 4, id="ch6"),
+    pytest.param(CH7_DASHBOARD, 4, id="ch7"),
 ]
 
 
@@ -210,3 +212,33 @@ def test_plot_universal_approximation_builds_figure():
     assert fig is not None
     assert len(fig.data) >= 2
     assert "mse" in stats
+
+
+def test_weight_decay_page_updates():
+    prepare_chapter_import(CH7_DASHBOARD.parent)
+    from dl_ch07_pages.weight_decay.content import render_body
+
+    low = render_body(0.0)
+    high = render_body(0.15)
+    assert low is not None and high is not None
+    assert str(low.to_plotly_json()) != str(high.to_plotly_json())
+
+
+def test_plot_weight_decay_builds_figure():
+    from tests.dashboards.support import load_dl_helpers
+
+    helpers = load_dl_helpers(7)
+    fig, stats = helpers.plot_weight_decay(0.01)
+    assert fig is not None
+    assert len(fig.data) >= 3
+    assert "val_mse" in stats
+
+
+def test_plot_early_stopping_builds_figure():
+    from tests.dashboards.support import load_dl_helpers
+
+    helpers = load_dl_helpers(7)
+    fig, stats = helpers.plot_early_stopping(120)
+    assert fig is not None
+    assert len(fig.data) >= 2
+    assert "best_epoch" in stats
