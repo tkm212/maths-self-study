@@ -137,19 +137,26 @@ def train_mlp_1d(
     xs = np.asarray(x, dtype=float).ravel()
     ys = np.asarray(y, dtype=float).ravel()
     n_hidden = max(2, int(n_hidden))
-    x_feat = xs.reshape(-1, 1)
+    x_mean = float(xs.mean())
+    x_std = float(xs.std()) or 1.0
+    y_mean = float(ys.mean())
+    y_std = float(ys.std()) or 1.0
+    x_norm = (xs - x_mean) / x_std
+    y_norm = (ys - y_mean) / y_std
+    x_feat = x_norm.reshape(-1, 1)
     w1 = rng.normal(0.0, 0.5, size=(1, n_hidden))
     b1 = np.zeros(n_hidden)
     w2 = rng.normal(0.0, 0.5, size=(n_hidden, 1))
     b2 = np.zeros(1)
     act = activation_fn(activation)
     d_act = lambda z: activation_deriv(activation, z)
+    step = learning_rate / np.sqrt(n_hidden)
 
     for _ in range(int(n_epochs)):
         z1 = x_feat @ w1 + b1
         h = act(z1)
         pred = h @ w2 + b2
-        error = pred.ravel() - ys
+        error = pred.ravel() - y_norm
         dz2 = error.reshape(-1, 1)
         dw2 = h.T @ dz2
         db2 = dz2.sum(axis=0)
@@ -157,14 +164,15 @@ def train_mlp_1d(
         dz1 = dh * d_act(z1)
         dw1 = x_feat.T @ dz1
         db1 = dz1.sum(axis=0)
-        w2 -= learning_rate * dw2
-        b2 -= learning_rate * db2
-        w1 -= learning_rate * dw1
-        b1 -= learning_rate * db1
+        w2 -= step * dw2
+        b2 -= step * db2
+        w1 -= step * dw1
+        b1 -= step * db1
 
     z1 = x_feat @ w1 + b1
     h = act(z1)
-    pred = (h @ w2 + b2).ravel()
+    pred_norm = (h @ w2 + b2).ravel()
+    pred = pred_norm * y_std + y_mean
     mse = float(np.mean((pred - ys) ** 2))
     return {
         "W1": w1,
@@ -174,6 +182,10 @@ def train_mlp_1d(
         "predictions": pred,
         "mse": mse,
         "activation": activation,
+        "x_mean": x_mean,
+        "x_std": x_std,
+        "y_mean": y_mean,
+        "y_std": y_std,
     }
 
 
@@ -184,6 +196,11 @@ def predict_mlp_1d(model: dict[str, np.ndarray | float | ActivationName], x_line
     b2 = model["b2"]
     activation = model["activation"]
     act = activation_fn(activation)  # type: ignore[arg-type]
-    x_feat = np.asarray(x_line, dtype=float).ravel().reshape(-1, 1)
+    xs = np.asarray(x_line, dtype=float).ravel()
+    x_mean = float(model["x_mean"])
+    x_std = float(model["x_std"])
+    y_mean = float(model["y_mean"])
+    y_std = float(model["y_std"])
+    x_feat = ((xs - x_mean) / x_std).reshape(-1, 1)
     h = act(x_feat @ w1 + b1)
-    return (h @ w2 + b2).ravel()
+    return (h @ w2 + b2).ravel() * y_std + y_mean
