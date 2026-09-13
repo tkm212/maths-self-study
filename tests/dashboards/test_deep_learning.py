@@ -22,7 +22,7 @@ DL_DASHBOARDS = [
     pytest.param(CH3_DASHBOARD, 5, id="ch3"),
     pytest.param(CH4_DASHBOARD, 6, id="ch4"),
     pytest.param(CH5_DASHBOARD, 6, id="ch5"),
-    pytest.param(CH6_DASHBOARD, 4, id="ch6"),
+    pytest.param(CH6_DASHBOARD, 5, id="ch6"),
 ]
 
 
@@ -210,3 +210,23 @@ def test_plot_universal_approximation_builds_figure():
     assert fig is not None
     assert len(fig.data) >= 2
     assert "mse" in stats
+
+
+def test_backprop_page_updates():
+    prepare_chapter_import(CH6_DASHBOARD.parent)
+    from dl_ch06_pages.backprop.content import render_body
+
+    tight = render_body(4, 1e-5, 0, "tanh")
+    loose = render_body(8, 1e-4, 3, "relu")
+    assert tight is not None and loose is not None
+    assert str(tight.to_plotly_json()) != str(loose.to_plotly_json())
+
+
+def test_plot_backprop_gradient_check_builds_figure():
+    from tests.dashboards.support import load_dl_helpers
+
+    helpers = load_dl_helpers(6)
+    fig, stats = helpers.plot_backprop_gradient_check(n_hidden=4, epsilon=1e-5, sample_index=0)
+    assert fig is not None
+    assert len(fig.data) >= 1
+    assert "max_rel_error" in stats

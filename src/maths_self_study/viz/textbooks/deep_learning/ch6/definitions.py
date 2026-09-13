@@ -40,6 +40,20 @@ OUTPUT_UNITS = [
     ),
 ]
 
+BACKPROP = [
+    (
+        "Computational graph",
+        r"A DAG whose nodes are variables and edges carry operations. Forward "
+        r"propagation evaluates node values; reverse-mode AD walks backward with "
+        r"the chain rule (§6.5.1).",
+    ),
+    (
+        "Reverse-mode differentiation",
+        r"Backprop computes all parameter gradients in one backward pass — "
+        r"efficient when there are many inputs (weights) and few outputs (loss).",
+    ),
+]
+
 UNIVERSAL_APPROX = [
     (
         "Universal approximation",
