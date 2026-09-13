@@ -3,7 +3,7 @@
 import pandas as pd
 import pytest
 
-from maths_self_study.quant.labeling import triple_barrier_labels
+from maths_self_study.quant.labeling import cusum_triple_barrier_labels, triple_barrier_labels
 
 
 @pytest.fixture
@@ -89,3 +89,9 @@ def test_triple_barrier_labels_custom_columns() -> None:
     assert (
         out["label"].iloc[0] == 1
     )  # h=101 >= 100.5*1.02=102.51? No. h goes to 105. At bar 1 h=101, at bar 2 h=102... 100.5*1.02=102.51, so bar 3 h=103 hits it. Yes.
+
+
+def test_cusum_triple_barrier_labels_runs_pipeline(ohlc_df: pd.DataFrame) -> None:
+    out = cusum_triple_barrier_labels(ohlc_df, cusum_threshold=0.001, pt=0.02, sl=0.02, num_bars=5)
+    assert list(out.columns) == ["datetime", "label", "exit_time", "exit_price"]
+    assert out["label"].isin([-1, 0, 1]).all()

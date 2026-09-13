@@ -5,8 +5,7 @@ from __future__ import annotations
 import pandas as pd
 import plotly.graph_objects as go
 
-from maths_self_study.quant.filters import cusum_filter
-from maths_self_study.quant.labeling import triple_barrier_labels
+from maths_self_study.quant.labeling import cusum_triple_barrier_labels
 from maths_self_study.viz.graphs import apply_layout
 
 LABEL_NAMES = {-1: "Stop loss", 0: "Time out", 1: "Profit take"}
@@ -21,14 +20,12 @@ def compute_labels(
     sl: float = 0.001,
     num_bars: int = 30,
 ) -> pd.DataFrame:
-    close = bars.set_index("datetime")["close"].dropna()
-    events = cusum_filter(close, threshold=float(cusum_threshold))
-    return triple_barrier_labels(
+    return cusum_triple_barrier_labels(
         bars,
-        events,
-        pt=float(pt),
-        sl=float(sl),
-        num_bars=int(num_bars),
+        cusum_threshold=cusum_threshold,
+        pt=pt,
+        sl=sl,
+        num_bars=num_bars,
     )
 
 

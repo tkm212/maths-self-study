@@ -5,10 +5,11 @@ Pipeline: bars → CUSUM filter → triple-barrier labels → sample weights.
 
 from maths_self_study.quant.bars import dollar_bars, tick_bars, time_bars, volume_bars
 from maths_self_study.quant.filters import cusum_filter
-from maths_self_study.quant.labeling import triple_barrier_labels
+from maths_self_study.quant.labeling import cusum_triple_barrier_labels, triple_barrier_labels
 from maths_self_study.quant.weights import (
     average_uniqueness,
     concurrent_labels_per_bar,
+    sample_weights_from_bars,
     time_decay_weights,
 )
 
@@ -16,7 +17,9 @@ __all__ = [
     "average_uniqueness",
     "concurrent_labels_per_bar",
     "cusum_filter",
+    "cusum_triple_barrier_labels",
     "dollar_bars",
+    "sample_weights_from_bars",
     "tick_bars",
     "time_bars",
     "time_decay_weights",

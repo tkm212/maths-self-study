@@ -6,7 +6,7 @@ import fml_ch2_helpers as helpers
 from dash import html
 
 from maths_self_study.dashboards.components import graph, graph_row, table, text_box
-from maths_self_study.data.fml import load_ticks, project_paths
+from maths_self_study.data import load_ticks, project_paths
 
 
 def render_body(tick_threshold, target_bars, save_flag) -> html.Div:

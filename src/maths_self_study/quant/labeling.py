@@ -11,6 +11,8 @@ from __future__ import annotations
 
 import pandas as pd
 
+from maths_self_study.quant.filters import cusum_filter
+
 
 def triple_barrier_labels(
     ohlc: pd.DataFrame,
@@ -96,3 +98,27 @@ def triple_barrier_labels(
         rows.append({"datetime": t, "label": label, "exit_time": exit_time, "exit_price": exit_price})
 
     return pd.DataFrame(rows, columns=["datetime", "label", "exit_time", "exit_price"])
+
+
+def cusum_triple_barrier_labels(
+    bars: pd.DataFrame,
+    *,
+    cusum_threshold: float = 0.0002,
+    pt: float = 0.001,
+    sl: float = 0.001,
+    num_bars: int = 30,
+    close_col: str = "close",
+    datetime_col: str = "datetime",
+) -> pd.DataFrame:
+    """Run CUSUM event detection then triple-barrier labeling on OHLC bars."""
+    close = bars.set_index(datetime_col)[close_col].dropna()
+    events = cusum_filter(close, threshold=float(cusum_threshold))
+    return triple_barrier_labels(
+        bars,
+        events,
+        pt=float(pt),
+        sl=float(sl),
+        num_bars=int(num_bars),
+        close_col=close_col,
+        datetime_col=datetime_col,
+    )
