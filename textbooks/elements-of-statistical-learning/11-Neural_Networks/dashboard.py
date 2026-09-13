@@ -11,7 +11,7 @@ from maths_self_study.demos.elements_of_statistical_learning.dashboard import cr
 
 PAGES = load_chapter_pages(
     __file__,
-    "ch11_pages",
+    "esl_ch11_pages",
     "NeuralNetworksPage",
     "ProjectionPursuitPage",
 )

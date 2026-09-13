@@ -1,0 +1,34 @@
+"""Smoothing splines dashboard page."""
+
+from __future__ import annotations
+
+from esl_ch05_pages.smoothing_splines.callbacks import register_callbacks
+from esl_ch05_pages.smoothing_splines.filters import build_filters
+from maths_self_study.dashboards.page_factory import define_page
+from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch5.definitions import (
+    SMOOTHING_SPLINES as SMOOTHING_SPLINES_DEFINITIONS,
+)
+from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch5.theorems import (
+    SMOOTHING_SPLINES as SMOOTHING_SPLINES_THEOREMS,
+)
+
+SmoothingSplinesPage = define_page(
+    label="Smoothing splines",
+    value="smoothing_splines",
+    title="Penalised roughness",
+    caption="§5.4 — Smoothing splines and GCV on TMDB budget → revenue.",
+    summary=(
+        "Smoothing splines fit a flexible curve by trading closeness to the data "
+        "against a penalty on wiggliness (curvature). One smoothing parameter controls "
+        "how much the curve is allowed to bend. We use them when we want a smooth "
+        "nonlinear fit without manually choosing where to place knots."
+    ),
+    methodology=[
+        "Effective df = tr(Sλ) controls flexibility.",
+        "GCV selects λ without a held-out set.",
+    ],
+    definitions=SMOOTHING_SPLINES_DEFINITIONS,
+    theorems=SMOOTHING_SPLINES_THEOREMS,
+    build_filters=build_filters,
+    register_callbacks=register_callbacks,
+)

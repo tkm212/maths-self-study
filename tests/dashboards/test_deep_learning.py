@@ -44,7 +44,7 @@ def test_ch2_vectors_filters_via_dashboard():
     ch2_dir = CH2_DASHBOARD.parent
     spec = importlib.util.spec_from_file_location(
         "ch2_vectors_filters",
-        ch2_dir / "ch2_pages/vectors/filters.py",
+        ch2_dir / "dl_ch02_pages/vectors/filters.py",
     )
     assert spec and spec.loader
     module = importlib.util.module_from_spec(spec)
@@ -71,7 +71,7 @@ def test_create_deep_learning_dashboard():
 
 def test_capacity_page_updates():
     prepare_chapter_import(CH5_DASHBOARD.parent)
-    from ch5_pages.capacity.content import render_body
+    from dl_ch05_pages.capacity.content import render_body
 
     low = render_body(2, 0.05)
     high = render_body(10, 0.3)
@@ -81,7 +81,7 @@ def test_capacity_page_updates():
 
 def test_stability_softmax_updates():
     prepare_chapter_import(CH4_DASHBOARD.parent)
-    from ch4_pages.stability.content import render_body
+    from dl_ch04_pages.stability.content import render_body
 
     small = render_body(0.0, 1.0, 2.0)
     large = render_body(1000.0, 1001.0, 1002.0)
@@ -91,7 +91,7 @@ def test_stability_softmax_updates():
 
 def test_random_variables_moments_update():
     prepare_chapter_import(CH3_DASHBOARD.parent)
-    from ch3_pages.random_variables.content import render_body
+    from dl_ch03_pages.random_variables.content import render_body
 
     low = render_body(0.1, 0.15, 0.25, 0.5, 0.1, 0.2, 0.3, 0.4)
     high = render_body(0.1, 0.15, 0.25, 0.5, 0.4, 0.3, 0.2, 0.1)

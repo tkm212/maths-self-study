@@ -11,7 +11,7 @@ from maths_self_study.demos.financial_machine_learning.dashboard import create_a
 
 PAGES = load_chapter_pages(
     __file__,
-    "fml_ch4_pages",
+    "fml_ch04_pages",
     "ConcurrencyPage",
     "SampleWeightsPage",
 )

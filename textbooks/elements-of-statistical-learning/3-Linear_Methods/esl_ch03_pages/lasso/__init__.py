@@ -1,0 +1,31 @@
+"""Lasso dashboard page."""
+
+from __future__ import annotations
+
+from esl_ch03_pages.lasso.callbacks import register_callbacks
+from esl_ch03_pages.lasso.filters import build_filters
+from maths_self_study.dashboards.page_factory import define_page
+from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch3.definitions import (
+    LASSO as LASSO_DEFINITIONS,
+)
+
+LassoPage = define_page(
+    label="Lasso",
+    value="lasso",
+    title="L1 paths and feature selection",
+    caption="§3.4 / §3.8 — Lasso on TMDB revenue.",
+    summary=(
+        "The lasso shrinks coefficients and drives many of them exactly to zero, "
+        "automatically selecting a sparse subset of predictors. Like ridge it "
+        "regularises against overfitting, but the L1 penalty also performs feature "
+        "selection. We use it when we suspect only a few predictors matter and want "
+        "a compact, interpretable model."
+    ),
+    methodology=[
+        "L1 constraint creates exact zeros.",
+        "Path entry order = marginal predictive importance.",
+    ],
+    definitions=LASSO_DEFINITIONS,
+    build_filters=build_filters,
+    register_callbacks=register_callbacks,
+)

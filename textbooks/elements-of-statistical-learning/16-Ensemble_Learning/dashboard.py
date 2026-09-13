@@ -11,7 +11,7 @@ from maths_self_study.demos.elements_of_statistical_learning.dashboard import cr
 
 PAGES = load_chapter_pages(
     __file__,
-    "ch16_pages",
+    "esl_ch16_pages",
     "EnsembleLearningPage",
 )
 

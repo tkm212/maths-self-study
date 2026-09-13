@@ -11,7 +11,7 @@ from maths_self_study.demos.deep_learning.dashboard import create_deep_learning_
 
 PAGES = load_chapter_pages(
     __file__,
-    "ch3_pages",
+    "dl_ch03_pages",
     "RandomVariablesPage",
     "DistributionsPage",
     "BayesPage",

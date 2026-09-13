@@ -11,7 +11,7 @@ from maths_self_study.demos.deep_learning.dashboard import create_deep_learning_
 
 PAGES = load_chapter_pages(
     __file__,
-    "ch5_pages",
+    "dl_ch05_pages",
     "CapacityPage",
     "ValidationPage",
     "BiasVariancePage",

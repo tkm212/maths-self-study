@@ -1,0 +1,18 @@
+"""Filter controls for the SVD page."""
+
+from __future__ import annotations
+
+import dl_ch02_helpers as helpers
+from dash import html
+
+from maths_self_study.dashboards.components import filter_bar, matrix_input, num_input
+
+
+def build_filters() -> html.Div:
+    return filter_bar(
+        matrix_input("svd-matrix", "Map A", helpers.SVD_MAP),
+        html.Div("Least-squares b", style={"fontWeight": 600, "width": "100%"}),
+        num_input("svd-b0", "b₀", float(helpers.OVERDETERMINED_B[0]), step=0.5),
+        num_input("svd-b1", "b₁", float(helpers.OVERDETERMINED_B[1]), step=0.5),
+        num_input("svd-b2", "b₂", float(helpers.OVERDETERMINED_B[2]), step=0.5),
+    )
