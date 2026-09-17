@@ -16,6 +16,7 @@ PAGES = load_chapter_pages(
     "ActivationsPage",
     "OutputUnitsPage",
     "UniversalApproxPage",
+    "BackpropPage",
 )
 
 

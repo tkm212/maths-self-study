@@ -16,6 +16,13 @@ RELU = r"\mathrm{ReLU}(z) = \max(0, z)"
 LOGISTIC_SIGMOID = r"\sigma(z) = \frac{1}{1 + e^{-z}}"
 TANH = r"\tanh(z) = \frac{e^z - e^{-z}}{e^z + e^{-z}}"
 
+# §6.5 — Back-propagation
+CHAIN_RULE = r"\frac{\partial f}{\partial x} = \frac{\partial f}{\partial z}\frac{\partial z}{\partial x}"
+BACKPROP_OUTPUT = r"\frac{\partial L}{\partial z^{(L)}} = \frac{\partial L}{\partial \hat{y}} \odot g'(\hat{y})"
+BACKPROP_HIDDEN = (
+    r"\frac{\partial L}{\partial z^{(\ell)}} = \big(W^{(\ell+1)\top} \delta^{(\ell+1)}\big) \odot g'(z^{(\ell)})"
+)
+
 # §6.4.1 — Universal approximation
 UNIVERSAL_APPROX = (
     r"\forall f^* \text{ continuous on compact } K,\; \exists \hat{f} \text{ (MLP)} "

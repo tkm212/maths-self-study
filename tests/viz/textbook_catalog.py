@@ -62,7 +62,7 @@ DEFINITION_MODULES = (
     + _entries(dl_ch3_defs, ["RANDOM_VARIABLES", "DISTRIBUTIONS", "BAYES", "INFORMATION", "MARKOV"])
     + _entries(dl_ch4_defs, ["STABILITY", "CONDITIONING", "GRADIENT_DESCENT", "NEWTON", "LEAST_SQUARES", "KKT"])
     + _entries(dl_ch5_defs, ["CAPACITY", "VALIDATION", "BIAS_VARIANCE", "MLE", "MANIFOLD", "SGD"])
-    + _entries(dl_ch6_defs, ["XOR", "ACTIVATIONS", "OUTPUT_UNITS", "UNIVERSAL_APPROX"])
+    + _entries(dl_ch6_defs, ["XOR", "ACTIVATIONS", "OUTPUT_UNITS", "BACKPROP", "UNIVERSAL_APPROX"])
     + _entries(
         dl_ch7_defs,
         [
