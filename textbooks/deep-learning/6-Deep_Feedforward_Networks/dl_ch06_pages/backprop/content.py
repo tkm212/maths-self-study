@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import cast
+
 import dl_ch06_helpers as helpers
 from dash import html
 
@@ -27,8 +29,7 @@ def render_body(n_hidden, epsilon, sample_index, activation) -> html.Div:
         ["W1 relative error", f"{stats['rel_error_W1']:.2e}"],
         ["W2 relative error", f"{stats['rel_error_W2']:.2e}"],
     ]
-    forward_rows = stats["forward_rows"]
-    assert isinstance(forward_rows, list)
+    forward_rows = cast(list[list[str | float | int]], stats["forward_rows"])
     return html.Div([
         html.H3("Gradient check on the XOR MLP"),
         formula_group(
@@ -46,7 +47,7 @@ def render_body(n_hidden, epsilon, sample_index, activation) -> html.Div:
         table(["Measure", "Value"], rows, caption="Gradient check summary"),
         table(
             ["Forward pass", "Value"],
-            forward_rows,  # type: ignore[arg-type]
+            forward_rows,
             caption="Forward pass for selected XOR point",
         ),
     ])
