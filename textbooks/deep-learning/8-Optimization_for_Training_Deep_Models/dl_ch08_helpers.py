@@ -108,10 +108,7 @@ def plot_momentum_paths(
     mom_final = quadratic_value(h, g, mom_path[-1])
     apply_layout(
         fig,
-        title=(
-            f"Momentum vs GD — final loss GD={gd_final:.3f}, "
-            f"momentum={mom_final:.3f} (eta={lr:.3g})"
-        ),
+        title=(f"Momentum vs GD — final loss GD={gd_final:.3f}, momentum={mom_final:.3f} (eta={lr:.3g})"),
         xaxis_title="x1",
         yaxis_title="x2",
         height=460,

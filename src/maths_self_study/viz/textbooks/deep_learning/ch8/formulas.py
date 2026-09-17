@@ -3,9 +3,7 @@
 from __future__ import annotations
 
 MOMENTUM_UPDATE = r"v \leftarrow \rho v + \nabla_\theta J, \quad \theta \leftarrow \theta - \eta v"
-NESTEROV_UPDATE = (
-    r"v \leftarrow \rho v + \nabla_\theta J(\theta - \eta\rho v), \quad \theta \leftarrow \theta - \eta v"
-)
+NESTEROV_UPDATE = r"v \leftarrow \rho v + \nabla_\theta J(\theta - \eta\rho v), \quad \theta \leftarrow \theta - \eta v"
 XAVIER_VAR = r"\mathrm{Var}(W_{ij}) = \frac{2}{n_{\mathrm{in}} + n_{\mathrm{out}}}"
 HE_VAR = r"\mathrm{Var}(W_{ij}) = \frac{2}{n_{\mathrm{in}}}"
 ADAM_UPDATE = (

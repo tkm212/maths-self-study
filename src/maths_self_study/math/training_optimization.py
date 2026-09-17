@@ -58,6 +58,7 @@ def _mse_norm(pred_norm: np.ndarray, y_norm: np.ndarray) -> float:
 def _denorm_predictions(pred_norm: np.ndarray, stats: dict[str, float]) -> np.ndarray:
     return pred_norm * stats["y_std"] + stats["y_mean"]
 
+
 OptimizerName = Literal["sgd", "momentum", "adam"]
 
 
@@ -170,7 +171,7 @@ def initialization_comparison(
     activation: ActivationName = "tanh",
     seed: int = 3,
 ) -> OptimizerRun:
-    """Train with init std = multiplier × Xavier (§8.4)."""
+    """Train with init std = multiplier times Xavier (§8.4)."""
     rng = np.random.default_rng(seed)
     n_hidden = max(4, int(n_hidden))
     x_tr, y_tr, x_va, y_va, _stats = _normalize_split(x_train, y_train, x_val, y_val)
@@ -252,10 +253,7 @@ def train_mlp_optimizer(
     x_tr, y_tr, x_va, y_va, stats = _normalize_split(x_train, y_train, x_val, y_val)
     x_feat = x_tr.reshape(-1, 1)
     x_val_feat = x_va.reshape(-1, 1)
-    if activation == "relu":
-        init_std = he_std(n_hidden)
-    else:
-        init_std = xavier_std(1, n_hidden)
+    init_std = he_std(n_hidden) if activation == "relu" else xavier_std(1, n_hidden)
     w1, b1, w2, b2 = _init_weights(rng, n_hidden, init_scale=init_std)
     act = activation_fn(activation)
     d_act = lambda z: activation_deriv(activation, z)
