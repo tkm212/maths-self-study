@@ -159,3 +159,11 @@ Interactive walkthrough of [Chapter 7](https://www.deeplearningbook.org/contents
 ```bash
 uv run python textbooks/deep-learning/7-Regularization_for_Deep_Learning/dashboard.py
 ```
+
+### Chapter 8 — Optimization for Training Deep Models
+
+Interactive walkthrough of [Chapter 8](https://www.deeplearningbook.org/contents/optimization.html): momentum on ill-conditioned quadratics, Xavier initialization scale, SGD vs Adam on an MLP, and mini-batch gradient noise.
+
+```bash
+uv run python textbooks/deep-learning/8-Optimization_for_Training_Deep_Models/dashboard.py
+```
