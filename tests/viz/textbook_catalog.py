@@ -16,6 +16,7 @@ from maths_self_study.viz.textbooks.deep_learning.ch5 import definitions as dl_c
 from maths_self_study.viz.textbooks.deep_learning.ch5 import proofs as dl_ch5_pr
 from maths_self_study.viz.textbooks.deep_learning.ch5 import theorems as dl_ch5_th
 from maths_self_study.viz.textbooks.deep_learning.ch6 import definitions as dl_ch6_defs
+from maths_self_study.viz.textbooks.deep_learning.ch7 import definitions as dl_ch7_defs
 from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch2 import definitions as esl_ch2_defs
 from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch2 import theorems as esl_ch2_th
 from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch3 import definitions as esl_ch3_defs
@@ -62,6 +63,20 @@ DEFINITION_MODULES = (
     + _entries(dl_ch4_defs, ["STABILITY", "CONDITIONING", "GRADIENT_DESCENT", "NEWTON", "LEAST_SQUARES", "KKT"])
     + _entries(dl_ch5_defs, ["CAPACITY", "VALIDATION", "BIAS_VARIANCE", "MLE", "MANIFOLD", "SGD"])
     + _entries(dl_ch6_defs, ["XOR", "ACTIVATIONS", "OUTPUT_UNITS", "UNIVERSAL_APPROX"])
+    + _entries(
+        dl_ch7_defs,
+        [
+            "WEIGHT_DECAY",
+            "EARLY_STOPPING",
+            "DROPOUT",
+            "INPUT_NOISE",
+            "SEMI_SUPERVISED_MULTITASK",
+            "PARAMETER_SHARING",
+            "BAGGING",
+            "ADVERSARIAL",
+            "TANGENT_DISTANCE",
+        ],
+    )
     + _entries(esl_ch2_defs, ["K_NEAREST_NEIGHBORS", "LEAST_SQUARES"])
     + _entries(esl_ch3_defs, ["SUBSET_SELECTION", "RIDGE", "LASSO", "PCR_PLS"])
     + _entries(esl_ch4_defs, ["LOGISTIC_REGRESSION", "LDA", "SEPARATING_HYPERPLANES"])
