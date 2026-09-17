@@ -13,7 +13,7 @@ from maths_self_study.viz.textbooks.deep_learning.ch7.formulas import CONV1D
 
 def render_body(kernel_size) -> html.Div:
     k = int(coerce_float(kernel_size, default=helpers.KERNEL_SIZE_DEFAULT))
-    fig, stats = helpers.plot_parameter_sharing(k)
+    fig_bar, fig_curve, stats = helpers.plot_parameter_sharing(k)
     rows = [
         ["FC parameters", f"{int(stats['fc_params'])}"],
         ["Conv parameters", f"{int(stats['conv_params'])}"],
@@ -26,6 +26,8 @@ def render_body(kernel_size) -> html.Div:
             ("1D convolution", CONV1D),
             title="Key formulas (§7.9)",
         ),
-        graph(fig),
+        graph(fig_bar),
+        html.H4("Conv kernel size"),
+        graph(fig_curve),
         table(["Measure", "Value"], rows, caption="Parameter sharing summary"),
     ])

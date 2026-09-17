@@ -13,7 +13,7 @@ from maths_self_study.viz.textbooks.deep_learning.ch7.formulas import BAGGING_PR
 
 def render_body(n_estimators) -> html.Div:
     m = int(coerce_float(n_estimators, default=helpers.N_ESTIMATORS_DEFAULT))
-    fig, stats = helpers.plot_bagging(m)
+    fig_bar, fig_curve, stats = helpers.plot_bagging(m)
     rows = [
         ["Single model val MSE", f"{stats['single_val_mse']:.4f}"],
         ["Bagged val MSE", f"{stats['bagged_val_mse']:.4f}"],
@@ -25,6 +25,8 @@ def render_body(n_estimators) -> html.Div:
             ("Bagged prediction", BAGGING_PRED),
             title="Key formulas (§7.11)",
         ),
-        graph(fig),
+        graph(fig_bar),
+        html.H4("Effect of ensemble size"),
+        graph(fig_curve),
         table(["Measure", "Value"], rows, caption="Bagging summary"),
     ])

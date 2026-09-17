@@ -16,7 +16,7 @@ from maths_self_study.viz.textbooks.deep_learning.ch7.formulas import (
 
 def render_body(n_labeled) -> html.Div:
     labeled = int(coerce_float(n_labeled, default=helpers.N_LABELED_DEFAULT))
-    fig, stats = helpers.plot_semi_supervised_multitask(labeled)
+    fig_semi, fig_multi, stats = helpers.plot_semi_supervised_multitask(labeled)
     rows = [
         ["Labeled-only val MSE", f"{stats['labeled_only_val_mse']:.4f}"],
         ["Semi-supervised val MSE", f"{stats['semi_supervised_val_mse']:.4f}"],
@@ -32,6 +32,8 @@ def render_body(n_labeled) -> html.Div:
             ("Multitask objective", MULTITASK_OBJECTIVE),
             title="Key formulas (§7.6–7.7)",
         ),
-        graph(fig),
+        graph(fig_semi),
+        html.H4("Multitask shared representation"),
+        graph(fig_multi),
         table(["Measure", "Value"], rows, caption="Semi-supervised and multitask summary"),
     ])

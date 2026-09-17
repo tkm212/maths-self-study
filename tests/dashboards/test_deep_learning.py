@@ -254,12 +254,23 @@ def test_semi_supervised_multitask_page_updates():
     assert str(few.to_plotly_json()) != str(many.to_plotly_json())
 
 
+def test_plot_semi_supervised_multitask_builds_figures():
+    from tests.dashboards.support import load_dl_helpers
+
+    helpers = load_dl_helpers(7)
+    fig_semi, fig_multi, stats = helpers.plot_semi_supervised_multitask(25)
+    assert fig_semi is not None and fig_multi is not None
+    assert len(fig_multi.data) >= 1
+    assert "shared_val_mse" in stats
+
+
 def test_plot_parameter_sharing_builds_figure():
     from tests.dashboards.support import load_dl_helpers
 
     helpers = load_dl_helpers(7)
-    fig, stats = helpers.plot_parameter_sharing(3)
-    assert fig is not None
+    fig_bar, fig_curve, stats = helpers.plot_parameter_sharing(3)
+    assert fig_bar is not None and fig_curve is not None
+    assert len(fig_curve.data) >= 2
     assert stats["conv_params"] < stats["fc_params"]
 
 
@@ -267,8 +278,9 @@ def test_plot_bagging_builds_figure():
     from tests.dashboards.support import load_dl_helpers
 
     helpers = load_dl_helpers(7)
-    fig, stats = helpers.plot_bagging(3)
-    assert fig is not None
+    fig_bar, fig_curve, stats = helpers.plot_bagging(3)
+    assert fig_bar is not None and fig_curve is not None
+    assert len(fig_curve.data) >= 2
     assert "bagged_val_mse" in stats
 
 

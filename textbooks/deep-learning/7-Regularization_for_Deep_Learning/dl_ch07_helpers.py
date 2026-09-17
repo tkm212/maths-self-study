@@ -34,6 +34,7 @@ DATA_NOISE = 0.12
 N_LABELED_DEFAULT = 25
 KERNEL_SIZE_DEFAULT = 3
 N_ESTIMATORS_DEFAULT = 5
+BAGGING_CURVE_MAX = 15
 ADV_EPSILON_DEFAULT = 0.15
 TANGENT_SHIFT_DEFAULT = 0.25
 
@@ -151,18 +152,40 @@ def plot_input_noise(input_noise: float) -> tuple[go.Figure, dict[str, float]]:
     return fig, stats
 
 
-def plot_semi_supervised_multitask(n_labeled: int) -> tuple[go.Figure, dict[str, float]]:
-    """Semi-supervised vs labeled-only validation error, plus multitask summary (§7.6-7.7)."""
+def plot_semi_supervised_multitask(n_labeled: int) -> tuple[go.Figure, go.Figure, dict[str, float]]:
+    """Semi-supervised bar chart and multitask shared-vs-separate validation MSE (§7.6-7.7)."""
     semi = semi_supervised_comparison(n_labeled=int(n_labeled))
     multi = multitask_comparison()
-    fig = bar_chart(
+    fig_semi = bar_chart(
         ["labeled only", "semi-supervised"],
         [semi["labeled_only_val_mse"], semi["semi_supervised_val_mse"]],
         name="validation MSE",
         color="#2563eb",
         title=(f"Semi-supervised learning — {semi['n_labeled']} labeled, {semi['n_unlabeled']} unlabeled"),
         yaxis_title="validation MSE",
-        height=440,
+        height=400,
+    )
+    fig_multi = bar_chart(
+        [
+            "task 1 (shared)",
+            "task 2 (shared)",
+            "task 1 (separate)",
+            "task 2 (separate)",
+        ],
+        [
+            multi["task1_shared"],
+            multi["task2_shared"],
+            multi["task1_separate"],
+            multi["task2_separate"],
+        ],
+        name="validation MSE",
+        color="#0d9488",
+        title=(
+            f"Multitask learning — shared total={multi['shared_val_mse']:.4f}, "
+            f"separate total={multi['separate_val_mse']:.4f}"
+        ),
+        yaxis_title="validation MSE",
+        height=400,
     )
     stats = {
         "labeled_only_val_mse": semi["labeled_only_val_mse"],
@@ -172,20 +195,52 @@ def plot_semi_supervised_multitask(n_labeled: int) -> tuple[go.Figure, dict[str,
         "task1_shared": multi["task1_shared"],
         "task2_shared": multi["task2_shared"],
     }
-    return fig, stats
+    return fig_semi, fig_multi, stats
 
 
-def plot_parameter_sharing(kernel_size: int) -> tuple[go.Figure, dict[str, float]]:
-    """FC vs 1D conv on shifted spike localization (section 7.9)."""
-    result = parameter_sharing_comparison(kernel_size=int(kernel_size))
-    fig = bar_chart(
+def plot_parameter_sharing(kernel_size: int) -> tuple[go.Figure, go.Figure, dict[str, float]]:
+    """FC vs conv bar chart and conv MSE vs kernel size (section 7.9)."""
+    k = int(kernel_size)
+    result = parameter_sharing_comparison(kernel_size=k)
+    fig_bar = bar_chart(
         ["FC (shifted test)", "Conv (shifted test)"],
         [result["fc_shift_mse"], result["conv_shift_mse"]],
         name="test MSE",
         color="#16a34a",
         title=(f"Parameter sharing — FC params={result['fc_params']}, conv params={result['conv_params']}"),
         yaxis_title="MSE on shifted spikes",
-        height=440,
+        height=400,
+    )
+    sizes = np.asarray(result["kernel_sizes"], dtype=float)
+    curve = np.asarray(result["conv_mse_curve"], dtype=float)
+    fig_curve = line_chart(
+        sizes,
+        curve,
+        name="conv test MSE",
+        color="#16a34a",
+        mode="lines+markers",
+    )
+    line_chart(
+        sizes,
+        np.full(len(sizes), result["fc_shift_mse"]),
+        name="FC test MSE",
+        color="#64748b",
+        mode="lines",
+        fig=fig_curve,
+    )
+    add_vline(
+        fig_curve,
+        k,
+        line_dash="dash",
+        line_color="#2563eb",
+        annotation_text=f"k={k}",
+    )
+    apply_layout(
+        fig_curve,
+        title="Conv test MSE vs kernel size (shifted spikes)",
+        xaxis_title="kernel size k",
+        yaxis_title="MSE on shifted spikes",
+        height=400,
     )
     stats = {
         "fc_params": float(result["fc_params"]),
@@ -193,27 +248,59 @@ def plot_parameter_sharing(kernel_size: int) -> tuple[go.Figure, dict[str, float
         "fc_shift_mse": result["fc_shift_mse"],
         "conv_shift_mse": result["conv_shift_mse"],
     }
-    return fig, stats
+    return fig_bar, fig_curve, stats
 
 
-def plot_bagging(n_estimators: int) -> tuple[go.Figure, dict[str, float]]:
-    """Single model vs bagged ensemble validation MSE (section 7.11)."""
-    result = bagging_comparison(n_estimators=int(n_estimators))
-    fig = bar_chart(
+def plot_bagging(n_estimators: int) -> tuple[go.Figure, go.Figure, dict[str, float]]:
+    """Single vs bagged validation MSE and MSE vs ensemble size (section 7.11)."""
+    m = int(n_estimators)
+    result = bagging_comparison(n_estimators=m, curve_max=BAGGING_CURVE_MAX)
+    fig_bar = bar_chart(
         ["single model", f"bagging (M={result['n_estimators']})"],
         [result["single_val_mse"], result["bagged_val_mse"]],
         name="validation MSE",
         color="#9333ea",
         title="Bagging reduces variance on the validation set",
         yaxis_title="validation MSE",
-        height=440,
+        height=400,
+    )
+    sizes = np.arange(1, len(result["curve_mses"]) + 1)
+    curve = np.asarray(result["curve_mses"], dtype=float)
+    fig_curve = line_chart(
+        sizes,
+        curve,
+        name="bagged val MSE",
+        color="#9333ea",
+        mode="lines+markers",
+    )
+    line_chart(
+        sizes,
+        np.full(len(sizes), result["single_val_mse"]),
+        name="single model val MSE",
+        color="#64748b",
+        mode="lines",
+        fig=fig_curve,
+    )
+    add_vline(
+        fig_curve,
+        result["n_estimators"],
+        line_dash="dash",
+        line_color="#16a34a",
+        annotation_text=f"M={result['n_estimators']}",
+    )
+    apply_layout(
+        fig_curve,
+        title="Validation MSE vs number of bootstrap models",
+        xaxis_title="ensemble size M",
+        yaxis_title="validation MSE",
+        height=400,
     )
     stats = {
         "single_val_mse": result["single_val_mse"],
         "bagged_val_mse": result["bagged_val_mse"],
         "n_estimators": float(result["n_estimators"]),
     }
-    return fig, stats
+    return fig_bar, fig_curve, stats
 
 
 def plot_adversarial(epsilon: float) -> tuple[go.Figure, dict[str, float]]:

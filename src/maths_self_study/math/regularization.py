@@ -246,12 +246,15 @@ class ParameterSharingResult(TypedDict):
     conv_params: int
     fc_shift_mse: float
     conv_shift_mse: float
+    kernel_sizes: list[int]
+    conv_mse_curve: list[float]
 
 
 class BaggingResult(TypedDict):
     single_val_mse: float
     bagged_val_mse: float
     n_estimators: int
+    curve_mses: list[float]
 
 
 class AdversarialResult(TypedDict):
@@ -593,16 +596,28 @@ def parameter_sharing_comparison(*, kernel_size: int = 3, seed: int = 1) -> Para
     train_x, train_y, test_x, test_y = spike_localization_dataset(seed=0)
     signal_len = train_x.shape[1]
     fc = train_spike_fc(train_x, train_y, seed=seed)
-    conv = train_spike_conv(train_x, train_y, kernel_size=kernel_size, seed=seed)
     fc_pred = predict_spike_fc(fc, test_x)
-    conv_pred = predict_spike_conv(conv, test_x)
+    fc_shift_mse = float(np.mean((fc_pred - test_y) ** 2))
     fc_params = signal_len * fc["n_hidden"] + fc["n_hidden"]
-    conv_params = conv["kernel_size"] + 2
+    kernel_sizes = list(range(2, 6))
+    conv_mse_curve: list[float] = []
+    conv_shift_mse = fc_shift_mse
+    conv_params = kernel_size + 2
+    for k in kernel_sizes:
+        conv = train_spike_conv(train_x, train_y, kernel_size=k, seed=seed)
+        conv_pred = predict_spike_conv(conv, test_x)
+        mse = float(np.mean((conv_pred - test_y) ** 2))
+        conv_mse_curve.append(mse)
+        if k == kernel_size:
+            conv_shift_mse = mse
+            conv_params = conv["kernel_size"] + 2
     return {
         "fc_params": int(fc_params),
         "conv_params": int(conv_params),
-        "fc_shift_mse": float(np.mean((fc_pred - test_y) ** 2)),
-        "conv_shift_mse": float(np.mean((conv_pred - test_y) ** 2)),
+        "fc_shift_mse": fc_shift_mse,
+        "conv_shift_mse": conv_shift_mse,
+        "kernel_sizes": kernel_sizes,
+        "conv_mse_curve": conv_mse_curve,
     }
 
 
@@ -718,24 +733,33 @@ def predict_spike_conv(model: SpikeConvModel, x: np.ndarray) -> np.ndarray:
     return preds
 
 
-def bagging_comparison(*, n_estimators: int = 5, seed: int = 1) -> BaggingResult:
+def bagging_comparison(
+    *,
+    n_estimators: int = 5,
+    curve_max: int = 15,
+    seed: int = 1,
+) -> BaggingResult:
     """Bootstrap-averaged MLP vs a single model on validation MSE (§7.11)."""
     x_tr, y_tr, x_va, y_va = regression_dataset(seed=0)
     n_estimators = max(1, int(n_estimators))
+    curve_max = max(int(curve_max), n_estimators)
     rng = np.random.default_rng(seed)
     single = train_mlp_reg(x_tr, y_tr, x_va, y_va, seed=seed)
-    preds = []
+    member_preds: list[np.ndarray] = []
     n = len(x_tr)
-    for i in range(n_estimators):
+    for i in range(curve_max):
         idx = rng.integers(0, n, size=n)
         model = train_mlp_reg(x_tr[idx], y_tr[idx], x_va, y_va, seed=seed + i + 1)
-        preds.append(predict_mlp_reg(model, x_va))
-    bagged = np.mean(np.stack(preds, axis=0), axis=0)
-    bagged_mse = float(np.mean((bagged - y_va) ** 2))
+        member_preds.append(predict_mlp_reg(model, x_va))
+    curve_mses: list[float] = []
+    for m in range(1, curve_max + 1):
+        bagged = np.mean(np.stack(member_preds[:m], axis=0), axis=0)
+        curve_mses.append(float(np.mean((bagged - y_va) ** 2)))
     return {
         "single_val_mse": single["val_mse"],
-        "bagged_val_mse": bagged_mse,
+        "bagged_val_mse": curve_mses[n_estimators - 1],
         "n_estimators": n_estimators,
+        "curve_mses": curve_mses,
     }
 
 
