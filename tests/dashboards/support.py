@@ -18,6 +18,7 @@ CH4_DASHBOARD = REPO_ROOT / "textbooks/deep-learning/4-Numerical_Computation/das
 CH5_DASHBOARD = REPO_ROOT / "textbooks/deep-learning/5-Machine_Learning_Basics/dashboard.py"
 CH6_DASHBOARD = REPO_ROOT / "textbooks/deep-learning/6-Deep_Feedforward_Networks/dashboard.py"
 CH7_DASHBOARD = REPO_ROOT / "textbooks/deep-learning/7-Regularization_for_Deep_Learning/dashboard.py"
+CH8_DASHBOARD = REPO_ROOT / "textbooks/deep-learning/8-Optimization_for_Training_Deep_Models/dashboard.py"
 ESL_CH2_DASHBOARD = ESL_DASHBOARD_ROOT / "2-Supervised_Learning/dashboard.py"
 ESL_CH3_DASHBOARD = ESL_DASHBOARD_ROOT / "3-Linear_Methods/dashboard.py"
 ESL_CH4_DASHBOARD = ESL_DASHBOARD_ROOT / "4-Linear_Methods_Classification/dashboard.py"

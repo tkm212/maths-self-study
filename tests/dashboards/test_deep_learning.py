@@ -14,6 +14,7 @@ from tests.dashboards.support import (
     CH5_DASHBOARD,
     CH6_DASHBOARD,
     CH7_DASHBOARD,
+    CH8_DASHBOARD,
     load_dashboard_module,
     prepare_chapter_import,
 )
@@ -25,6 +26,7 @@ DL_DASHBOARDS = [
     pytest.param(CH5_DASHBOARD, 6, id="ch5"),
     pytest.param(CH6_DASHBOARD, 5, id="ch6"),
     pytest.param(CH7_DASHBOARD, 9, id="ch7"),
+    pytest.param(CH8_DASHBOARD, 4, id="ch8"),
 ]
 
 
@@ -320,3 +322,52 @@ def test_plot_tangent_distance_builds_figure():
     fig, stats = helpers.plot_tangent_distance(0.3)
     assert fig is not None
     assert stats["tangent"] <= stats["euclidean"]
+
+
+def test_momentum_page_updates():
+    prepare_chapter_import(CH8_DASHBOARD.parent)
+    from dl_ch08_pages.momentum.content import render_body
+
+    slow = render_body(0.02, 0.2)
+    fast = render_body(0.08, 0.95)
+    assert slow is not None and fast is not None
+    assert str(slow.to_plotly_json()) != str(fast.to_plotly_json())
+
+
+def test_plot_momentum_paths_builds_figure():
+    from tests.dashboards.support import load_dl_helpers
+
+    helpers = load_dl_helpers(8)
+    fig_path, fig_loss, stats = helpers.plot_momentum_paths(0.04, 0.9)
+    assert fig_path is not None and fig_loss is not None
+    assert stats["momentum_final_loss"] <= stats["gd_final_loss"] or stats["condition_number"] > 1
+    assert "nesterov_final_loss" in stats
+    assert stats["eta_max_gd"] > 0
+
+
+def test_plot_adaptive_optimizers_builds_figure():
+    from tests.dashboards.support import load_dl_helpers
+
+    helpers = load_dl_helpers(8)
+    fig_val, fig_gap, fig_lr, fig_bar, stats = helpers.plot_adaptive_optimizers(0.03)
+    assert fig_val is not None and fig_gap is not None
+    assert fig_lr is not None and fig_bar is not None
+    assert "adam_final" in stats
+
+
+def test_plot_initialization_builds_figures():
+    from tests.dashboards.support import load_dl_helpers
+
+    helpers = load_dl_helpers(8)
+    fig_epoch, fig_sweep, stats = helpers.plot_initialization(2.0)
+    assert fig_epoch is not None and fig_sweep is not None
+    assert "xavier_std" in stats
+
+
+def test_plot_minibatch_noise_builds_figures():
+    from tests.dashboards.support import load_dl_helpers
+
+    helpers = load_dl_helpers(8)
+    fig_path, fig_sweep, stats = helpers.plot_minibatch_noise(8)
+    assert fig_path is not None and fig_sweep is not None
+    assert stats["grad_variance"] >= 0
