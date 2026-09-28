@@ -11,6 +11,9 @@ from tests.dashboards.support import (
     CH3_DASHBOARD,
     CH4_DASHBOARD,
     CH5_DASHBOARD,
+    CH6_DASHBOARD,
+    CH7_DASHBOARD,
+    CH8_DASHBOARD,
     ESL_CH2_DASHBOARD,
     esl_dashboard_paths,
     fml_dashboard_paths,
@@ -85,7 +88,15 @@ def test_all_esl_pages_have_summary():
 
 
 def test_all_deep_learning_pages_have_summary():
-    for dashboard_path in (CH2_DASHBOARD, CH3_DASHBOARD, CH4_DASHBOARD, CH5_DASHBOARD):
+    for dashboard_path in (
+        CH2_DASHBOARD,
+        CH3_DASHBOARD,
+        CH4_DASHBOARD,
+        CH5_DASHBOARD,
+        CH6_DASHBOARD,
+        CH7_DASHBOARD,
+        CH8_DASHBOARD,
+    ):
         module = load_dashboard_module(dashboard_path)
         for page in module.PAGES:
             assert page.summary, f"{dashboard_path.name} page {page.value} missing summary"

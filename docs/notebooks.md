@@ -143,3 +143,27 @@ Interactive walkthrough of [Chapter 5](https://www.deeplearningbook.org/contents
 ```bash
 uv run python textbooks/deep-learning/5-Machine_Learning_Basics/dashboard.py
 ```
+
+### Chapter 6 — Deep Feedforward Networks
+
+Interactive walkthrough of [Chapter 6](https://www.deeplearningbook.org/contents/mlp.html): learning XOR with a hidden layer, Bernoulli and Multinoulli output units, ReLU/sigmoid/tanh activations, and a one-hidden-layer universal approximation demo.
+
+```bash
+uv run python textbooks/deep-learning/6-Deep_Feedforward_Networks/dashboard.py
+```
+
+### Chapter 7 — Regularization for Deep Learning
+
+Interactive walkthrough of [Chapter 7](https://www.deeplearningbook.org/contents/regularization.html): weight decay, early stopping, dropout, input noise, semi-supervised/multitask learning, parameter sharing (CNN), bagging, adversarial examples, and tangent distance.
+
+```bash
+uv run python textbooks/deep-learning/7-Regularization_for_Deep_Learning/dashboard.py
+```
+
+### Chapter 8 — Optimization for Training Deep Models
+
+Interactive walkthrough of [Chapter 8](https://www.deeplearningbook.org/contents/optimization.html): momentum on ill-conditioned quadratics, Xavier initialization scale, SGD vs Adam on an MLP, and mini-batch gradient noise.
+
+```bash
+uv run python textbooks/deep-learning/8-Optimization_for_Training_Deep_Models/dashboard.py
+```
