@@ -13,10 +13,11 @@ from maths_self_study.viz.textbooks.deep_learning.ch8.formulas import MINIBATCH_
 
 def render_body(batch_size) -> html.Div:
     bs = int(coerce_float(batch_size, default=float(helpers.BATCH_SIZE_DEFAULT)))
-    fig, stats = helpers.plot_minibatch_noise(bs)
+    fig_path, fig_sweep, stats = helpers.plot_minibatch_noise(bs)
     rows = [
-        ["Mini-batch size", f"{int(stats['batch_size'])}"],
-        ["Final MSE (full batch)", f"{stats['final_full']:.4f}"],
+        ["Mini-batch size m", f"{int(stats['batch_size'])}"],
+        ["Grad variance at w* (Monte Carlo)", f"{stats['grad_variance']:.6f}"],
+        ["Final MSE (full batch path)", f"{stats['final_full']:.4f}"],
         ["Final MSE (mini-batch path)", f"{stats['final_mini']:.4f}"],
     ]
     return html.Div([
@@ -25,6 +26,13 @@ def render_body(batch_size) -> html.Div:
             ("Mini-batch gradient", MINIBATCH_GRAD),
             title="Key formulas (§8.1.3)",
         ),
-        graph(fig),
+        graph(fig_path),
+        html.H4("Noise vs batch size"),
+        html.P(
+            "Stochastic gradients are unbiased but high-variance when m is small. "
+            "Variance of the batch gradient estimate decreases with m, trading per-step "
+            "noise against parallelism and escape from sharp minima (§8.1.3, §8.2)."
+        ),
+        graph(fig_sweep),
         table(["Measure", "Value"], rows, caption="Full-data loss after each update"),
     ])

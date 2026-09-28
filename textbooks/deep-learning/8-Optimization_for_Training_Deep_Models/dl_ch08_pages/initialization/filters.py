@@ -14,7 +14,7 @@ def build_filters() -> html.Div:
             "init-scale",
             "Init scale (× Xavier std)",
             0.05,
-            4.0,
+            3.0,
             helpers.INIT_SCALE_DEFAULT,
             step=0.05,
         ),

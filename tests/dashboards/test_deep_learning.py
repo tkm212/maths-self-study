@@ -338,15 +338,36 @@ def test_plot_momentum_paths_builds_figure():
     from tests.dashboards.support import load_dl_helpers
 
     helpers = load_dl_helpers(8)
-    fig, stats = helpers.plot_momentum_paths(0.04, 0.9)
-    assert fig is not None
-    assert "momentum_final_loss" in stats
+    fig_path, fig_loss, stats = helpers.plot_momentum_paths(0.04, 0.9)
+    assert fig_path is not None and fig_loss is not None
+    assert stats["momentum_final_loss"] <= stats["gd_final_loss"] or stats["condition_number"] > 1
+    assert "nesterov_final_loss" in stats
+    assert stats["eta_max_gd"] > 0
 
 
 def test_plot_adaptive_optimizers_builds_figure():
     from tests.dashboards.support import load_dl_helpers
 
     helpers = load_dl_helpers(8)
-    fig, stats = helpers.plot_adaptive_optimizers(0.03)
-    assert fig is not None
+    fig_val, fig_gap, fig_lr, fig_bar, stats = helpers.plot_adaptive_optimizers(0.03)
+    assert fig_val is not None and fig_gap is not None
+    assert fig_lr is not None and fig_bar is not None
     assert "adam_final" in stats
+
+
+def test_plot_initialization_builds_figures():
+    from tests.dashboards.support import load_dl_helpers
+
+    helpers = load_dl_helpers(8)
+    fig_epoch, fig_sweep, stats = helpers.plot_initialization(2.0)
+    assert fig_epoch is not None and fig_sweep is not None
+    assert "xavier_std" in stats
+
+
+def test_plot_minibatch_noise_builds_figures():
+    from tests.dashboards.support import load_dl_helpers
+
+    helpers = load_dl_helpers(8)
+    fig_path, fig_sweep, stats = helpers.plot_minibatch_noise(8)
+    assert fig_path is not None and fig_sweep is not None
+    assert stats["grad_variance"] >= 0

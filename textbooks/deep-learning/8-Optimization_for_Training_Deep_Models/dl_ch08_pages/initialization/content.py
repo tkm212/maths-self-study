@@ -13,12 +13,16 @@ from maths_self_study.viz.textbooks.deep_learning.ch8.formulas import HE_VAR, XA
 
 def render_body(scale) -> html.Div:
     mult = coerce_float(scale, default=helpers.INIT_SCALE_DEFAULT)
-    fig, stats = helpers.plot_initialization(mult)
+    fig_epoch, fig_sweep, stats = helpers.plot_initialization(mult)
     rows = [
         ["Xavier std (reference)", f"{stats['xavier_std']:.4f}"],
-        ["Scale multiplier", f"{mult:.3g}"],
-        ["Final val MSE (1× Xavier)", f"{stats['final_val_good']:.4f}"],
+        ["Scale multiplier (slider)", f"{mult:.3g}"],
+        ["Final val MSE (1x Xavier)", f"{stats['final_val_good']:.4f}"],
         ["Final val MSE (scaled)", f"{stats['final_val_scaled']:.4f}"],
+        [
+            "Scaled run diverged",
+            "yes" if stats.get("scaled_diverged") else "no",
+        ],
     ]
     return html.Div([
         html.H3("Random initialization scale"),
@@ -27,6 +31,14 @@ def render_body(scale) -> html.Div:
             ("He init for ReLU", HE_VAR),
             title="Key formulas (§8.4)",
         ),
-        graph(fig),
+        graph(fig_epoch),
+        html.H4("Signal propagation vs scale"),
+        html.P(
+            "If weights are too small, hidden activations shrink (vanishing signal); "
+            "too large, gradients explode under a fixed learning rate — here 3x Xavier "
+            "diverges while 2.5x still converges. Red crosses mark non-converged runs; "
+            "right axis shows validation MSE only for converged scales (§8.4)."
+        ),
+        graph(fig_sweep),
         table(["Measure", "Value"], rows, caption="Early-training validation error"),
     ])

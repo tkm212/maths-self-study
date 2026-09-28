@@ -66,6 +66,7 @@ class OptimizerRun(TypedDict):
     val_mse_history: list[float]
     train_mse_history: list[float]
     final_val_mse: float
+    diverged: bool
 
 
 MOMENTUM_HESSIAN = np.array([[40.0, 0.0], [0.0, 1.0]])
@@ -75,6 +76,47 @@ MOMENTUM_START = np.array([2.5, 2.0])
 MLP_HIDDEN = 32
 MLP_EPOCHS = 200
 MLP_LR = 0.02
+
+
+INIT_SWEEP_MULTIPLIERS = (0.2, 0.4, 0.7, 1.0, 1.5, 2.0, 2.5, 3.0)
+INIT_FAIL_VAL_MSE = 5.0
+MINIBATCH_SIZE_SWEEP = (1, 2, 4, 8, 16, 32, 70)
+
+
+def quadratic_spectrum(hessian: np.ndarray) -> tuple[float, float, float]:
+    """Return (condition number, lambda_max, max stable GD step 2/lambda_max) for a SPD quadratic."""
+    h = np.asarray(hessian, dtype=float)
+    eigvals = np.linalg.eigvalsh(h)
+    lam_min = float(max(eigvals[0], 1e-12))
+    lam_max = float(eigvals[-1])
+    kappa = lam_max / lam_min
+    eta_max = 2.0 / lam_max
+    return kappa, lam_max, eta_max
+
+
+def gradient_descent_nesterov(
+    hessian: np.ndarray,
+    gradient_at_start: np.ndarray,
+    start: np.ndarray,
+    *,
+    learning_rate: float,
+    momentum: float,
+    n_steps: int,
+) -> np.ndarray:
+    """Nesterov accelerated gradient on a quadratic (§8.3.2)."""
+    h = np.asarray(hessian, dtype=float)
+    g = np.asarray(gradient_at_start, dtype=float).ravel()
+    x = np.asarray(start, dtype=float).ravel().copy()
+    velocity = np.zeros_like(x)
+    path = [x.copy()]
+    mu = float(np.clip(momentum, 0.0, 0.999))
+    lr = float(learning_rate)
+    for _ in range(n_steps):
+        grad = h @ (x - mu * velocity) + g
+        velocity = mu * velocity + lr * grad
+        x = x - velocity
+        path.append(x.copy())
+    return np.array(path)
 
 
 def gradient_descent_momentum(
@@ -145,6 +187,159 @@ def momentum_vs_gd_losses(
     return gd_losses, mom_losses
 
 
+def hidden_activation_stats_at_init(
+    x_train: np.ndarray,
+    *,
+    scale_multiplier: float,
+    n_hidden: int = MLP_HIDDEN,
+    activation: ActivationName = "tanh",
+    seed: int = 3,
+) -> dict[str, float]:
+    """Forward-pass statistics right after random init (§8.4 signal propagation)."""
+    rng = np.random.default_rng(seed)
+    n_hidden = max(4, int(n_hidden))
+    xs = np.asarray(x_train, dtype=float).ravel()
+    x_mean = float(xs.mean())
+    x_std = float(xs.std()) or 1.0
+    x_feat = ((xs - x_mean) / x_std).reshape(-1, 1)
+    base_std = xavier_std(1, n_hidden)
+    init_std = base_std * max(float(scale_multiplier), 1e-4)
+    w1, b1, w2, b2 = _init_weights(rng, n_hidden, init_scale=init_std)
+    act = activation_fn(activation)
+    _z1, h, _pred = _forward_mlp(x_feat, w1, b1, w2, b2, act)
+    abs_h = np.abs(h)
+    return {
+        "mean_abs_activation": float(np.mean(abs_h)),
+        "saturation_rate": float(np.mean(abs_h > 0.95)),
+        "init_std": init_std,
+    }
+
+
+def _init_run_diverged(final_val_mse: float) -> bool:
+    """Mark runs that failed to fit (numeric blow-up), not transient early spikes."""
+    return not np.isfinite(final_val_mse) or final_val_mse > INIT_FAIL_VAL_MSE
+
+
+def initialization_scale_sweep(
+    x_train: np.ndarray,
+    y_train: np.ndarray,
+    x_val: np.ndarray,
+    y_val: np.ndarray,
+    *,
+    multipliers: tuple[float, ...] = INIT_SWEEP_MULTIPLIERS,
+) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    """Sweep init scale: mean |activation| and post-training validation MSE."""
+    mults = np.asarray(multipliers, dtype=float)
+    mean_abs: list[float] = []
+    val_mse: list[float] = []
+    diverged: list[bool] = []
+    for mult in mults:
+        stats = hidden_activation_stats_at_init(x_train, scale_multiplier=float(mult))
+        run = initialization_comparison(
+            x_train,
+            y_train,
+            x_val,
+            y_val,
+            scale_multiplier=float(mult),
+        )
+        mean_abs.append(stats["mean_abs_activation"])
+        val_mse.append(run["final_val_mse"])
+        diverged.append(run["diverged"])
+    return mults, np.asarray(mean_abs), np.asarray(val_mse), np.asarray(diverged, dtype=bool)
+
+
+def optimizer_lr_sweep(
+    x_train: np.ndarray,
+    y_train: np.ndarray,
+    x_val: np.ndarray,
+    y_val: np.ndarray,
+    *,
+    learning_rates: tuple[float, ...],
+    n_epochs: int = 60,
+) -> dict[str, np.ndarray]:
+    """Final validation MSE vs learning rate for each optimizer (§8.5 sensitivity)."""
+    lrs = np.asarray(learning_rates, dtype=float)
+    out: dict[str, list[float]] = {"sgd": [], "momentum": [], "adam": []}
+    for lr in lrs:
+        sgd_run = train_mlp_optimizer(
+            x_train, y_train, x_val, y_val, optimizer="sgd", learning_rate=float(lr), n_epochs=n_epochs
+        )
+        mom_run = train_mlp_optimizer(
+            x_train,
+            y_train,
+            x_val,
+            y_val,
+            optimizer="momentum",
+            learning_rate=float(lr),
+            n_epochs=n_epochs,
+        )
+        adam_run = train_mlp_optimizer(
+            x_train, y_train, x_val, y_val, optimizer="adam", learning_rate=float(lr), n_epochs=n_epochs
+        )
+        out["sgd"].append(sgd_run["final_val_mse"])
+        out["momentum"].append(mom_run["final_val_mse"])
+        out["adam"].append(adam_run["final_val_mse"])
+    return {key: np.asarray(vals) for key, vals in out.items()}
+
+
+def linear_regression_closed_form(x_train: np.ndarray, y_train: np.ndarray) -> tuple[float, float]:
+    """Least-squares line y = w x + b."""
+    xs = np.asarray(x_train, dtype=float).ravel()
+    ys = np.asarray(y_train, dtype=float).ravel()
+    design = np.column_stack([xs, np.ones(len(xs))])
+    coef, _, _, _ = np.linalg.lstsq(design, ys, rcond=None)
+    return float(coef[0]), float(coef[1])
+
+
+def minibatch_gradient_variance(
+    x_train: np.ndarray,
+    y_train: np.ndarray,
+    *,
+    batch_size: int,
+    w: float,
+    b: float,
+    n_trials: int = 250,
+    seed: int = 11,
+) -> float:
+    """Monte Carlo variance of the mini-batch gradient w.r.t. w at fixed (w, b) (§8.1.3)."""
+    rng = np.random.default_rng(seed)
+    xs = np.asarray(x_train, dtype=float).ravel()
+    ys = np.asarray(y_train, dtype=float).ravel()
+    n = len(xs)
+    m = max(1, min(int(batch_size), n))
+    grads: list[float] = []
+    for _ in range(int(n_trials)):
+        idx = rng.choice(n, size=m, replace=False)
+        x_b = xs[idx]
+        y_b = ys[idx]
+        pred = w * x_b + b
+        error = pred - y_b
+        grads.append(float(2.0 * np.mean(error * x_b)))
+    return float(np.var(grads))
+
+
+def minibatch_size_sweep(
+    x_train: np.ndarray,
+    y_train: np.ndarray,
+    *,
+    batch_sizes: tuple[int, ...] = MINIBATCH_SIZE_SWEEP,
+    n_steps: int = 120,
+) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """Gradient noise and convergence vs mini-batch size."""
+    n = len(np.asarray(x_train).ravel())
+    w_star, b_star = linear_regression_closed_form(x_train, y_train)
+    sizes: list[int] = []
+    variances: list[float] = []
+    finals: list[float] = []
+    for raw in batch_sizes:
+        m = max(1, min(int(raw), n))
+        sizes.append(m)
+        variances.append(minibatch_gradient_variance(x_train, y_train, batch_size=m, w=w_star, b=b_star))
+        curve = minibatch_training_curve(x_train, y_train, batch_size=m, n_steps=n_steps)
+        finals.append(float(curve[-1]))
+    return np.asarray(sizes, dtype=float), np.asarray(variances), np.asarray(finals)
+
+
 def _init_weights(
     rng: np.random.Generator,
     n_hidden: int,
@@ -206,10 +401,15 @@ def initialization_comparison(
         train_hist.append(_mse_norm(pred_eval, y_tr))
         val_hist.append(_mse_norm(pred_val, y_va))
 
+    raw_final = float(val_hist[-1]) if val_hist else float("inf")
+    diverged = _init_run_diverged(raw_final)
+    final_val = min(raw_final, INIT_FAIL_VAL_MSE) if diverged and np.isfinite(raw_final) else raw_final
+
     return {
         "train_mse_history": train_hist,
         "val_mse_history": val_hist,
-        "final_val_mse": float(val_hist[-1]),
+        "final_val_mse": final_val,
+        "diverged": diverged,
     }
 
 
@@ -332,6 +532,7 @@ def train_mlp_optimizer(
         "train_mse_history": train_hist,
         "val_mse_history": val_hist,
         "final_val_mse": final_val,
+        "diverged": False,
     }
 
 
