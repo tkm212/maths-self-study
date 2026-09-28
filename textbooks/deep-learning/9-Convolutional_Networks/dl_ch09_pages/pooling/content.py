@@ -33,7 +33,7 @@ def render_body(mode, pool_size, pool_stride) -> html.Div:
         graph(fig_maps),
         html.P(
             "Pooling discards exact coordinates within each window, which helps build "
-            "translation tolerance when stacked with conv layers (§9.2–§9.3)."
+            "translation tolerance when stacked with conv layers (§9.2-§9.3)."
         ),
         graph(fig_diff),
         table(["Measure", "Value"], rows, caption="Pooling summary"),

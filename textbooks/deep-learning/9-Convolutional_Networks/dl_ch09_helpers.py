@@ -290,7 +290,7 @@ def plot_cnn_tower(
     n_blocks: int,
     kernel_size: int,
 ) -> tuple[go.Figure, go.Figure, dict[str, float]]:
-    """Spatial shrinkage through conv+pool tower (§9.1–§9.3)."""
+    """Spatial shrinkage through conv+pool tower (§9.1-§9.3)."""
     layers = tower_demo_layers(n_blocks, kernel_size=kernel_size, pool_size=2)
     sizes = stack_spatial_sizes(DEMO_IMAGE_SIZE, layers)
     labels = [f"L{i}" for i in range(len(sizes))]

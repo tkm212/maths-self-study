@@ -11,7 +11,7 @@ TowerPage = define_page(
     label="CNN tower",
     value="tower",
     title="Spatial hierarchy in a conv tower",
-    caption="§9.1–§9.3 — Shrinking maps and shared parameters.",
+    caption="§9.1-§9.3 - Shrinking maps and shared parameters.",
     summary=(
         "Typical conv nets alternate convolution with pooling to trade spatial "
         "resolution for richer context. Parameter count grows with depth but "

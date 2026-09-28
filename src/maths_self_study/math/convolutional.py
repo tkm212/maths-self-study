@@ -208,9 +208,7 @@ def tower_demo_layers(n_blocks: int, *, kernel_size: int = 3, pool_size: int = 2
     n = max(1, min(int(n_blocks), 6))
     k = max(1, int(kernel_size))
     p = max(1, int(pool_size))
-    return [
-        LayerSpec(kernel_size=k, stride=1, padding=1, pool_size=p, pool_stride=p) for _ in range(n)
-    ]
+    return [LayerSpec(kernel_size=k, stride=1, padding=1, pool_size=p, pool_stride=p) for _ in range(n)]
 
 
 def flatten_spatial_params(input_size: int, kernel_size: int) -> tuple[int, int]:

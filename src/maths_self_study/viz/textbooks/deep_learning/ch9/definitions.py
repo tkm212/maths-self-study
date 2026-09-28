@@ -71,7 +71,7 @@ TOWER = [
     (
         "Spatial hierarchy",
         r"Repeated conv+pool blocks shrink spatial resolution while growing semantic "
-        r"receptive field (§9.1–§9.3).",
+        r"receptive field (§9.1-§9.3).",
     ),
     (
         "Output size",
