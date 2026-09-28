@@ -18,6 +18,7 @@ from maths_self_study.viz.textbooks.deep_learning.ch5 import theorems as dl_ch5_
 from maths_self_study.viz.textbooks.deep_learning.ch6 import definitions as dl_ch6_defs
 from maths_self_study.viz.textbooks.deep_learning.ch7 import definitions as dl_ch7_defs
 from maths_self_study.viz.textbooks.deep_learning.ch8 import definitions as dl_ch8_defs
+from maths_self_study.viz.textbooks.deep_learning.ch9 import definitions as dl_ch9_defs
 from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch2 import definitions as esl_ch2_defs
 from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch2 import theorems as esl_ch2_th
 from maths_self_study.viz.textbooks.elements_of_statistical_learning.ch3 import definitions as esl_ch3_defs
@@ -81,6 +82,10 @@ DEFINITION_MODULES = (
     + _entries(
         dl_ch8_defs,
         ["MOMENTUM", "INITIALIZATION", "ADAPTIVE", "MINIBATCH"],
+    )
+    + _entries(
+        dl_ch9_defs,
+        ["CONVOLUTION", "POOLING", "EDGE_FILTERS", "RECEPTIVE_FIELD", "TRANSLATION", "TOWER"],
     )
     + _entries(esl_ch2_defs, ["K_NEAREST_NEIGHBORS", "LEAST_SQUARES"])
     + _entries(esl_ch3_defs, ["SUBSET_SELECTION", "RIDGE", "LASSO", "PCR_PLS"])

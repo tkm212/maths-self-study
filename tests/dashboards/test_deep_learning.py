@@ -15,6 +15,7 @@ from tests.dashboards.support import (
     CH6_DASHBOARD,
     CH7_DASHBOARD,
     CH8_DASHBOARD,
+    CH9_DASHBOARD,
     load_dashboard_module,
     prepare_chapter_import,
 )
@@ -27,6 +28,7 @@ DL_DASHBOARDS = [
     pytest.param(CH6_DASHBOARD, 5, id="ch6"),
     pytest.param(CH7_DASHBOARD, 9, id="ch7"),
     pytest.param(CH8_DASHBOARD, 4, id="ch8"),
+    pytest.param(CH9_DASHBOARD, 6, id="ch9"),
 ]
 
 
@@ -371,3 +373,59 @@ def test_plot_minibatch_noise_builds_figures():
     fig_path, fig_sweep, stats = helpers.plot_minibatch_noise(8)
     assert fig_path is not None and fig_sweep is not None
     assert stats["grad_variance"] >= 0
+
+
+def test_convolution_page_updates():
+    prepare_chapter_import(CH9_DASHBOARD.parent)
+    from dl_ch09_pages.convolution.content import render_body
+
+    tight = render_body("identity", 1, 0)
+    wide = render_body("sobel_x", 2, 2)
+    assert tight is not None and wide is not None
+    assert str(tight.to_plotly_json()) != str(wide.to_plotly_json())
+
+
+def test_plot_convolution_builds_figure():
+    from tests.dashboards.support import load_dl_helpers
+
+    helpers = load_dl_helpers(9)
+    fig_maps, fig_bar, stats = helpers.plot_convolution(1, 1, "sobel_x")
+    assert fig_maps is not None and fig_bar is not None
+    assert stats["output_h"] >= 1
+    assert len(fig_maps.data) >= 3
+
+
+def test_plot_pooling_builds_figure():
+    from tests.dashboards.support import load_dl_helpers
+
+    helpers = load_dl_helpers(9)
+    fig_maps, fig_diff, stats = helpers.plot_pooling(2, 2, "max")
+    assert fig_maps is not None and fig_diff is not None
+    assert stats["compression"] >= 1.0
+
+
+def test_plot_receptive_field_builds_figures():
+    from tests.dashboards.support import load_dl_helpers
+
+    helpers = load_dl_helpers(9)
+    fig_rf, fig_size, stats = helpers.plot_receptive_field(3, 3)
+    assert fig_rf is not None and fig_size is not None
+    assert stats["conv_params"] < stats["fc_params"]
+
+
+def test_plot_translation_equivariance_builds_figure():
+    from tests.dashboards.support import load_dl_helpers
+
+    helpers = load_dl_helpers(9)
+    fig, fig_bar, stats = helpers.plot_translation_equivariance(2, 1)
+    assert fig is not None and fig_bar is not None
+    assert stats["max_abs_diff"] < 1e-6
+
+
+def test_plot_cnn_tower_builds_figures():
+    from tests.dashboards.support import load_dl_helpers
+
+    helpers = load_dl_helpers(9)
+    fig_bar, fig_params, stats = helpers.plot_cnn_tower(4, 3)
+    assert fig_bar is not None and fig_params is not None
+    assert stats["output_size"] < stats["input_size"]
