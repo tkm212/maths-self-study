@@ -2,18 +2,16 @@
 
 from __future__ import annotations
 
+from dl_ch09_pages.applications import ApplicationsPage
 from dl_ch09_pages.convolution import ConvolutionPage
-from dl_ch09_pages.edge_filters import EdgeFiltersPage
+from dl_ch09_pages.motivation import MotivationPage
 from dl_ch09_pages.pooling import PoolingPage
-from dl_ch09_pages.receptive_field import ReceptiveFieldPage
-from dl_ch09_pages.tower import TowerPage
-from dl_ch09_pages.translation import TranslationPage
+from dl_ch09_pages.variants import VariantsPage
 
 __all__ = [
+    "ApplicationsPage",
     "ConvolutionPage",
-    "EdgeFiltersPage",
+    "MotivationPage",
     "PoolingPage",
-    "ReceptiveFieldPage",
-    "TowerPage",
-    "TranslationPage",
+    "VariantsPage",
 ]

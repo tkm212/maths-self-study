@@ -28,7 +28,7 @@ DL_DASHBOARDS = [
     pytest.param(CH6_DASHBOARD, 5, id="ch6"),
     pytest.param(CH7_DASHBOARD, 9, id="ch7"),
     pytest.param(CH8_DASHBOARD, 4, id="ch8"),
-    pytest.param(CH9_DASHBOARD, 6, id="ch9"),
+    pytest.param(CH9_DASHBOARD, 5, id="ch9"),
 ]
 
 
@@ -404,6 +404,16 @@ def test_plot_pooling_builds_figure():
     assert stats["compression"] >= 1.0
 
 
+def test_motivation_page_updates():
+    prepare_chapter_import(CH9_DASHBOARD.parent)
+    from dl_ch09_pages.motivation.content import render_body
+
+    tight = render_body("identity", 0, 1)
+    wide = render_body("sobel_x", 3, 4)
+    assert tight is not None and wide is not None
+    assert str(tight.to_plotly_json()) != str(wide.to_plotly_json())
+
+
 def test_plot_receptive_field_builds_figures():
     from tests.dashboards.support import load_dl_helpers
 
@@ -429,3 +439,41 @@ def test_plot_cnn_tower_builds_figures():
     fig_bar, fig_params, stats = helpers.plot_cnn_tower(4, 3)
     assert fig_bar is not None and fig_params is not None
     assert stats["output_size"] < stats["input_size"]
+
+
+def test_variants_page_updates():
+    prepare_chapter_import(CH9_DASHBOARD.parent)
+    from dl_ch09_pages.variants.content import render_body
+
+    small = render_body(1)
+    large = render_body(4)
+    assert small is not None and large is not None
+    assert str(small.to_plotly_json()) != str(large.to_plotly_json())
+
+
+def test_plot_variants_builds_figures():
+    from tests.dashboards.support import load_dl_helpers
+
+    helpers = load_dl_helpers(9)
+    fig_dil, fig_1x1, fig_rf, stats = helpers.plot_variants(2)
+    assert fig_dil is not None and fig_1x1 is not None and fig_rf is not None
+    assert stats["expanded_kernel_size"] > 3
+
+
+def test_applications_page_updates():
+    prepare_chapter_import(CH9_DASHBOARD.parent)
+    from dl_ch09_pages.applications.content import render_body
+
+    a = render_body(0.2, 1)
+    b = render_body(2.5, 15)
+    assert a is not None and b is not None
+    assert str(a.to_plotly_json()) != str(b.to_plotly_json())
+
+
+def test_plot_gabor_and_random_builds_figure():
+    from tests.dashboards.support import load_dl_helpers
+
+    helpers = load_dl_helpers(9)
+    fig_g, fig_bar, stats = helpers.plot_gabor_and_random(1.0, 5)
+    assert fig_g is not None and fig_bar is not None
+    assert stats["sobel_mean_abs"] >= 0

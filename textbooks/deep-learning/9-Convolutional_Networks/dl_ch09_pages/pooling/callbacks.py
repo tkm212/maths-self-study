@@ -11,6 +11,7 @@ INPUTS = [
     Input("pool-mode", "value"),
     Input("pool-size", "value"),
     Input("pool-stride", "value"),
+    Input("pool-tower-blocks", "value"),
 ]
 
 register_callbacks = define_page_callbacks(

@@ -13,11 +13,10 @@ PAGES = load_chapter_pages(
     __file__,
     "dl_ch09_pages",
     "ConvolutionPage",
+    "MotivationPage",
     "PoolingPage",
-    "EdgeFiltersPage",
-    "ReceptiveFieldPage",
-    "TranslationPage",
-    "TowerPage",
+    "VariantsPage",
+    "ApplicationsPage",
 )
 
 

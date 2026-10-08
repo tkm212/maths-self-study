@@ -12,11 +12,11 @@ ConvolutionPage = define_page(
     label="Convolution",
     value="convolution",
     title="Cross-correlation on a 2D grid",
-    caption="§9.1 — Sliding kernels produce feature maps.",
+    caption="§9.1, §9.5 - Cross-correlation, stride, and padding.",
     summary=(
-        "Convolutional layers apply the same small kernel at every spatial location. "
-        "Stride subsamples the output; padding preserves border activations and "
-        "controls output size."
+        "Convolutional layers apply the same small kernel at every spatial location "
+        "using cross-correlation (§9.1). Stride and zero-padding control the output "
+        "grid (§9.5)."
     ),
     methodology=[
         "Use a synthetic image with edges and blocks.",

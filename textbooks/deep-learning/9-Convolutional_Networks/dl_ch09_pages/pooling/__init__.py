@@ -1,4 +1,4 @@
-"""Pooling page."""
+"""Pooling, invariance, and conv towers (§9.3-§9.4)."""
 
 from __future__ import annotations
 
@@ -9,19 +9,19 @@ from maths_self_study.viz.textbooks.deep_learning.ch9.algorithms import MAX_POOL
 from maths_self_study.viz.textbooks.deep_learning.ch9.definitions import POOLING as POOLING_DEFINITIONS
 
 PoolingPage = define_page(
-    label="Pooling",
+    label="Pooling & towers",
     value="pooling",
-    title="Max and average pooling",
-    caption="§9.2 — Local aggregation downsamples feature maps.",
+    title="Pooling and classification towers",
+    caption="§9.3, §9.4 - Invariance, priors, and spatial hierarchy.",
     summary=(
-        "Pooling layers reduce spatial resolution by summarizing each neighborhood. "
-        "Max pooling keeps the strongest filter response; average pooling smooths "
-        "activations before the next convolution."
+        "Pooling downsamples feature maps and builds approximate translation invariance "
+        "(§9.3). Viewed as priors, conv favors equivariance and pooling favors invariance "
+        "(§9.4). Stacked conv+pool blocks shrink maps toward a classifier (Fig. 9.11)."
     ),
     methodology=[
-        "Build a Sobel feature map from the demo image.",
-        "Apply max or average pooling with adjustable window and stride.",
-        "Contrast pooled maps and max-vs-avg differences.",
+        "Compare max and average pooling on a conv feature map.",
+        "Read off compression from pool window and stride.",
+        "Simulate tower depth and map side length after each block.",
     ],
     definitions=POOLING_DEFINITIONS,
     algorithm=MAX_POOL_FORWARD,

@@ -6,8 +6,13 @@ import numpy as np
 
 from maths_self_study.math.convolutional import (
     DEMO_IMAGE_SIZE,
+    conv1d,
     conv2d,
+    conv2d_dilated,
     demo_image,
+    demo_series_1d,
+    expand_kernel_dilation,
+    gabor_kernel,
     pool2d,
     receptive_field_size,
     spatial_output_length,
@@ -41,3 +46,29 @@ def test_receptive_field_grows_with_depth():
     one = tower_demo_layers(1)
     three = tower_demo_layers(3)
     assert receptive_field_size(three) > receptive_field_size(one)
+
+
+def test_dilated_kernel_expands():
+    k = np.ones((3, 3))
+    expanded = expand_kernel_dilation(k, 2)
+    assert expanded.shape == (5, 5)
+
+
+def test_conv1d_output_length():
+    series = demo_series_1d(32)
+    out = conv1d(series, np.array([-1.0, 0.0, 1.0]), padding=1)
+    assert len(out) == len(series)
+
+
+def test_dilated_conv_differs_from_standard():
+    img = demo_image(12)
+    k = np.array([[0.0, 1.0, 0.0], [0.0, 1.0, 0.0], [0.0, 1.0, 0.0]])
+    a = conv2d(img, k, padding=1)
+    b = conv2d_dilated(img, k, dilation=2, padding=2)
+    assert not np.allclose(a, b)
+
+
+def test_gabor_kernel_finite():
+    g = gabor_kernel(7, theta=0.5)
+    assert g.shape == (7, 7)
+    assert np.all(np.isfinite(g))
