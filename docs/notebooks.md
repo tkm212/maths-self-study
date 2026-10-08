@@ -103,7 +103,7 @@ Implementations based on **Goodfellow, I., Bengio, Y., & Courville, A. (2016). [
 
 Source path: `textbooks/deep-learning/`
 
-Chapters 2–5 ship as multi-page **Dash** dashboards (filters for chapter constants on each page). Each chapter’s `dashboard.py` wires the app; page code lives in `ch{N}_pages/<page>/` with separate `filters.py`, `content.py`, and `callbacks.py` modules. Shared UI and app shell code is in `maths_self_study.dashboards`; plotting helpers are in each chapter’s `ch{N}_helpers.py`; core math is in `maths_self_study.math`.
+Chapters 2–9 ship as multi-page **Dash** dashboards (filters for chapter constants on each page). Each chapter’s `dashboard.py` wires the app; page code lives in `ch{N}_pages/<page>/` with separate `filters.py`, `content.py`, and `callbacks.py` modules. Shared UI and app shell code is in `maths_self_study.dashboards`; plotting helpers are in each chapter’s `ch{N}_helpers.py`; core math is in `maths_self_study.math`.
 
 | Chapter | Topic | App |
 |---------|-------|-----|
@@ -111,6 +111,10 @@ Chapters 2–5 ship as multi-page **Dash** dashboards (filters for chapter const
 | 3 | Probability and Information Theory | `3-Probability_Information_Theory/dashboard.py` |
 | 4 | Numerical Computation | `4-Numerical_Computation/dashboard.py` |
 | 5 | Machine Learning Basics | `5-Machine_Learning_Basics/dashboard.py` |
+| 6 | Deep Feedforward Networks | `6-Deep_Feedforward_Networks/dashboard.py` |
+| 7 | Regularization for Deep Learning | `7-Regularization_for_Deep_Learning/dashboard.py` |
+| 8 | Optimization for Training Deep Models | `8-Optimization_for_Training_Deep_Models/dashboard.py` |
+| 9 | Convolutional Networks | `9-Convolutional_Networks/dashboard.py` |
 
 ### Chapter 2 — Linear Algebra
 
@@ -142,4 +146,36 @@ Interactive walkthrough of [Chapter 5](https://www.deeplearningbook.org/contents
 
 ```bash
 uv run python textbooks/deep-learning/5-Machine_Learning_Basics/dashboard.py
+```
+
+### Chapter 6 — Deep Feedforward Networks
+
+Interactive walkthrough of [Chapter 6](https://www.deeplearningbook.org/contents/mlp.html): learning XOR with a hidden layer, Bernoulli and Multinoulli output units, ReLU/sigmoid/tanh activations, and a one-hidden-layer universal approximation demo.
+
+```bash
+uv run python textbooks/deep-learning/6-Deep_Feedforward_Networks/dashboard.py
+```
+
+### Chapter 7 — Regularization for Deep Learning
+
+Interactive walkthrough of [Chapter 7](https://www.deeplearningbook.org/contents/regularization.html): weight decay, early stopping, dropout, input noise, semi-supervised/multitask learning, parameter sharing (CNN), bagging, adversarial examples, and tangent distance.
+
+```bash
+uv run python textbooks/deep-learning/7-Regularization_for_Deep_Learning/dashboard.py
+```
+
+### Chapter 8 — Optimization for Training Deep Models
+
+Interactive walkthrough of [Chapter 8](https://www.deeplearningbook.org/contents/optimization.html): momentum on ill-conditioned quadratics, Xavier initialization scale, SGD vs Adam on an MLP, and mini-batch gradient noise.
+
+```bash
+uv run python textbooks/deep-learning/8-Optimization_for_Training_Deep_Models/dashboard.py
+```
+
+### Chapter 9 — Convolutional Networks
+
+Interactive walkthrough of [Chapter 9](https://www.deeplearningbook.org/contents/convnets.html): 2D cross-correlation, pooling, classical edge filters, receptive field growth, translation equivariance, and conv-tower geometry.
+
+```bash
+uv run python textbooks/deep-learning/9-Convolutional_Networks/dashboard.py
 ```
