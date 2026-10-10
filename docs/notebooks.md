@@ -174,7 +174,7 @@ uv run python textbooks/deep-learning/8-Optimization_for_Training_Deep_Models/da
 
 ### Chapter 9 — Convolutional Networks
 
-Interactive walkthrough of [Chapter 9](https://www.deeplearningbook.org/contents/convnets.html): 2D cross-correlation, pooling, classical edge filters, receptive field growth, translation equivariance, and conv-tower geometry.
+Interactive walkthrough of [Chapter 9](https://www.deeplearningbook.org/contents/convnets.html): five tabs with theory-first overviews and demos for §9.1-§9.11 (convolution, inductive biases, pooling, variants, and applications).
 
 ```bash
 uv run python textbooks/deep-learning/9-Convolutional_Networks/dashboard.py

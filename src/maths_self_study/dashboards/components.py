@@ -412,15 +412,44 @@ _SUMMARY_BODY_STYLE = {
 }
 
 
-def summary_box(content: str) -> html.Div:
+def summary_box(
+    content: str | None = None,
+    *,
+    parts: list[tuple[str, str]] | None = None,
+) -> html.Div:
     """Short method overview panel shown at the top of a dashboard page."""
-    return html.Div(
-        [
-            html.Div("Overview", style=_SUMMARY_LABEL_STYLE),
-            math_text(content, style=_SUMMARY_BODY_STYLE),
-        ],
-        style=_SUMMARY_BOX_STYLE,
-    )
+    children: list[Any] = [html.Div("Overview", style=_SUMMARY_LABEL_STYLE)]
+    if content:
+        children.append(
+            math_text(
+                content,
+                style={
+                    **_SUMMARY_BODY_STYLE,
+                    "marginBottom": "10px" if parts else "0",
+                },
+            )
+        )
+    if parts:
+        children.append(
+            html.Ul(
+                [
+                    html.Li(
+                        [
+                            html.Strong(title, style={"color": "#1e293b"}),
+                            html.Span(f" — {detail}", style=_SUMMARY_BODY_STYLE),
+                        ],
+                        style={"marginBottom": "6px"},
+                    )
+                    for title, detail in parts
+                ],
+                style={
+                    **_SUMMARY_BODY_STYLE,
+                    "margin": 0,
+                    "paddingLeft": "20px",
+                },
+            )
+        )
+    return html.Div(children, style=_SUMMARY_BOX_STYLE)
 
 
 def text_box(

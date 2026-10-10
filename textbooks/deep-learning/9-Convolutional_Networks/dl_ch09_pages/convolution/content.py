@@ -27,12 +27,13 @@ def render_body(filter_name, stride, padding) -> html.Div:
         formula_group(
             ("2D cross-correlation", CONV2D),
             ("Output size (one axis)", OUTPUT_SIZE),
-            title="Key formulas (§9.1)",
+            title="Key formulas (§9.1, §9.5)",
         ),
         graph(fig_maps),
         html.P(
-            "Each output pixel is a weighted sum of a local patch. Sharing the kernel "
-            "across locations is the parameter-efficiency idea behind conv nets (§9.1)."
+            "Each output pixel is a weighted sum of a local patch. Stride and padding "
+            "follow the usual size rule in §9.5; sharing weights across locations is "
+            "motivated in §9.2."
         ),
         graph(fig_bar),
         table(["Measure", "Value"], rows, caption="Spatial summary"),

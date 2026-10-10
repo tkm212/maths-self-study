@@ -19,6 +19,7 @@ def build_filters() -> html.Div:
             ],
             "max",
         ),
-        slider("pool-size", "Window size", 2, 4, helpers.POOL_SIZE_DEFAULT, step=1),
-        slider("pool-stride", "Stride", 1, 4, helpers.POOL_STRIDE_DEFAULT, step=1),
+        slider("pool-size", "Pool window", 2, 4, helpers.POOL_SIZE_DEFAULT, step=1),
+        slider("pool-stride", "Pool stride", 1, 4, helpers.POOL_STRIDE_DEFAULT, step=1),
+        slider("pool-tower-blocks", "Tower depth", 1, 6, helpers.TOWER_BLOCKS_DEFAULT, step=1),
     )

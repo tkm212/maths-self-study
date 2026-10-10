@@ -66,6 +66,17 @@ def test_summary_box_renders_overview():
     assert "math-latex-source" in rendered
 
 
+def test_summary_box_renders_overview_parts():
+    block = summary_box(
+        "Why the topic matters.",
+        parts=[("Key idea", "What it means in theory."), ("Second idea", "Another concept.")],
+    )
+    rendered = str(block)
+    assert "Why the topic matters." in rendered
+    assert "Key idea" in rendered
+    assert "What it means in theory." in rendered
+
+
 def test_text_box_renders_steps():
     block = text_box(steps=["Definition", "Algorithm"], title="How it works")
     assert block is not None

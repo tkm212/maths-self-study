@@ -85,7 +85,7 @@ DEFINITION_MODULES = (
     )
     + _entries(
         dl_ch9_defs,
-        ["CONVOLUTION", "POOLING", "EDGE_FILTERS", "RECEPTIVE_FIELD", "TRANSLATION", "TOWER"],
+        ["CONVOLUTION", "MOTIVATION", "POOLING", "VARIANTS", "APPLICATIONS"],
     )
     + _entries(esl_ch2_defs, ["K_NEAREST_NEIGHBORS", "LEAST_SQUARES"])
     + _entries(esl_ch3_defs, ["SUBSET_SELECTION", "RIDGE", "LASSO", "PCR_PLS"])

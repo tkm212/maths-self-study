@@ -9,18 +9,26 @@ from plotly.subplots import make_subplots
 from maths_self_study.math.convolutional import (
     DEMO_IMAGE_SIZE,
     KERNEL_PRESETS,
+    conv1d,
     conv2d,
+    conv2d_dilated,
     demo_image,
+    demo_series_1d,
+    demo_volume,
+    expand_kernel_dilation,
     flatten_spatial_params,
+    gabor_kernel,
+    mix_channels_1x1,
+    pixel_wise_label_map,
     pool2d,
+    random_kernel_2d,
     receptive_field_size,
     shift_image,
     spatial_output_length,
     stack_spatial_sizes,
     tower_demo_layers,
-    translation_equivariance_stats,
 )
-from maths_self_study.viz.graphs import apply_layout, bar_chart, heatmap_chart, line_chart
+from maths_self_study.viz.graphs import apply_layout, bar_chart, heatmap_chart, line_chart, scatter_chart
 
 STRIDE_DEFAULT = 1
 PADDING_DEFAULT = 0
@@ -30,6 +38,9 @@ TOWER_BLOCKS_DEFAULT = 3
 KERNEL_SIZE_DEFAULT = 3
 SHIFT_DEFAULT = 2
 FILTER_DEFAULT = "sobel_x"
+DILATION_DEFAULT = 2
+GABOR_THETA_DEFAULT = 0.785
+RANDOM_SEED_DEFAULT = 3
 
 
 def _axis_labels(n: int) -> list[int]:
@@ -232,11 +243,8 @@ def plot_receptive_field(
     return fig_rf, fig_size, stats
 
 
-def plot_translation_equivariance(
-    shift: int,
-    padding: int,
-) -> tuple[go.Figure, go.Figure, dict[str, float]]:
-    """Shift commutes with convolution under zero pad (§9.3)."""
+def plot_translation_equivariance(shift: int, padding: int) -> go.Figure:
+    """Visual check that shift commutes with convolution on interior pixels (§9.2)."""
     img = demo_image(DEMO_IMAGE_SIZE)
     kernel = KERNEL_PRESETS["sobel_x"]
     dy = int(shift)
@@ -256,34 +264,12 @@ def plot_translation_equivariance(
         cs = conv_shift[:h, :w]
         sc = shift_conv[:h, :w]
     diff = np.abs(cs - sc)
-    fig = _three_panel(
+    return _three_panel(
         cs,
         sc,
         diff,
         titles=("conv(shift(x)) interior", "shift(conv(x)) interior", "|difference|"),
     )
-    stats_dict = translation_equivariance_stats(
-        img,
-        kernel,
-        shift_y=dy,
-        shift_x=dx,
-        padding=p,
-        stride=1,
-    )
-    fig_line = bar_chart(
-        ["max |diff|", "mean |diff|"],
-        [stats_dict["max_abs_diff"], stats_dict["mean_abs_diff"]],
-        title="Translation equivariance error (should be ~0 with same padding)",
-        yaxis_title="abs error",
-        color="#64748b",
-        height=340,
-    )
-    stats = {
-        **stats_dict,
-        "shift_pixels": float(dy),
-        "padding": float(p),
-    }
-    return fig, fig_line, stats
 
 
 def plot_cnn_tower(
@@ -322,3 +308,130 @@ def plot_cnn_tower(
         "params_estimate": float(cumulative[-1]) if len(cumulative) else 0.0,
     }
     return fig_bar, fig_params, stats
+
+
+def plot_variants(dilation: int) -> tuple[go.Figure, go.Figure, go.Figure, dict[str, float]]:
+    """Dilated conv vs standard and 1x1 channel mixing (§9.5)."""
+    img = demo_image(DEMO_IMAGE_SIZE)
+    base_k = KERNEL_PRESETS["sobel_x"]
+    d = max(1, int(dilation))
+    standard = conv2d(img, base_k, stride=1, padding=1)
+    dilated = conv2d_dilated(img, base_k, dilation=d, padding=1)
+    expanded = expand_kernel_dilation(base_k, d)
+    fig_dil = _three_panel(
+        standard,
+        expanded,
+        dilated,
+        titles=("Standard 3x3", f"Dilated kernel (d={d})", "Dilated response"),
+    )
+    ch_a = conv2d(img, KERNEL_PRESETS["sobel_x"], padding=1)
+    ch_b = conv2d(img, KERNEL_PRESETS["sobel_y"], padding=1)
+    mixed = mix_channels_1x1(
+        [ch_a, ch_b],
+        np.array([[0.7, 0.3], [0.2, 0.8]]),
+    )
+    fig_1x1 = make_subplots(rows=1, cols=3, subplot_titles=("Sobel x", "Sobel y", "1x1 mix ch0"))
+    for col, arr in enumerate([ch_a, ch_b, mixed[:, :, 0]], start=1):
+        heatmap_chart(arr, showscale=col == 3, row=1, col=col, fig=fig_1x1)
+        fig_1x1.update_yaxes(autorange="reversed", row=1, col=col)
+    apply_layout(fig_1x1, height=360, title="1x1 conv mixes channels without changing H,W (§9.5)")
+    dilations = np.arange(1, 5)
+    rf_effective = [float(base_k.shape[0] + (base_k.shape[0] - 1) * (dd - 1)) for dd in dilations]
+    fig_rf = line_chart(
+        dilations,
+        rf_effective,
+        name="effective kernel width",
+        mode="lines+markers",
+        title="Dilation expands receptive field without growing parameter count",
+        xaxis_title="dilation d",
+        yaxis_title="effective kernel size",
+        height=360,
+    )
+    stats = {
+        "dilation": float(d),
+        "standard_mean_abs": float(np.mean(np.abs(standard))),
+        "dilated_mean_abs": float(np.mean(np.abs(dilated))),
+        "expanded_kernel_size": float(expanded.shape[0]),
+    }
+    return fig_dil, fig_1x1, fig_rf, stats
+
+
+def plot_data_types() -> tuple[go.Figure, go.Figure, dict[str, float]]:
+    """1D series and 3D volume slice (§9.7)."""
+    series = demo_series_1d(64)
+    k1 = np.array([-1.0, 0.0, 1.0])
+    conv_s = conv1d(series, k1, padding=1)
+    x = np.arange(len(series))
+    fig_1d = scatter_chart(x, series, name="signal", mode="lines", color="#64748b")
+    scatter_chart(
+        np.arange(len(conv_s)),
+        conv_s,
+        name="conv1d response",
+        mode="lines",
+        color="#2563eb",
+        fig=fig_1d,
+    )
+    apply_layout(
+        fig_1d,
+        title="1D convolution on a time series (§9.7)",
+        xaxis_title="time index",
+        yaxis_title="value",
+        height=360,
+    )
+    vol = demo_volume(12)
+    mid = vol[vol.shape[0] // 2]
+    fig_3d = heatmap_chart(
+        mid,
+        colorscale="Viridis",
+        title="3D grid: middle depth slice (§9.7)",
+        height=360,
+    )
+    fig_3d.update_yaxes(autorange="reversed")
+    stats = {
+        "series_len": float(len(series)),
+        "conv1d_len": float(len(conv_s)),
+        "volume_shape": float(vol.shape[0]),
+    }
+    return fig_1d, fig_3d, stats
+
+
+def plot_structured_labels() -> tuple[go.Figure, dict[str, float]]:
+    """Per-pixel argmax over filter bank (§9.6)."""
+    img = demo_image(DEMO_IMAGE_SIZE)
+    labels = pixel_wise_label_map(img)
+    fig = make_subplots(rows=1, cols=2, subplot_titles=("Input", "Pixel-wise argmax label"))
+    heatmap_chart(img, showscale=True, row=1, col=1, fig=fig)
+    heatmap_chart(labels, colorscale="Portland", showscale=True, row=1, col=2, fig=fig)
+    fig.update_yaxes(autorange="reversed", row=1, col=1)
+    fig.update_yaxes(autorange="reversed", row=1, col=2)
+    apply_layout(fig, height=360, title="Structured output: one label per spatial location (§9.6)")
+    stats = {"n_classes": float(len(np.unique(labels)))}
+    return fig, stats
+
+
+def plot_gabor_and_random(theta: float, seed: int) -> tuple[go.Figure, go.Figure, dict[str, float]]:
+    """Gabor filters and random vs structured kernels (§9.9, §9.10)."""
+    img = demo_image(DEMO_IMAGE_SIZE)
+    th = float(theta)
+    gk = gabor_kernel(7, theta=th)
+    g_resp = conv2d(img, gk, padding=3)
+    fig_g = _three_panel(img, gk, g_resp, titles=("Input", "Gabor kernel", "Response"))
+    rand_k = random_kernel_2d(3, seed=int(seed))
+    sobel = KERNEL_PRESETS["sobel_x"]
+    rand_resp = float(np.mean(np.abs(conv2d(img, rand_k, padding=1))))
+    sobel_resp = float(np.mean(np.abs(conv2d(img, sobel, padding=1))))
+    fig_bar = bar_chart(
+        ["random 3x3", "Sobel x"],
+        [rand_resp, sobel_resp],
+        title="Mean |response|: random vs hand-crafted (§9.9)",
+        yaxis_title="mean |activation|",
+        color="#60a5fa",
+        height=340,
+    )
+    stats = {
+        "gabor_theta": th,
+        "random_seed": float(seed),
+        "random_mean_abs": rand_resp,
+        "sobel_mean_abs": sobel_resp,
+    }
+    return fig_g, fig_bar, stats

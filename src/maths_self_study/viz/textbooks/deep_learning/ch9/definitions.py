@@ -5,76 +5,101 @@ from __future__ import annotations
 CONVOLUTION = [
     (
         "Cross-correlation",
-        r"Deep learning 'convolution' slides a kernel over the input and sums "
-        r"elementwise products at each location (§9.1).",
+        r"Deep learning layers use cross-correlation (sum of elementwise products over "
+        r"each patch) rather than flipping the kernel (§9.1).",
     ),
     (
         "Stride and padding",
-        r"Stride subsamples the output grid; zero-padding controls border behavior "
-        r"and output spatial size.",
+        r"Stride and zero-padding control output grid size and border behavior (§9.5).",
+    ),
+]
+
+MOTIVATION = [
+    (
+        "Sparse connectivity",
+        r"Each output connects to a small local patch of the input, not the full grid "
+        r"(§9.2).",
+    ),
+    (
+        "Parameter sharing",
+        r"The same kernel weights are reused at every spatial location, cutting "
+        r"parameter count versus a fully connected layer (§9.2).",
+    ),
+    (
+        "Translation equivariance",
+        r"If the input shifts, the feature map shifts the same way: "
+        r"$f(g(x)) = g(f(x))$ for translation $g$ (§9.2).",
+    ),
+    (
+        "Receptive field",
+        r"Deeper units integrate information from a larger input region; depth, "
+        r"kernel size, stride, and pooling expand the field (§9.2, Fig. 9.4).",
+    ),
+    (
+        "Edge detectors",
+        r"Small kernels can detect edges efficiently; neuroscience motivates similar "
+        r"filters (§9.2, §9.10).",
     ),
 ]
 
 POOLING = [
     (
         "Pooling",
-        r"Downsample feature maps by aggregating local neighborhoods — max pooling "
-        r"keeps salient activations, average pooling smooths (§9.2).",
+        r"Aggregate each neighborhood (max or average) to downsample feature maps "
+        r"(§9.3).",
     ),
     (
-        "Translation tolerance",
-        r"Pooling builds approximate invariance to small shifts when stacked with "
-        r"convolution (§9.3).",
-    ),
-]
-
-EDGE_FILTERS = [
-    (
-        "Local feature detectors",
-        r"Hand-crafted kernels (Sobel, Laplacian) highlight edges before learned "
-        r"filters dominate in deep stacks (§9.1).",
+        "Translation invariance",
+        r"Pooling builds approximate invariance to small shifts of the input "
+        r"(§9.3).",
     ),
     (
-        "Channel depth",
-        r"Multiple kernels at the same location produce a stack of feature maps — "
-        r"the channel dimension encodes different patterns.",
+        "Infinitely strong prior",
+        r"Conv encodes local, equivariant interactions; pooling encodes local "
+        r"invariance, both as priors over weights (§9.4).",
+    ),
+    (
+        "Classification towers",
+        r"Repeated conv and pool blocks shrink spatial maps before a classifier "
+        r"(§9.3, Fig. 9.11).",
     ),
 ]
 
-RECEPTIVE_FIELD = [
+VARIANTS = [
     (
-        "Receptive field",
-        r"Each output unit 'sees' a region of the input; depth, kernel size, stride, "
-        r"and pooling multiply the effective field size (§9.3).",
+        "Dilated convolution",
+        r"Insert zeros between kernel elements to expand the receptive field without "
+        r"adding parameters (§9.5).",
     ),
     (
-        "Parameter efficiency",
-        r"Shared kernels use far fewer weights than a fully connected layer over "
-        r"the full input grid.",
-    ),
-]
-
-TRANSLATION = [
-    (
-        "Equivariance",
-        r"A linear convolution commutes with translation: shifting the input shifts "
-        r"the output by the same amount (same padding) (§9.3).",
+        "1x1 convolution",
+        r"Mix channels at each spatial location without changing H and W (§9.5).",
     ),
     (
-        "Invariance",
-        r"Pooling discards exact position, trading equivariance for approximate "
-        r"translation invariance.",
+        "Padding and stride",
+        r"Control output tensor geometry; same formulas as §9.1 apply with effective "
+        r"kernel size (§9.5).",
     ),
 ]
 
-TOWER = [
+APPLICATIONS = [
     (
-        "Spatial hierarchy",
-        r"Repeated conv+pool blocks shrink spatial resolution while growing semantic "
-        r"receptive field (§9.1-§9.3).",
+        "Structured outputs",
+        r"Emit a full spatial map of predictions (e.g. pixel labels) rather than "
+        r"a single vector (§9.6).",
     ),
     (
-        "Output size",
-        r"For one spatial axis: $H_{\mathrm{out}} = \lfloor (H_{\mathrm{in}} + 2P - K)/S \rfloor + 1$.",
+        "Grid dimensionality",
+        r"Conv applies to 1D sequences, 2D images, and 3D volumes with the same "
+        r"local connectivity idea (§9.7).",
+    ),
+    (
+        "Random features",
+        r"Untrained filters can already show edge-like selectivity (§9.9).",
+    ),
+    (
+        "Gabor filter",
+        r"A Gaussian envelope modulating a sinusoid; controls orientation and "
+        r"spatial frequency in a local patch (§9.10).",
     ),
 ]

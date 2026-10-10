@@ -218,3 +218,126 @@ def flatten_spatial_params(input_size: int, kernel_size: int) -> tuple[int, int]
     fc = inp * inp
     conv = k * k
     return fc, conv
+
+
+def expand_kernel_dilation(kernel: np.ndarray, dilation: int) -> np.ndarray:
+    """Insert zeros between kernel elements (§9.5)."""
+    d = max(1, int(dilation))
+    k = np.asarray(kernel, dtype=float)
+    if d == 1:
+        return k
+    kh, kw = k.shape
+    oh = kh + (kh - 1) * (d - 1)
+    ow = kw + (kw - 1) * (d - 1)
+    out = np.zeros((oh, ow), dtype=float)
+    out[0:oh:d, 0:ow:d] = k
+    return out
+
+
+def conv2d_dilated(
+    x: np.ndarray,
+    kernel: np.ndarray,
+    *,
+    dilation: int = 1,
+    stride: int = 1,
+    padding: int = 0,
+) -> np.ndarray:
+    expanded = expand_kernel_dilation(kernel, dilation)
+    return conv2d(x, expanded, stride=stride, padding=padding)
+
+
+def conv1d(
+    x: np.ndarray,
+    kernel: np.ndarray,
+    *,
+    stride: int = 1,
+    padding: int = 0,
+) -> np.ndarray:
+    """1D cross-correlation for time-series grids (§9.7)."""
+    sig = np.asarray(x, dtype=float).ravel()
+    k = np.asarray(kernel, dtype=float).ravel()
+    p = max(0, int(padding))
+    s = max(1, int(stride))
+    if p:
+        sig = np.pad(sig, (p, p), mode="constant")
+    out_len = (len(sig) - len(k)) // s + 1
+    if out_len <= 0:
+        return np.zeros(0, dtype=float)
+    out = np.zeros(out_len, dtype=float)
+    for i in range(out_len):
+        start = i * s
+        out[i] = float(np.sum(sig[start : start + len(k)] * k))
+    return out
+
+
+def demo_series_1d(n: int = 64) -> np.ndarray:
+    """Synthetic 1D signal (§9.7)."""
+    t = np.linspace(0.0, 1.0, max(16, int(n)), endpoint=False)
+    return np.sin(2 * np.pi * 4 * t) + 0.45 * np.sin(2 * np.pi * 11 * t)
+
+
+def demo_volume(size: int = 10) -> np.ndarray:
+    """Small 3D grid with a central blob (§9.7)."""
+    n = max(6, int(size))
+    zz, yy, xx = np.mgrid[0:n, 0:n, 0:n]
+    center = ((xx - n / 2) ** 2 + (yy - n / 2) ** 2 + (zz - n / 2) ** 2) < (n / 3) ** 2
+    return center.astype(float)
+
+
+def mix_channels_1x1(channels: list[np.ndarray], weights: np.ndarray) -> np.ndarray:
+    """Apply a 1x1 linear mix across channel maps (§9.5)."""
+    if not channels:
+        return np.zeros((0, 0), dtype=float)
+    stack = np.stack([np.asarray(c, dtype=float) for c in channels], axis=-1)
+    h, w, cin = stack.shape
+    wgt = np.asarray(weights, dtype=float).reshape(-1, cin)
+    flat = stack.reshape(h * w, cin)
+    mixed = flat @ wgt.T
+    return mixed.reshape(h, w, wgt.shape[0])
+
+
+def gabor_kernel(
+    size: int = 7,
+    *,
+    sigma: float = 2.0,
+    theta: float = 0.0,
+    lam: float = 4.0,
+    psi: float = 0.0,
+    gamma: float = 0.5,
+) -> np.ndarray:
+    """Real Gabor filter (§9.10)."""
+    n = max(3, int(size))
+    if n % 2 == 0:
+        n += 1
+    half = n // 2
+    y, x = np.mgrid[-half : half + 1, -half : half + 1]
+    x_rot = x * np.cos(theta) + y * np.sin(theta)
+    y_rot = -x * np.sin(theta) + y * np.cos(theta)
+    gb = np.exp(-0.5 * (x_rot**2 + (gamma * y_rot) ** 2) / sigma**2)
+    gb *= np.cos(2 * np.pi * x_rot / lam + psi)
+    gb -= gb.mean()
+    norm = np.linalg.norm(gb)
+    if norm > 0:
+        gb /= norm
+    return gb
+
+
+def pixel_wise_label_map(
+    img: np.ndarray, filter_keys: tuple[str, ...] = ("sobel_x", "sobel_y", "laplacian")
+) -> np.ndarray:
+    """Argmax over filter responses per pixel (§9.6 structured outputs)."""
+    responses = [conv2d(img, KERNEL_PRESETS[key], stride=1, padding=1) for key in filter_keys]
+    h = min(r.shape[0] for r in responses)
+    w = min(r.shape[1] for r in responses)
+    stack = np.stack([np.abs(r[:h, :w]) for r in responses], axis=-1)
+    return np.argmax(stack, axis=-1).astype(float)
+
+
+def random_kernel_2d(size: int = 3, seed: int = 0) -> np.ndarray:
+    rng = np.random.default_rng(int(seed))
+    k = rng.normal(size=(size, size))
+    k -= k.mean()
+    norm = np.linalg.norm(k)
+    if norm > 0:
+        k /= norm
+    return k
