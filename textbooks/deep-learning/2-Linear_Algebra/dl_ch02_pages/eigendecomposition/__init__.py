@@ -23,6 +23,20 @@ EigendecompositionPage = define_page(
         "principal axes of variation. We use them to understand and simplify "
         "linear systems."
     ),
+    overview_parts=[
+        (
+            "Eigenpairs",
+            "Av = lambda v: directions v that only stretch under A, with scale lambda.",
+        ),
+        (
+            "Symmetric case",
+            "Real symmetric A has orthogonal eigenvectors and spectral decomposition A = Q Lambda Q^T with real eigenvalues.",
+        ),
+        (
+            "Spectral view",
+            "Diagonalizing in the eigenbasis separates modes so quadratic forms and covariances become axis-aligned.",
+        ),
+    ],
     methodology=[
         "Adjust matrix entries and inspect eigenvectors as invariant directions and the spectral reconstruction error.",
     ],

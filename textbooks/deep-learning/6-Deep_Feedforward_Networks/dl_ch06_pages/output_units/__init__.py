@@ -18,6 +18,20 @@ OutputUnitsPage = define_page(
         "Logits are transformed into valid probabilities; cross-entropy is the "
         "natural loss when maximum likelihood is the training objective."
     ),
+    overview_parts=[
+        (
+            "Regression head",
+            "Linear output with Gaussian noise matches squared-error / MLE training.",
+        ),
+        (
+            "Bernoulli head",
+            "Sigmoid emits P(y=1|x); binary cross-entropy is the corresponding NLL.",
+        ),
+        (
+            "Softmax head",
+            "Mutually exclusive classes share a normalized probability vector; multiclass cross-entropy follows.",
+        ),
+    ],
     methodology=[
         "Linear unit + Gaussian noise → regression (least squares / MLE).",
         "Sigmoid output → Bernoulli; one probability P(y=1|x).",

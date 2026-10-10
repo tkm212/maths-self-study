@@ -18,6 +18,20 @@ AdversarialPage = define_page(
         "curve, an epsilon-sized shift can substantially raise squared error at "
         "a fixed validation point."
     ),
+    overview_parts=[
+        (
+            "Worst-case perturbation",
+            "Move x along the sign of the loss gradient to maximize error at fixed epsilon.",
+        ),
+        (
+            "Linear local model",
+            "Small steps exploit high-dimensional sensitivity even when the network looks smooth.",
+        ),
+        (
+            "Defense motivation",
+            "Adversarial training and robust optimization respond to these vulnerabilities.",
+        ),
+    ],
     methodology=[
         "Train a high-capacity MLP on a noisy sine curve.",
         "Pick a validation point and estimate dMSE/dx by finite differences.",

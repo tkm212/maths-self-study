@@ -18,6 +18,20 @@ InputNoisePage = define_page(
         "input noise regularizes the mapping from x to features without directly "
         "corrupting the targets."
     ),
+    overview_parts=[
+        (
+            "Perturbed inputs",
+            "Train on x + epsilon with small Gaussian noise to smooth the learned map.",
+        ),
+        (
+            "Robust features",
+            "Forces the network to tolerate jitter similar to test-time variation.",
+        ),
+        (
+            "Unlike label noise",
+            "Targets stay clean; regularization acts on the input pathway only.",
+        ),
+    ],
     methodology=[
         "Replace x with x + epsilon, epsilon ~ N(0, sigma^2), each training step.",
         "The network learns to average over perturbations.",

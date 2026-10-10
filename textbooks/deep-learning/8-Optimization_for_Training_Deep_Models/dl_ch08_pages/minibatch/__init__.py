@@ -18,6 +18,20 @@ MinibatchPage = define_page(
         "Small batches add noise and cheap updates; full-batch steps are smooth "
         "but expensive. Both paths are compared on linear regression."
     ),
+    overview_parts=[
+        (
+            "Batch size",
+            "Full-batch gradients are low noise but costly; mini-batches trade variance for speed.",
+        ),
+        (
+            "Noise scale",
+            "Small batches jitter updates, which can help on non-convex losses.",
+        ),
+        (
+            "Linear demo",
+            "Scalar regression lets you compare MSE trajectories for two batch sizes fairly.",
+        ),
+    ],
     methodology=[
         "Fit a scalar linear model with mean-squared error.",
         "Plot full-data MSE after each SGD update for two batch sizes.",

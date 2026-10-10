@@ -17,6 +17,20 @@ InitializationPage = define_page(
         "before training begins. Xavier scaling targets stable variance for tanh "
         "networks; compare against deliberately mis-scaled weights."
     ),
+    overview_parts=[
+        (
+            "Signal scale",
+            "Too large weights saturate nonlinearities; too small weights vanish activations.",
+        ),
+        (
+            "Xavier rule",
+            "Variance scales with fan-in and fan-out to keep layer activations stable at start.",
+        ),
+        (
+            "Training onset",
+            "Mis-scaled init shows up immediately in validation curves before many epochs.",
+        ),
+    ],
     methodology=[
         "Initialize a one-hidden-layer MLP with Gaussian weights.",
         "Reference std follows Xavier for fan-in and fan-out of 1 → H → 1.",

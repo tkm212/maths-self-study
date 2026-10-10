@@ -18,6 +18,20 @@ DistributionsPage = define_page(
         "outputs, labels, and noise are generated. We use them as the "
         "building blocks for loss functions and generative models."
     ),
+    overview_parts=[
+        (
+            "Bernoulli and categorical",
+            "Binary and multi-class labels with finite outcome sets; softmax outputs match categorical likelihoods.",
+        ),
+        (
+            "Gaussian",
+            "Continuous noise and regression targets; squared error corresponds to Gaussian negative log-likelihood.",
+        ),
+        (
+            "Building blocks",
+            "Products and mixtures of simple laws compose richer generative stories used in deep generative models.",
+        ),
+    ],
     methodology=[
         "Adjust categorical probabilities and the bivariate covariance matrix to see entropy, PMF, and contour geometry change.",
     ],

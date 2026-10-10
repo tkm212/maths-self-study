@@ -20,6 +20,20 @@ SgdPage = define_page(
         "it as the standard optimiser for neural networks and large "
         "datasets."
     ),
+    overview_parts=[
+        (
+            "Mini-batch gradients",
+            "Average loss over a random subset estimates the full-data gradient cheaply.",
+        ),
+        (
+            "Noise benefit",
+            "Stochasticity can help escape sharp local minima and saddle regions on non-convex surfaces.",
+        ),
+        (
+            "Scale",
+            "Same update rule trains billion-parameter models when batches fit in memory and learning rate is tuned.",
+        ),
+    ],
     algorithm=SGD_ALGORITHM,
     definitions=SGD_DEFINITIONS,
     build_filters=build_filters,

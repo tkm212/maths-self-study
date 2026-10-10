@@ -23,6 +23,20 @@ LeastSquaresPage = define_page(
         "has a closed-form solution via normal equations. We use it as the "
         "canonical example connecting linear algebra to optimisation."
     ),
+    overview_parts=[
+        (
+            "Objective",
+            "Minimize sum of squared residuals ||Xw - y||^2, the Gauss-Markov workhorse.",
+        ),
+        (
+            "Normal equations",
+            "Setting the gradient to zero yields X^T X w = X^T y when the design matrix is well-conditioned.",
+        ),
+        (
+            "Geometry",
+            "The fitted vector is the orthogonal projection of y onto the column space of X.",
+        ),
+    ],
     methodology=[
         "Adjust the target values and inspect the fitted line and normal-equation solution in the table.",
     ],

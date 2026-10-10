@@ -21,6 +21,20 @@ MlePage = define_page(
         "default principle for training many statistical and deep learning "
         "models."
     ),
+    overview_parts=[
+        (
+            "Likelihood principle",
+            "Choose parameters that maximize the probability of the observed dataset under a parametric model.",
+        ),
+        (
+            "Loss connection",
+            "Negative log-likelihood is the usual training objective; cross-entropy for classifiers is MLE for categorical outputs.",
+        ),
+        (
+            "Asymptotics",
+            "With enough data, MLE is consistent and efficient under regularity conditions on the model.",
+        ),
+    ],
     methodology=[
         "Slide to shift every sample and watch the MLE mean and fitted bell curve move together.",
         "MLE is consistent — with enough data, estimates converge to true parameters.",

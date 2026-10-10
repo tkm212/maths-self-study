@@ -20,6 +20,20 @@ SemiSupervisedMultitaskPage = define_page(
         "learning trains related tasks with a shared representation so each task "
         "benefits from inductive transfer."
     ),
+    overview_parts=[
+        (
+            "Unlabeled data",
+            "Consistency losses penalize predictions that change under small input noise.",
+        ),
+        (
+            "Multitask sharing",
+            "Related tasks share hidden layers so each task regularizes the others.",
+        ),
+        (
+            "Inductive transfer",
+            "Auxiliary objectives inject structure when labels are scarce.",
+        ),
+    ],
     methodology=[
         "Train on a subset of labeled points only as a baseline.",
         "Add consistency regularization on unlabeled inputs.",

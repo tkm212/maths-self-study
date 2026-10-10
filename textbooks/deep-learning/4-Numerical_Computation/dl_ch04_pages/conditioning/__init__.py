@@ -20,6 +20,20 @@ ConditioningPage = define_page(
         "conditioning to diagnose why some matrix inversions fail in "
         "practice."
     ),
+    overview_parts=[
+        (
+            "Condition number",
+            "Ratio of relative output error to relative input error for linear systems; large kappa means ill-conditioning.",
+        ),
+        (
+            "Sensitivity",
+            "Small perturbations in b or A can swing x widely when columns are nearly dependent.",
+        ),
+        (
+            "Mitigation",
+            "Regularization, preconditioning, or reformulating the problem improves numerical stability.",
+        ),
+    ],
     methodology=[
         "Slide the condition number and perturbation size to see how nearly parallel rows amplify tiny changes in the right-hand side.",
         "Near-singular matrices remain unstable even with exact arithmetic.",

@@ -40,6 +40,17 @@ def test_dashboard_app_layout(dashboard_path, page_count):
     assert len(module.PAGES) == page_count
 
 
+@pytest.mark.parametrize(("dashboard_path", "page_count"), DL_DASHBOARDS)
+def test_dashboard_pages_have_overview_parts(dashboard_path, page_count):
+    module = load_dashboard_module(dashboard_path)
+    assert len(module.PAGES) == page_count
+    for page in module.PAGES:
+        assert page.overview_parts, f"{page.value} missing overview_parts"
+        for title, body in page.overview_parts:
+            assert title.strip()
+            assert body.strip()
+
+
 def test_vectors_page_builds_filters():
     ch2 = load_dashboard_module(CH2_DASHBOARD)
     page = ch2.PAGES[0]

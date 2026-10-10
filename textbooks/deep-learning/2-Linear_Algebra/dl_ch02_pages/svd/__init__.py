@@ -20,6 +20,20 @@ SvdPage = define_page(
         "direction carries through the map. We use SVD for compression, "
         "denoising, and as the backbone of PCA."
     ),
+    overview_parts=[
+        (
+            "Factorization",
+            "A = U Sigma V^T rotates, scales along orthogonal axes, then rotates again.",
+        ),
+        (
+            "Singular values",
+            "Diagonal entries of Sigma measure how much energy each input direction carries through the map.",
+        ),
+        (
+            "Applications",
+            "Low-rank truncation compresses data; pseudoinverse via SVD solves least squares even when A is rank-deficient.",
+        ),
+    ],
     methodology=[
         "Adjust the matrix entries and inspect singular values, the unit-circle image, and the least-squares fit.",
     ],
