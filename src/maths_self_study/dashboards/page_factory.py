@@ -18,6 +18,7 @@ def define_page(
     build_filters: Callable[[], html.Div],
     register_callbacks: Callable[[Dash, str], None],
     summary: str | None = None,
+    overview_parts: list[tuple[str, str]] | None = None,
     methodology: list[str] | None = None,
     algorithm: tuple[str, list[str]] | None = None,
     proof: tuple[str, list[str]] | None = None,
@@ -39,6 +40,7 @@ def define_page(
     _Page.title = title
     _Page.caption = caption
     _Page.summary = summary or ""
+    _Page.overview_parts = overview_parts or []
     _Page.methodology = methodology or []
     _Page.algorithm = algorithm
     _Page.proof = proof

@@ -94,21 +94,12 @@ APPLICATIONS = [
         r"local connectivity idea (§9.7).",
     ),
     (
-        "Efficient algorithms",
-        r"FFT and Winograd reduce multiply-add cost but implement the same linear "
-        r"operation (§9.8).",
-    ),
-    (
         "Random features",
         r"Untrained filters can already show edge-like selectivity (§9.9).",
     ),
     (
-        "Neuroscience",
-        r"Simple and complex cells motivate local filters such as Gabors (§9.10).",
-    ),
-    (
-        "History",
-        r"CNNs descend from Neocognitron and modern scalable conv hierarchies "
-        r"(§9.11).",
+        "Gabor filter",
+        r"A Gaussian envelope modulating a sinusoid; controls orientation and "
+        r"spatial frequency in a local patch (§9.10).",
     ),
 ]

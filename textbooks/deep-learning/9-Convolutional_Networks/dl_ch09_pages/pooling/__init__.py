@@ -14,10 +14,32 @@ PoolingPage = define_page(
     title="Pooling and classification towers",
     caption="§9.3, §9.4 - Invariance, priors, and spatial hierarchy.",
     summary=(
-        "Pooling downsamples feature maps and builds approximate translation invariance "
-        "(§9.3). Viewed as priors, conv favors equivariance and pooling favors invariance "
-        "(§9.4). Stacked conv+pool blocks shrink maps toward a classifier (Fig. 9.11)."
+        "After conv extracts local features, pooling reduces spatial resolution and "
+        "summarizes each neighborhood. That saves computation and encourages stability "
+        "to small shifts, the complement to conv's equivariance (§9.3-§9.4)."
     ),
+    overview_parts=[
+        (
+            "Pooling",
+            "Max or average over each window keeps the strongest or typical activation "
+            "while shrinking the map, so later layers see a coarser grid.",
+        ),
+        (
+            "Translation invariance",
+            "Exact pixel location within a pool window matters less, which helps "
+            "classification when object position varies slightly.",
+        ),
+        (
+            "Infinitely strong prior",
+            "Conv prefers local, equivariant interactions; pooling prefers local "
+            "invariance. Both restrict the function class before data is seen (§9.4).",
+        ),
+        (
+            "Classification towers",
+            "Alternating conv and pool blocks form a pyramid: many channels on a small "
+            "spatial map, then a classifier on global structure (Fig. 9.11).",
+        ),
+    ],
     methodology=[
         "Compare max and average pooling on a conv feature map.",
         "Read off compression from pool window and stride.",

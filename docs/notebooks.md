@@ -174,7 +174,7 @@ uv run python textbooks/deep-learning/8-Optimization_for_Training_Deep_Models/da
 
 ### Chapter 9 — Convolutional Networks
 
-Interactive walkthrough of [Chapter 9](https://www.deeplearningbook.org/contents/convnets.html): five tabs cover §9.1-§9.5 (convolution, motivation, pooling/priors, variants) and §9.6-§9.11 (structured outputs, data types, Gabor/random features, with notes on §9.8 and §9.11).
+Interactive walkthrough of [Chapter 9](https://www.deeplearningbook.org/contents/convnets.html): five tabs with theory-first overviews and demos for §9.1-§9.11 (convolution, inductive biases, pooling, variants, and applications).
 
 ```bash
 uv run python textbooks/deep-learning/9-Convolutional_Networks/dashboard.py

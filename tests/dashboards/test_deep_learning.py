@@ -427,9 +427,8 @@ def test_plot_translation_equivariance_builds_figure():
     from tests.dashboards.support import load_dl_helpers
 
     helpers = load_dl_helpers(9)
-    fig, fig_bar, stats = helpers.plot_translation_equivariance(2, 1)
-    assert fig is not None and fig_bar is not None
-    assert stats["max_abs_diff"] < 1e-6
+    fig = helpers.plot_translation_equivariance(2, 1)
+    assert fig is not None
 
 
 def test_plot_cnn_tower_builds_figures():

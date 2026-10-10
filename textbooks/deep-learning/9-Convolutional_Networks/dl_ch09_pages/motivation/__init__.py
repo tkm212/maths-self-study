@@ -13,10 +13,32 @@ MotivationPage = define_page(
     title="Why convolutions?",
     caption="§9.2 - Sparse connectivity, parameter sharing, equivariance.",
     summary=(
-        "Convolutional networks reuse small kernels everywhere: fewer parameters than "
-        "a fully connected layer, local edge detectors, growing receptive fields, and "
-        "feature maps that shift with the input (§9.2)."
+        "Fully connected layers on large images are parameter-heavy and ignore spatial "
+        "structure. Convolutions encode three useful biases: only local connections, the "
+        "same weights everywhere, and representations that move with the input (§9.2)."
     ),
+    overview_parts=[
+        (
+            "Sparse connectivity",
+            "Each output depends on a small neighborhood, matching the fact that distant "
+            "pixels are weakly coupled for many vision tasks.",
+        ),
+        (
+            "Parameter sharing",
+            "One kernel applies at every location, slashing weight count and encoding "
+            "that the same feature can appear anywhere in the field of view.",
+        ),
+        (
+            "Translation equivariance",
+            "If the input shifts, the feature map shifts the same way, so detection "
+            "does not require re-learning at every position.",
+        ),
+        (
+            "Receptive field",
+            "Stacking layers grows the input region influencing each unit, building "
+            "from edges to parts to whole objects (§9.2; edges also §9.10).",
+        ),
+    ],
     methodology=[
         "Inspect hand-crafted edge filters on a synthetic image (§9.2, §9.10).",
         "Check translation equivariance: conv(shift(x)) vs shift(conv(x)).",

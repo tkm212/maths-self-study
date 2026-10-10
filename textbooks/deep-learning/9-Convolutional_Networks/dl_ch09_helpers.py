@@ -27,7 +27,6 @@ from maths_self_study.math.convolutional import (
     spatial_output_length,
     stack_spatial_sizes,
     tower_demo_layers,
-    translation_equivariance_stats,
 )
 from maths_self_study.viz.graphs import apply_layout, bar_chart, heatmap_chart, line_chart, scatter_chart
 
@@ -244,11 +243,8 @@ def plot_receptive_field(
     return fig_rf, fig_size, stats
 
 
-def plot_translation_equivariance(
-    shift: int,
-    padding: int,
-) -> tuple[go.Figure, go.Figure, dict[str, float]]:
-    """Shift commutes with convolution under zero pad (§9.3)."""
+def plot_translation_equivariance(shift: int, padding: int) -> go.Figure:
+    """Visual check that shift commutes with convolution on interior pixels (§9.2)."""
     img = demo_image(DEMO_IMAGE_SIZE)
     kernel = KERNEL_PRESETS["sobel_x"]
     dy = int(shift)
@@ -268,34 +264,12 @@ def plot_translation_equivariance(
         cs = conv_shift[:h, :w]
         sc = shift_conv[:h, :w]
     diff = np.abs(cs - sc)
-    fig = _three_panel(
+    return _three_panel(
         cs,
         sc,
         diff,
         titles=("conv(shift(x)) interior", "shift(conv(x)) interior", "|difference|"),
     )
-    stats_dict = translation_equivariance_stats(
-        img,
-        kernel,
-        shift_y=dy,
-        shift_x=dx,
-        padding=p,
-        stride=1,
-    )
-    fig_line = bar_chart(
-        ["max |diff|", "mean |diff|"],
-        [stats_dict["max_abs_diff"], stats_dict["mean_abs_diff"]],
-        title="Translation equivariance error (should be ~0 with same padding)",
-        yaxis_title="abs error",
-        color="#64748b",
-        height=340,
-    )
-    stats = {
-        **stats_dict,
-        "shift_pixels": float(dy),
-        "padding": float(p),
-    }
-    return fig, fig_line, stats
 
 
 def plot_cnn_tower(

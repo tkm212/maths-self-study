@@ -20,6 +20,13 @@ PAGES = load_chapter_pages(
 )
 
 
+CH9_TAGLINE = (
+    "Convolutional networks exploit structure in images and grids: local patterns, shared "
+    "weights across space, and hierarchical feature maps. They made scalable vision models "
+    "practical and underpin most modern perceptual AI."
+)
+
+
 def create_app():
     return create_deep_learning_dashboard(
         __name__,
@@ -29,6 +36,7 @@ def create_app():
         book_link_text="Deep Learning Book — Convolutional Networks",
         pages=PAGES,
         default_page="convolution",
+        tagline=CH9_TAGLINE,
     )
 
 

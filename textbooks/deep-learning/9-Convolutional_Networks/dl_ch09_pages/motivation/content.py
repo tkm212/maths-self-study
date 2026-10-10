@@ -18,14 +18,9 @@ def render_body(filter_name, shift, n_blocks) -> html.Div:
     kernel_size = helpers.KERNEL_SIZE_DEFAULT
 
     fig_edge, fig_edge_bar, edge_stats = helpers.plot_edge_filters(str(preset))
-    fig_eq, fig_eq_bar, eq_stats = helpers.plot_translation_equivariance(dy, padding=1)
+    fig_eq = helpers.plot_translation_equivariance(dy, padding=1)
     fig_rf, fig_size, rf_stats = helpers.plot_receptive_field(blocks, kernel_size)
 
-    eq_rows = [
-        ["Shift (dy = dx)", f"{int(eq_stats['shift_pixels'])}"],
-        ["Max |diff| (interior)", f"{eq_stats['max_abs_diff']:.2e}"],
-        ["Match fraction", f"{eq_stats['match_fraction']:.4f}"],
-    ]
     rf_rows = [
         ["Receptive field (1D)", f"{int(rf_stats['receptive_field'])}"],
         ["FC params (full grid)", f"{int(rf_stats['fc_params'])}"],
@@ -47,11 +42,9 @@ def render_body(filter_name, shift, n_blocks) -> html.Div:
         ),
         graph(fig_eq),
         html.P(
-            "Parameter sharing makes conv layers equivariant to translation; zero-padding "
-            "only affects border pixels (§9.2)."
+            "Parameter sharing makes conv layers equivariant to translation: the interior "
+            "of conv(shift(x)) matches shift(conv(x)) when padding is consistent (§9.2)."
         ),
-        graph(fig_eq_bar),
-        table(["Measure", "Value"], eq_rows, caption="Equivariance check"),
         html.H3("Receptive field and parameter sharing"),
         formula_group(
             ("Receptive field growth", RECEPTIVE_FIELD),
@@ -60,7 +53,5 @@ def render_body(filter_name, shift, n_blocks) -> html.Div:
         graph(fig_rf),
         graph(fig_size),
         table(["Measure", "Value"], rf_rows, caption="Sharing summary"),
-        html.P(
-            f"Edge filter {preset}: mean |response| = {edge_stats['selected_mean_abs']:.4f}."
-        ),
+        html.P(f"Edge filter {preset}: mean |response| = {edge_stats['selected_mean_abs']:.4f}."),
     ])

@@ -47,6 +47,7 @@ def page_shell(
     body_id: str,
     *,
     summary: str | None = None,
+    overview_parts: list[tuple[str, str]] | None = None,
     methodology: list[str] | None = None,
     algorithm: tuple[str, list[str]] | None = None,
     proof: tuple[str, list[str]] | None = None,
@@ -66,8 +67,8 @@ def page_shell(
         ),
         html.P(caption, style={"color": "#64748b", "marginTop": 0}),
     ]
-    if summary:
-        children.append(summary_box(summary))
+    if summary or overview_parts:
+        children.append(summary_box(summary, parts=overview_parts))
     if definitions:
         children.append(definition_group(*definitions))
     if theorems:
