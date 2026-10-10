@@ -19,6 +19,20 @@ BaggingPage = define_page(
         "correlated partially cancel, often improving validation performance "
         "without changing the base architecture."
     ),
+    overview_parts=[
+        (
+            "Bootstrap samples",
+            "Each model trains on a resampled dataset with replacement from the training set.",
+        ),
+        (
+            "Averaging predictions",
+            "Reduces variance when individual errors are not perfectly correlated.",
+        ),
+        (
+            "Deep learning note",
+            "Same idea underpins snapshot ensembles and some distributed training tricks.",
+        ),
+    ],
     methodology=BAGGING_ALGORITHM[1],
     definitions=BAGGING_DEFINITIONS,
     build_filters=build_filters,

@@ -20,6 +20,20 @@ NormsPage = define_page(
         "functions, constraints, and distance-based methods throughout "
         "machine learning."
     ),
+    overview_parts=[
+        (
+            "Lp geometry",
+            "L1, L2, and L infinity norms weight coordinates differently, producing diamond, circular, and square unit balls in the plane.",
+        ),
+        (
+            "Regularization link",
+            "Weight penalties mirror norm choice: L1 sparsifies, L2 shrinks smoothly, and other norms appear in robust losses and constraints.",
+        ),
+        (
+            "Cosine similarity",
+            "Normalizing out magnitude compares direction only, common in embeddings and attention-style scoring.",
+        ),
+    ],
     methodology=[
         "Compare L1, L2, and L infinity unit balls — each norm weights coordinates differently.",
         "L2 gives a circle; L1 a diamond; L infinity a square in two dimensions.",

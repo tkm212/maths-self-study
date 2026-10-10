@@ -18,6 +18,20 @@ ActivationsPage = define_page(
         "squash activations into bounded ranges. The choice of g affects "
         "gradient flow, saturation, and training dynamics throughout the network."
     ),
+    overview_parts=[
+        (
+            "ReLU",
+            "Piecewise linear, sparse activations; gradients are one for positive pre-activations.",
+        ),
+        (
+            "Sigmoid and tanh",
+            "Bounded outputs saturate for large |z|, which can slow learning in deep stacks.",
+        ),
+        (
+            "Gradient flow",
+            "Activation choice shapes vanishing and exploding signal propagation during backprop.",
+        ),
+    ],
     methodology=[
         "ReLU: max(0, z) — cheap, avoids vanishing gradients for z > 0.",
         "Sigmoid: outputs in (0, 1); saturates for large |z|.",

@@ -19,6 +19,20 @@ XorPage = define_page(
         "features that separate the classes, then combines them at the output. "
         "This is the canonical illustration of depth buying nonlinearity."
     ),
+    overview_parts=[
+        (
+            "Nonlinear separability",
+            "XOR labels cannot be separated by any line in the input plane.",
+        ),
+        (
+            "Hidden layer",
+            "Nonlinear features h = g(Wx + b) re-embed points so a linear readout succeeds.",
+        ),
+        (
+            "Depth intuition",
+            "Even one hidden layer buys representational power impossible for linear models.",
+        ),
+    ],
     methodology=[
         "Single-layer linear models cannot represent XOR.",
         "Hidden units apply a nonlinear activation to learned affine features.",

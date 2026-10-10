@@ -19,6 +19,20 @@ EarlyStoppingPage = define_page(
         "error eventually rises when the network memorizes noise. Saving weights "
         "at the best validation epoch is an inexpensive regularizer."
     ),
+    overview_parts=[
+        (
+            "Validation monitor",
+            "Track error on held-out data each epoch while training loss keeps improving.",
+        ),
+        (
+            "Best checkpoint",
+            "Restore weights at the lowest validation error to avoid memorization phase.",
+        ),
+        (
+            "Implicit regularizer",
+            "Limits effective optimization time without changing the architecture.",
+        ),
+    ],
     methodology=[
         "Monitor validation loss each epoch while training on the training set.",
         "Save parameters at the lowest validation error.",

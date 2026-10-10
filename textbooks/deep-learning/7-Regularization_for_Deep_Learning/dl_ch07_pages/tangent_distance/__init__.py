@@ -20,6 +20,20 @@ TangentDistancePage = define_page(
         "distance between on-manifold points can be large even when they differ "
         "only by a nuisance translation; tangent distance is much smaller."
     ),
+    overview_parts=[
+        (
+            "Nuisance transforms",
+            "Small translations along a manifold should not count as large distance.",
+        ),
+        (
+            "Euclidean pitfall",
+            "Off-manifold chord length can be big even for nearby generative factors.",
+        ),
+        (
+            "Tangent approximation",
+            "Linearize allowed moves to compare points modulo local symmetries.",
+        ),
+    ],
     methodology=[
         "Pick two points on y = sin(2x) related by horizontal shift.",
         "Compute Euclidean distance in the plane.",
