@@ -17,6 +17,20 @@ MomentumPage = define_page(
         "ill-conditioned. Momentum accumulates velocity in consistent gradient "
         "directions and dampens oscillations across steep axes."
     ),
+    overview_parts=[
+        (
+            "Velocity buffer",
+            "Accumulates past gradients to keep moving through consistent directions.",
+        ),
+        (
+            "Ill-conditioned valleys",
+            "Dampens oscillations across steep Hessian axes on a fixed quadratic.",
+        ),
+        (
+            "Heavy-ball",
+            "Polyak momentum often beats plain GD with the same learning rate on the demo surface.",
+        ),
+    ],
     methodology=[
         "Use a fixed quadratic with a large condition number.",
         "Run the same learning rate for GD and heavy-ball momentum.",

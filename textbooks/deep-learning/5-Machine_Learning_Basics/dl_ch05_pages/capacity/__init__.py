@@ -19,6 +19,20 @@ CapacityPage = define_page(
         "what the data support. We use capacity control to target the sweet "
         "spot between under- and over-fitting."
     ),
+    overview_parts=[
+        (
+            "Expressivity",
+            "Capacity measures how rich the hypothesis class is - depth, width, and nonlinearities all contribute.",
+        ),
+        (
+            "Overfitting signal",
+            "A widening train-validation gap means the model memorizes idiosyncrasies not shared with test data.",
+        ),
+        (
+            "Controls",
+            "Regularization, early stopping, and data augmentation curb effective capacity without shrinking architecture.",
+        ),
+    ],
     methodology=[
         "Capacity is the model's ability to fit varied functions — higher-degree polynomials have more capacity.",
         "Underfitting: capacity too low; high training and test error.",

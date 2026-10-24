@@ -19,6 +19,20 @@ MarkovPage = define_page(
         "conditional pieces. We use this structure in language models, "
         "time-series, and autoregressive generation."
     ),
+    overview_parts=[
+        (
+            "Markov property",
+            "Future depends on the past only through the present state, simplifying sequence modeling.",
+        ),
+        (
+            "Chain rule",
+            "Any joint distribution factorises into conditional products along an ordering of variables.",
+        ),
+        (
+            "Stationary chains",
+            "Transition matrices describe evolution; stationary distributions are fixed points of the dynamics.",
+        ),
+    ],
     methodology=[
         "Adjust transition probabilities and inspect how the joint factorises along the chain graph.",
         "Each edge is one conditional factor; RNNs and autoregressive models use the same pattern with neural nets as conditionals.",

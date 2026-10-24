@@ -22,6 +22,20 @@ RandomVariablesPage = define_page(
         "and what remains uncertain. We use this framework to reason "
         "precisely about learning from noisy data."
     ),
+    overview_parts=[
+        (
+            "Distributions",
+            "PMFs and PDFs assign probability mass to outcomes; expectations summarize typical behavior under that law.",
+        ),
+        (
+            "Joint and marginal",
+            "Joint laws encode dependencies; marginals integrate or sum out variables you do not observe.",
+        ),
+        (
+            "Conditionals",
+            "P(A|B) updates beliefs about A once B is known and underpins supervised targets P(y|x).",
+        ),
+    ],
     methodology=[
         "Adjust the joint table and inspect marginals, conditionals, and moments in the panels below.",
         "Marginals sum out one variable; conditionals renormalise a slice of the joint table.",

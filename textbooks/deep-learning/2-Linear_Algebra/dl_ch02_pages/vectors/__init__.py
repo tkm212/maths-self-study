@@ -19,6 +19,20 @@ VectorsPage = define_page(
         "as the language for everything from least squares to neural network "
         "layers."
     ),
+    overview_parts=[
+        (
+            "Linear maps",
+            "Each column of A shows where a basis vector lands; the map sends entire directions to new directions with fixed scaling along eigenstructure.",
+        ),
+        (
+            "Composition",
+            "Applying B after A corresponds to the matrix product BA, chaining transformations right-to-left in the usual function notation.",
+        ),
+        (
+            "Inner product",
+            "Dot products encode angle and length; orthogonality means zero inner product and underpins projections used throughout ML.",
+        ),
+    ],
     methodology=[
         "Each column of A shows where a basis vector lands under the linear map.",
         "Composition applies maps right-to-left: apply the inner map first, then the outer map.",

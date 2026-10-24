@@ -21,6 +21,20 @@ BayesPage = define_page(
         "principled uncertainty quantification rather than point estimates "
         "alone."
     ),
+    overview_parts=[
+        (
+            "Bayes rule",
+            "Posterior is proportional to likelihood times prior, inverting P(y|x) into beliefs about latent causes.",
+        ),
+        (
+            "Prior and evidence",
+            "The prior encodes knowledge before data; the marginal likelihood scores how well the model explains observations.",
+        ),
+        (
+            "MAP vs full posterior",
+            "Point estimates pick a mode; full posteriors quantify uncertainty for decisions and active learning.",
+        ),
+    ],
     methodology=[
         "Slide prior disease rate, sensitivity, and false-positive rate — compare posterior to prior after a positive test.",
         "Base rates matter: even a sensitive test yields low posterior probability when the disease is rare.",

@@ -24,6 +24,20 @@ StabilityPage = define_page(
         "range. We use them to prevent silent numerical failures during "
         "training."
     ),
+    overview_parts=[
+        (
+            "Overflow and underflow",
+            "Exponentiating large logits or multiplying many small numbers hits float limits.",
+        ),
+        (
+            "Log-space tricks",
+            "Work with log probabilities and log-sum-exp to keep intermediate values in range.",
+        ),
+        (
+            "Softmax stabilization",
+            "Subtracting the row max before exp preserves probabilities while avoiding NaNs.",
+        ),
+    ],
     methodology=[
         "Adjust the logits and compare naive versus stable softmax in the table below.",
         "Large logits expose overflow in the naive column; stable softmax always returns a valid probability vector.",

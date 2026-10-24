@@ -19,6 +19,20 @@ UniversalApproxPage = define_page(
         "how closely a shallow MLP fits complex targets — more hidden units "
         "generally reduce training error on smooth curves."
     ),
+    overview_parts=[
+        (
+            "Cybenko-Hornik",
+            "Wide single-hidden-layer nets with nonpolynomial activation approximate continuous functions on compact sets.",
+        ),
+        (
+            "Width vs depth",
+            "Theory needs many hidden units; practice often prefers deeper narrow nets for the same accuracy.",
+        ),
+        (
+            "Empirical fit",
+            "Training error falls as hidden width grows on smooth targets in the demo.",
+        ),
+    ],
     methodology=[
         "One hidden layer + nonlinear activation is a universal approximator (Cybenko, Hornik).",
         "Increasing hidden width adds basis functions the network can combine.",

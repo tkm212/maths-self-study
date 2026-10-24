@@ -19,6 +19,20 @@ ManifoldPage = define_page(
         "generation. We use it to motivate dimensionality reduction and "
         "generative modelling techniques."
     ),
+    overview_parts=[
+        (
+            "Manifold hypothesis",
+            "High-dimensional observations often lie near a lower-dimensional curved surface embedded in ambient space.",
+        ),
+        (
+            "Swiss roll demo",
+            "Unrolling a twisted sheet shows how nonlinear dimensionality reduction separates intrinsic coordinates from noise.",
+        ),
+        (
+            "Representation learning",
+            "Neural networks can learn charts of the manifold when labels or self-supervision provide signal.",
+        ),
+    ],
     methodology=[
         "Many datasets have ambient dimension far larger than intrinsic dimension — see the formula panel in the demo below.",
         "Swiss roll: two latent coordinates map smoothly into three dimensions — the cloud is curved but not volume-filling.",

@@ -23,6 +23,20 @@ GradientDescentPage = define_page(
         "size - too large overshoots, too small crawls. We use it as the "
         "basic engine for training virtually all learnable models."
     ),
+    overview_parts=[
+        (
+            "Steepest descent",
+            "Each step moves opposite the gradient of a smooth loss at the current point.",
+        ),
+        (
+            "Learning rate",
+            "Step size trades convergence speed against overshoot on curved surfaces.",
+        ),
+        (
+            "Local method",
+            "Finds nearby minima on non-convex losses; initialization and momentum matter in deep models.",
+        ),
+    ],
     algorithm=GRADIENT_DESCENT_ALGORITHM,
     definitions=GRADIENT_DESCENT_DEFINITIONS,
     build_filters=build_filters,

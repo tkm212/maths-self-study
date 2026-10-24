@@ -19,6 +19,20 @@ BackpropPage = define_page(
         "efficiently. Gradient checking compares analytical derivatives to "
         "finite differences to verify an implementation before training."
     ),
+    overview_parts=[
+        (
+            "Computational graph",
+            "Forward pass stores intermediates; backward pass applies the chain rule in reverse topological order.",
+        ),
+        (
+            "Efficiency",
+            "One backward sweep computes all parameter gradients without re-running forward for each weight.",
+        ),
+        (
+            "Gradient check",
+            "Finite-difference comparisons catch implementation bugs before long training runs.",
+        ),
+    ],
     methodology=[
         "Forward pass: evaluate and store node values z, h, and predictions.",
         "Backward pass: propagate dL/d(output) through each layer via the chain rule.",

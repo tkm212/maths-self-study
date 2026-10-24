@@ -20,6 +20,20 @@ ParameterSharingPage = define_page(
         "localization task with shifted test patterns, a tiny 1D conv often "
         "generalizes better than a dense layer with many more weights."
     ),
+    overview_parts=[
+        (
+            "Conv vs FC",
+            "Reusing one filter at every location slashes parameters versus a dense layer.",
+        ),
+        (
+            "Translation structure",
+            "Shared weights encode that the same pattern may appear anywhere in the signal.",
+        ),
+        (
+            "Generalization",
+            "On shifted spike patterns, tiny conv nets often beat larger FC baselines.",
+        ),
+    ],
     methodology=[
         "Train an FC network on spike positions in a 1D signal.",
         "Train a 1D conv network with max-pooled filter responses.",

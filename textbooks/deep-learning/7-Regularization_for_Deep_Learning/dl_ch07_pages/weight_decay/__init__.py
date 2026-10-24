@@ -18,6 +18,20 @@ WeightDecayPage = define_page(
         "variance at the cost of some bias. On a high-capacity MLP, increasing "
         "lambda typically lowers validation error until the model underfits."
     ),
+    overview_parts=[
+        (
+            "L2 penalty",
+            "Adds (lambda/2)||w||^2 to the loss, shrinking weights toward zero each step.",
+        ),
+        (
+            "Bias-variance",
+            "Stronger lambda increases bias but often cuts variance and validation error.",
+        ),
+        (
+            "Equivalent views",
+            "Weight decay can match scaled learning rate on unregularized loss under certain optimizers.",
+        ),
+    ],
     methodology=[
         "Augment the loss with (lambda/2)||w||^2.",
         "Each gradient step shrinks weights toward the origin.",

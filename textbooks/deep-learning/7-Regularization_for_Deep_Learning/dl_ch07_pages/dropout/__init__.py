@@ -18,6 +18,20 @@ DropoutPage = define_page(
         "co-adaptation and overfitting. Training error rises, but validation error "
         "often improves when dropout is tuned."
     ),
+    overview_parts=[
+        (
+            "Random masks",
+            "Zero hidden units with probability p during training; scale survivors by 1/(1-p).",
+        ),
+        (
+            "Ensemble effect",
+            "Subnetworks share weights; averaging implicit models at test time reduces co-adaptation.",
+        ),
+        (
+            "Tuning",
+            "Moderate p often helps validation error despite higher training loss.",
+        ),
+    ],
     methodology=[
         "Sample a binary mask m ~ Bernoulli(1-p) each forward pass.",
         "Use h_tilde = m ⊙ h / (1-p) during training.",

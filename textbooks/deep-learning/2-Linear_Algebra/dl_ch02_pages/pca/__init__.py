@@ -20,6 +20,20 @@ PcaPage = define_page(
         "structure in a lower-dimensional view. We use it to visualise "
         "high-dimensional data and reduce dimensionality before modelling."
     ),
+    overview_parts=[
+        (
+            "Variance directions",
+            "Principal components are eigenvectors of the covariance, ordered by explained variance.",
+        ),
+        (
+            "Low-rank view",
+            "Keeping the top k components minimizes reconstruction error among all k-dimensional linear projections.",
+        ),
+        (
+            "Visualization",
+            "Two-dimensional PCA plots reveal cluster structure when most variance concentrates in a few modes.",
+        ),
+    ],
     methodology=[
         "Adjust the number of components and inspect variance explained versus reconstruction error.",
     ],

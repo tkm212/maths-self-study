@@ -18,6 +18,20 @@ TensorsPage = define_page(
         "distinct role - time, channel, spatial position. We use them because "
         "deep learning data and parameters are naturally multi-way arrays."
     ),
+    overview_parts=[
+        (
+            "Rank and modes",
+            "Scalars, vectors, and matrices are ranks 0-2; higher rank arrays index data along time, channel, spatial, or batch axes simultaneously.",
+        ),
+        (
+            "Indexing and slices",
+            "Fixing one index yields a lower-rank slice; this is how batches, channels, and spatial planes are extracted in deep learning code.",
+        ),
+        (
+            "Storage layout",
+            "Entries live on a regular grid; reshaping changes interpretation of the same underlying numbers without copying values.",
+        ),
+    ],
     methodology=[
         "A tensor is an n-dimensional array: scalar (0D), vector (1D), matrix (2D), then higher orders.",
         "Indexing T[i, j, k, …] picks one element along each mode; slicing fixes indices to get a lower-rank view.",

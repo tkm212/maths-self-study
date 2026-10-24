@@ -19,6 +19,20 @@ NewtonPage = define_page(
         "iterations on smooth problems. We use it when the cost of computing "
         "the Hessian is worth the faster convergence."
     ),
+    overview_parts=[
+        (
+            "Second-order steps",
+            "Uses Hessian curvature to solve for a Newton direction toward a critical point.",
+        ),
+        (
+            "Quadratic convergence",
+            "Near a well-conditioned minimum, error squares each step for smooth objectives.",
+        ),
+        (
+            "Cost trade-off",
+            "Hessian computation is expensive in high dimensions; approximations appear in quasi-Newton methods.",
+        ),
+    ],
     algorithm=NEWTON_ALGORITHM,
     definitions=NEWTON_DEFINITIONS,
     build_filters=build_filters,

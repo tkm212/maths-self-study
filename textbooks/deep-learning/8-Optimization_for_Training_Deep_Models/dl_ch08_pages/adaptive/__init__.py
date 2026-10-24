@@ -18,6 +18,20 @@ AdaptivePage = define_page(
         "rescaling each parameter's step size. On the same ReLU regression MLP, "
         "Adam often reaches lower validation error faster than plain SGD."
     ),
+    overview_parts=[
+        (
+            "Per-parameter steps",
+            "Running averages of squared gradients rescale each coordinate's update.",
+        ),
+        (
+            "Adam",
+            "Combines momentum-like first moment with adaptive second moment on the demo MLP.",
+        ),
+        (
+            "When it helps",
+            "Noisy regression surfaces often reach lower validation error faster than plain SGD.",
+        ),
+    ],
     methodology=[
         "Train identical architectures with SGD, momentum, and Adam.",
         "Share learning rate and He initialization; full-batch gradients each epoch.",

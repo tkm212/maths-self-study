@@ -21,6 +21,20 @@ InformationPage = define_page(
         "distributions. We use these quantities as natural training "
         "objectives and diagnostics."
     ),
+    overview_parts=[
+        (
+            "Entropy",
+            "Average surprise of a distribution; high when outcomes are unpredictable.",
+        ),
+        (
+            "Cross-entropy",
+            "Expected code length under model q when data come from p; training loss for classifiers.",
+        ),
+        (
+            "KL divergence",
+            "Asymmetric distance between distributions; non-negative and zero only when laws match.",
+        ),
+    ],
     methodology=[
         "Adjust the probability tables and compare self-information, entropy, cross-entropy, and KL in the summary table.",
         "KL is asymmetric — swapping P and Q changes the value.",

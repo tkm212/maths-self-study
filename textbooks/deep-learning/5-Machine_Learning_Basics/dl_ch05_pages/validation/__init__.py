@@ -19,6 +19,20 @@ ValidationPage = define_page(
         "validation to choose model complexity without cheating on the final "
         "test set."
     ),
+    overview_parts=[
+        (
+            "Hold-out set",
+            "Validation data estimates generalization while tuning hyperparameters.",
+        ),
+        (
+            "Avoid test leakage",
+            "The final test set is touched once; validation guides model selection.",
+        ),
+        (
+            "Error curves",
+            "Training error alone falls with capacity; validation error reveals the sweet spot.",
+        ),
+    ],
     methodology=[
         "Training error alone is optimistic — models can memorize noise.",
         "Validation error tracks performance on unseen data during hyperparameter search.",

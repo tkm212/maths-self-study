@@ -21,6 +21,20 @@ KktPage = define_page(
         "use them to solve constrained learning problems like SVMs and "
         "penalised estimation."
     ),
+    overview_parts=[
+        (
+            "Constrained optima",
+            "At a minimum with active constraints, no feasible direction improves the objective.",
+        ),
+        (
+            "Multipliers",
+            "Lagrange multipliers measure marginal cost of tightening each constraint.",
+        ),
+        (
+            "KKT system",
+            "Stationarity, primal feasibility, dual feasibility, and complementary slackness jointly characterize solutions.",
+        ),
+    ],
     methodology=[
         "Demo: minimise a quadratic on a halfspace constraint. Slide the lower bound to move the boundary and watch the optimum and multiplier update.",
     ],

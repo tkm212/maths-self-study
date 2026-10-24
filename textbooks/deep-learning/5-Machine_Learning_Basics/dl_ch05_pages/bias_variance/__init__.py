@@ -21,6 +21,20 @@ BiasVariancePage = define_page(
         "raises variance. We use this lens to understand the U-shaped "
         "generalisation curve."
     ),
+    overview_parts=[
+        (
+            "Bias",
+            "Error from an overly rigid model that cannot match the true function even with infinite data.",
+        ),
+        (
+            "Variance",
+            "Sensitivity to which training sample you draw; high when the model fits noise.",
+        ),
+        (
+            "Trade-off",
+            "Increasing capacity lowers bias but raises variance; test error balances both plus irreducible noise.",
+        ),
+    ],
     methodology=[
         "Bias: error from overly rigid models that miss structure in the data.",
         "Variance: error from fitting noise when the model is too flexible.",
