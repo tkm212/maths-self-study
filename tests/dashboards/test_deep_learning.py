@@ -16,6 +16,7 @@ from tests.dashboards.support import (
     CH7_DASHBOARD,
     CH8_DASHBOARD,
     CH9_DASHBOARD,
+    CH10_DASHBOARD,
     load_dashboard_module,
     prepare_chapter_import,
 )
@@ -29,6 +30,7 @@ DL_DASHBOARDS = [
     pytest.param(CH7_DASHBOARD, 9, id="ch7"),
     pytest.param(CH8_DASHBOARD, 4, id="ch8"),
     pytest.param(CH9_DASHBOARD, 5, id="ch9"),
+    pytest.param(CH10_DASHBOARD, 5, id="ch10"),
 ]
 
 
@@ -487,3 +489,58 @@ def test_plot_gabor_and_random_builds_figure():
     fig_g, fig_bar, stats = helpers.plot_gabor_and_random(1.0, 5)
     assert fig_g is not None and fig_bar is not None
     assert stats["sobel_mean_abs"] >= 0
+
+
+def test_unfolding_page_updates():
+    prepare_chapter_import(CH10_DASHBOARD.parent)
+    from dl_ch10_pages.unfolding.content import render_body
+
+    quiet = render_body(0.4, 0.0, 3)
+    driven = render_body(0.9, 1.5, 8)
+    assert quiet is not None and driven is not None
+    assert str(quiet.to_plotly_json()) != str(driven.to_plotly_json())
+
+
+def test_rnn_page_updates():
+    prepare_chapter_import(CH10_DASHBOARD.parent)
+    from dl_ch10_pages.rnn.content import render_body
+
+    matched = render_body(0.9, 2)
+    mismatched = render_body(0.2, 10)
+    assert str(matched.to_plotly_json()) != str(mismatched.to_plotly_json())
+
+
+def test_architectures_page_updates():
+    prepare_chapter_import(CH10_DASHBOARD.parent)
+    from dl_ch10_pages.architectures.content import render_body
+
+    short = render_body(8, 2, 1)
+    long = render_body(16, 8, 4)
+    assert str(short.to_plotly_json()) != str(long.to_plotly_json())
+
+
+def test_dependencies_page_updates():
+    prepare_chapter_import(CH10_DASHBOARD.parent)
+    from dl_ch10_pages.dependencies.content import render_body
+
+    fade = render_body(0.4, 0.2, 0.1, 6.0)
+    grow = render_body(1.4, 0.95, 0.9, 1.0)
+    assert str(fade.to_plotly_json()) != str(grow.to_plotly_json())
+
+
+def test_gated_page_updates():
+    prepare_chapter_import(CH10_DASHBOARD.parent)
+    from dl_ch10_pages.gated.content import render_body
+
+    hold = render_body(5.0, 2, 0)
+    drop = render_body(-2.0, 2, 3)
+    assert str(hold.to_plotly_json()) != str(drop.to_plotly_json())
+
+
+def test_plot_gated_memory_builds_figures():
+    from tests.dashboards.support import load_dl_helpers
+
+    helpers = load_dl_helpers(10)
+    fig_mem, fig_grad, fig_attn, stats = helpers.plot_gated(4.0, 2, 1)
+    assert fig_mem is not None and fig_grad is not None and fig_attn is not None
+    assert stats["lstm_final"] > stats["rnn_final"]

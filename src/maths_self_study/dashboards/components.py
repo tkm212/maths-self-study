@@ -436,7 +436,8 @@ def summary_box(
                     html.Li(
                         [
                             html.Strong(title, style={"color": "#1e293b"}),
-                            html.Span(f" — {detail}", style=_SUMMARY_BODY_STYLE),
+                            html.Span(" — ", style=_SUMMARY_BODY_STYLE),
+                            math_text(detail, style={**_SUMMARY_BODY_STYLE, "display": "inline"}),
                         ],
                         style={"marginBottom": "6px"},
                     )
@@ -720,6 +721,15 @@ def proof_group(*items: tuple[str, list[str]]) -> html.Div:
     )
 
 
+def _table_cell(cell: str | float | int) -> html.Td:
+    text = str(cell)
+    if "$" in text:
+        child: Any = math_text(text, style={"display": "inline", "color": "#0f172a"})
+    else:
+        child = text
+    return html.Td(child, style=_TABLE_CELL_STYLE)
+
+
 def table(
     columns: list[str],
     rows: list[list[str | float | int]],
@@ -733,7 +743,7 @@ def table(
     )
     body_rows = [
         html.Tr(
-            [html.Td(str(cell), style=_TABLE_CELL_STYLE) for cell in row],
+            [_table_cell(cell) for cell in row],
             style={"borderBottom": "1px solid #e2e8f0"},
         )
         for row in rows

@@ -1,0 +1,21 @@
+"""Key LaTeX formulas for Deep Learning Ch. 10."""
+
+from __future__ import annotations
+
+UNFOLD_STATE = r"s^{(t)} = f(s^{(t-1)}; \theta)"
+UNFOLD_DRIVEN = r"s^{(t)} = f(s^{(t-1)}, x^{(t)}; \theta)"
+HIDDEN_UPDATE = r"h^{(t)} = f(h^{(t-1)}, x^{(t)}; \theta)"
+ELMAN_HIDDEN = r"h^{(t)} = \tanh(b + W h^{(t-1)} + U x^{(t)})"
+ELMAN_OUTPUT = r"\hat{y}^{(t)} = \mathrm{softmax}(c + V h^{(t)})"
+SEQUENCE_LOSS = r"L = \sum_{t} -\log p(y^{(t)} \mid x^{(1)}, \ldots, x^{(t)})"
+GRAPHICAL_FACTOR = r"p(y^{(1)}, \ldots, y^{(\tau)}) = \prod_{t} p(y^{(t)} \mid y^{(<t)})"
+BIDIRECTIONAL = r"h^{(t)} = [\overrightarrow{h}^{(t)}; \overleftarrow{h}^{(t)}]"
+ENCODER_CONTEXT = r"C = h^{(\tau_x)}"
+RECURSIVE_NODE = r"h^{(\mathrm{parent})} = f(h^{(\mathrm{left})}, h^{(\mathrm{right})}; \theta)"
+EIGEN_POWER = r"h^{(t)} = Q \Lambda^{t} Q^{\top} h^{(0)}"
+LEAKY_UNIT = r"h^{(t)} = \alpha h^{(t-1)} + (1-\alpha)\, v^{(t)}"
+GRAD_CLIP = r"g \leftarrow \frac{\tau}{\|g\|} g \quad (\|g\| > \tau)"
+LSTM_CELL = r"s^{(t)} = f^{(t)} \odot s^{(t-1)} + i^{(t)} \odot \tilde{s}^{(t)}"
+LSTM_HIDDEN = r"h^{(t)} = \tanh(s^{(t)}) \odot o^{(t)}"
+GRU_UPDATE = r"h^{(t)} = (1-z^{(t)}) \odot h^{(t-1)} + z^{(t)} \odot \tilde{h}^{(t)}"
+MEMORY_READ = r"a = \mathrm{softmax}(q^{\top} K / \tau), \quad r = a^{\top} V"

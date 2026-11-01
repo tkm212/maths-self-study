@@ -14,6 +14,8 @@ from tests.dashboards.support import (
     CH6_DASHBOARD,
     CH7_DASHBOARD,
     CH8_DASHBOARD,
+    CH9_DASHBOARD,
+    CH10_DASHBOARD,
     ESL_CH2_DASHBOARD,
     esl_dashboard_paths,
     fml_dashboard_paths,
@@ -96,6 +98,8 @@ def test_all_deep_learning_pages_have_summary():
         CH6_DASHBOARD,
         CH7_DASHBOARD,
         CH8_DASHBOARD,
+        CH9_DASHBOARD,
+        CH10_DASHBOARD,
     ):
         module = load_dashboard_module(dashboard_path)
         for page in module.PAGES:
