@@ -103,7 +103,7 @@ Implementations based on **Goodfellow, I., Bengio, Y., & Courville, A. (2016). [
 
 Source path: `textbooks/deep-learning/`
 
-Chapters 2–9 ship as multi-page **Dash** dashboards (filters for chapter constants on each page). Each chapter’s `dashboard.py` wires the app; page code lives in `ch{N}_pages/<page>/` with separate `filters.py`, `content.py`, and `callbacks.py` modules. Shared UI and app shell code is in `maths_self_study.dashboards`; plotting helpers are in each chapter’s `ch{N}_helpers.py`; core math is in `maths_self_study.math`.
+Chapters 2–10 ship as multi-page **Dash** dashboards (filters for chapter constants on each page). Each chapter’s `dashboard.py` wires the app; page code lives in `ch{N}_pages/<page>/` with separate `filters.py`, `content.py`, and `callbacks.py` modules. Shared UI and app shell code is in `maths_self_study.dashboards`; plotting helpers are in each chapter’s `ch{N}_helpers.py`; core math is in `maths_self_study.math`.
 
 | Chapter | Topic | App |
 |---------|-------|-----|
@@ -115,6 +115,7 @@ Chapters 2–9 ship as multi-page **Dash** dashboards (filters for chapter const
 | 7 | Regularization for Deep Learning | `7-Regularization_for_Deep_Learning/dashboard.py` |
 | 8 | Optimization for Training Deep Models | `8-Optimization_for_Training_Deep_Models/dashboard.py` |
 | 9 | Convolutional Networks | `9-Convolutional_Networks/dashboard.py` |
+| 10 | Sequence Modeling: Recurrent and Recursive Nets | `10-Sequence_Modeling/dashboard.py` |
 
 ### Chapter 2 — Linear Algebra
 
@@ -178,4 +179,12 @@ Interactive walkthrough of [Chapter 9](https://www.deeplearningbook.org/contents
 
 ```bash
 uv run python textbooks/deep-learning/9-Convolutional_Networks/dashboard.py
+```
+
+### Chapter 10 — Sequence Modeling: Recurrent and Recursive Nets
+
+Interactive walkthrough of [Chapter 10](https://www.deeplearningbook.org/contents/rnn.html): five tabs for §10.1-§10.12 (unfolded dynamics, RNNs and BPTT, bidirectional and encoder-decoder models, long-term dependencies, and gated cells).
+
+```bash
+uv run python textbooks/deep-learning/10-Sequence_Modeling/dashboard.py
 ```

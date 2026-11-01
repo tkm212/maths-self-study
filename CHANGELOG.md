@@ -10,6 +10,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Added
 
+- Deep Learning track (Goodfellow et al.): Chapter 10 — Sequence Modeling Dash dashboard under `textbooks/deep-learning/10-Sequence_Modeling/dashboard.py`.
 - Deep Learning track (Goodfellow et al.): Chapter 2 — Linear Algebra Dash dashboard under `textbooks/deep-learning/2-Linear_Algebra/dashboard.py`.
 - `maths_self_study.linalg` module: Lp norms, symmetric eigendecomposition, PCA, Moore–Penrose pseudoinverse.
 - Deep Learning track (Goodfellow et al.): Chapter 3 — Probability and Information Theory Dash dashboard under `textbooks/deep-learning/3-Probability_Information_Theory/dashboard.py`.

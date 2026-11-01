@@ -77,6 +77,16 @@ def test_summary_box_renders_overview_parts():
     assert "What it means in theory." in rendered
 
 
+def test_summary_box_renders_latex_in_overview_parts():
+    block = summary_box(
+        None,
+        parts=[("Eigenvalue powers", r"For a linear map, $h^{(t)} = Q \Lambda^{t} Q^{\top} h^{(0)}$.")],
+    )
+    rendered = str(block)
+    assert "math-latex-source" in rendered
+    assert "Lambda" in rendered
+
+
 def test_text_box_renders_steps():
     block = text_box(steps=["Definition", "Algorithm"], title="How it works")
     assert block is not None

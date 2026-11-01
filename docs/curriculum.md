@@ -48,7 +48,9 @@ Foundations for the deep learning track: linear algebra, probability, informatio
 | 6 | Deep feedforward networks — XOR, output units, activations, universal approximation |
 | 7 | Regularization — weight decay, early stopping, dropout, input noise |
 | 8 | Optimization — momentum, initialization, Adam, mini-batch SGD |
+| 9 | Convolutional networks — cross-correlation, parameter sharing, pooling, variants |
+| 10 | Sequence modeling — unfolded RNNs, encoder-decoder models, long-term dependencies, LSTM |
 
 ## Planned tracks
 
-Future chapters from *Deep Learning* (optimization, CNNs, and beyond) and other textbooks — pure maths (real analysis, linear algebra), additional applied stats/ML books. New tracks get a folder under `textbooks/` named after the book or a short slug, plus shared utilities in `maths_self_study` where they apply across books.
+Later *Deep Learning* chapters and other textbooks — pure maths (real analysis, linear algebra), additional applied stats/ML books. New tracks get a folder under `textbooks/` named after the book or a short slug, plus shared utilities in `maths_self_study` where they apply across books.
